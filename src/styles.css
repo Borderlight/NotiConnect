@@ -1,1 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Modo claro (predeterminado) */
+:root {
+  --color-fondo: #ffffff;
+  --color-texto: #333333;
+  --color-texto-secundario: #666666;
+  --color-borde: #dddddd;
+  --color-primario: #2e7d32;
+  --color-primario-hover: #1b5e20;
+  --color-fondo-seccion: #f8f9fa;
+  --color-sombra: rgba(0, 0, 0, 0.1);
+}
+
+/* Modo oscuro */
+.dark-mode {
+  --color-fondo: #1a1a1a;
+  --color-texto: #ffffff;
+  --color-texto-secundario: #cccccc;
+  --color-borde: #444444;
+  --color-primario: #4caf50;
+  --color-primario-hover: #45a049;
+  --color-fondo-seccion: #2d2d2d;
+  --color-sombra: rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos base */
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos para elementos comunes */
+button {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--color-primario-hover);
+}
+
+input, select, textarea {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+}
+
+/* Transiciones suaves para cambios de tema */
+* {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}

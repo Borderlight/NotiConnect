@@ -1,0 +1,151 @@
+.ajustes-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.ajuste-seccion {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.ajuste-seccion h2 {
+    color: #666;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.ajuste-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.ajuste-titulo {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Estilos para el switch del modo oscuro */
+.switch-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2e7d32;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Estilos para el selector de idioma */
+.selector-idioma {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    min-width: 200px;
+    color: #333;
+}
+
+.selector-idioma:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+/* Estilos para modo oscuro */
+:host-context(.dark-mode) {
+    .ajustes-container {
+        background-color: #333;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    h1, h2, .ajuste-titulo {
+        color: #fff;
+    }
+
+    .ajuste-seccion {
+        border-bottom-color: #444;
+    }
+
+    .selector-idioma {
+        background-color: #2b2b2b;
+        border-color: #555;
+        color: #ffffff;
+    }
+
+    .selector-idioma:focus {
+        border-color: #4CAF50;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .ajustes-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .ajuste-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .selector-idioma {
+        width: 100%;
+    }
+}

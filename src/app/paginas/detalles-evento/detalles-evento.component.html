@@ -1,0 +1,118 @@
+@if (evento) {
+  <div class="detalles-evento-container">
+    <!-- Cabecera del evento -->
+    <header class="evento-header">
+      <div class="evento-imagen-container">
+        <img [src]="evento.imagen" [alt]="'Imagen del evento: ' + evento.titulo" class="evento-imagen">
+      </div>
+      <div class="evento-info-principal">
+        <span class="evento-tipo">{{ evento.tipoEvento }}</span>
+        <h1 class="evento-titulo">{{ evento.titulo }}</h1>
+        <div class="evento-meta">
+          <p class="evento-ponente">
+            <i class="fas fa-user"></i>
+            {{ evento.ponente }}
+          </p>
+          <p class="evento-organizador">
+            <i class="fas fa-building"></i>
+            {{ evento.empresaOrganizadora }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Detalles principales -->
+    <section class="evento-detalles-principales">
+      <div class="evento-descripcion">
+        <h2>Descripción</h2>
+        <p>{{ evento.descripcion }}</p>
+      </div>
+
+      <div class="evento-fecha-lugar">
+        <h2>Fecha y Ubicación</h2>
+        <div class="detalles-grid">
+          <div class="detalle-item">
+            <i class="fas fa-calendar"></i>
+            <div>
+              <strong>Fecha</strong>
+              <p>{{ evento.fecha | date:'fullDate':'':'es' }}</p>
+            </div>
+          </div>
+          <div class="detalle-item">
+            <i class="fas fa-clock"></i>
+            <div>
+              <strong>Horario</strong>
+              <p>{{ evento.horaInicio }}@if (evento.horaFin) { - {{ evento.horaFin }} }</p>
+            </div>
+          </div>
+          <div class="detalle-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Lugar</strong>
+              <p>{{ evento.lugar }}@if (evento.aula) { - {{ evento.aula }} }</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Servicios y Grados -->
+    @if (evento.servicios.length) {
+      <section class="evento-servicios">
+        <h2>Servicios y Facultades Relacionadas</h2>
+        <div class="servicios-lista">
+          @for (servicio of evento.servicios; track servicio) {
+            <div class="servicio-item">
+              <h3>{{ servicio.servicios }}</h3>
+              @if (servicio.grado) {
+                <p>{{ servicio.grado }}</p>
+              }
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Enlaces relacionados -->
+    @if (evento.enlaces.length) {
+      <section class="evento-enlaces">
+        <h2>Enlaces Relacionados</h2>
+        <div class="enlaces-lista">
+          @for (enlace of evento.enlaces; track enlace) {
+            <a [href]="enlace.url" target="_blank" rel="noopener noreferrer" class="enlace-item">
+              <i [class]="'fab fa-' + enlace.tipo.toLowerCase()"></i>
+              {{ enlace.tipo }}
+            </a>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Adjuntos -->
+    @if (evento.adjuntos.length) {
+      <section class="evento-adjuntos">
+        <h2>Documentos Adjuntos</h2>
+        <div class="adjuntos-lista">
+          @for (adjunto of evento.adjuntos; track adjunto) {
+            <a href="#" class="adjunto-item">
+              <i class="fas fa-file"></i>
+              {{ adjunto }}
+            </a>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Actividad relacionada -->
+    @if (evento.actividad) {
+      <section class="evento-actividad">
+        <h2>Actividad Relacionada</h2>
+        <p>{{ evento.actividad }}</p>
+      </section>
+    }
+  </div>
+} @else {
+  <div class="loading-container">
+    <p>Cargando detalles del evento...</p>
+  </div>
+}

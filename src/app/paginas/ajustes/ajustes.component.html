@@ -1,0 +1,35 @@
+<div class="ajustes-container">
+    <h1 data-traduccion>Ajustes</h1>
+
+    <div class="ajuste-seccion">
+        <h2 data-traduccion>Apariencia</h2>
+        <div class="ajuste-item">
+            <label class="switch-label">
+                <span class="ajuste-titulo" data-traduccion>Modo Oscuro</span>
+                <div class="switch">
+                    <input type="checkbox" 
+                           [checked]="modoOscuro" 
+                           (change)="toggleModoOscuro()"
+                           aria-label="Activar modo oscuro">
+                    <span class="slider"></span>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <div class="ajuste-seccion">
+        <h2 data-traduccion>Idioma</h2>
+        <div class="ajuste-item">
+            <label for="idioma" class="ajuste-titulo" data-traduccion>Seleccionar Idioma</label>
+            <select id="idioma"
+                    [ngModel]="idiomaSeleccionado"
+                    (change)="traducirElementos($event)"
+                    class="selector-idioma"
+                    aria-label="Seleccionar idioma de la aplicación">
+                @for (idioma of  idiomas; track idioma.codigo) {
+                    <option [value]="idioma.codigo">{{ idioma.nombre }}</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>

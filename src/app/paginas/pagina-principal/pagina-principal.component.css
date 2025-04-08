@@ -1,0 +1,47 @@
+
+
+.iconos-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    place-items: center;
+    margin: 0 auto;
+}
+
+.boton-icono {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border: 3px solid #2e7d32;
+    color: #2e7d32;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Aseguramos que sea responsive */
+@media (max-width: 600px) {
+    .iconos-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .boton-icono {
+        width: 100px;
+        height: 100px;
+    }
+
+    .boton-icono i {
+        font-size: 36px;
+    }
+}
+
+
+

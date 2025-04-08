@@ -1,0 +1,38 @@
+<div class="evento-card" (click)="verDetalles()" role="button" tabindex="0" [attr.aria-label]="'Ver detalles de ' + evento.titulo">
+  <div class="evento-imagen-container">
+    <img [src]="evento.imagen" [alt]="'Imagen del evento: ' + evento.titulo" class="evento-imagen">
+  </div>
+  <div class="evento-contenido">
+    <div class="evento-header">
+      <span class="evento-tipo">{{ evento.tipoEvento }}</span>
+      <button class="btn-eliminar" (click)="eliminarEvento($event)" aria-label="Eliminar evento">
+        <img src="/assets/evento/papelera.png" alt="Eliminar" class="icono-papelera">
+      </button>
+    </div>
+    <h2 class="evento-titulo">{{ evento.titulo }}</h2>
+    <div class="evento-info">
+      <p class="evento-ponente">
+        <i class="fas fa-user"></i>
+        {{ evento.ponente }}
+      </p>
+      <p class="evento-fecha">
+        <i class="fas fa-calendar"></i>
+        {{ evento.fecha | date:'fullDate':'':'es' }}
+      </p>
+      <p class="evento-hora">
+        <i class="fas fa-clock"></i>
+        {{ evento.horaInicio }}
+        @if (evento.horaFin) {
+          - {{ evento.horaFin }}
+        }
+      </p>
+      <p class="evento-lugar">
+        <i class="fas fa-map-marker-alt"></i>
+        {{ evento.lugar }}
+        @if (evento.aula) {
+          - {{ evento.aula }}
+        }
+      </p>
+    </div>
+  </div>
+</div>
