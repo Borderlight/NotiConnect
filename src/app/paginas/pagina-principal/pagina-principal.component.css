@@ -1,45 +1,60 @@
-
-
 .iconos-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
     padding: 2rem;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     place-items: center;
     margin: 0 auto;
 }
 
-.boton-icono {
+.icono-bloque {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
-    border: 3px solid #2e7d32;
-    color: #2e7d32;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
 }
 
+.boton-icono {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #f0f0f0;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+}
 
-/* Aseguramos que sea responsive */
+.boton-icono img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.icono-texto {
+    margin-top: 0.7rem;
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+}
+
 @media (max-width: 600px) {
     .iconos-container {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-
     .boton-icono {
-        width: 100px;
-        height: 100px;
-    }
-
-    .boton-icono i {
-        font-size: 36px;
+        width: 110px;
+        height: 110px;
     }
 }
 
