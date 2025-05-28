@@ -1,34 +1,32 @@
 <header class="app-header" role="banner">
   <div class="header-content">
-    @if (mostrarBotonVolver) {
-      <button class="back-button" (click)="volver()" aria-label="Volver atrás">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-      </button>
-    }
+    <button class="back-button" aria-label="Volver" (click)="volver()">
+      <img src="/assets/pantalla-principal/volver atras.png" alt="Volver atrás" class="icono-volver" />
+    </button>
+    <div class="logo-upsa-container">
+      <img src="/assets/pantalla-principal/logo_upsa.png"
+           alt="Logo de la Universidad Pontificia de Salamanca"
+           class="logo-upsa">
+    </div>
     <div class="center-content">
-      <div class="logo-container">
-        <img src="/assets/pantalla-principal/logo_upsa.png" 
-             alt="Logo de la Universidad Pontificia de Salamanca" 
-             class="logo"
-             width="200"
-             height="60"
-             (click)="navegarInicio()"
-             style="cursor: pointer">
-      </div>
-      <h1 (click)="navegarInicio()" style="cursor: pointer">NotiConnect</h1>
+      <button class="logo-noticonnect-btn" aria-label="Ir a la página principal de NotiConnect" (click)="navegarInicio()">
+        <img src="/assets/pantalla-principal/NotiConnect logo.png"
+             alt="Logo de NotiConnect"
+             class="logo-noticonnect" 
+             style="cursor: pointer;"
+             />
+      </button>
     </div>
   </div>
-  <nav role="navigation" aria-label="Menú principal">
-    <!-- Aquí irá la navegación cuando la necesitemos -->
-  </nav>
+  
 </header>
 
-<main class="app-main" role="main">
+<main  class="app-main" role="main">
   <router-outlet></router-outlet>
 </main>
 
 <footer class="app-footer" role="contentinfo">
-  <p>&copy; 2024 NotiConnect - Todos los derechos reservados</p>
+  <p>&copy; 2025 NotiConnect - Todos los derechos reservados</p>
 </footer>
+
+

@@ -2,7 +2,7 @@
 
 /* Modo claro (predeterminado) */
 :root {
-  --color-fondo: #ffffff;
+  --color-fondo: #F3F0FF;
   --color-texto: #333333;
   --color-texto-secundario: #666666;
   --color-borde: #dddddd;
@@ -10,6 +10,7 @@
   --color-primario-hover: #1b5e20;
   --color-fondo-seccion: #f8f9fa;
   --color-sombra: rgba(0, 0, 0, 0.1);
+  --color-error: #8d0512;
 }
 
 /* Modo oscuro */
@@ -44,12 +45,49 @@ button:hover {
 }
 
 input, select, textarea {
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
+  background-color: #fff;
+  color: #111;
   border: 1px solid var(--color-borde);
+}
+
+@media (prefers-color-scheme: dark) {
+  select,
+  .tipo-enlace,
+  .select-container select {
+    background-color: #232323 !important;
+    color: #f5f5f5 !important;
+    border-color: #555 !important;
+  }
+  select option,
+  .tipo-enlace option,
+  .select-container select option {
+    background-color: #232323 !important;
+    color: #f5f5f5 !important;
+  }
+  select:disabled,
+  select option:disabled {
+    color: #888 !important;
+    background-color: #222 !important;
+  }
 }
 
 /* Transiciones suaves para cambios de tema */
 * {
   transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
+
+/* Clase para accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+
+
+

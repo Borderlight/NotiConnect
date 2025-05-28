@@ -31,6 +31,7 @@
                     El título es obligatorio y solo puede contener letras y espacios
                 </p>
             }
+             <span id="titulo-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
@@ -49,6 +50,7 @@
             @if (formularioEvento.get('ponente')?.invalid && formularioEvento.get('ponente')?.touched) {
                 <p class="mensaje_error" id="ponente-error" role="alert">El ponente es obligatorio y solo puede contener letras y espacios</p>
             }
+            <span id="ponente-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
@@ -64,9 +66,12 @@
                    aria-required="true"
                    [attr.aria-invalid]="formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched"
                    aria-label="Campo para introducir el nombre de la empresa organizadora">
+          
+
             @if (formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched) {
                 <p class="mensaje_error" id="empresa-error" role="alert">La empresa organizadora es obligatoria y solo puede contener letras y espacios</p>
             }
+            <span id="empresa-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
@@ -99,6 +104,7 @@
             @if (formularioEvento.get('tipoEvento')?.invalid && formularioEvento.get('tipoEvento')?.touched) {
                 <p class="mensaje_error" id="tipo-error" role="alert">Debes seleccionar un tipo de evento</p>
             }
+            <span id="tipo-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
@@ -122,6 +128,7 @@
                     La descripción es obligatoria y debe tener al menos 20 caracteres
                 </p>
             }
+            <span id="descripcion-error" class="visually-hidden"></span>
         </div>
     </div>
 
@@ -160,6 +167,7 @@
                             Debe seleccionar una actividad existente o añadir una nueva
                         </p>
                     }
+                    <span id="actividad-error" class="visually-hidden"></span>
                 </div>
                 <button type="button" 
                         class="btn-agregar-actividad"
@@ -194,6 +202,7 @@
                     <p class="mensaje_error" role="alert" aria-live="assertive">{{ mensajeErrorActividad }}</p>
                 }
             }
+
         </div>
 
         <div class="campo-form" formArrayName="servicios">
@@ -225,7 +234,9 @@
                                 formControlName="servicios"
                                 [attr.aria-describedby]="'servicio-' + i + '-desc servicio-' + i + '-hint servicio-' + i + '-error'"
                                 aria-required="true"
-                                [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched">
+                                [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched"
+                                [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
+                                [attr.aria-labelledby]="'servicio-' + i + '-label'">
                             <option value="" disabled selected>Seleccione un servicio o facultad</option>
                         <optgroup label="Facultades">
                             @for (facultadObj of facultadesGrados; track facultadObj) {
@@ -256,21 +267,18 @@
                     </select>
                     </div>
 
-                    <p [id]="'servicio-' + i + '-hint'" class="campo-ayuda">
-                        Si selecciona una facultad, deberá especificar también el grado correspondiente
-                    </p>
-
+                    <p [id]="'servicio-' + i + '-desc'" class="visually-hidden"></p>
+                    <p [id]="'servicio-' + i + '-hint'" class="visually-hidden"></p>
                     @if (campo.get('servicios')?.invalid && campo.get('servicios')?.touched) {
                         <p class="mensaje_error" 
                            [id]="'servicio-' + i + '-error'"
                            role="alert"
                            aria-live="assertive">
-                            <span class="error-icon" aria-hidden="true">!</span>
-                            <span class="error-text">
-                                <strong>Error: </strong>
-                                Debe seleccionar un servicio o facultad
-                            </span>
+                            Debe seleccionar un servicio o facultad
                         </p>
+                    }
+                    @if (!(campo.get('servicios')?.invalid && campo.get('servicios')?.touched)) {
+                        <span [id]="'servicio-' + i + '-error'" class="visually-hidden"></span>
                     }
                 
                     @if (esFacultadSeleccionada(campo.get('servicios')?.value)) {
@@ -300,15 +308,13 @@
                                    [id]="'grado-' + i + '-error'"
                                    role="alert"
                                    aria-live="assertive">
-                                    <span class="error-icon" aria-hidden="true">!</span>
-                                    <span class="error-text">
-                                        <strong>Error: </strong>
-                                        Debe seleccionar un grado antes de añadir un nuevo servicio
-                                    </span>
+                                    Debe seleccionar un grado antes de añadir un nuevo servicio
                                 </p>
                             }
+                        <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
                         </div>
                     }
+                    
                 </div>
             }
             <div class="boton-agregar-container">
@@ -364,12 +370,8 @@
 
             @if (formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    <span class="error-icon" aria-hidden="true">!</span>
-                    <span class="error-text">
-                        <strong>Error: </strong>
-                        Debes adjuntar al menos un archivo. Por favor, selecciona los archivos necesarios.
-                    </span>
-            </div>
+                    Debes adjuntar al menos un archivo. Por favor, selecciona los archivos necesarios.
+                </div>
         }
         </div>
 
@@ -392,78 +394,74 @@
                     <div class="enlace-header">
                         <label [id]="'enlace-' + index2 + '-label'" class="enlace-label">
                             Enlace número {{index2 + 1}}
-                            
                         </label>
-                        <button type="button" 
-                                (click)="eliminarEnlace(index2)"
-                                class="btn-eliminar"
-                                [attr.aria-label]="'Eliminar enlace ' + (index2 + 1)">
-                            <span class="icono-eliminar" aria-hidden="true">×</span>
-                            <span class="texto-eliminar">Eliminar</span>
-                        </button>
                     </div>
             
-            <div class="enlace-inputs">
+            <div class="enlace-inputs-reorganizado">
+              <div class="selector-icono-row">
                 <div class="tipo-enlace-container">
-                    <select [id]="'tipo-' + index2"
-                            formControlName="tipo" 
-                            class="tipo-enlace"
-                            [attr.aria-invalid]="tieneError(index2, 'tipo')"
-                            aria-describedby="'tipo-' + index2 + '-error'">
-                        <option value="">Selecciona el tipo de enlace</option>
+                  <select [id]="'tipo-' + index2"
+                          formControlName="tipo"
+                          class="tipo-enlace"
+                          [attr.aria-invalid]="tieneError(index2, 'tipo')"
+                          [attr.aria-describedby]="'tipo-' + index2 + '-error'"
+                          [attr.aria-label]="'Tipo de enlace número ' + (index2 + 1)"
+                          [attr.aria-labelledby]="'tipo-label-' + index2" >
+                    <option value="">Selecciona el tipo de enlace</option>
                     @for (tipo of tiposEnlace; track tipo) {
                         <option [value]="tipo.nombre">{{ tipo.nombre }}</option>
                     }
-                </select>
+                  </select>
+                  <label [id]="'tipo-label-' + index2" class="visually-hidden"></label>
                 </div>
-
                 <div class="icono-enlace-container">
-                    @if (listadoEnlaces.at(index2).get('tipo')?.value) {
-                        <img [src]="obtenerIcono(listadoEnlaces.at(index2).get('tipo')?.value)" 
-                             [alt]="'Icono de ' + listadoEnlaces.at(index2).get('tipo')?.value"
-                             aria-hidden="true">
-                    }
+                  @if (listadoEnlaces.at(index2).get('tipo')?.value) {
+                    <img [src]="obtenerIcono(listadoEnlaces.at(index2).get('tipo')?.value)" 
+                         [alt]="'Icono de ' + listadoEnlaces.at(index2).get('tipo')?.value"
+                         aria-hidden="true"
+                         class="icono-enlace-mini" />
+                  }
                 </div>
-
-                <div class="url-input-container">
-                    <label [for]="'url-' + index2" class="url-input-label">
-                        Introduce la URL
-                        <span class="campo-formato">(Ej: https://www.ejemplo.com)</span>
-                    </label>
-                    <input type="url" 
-                           [id]="'url-' + index2"
-                           formControlName="url" 
-                           class="input-enlace"
-                           [attr.aria-invalid]="tieneError(index2, 'url')"
-                           aria-describedby="'url-' + index2 + '-error'">
-                </div>
+              </div>
+              <div class="url-input-container">
+                <label [for]="'url-' + index2" class="url-input-label">
+                  Introduce la URL
+                  <span class="campo-formato">(Ej: https://www.ejemplo.com)</span>
+                </label>
+                <input type="url" 
+                       [id]="'url-' + index2"
+                       formControlName="url" 
+                       class="input-enlace"
+                       [attr.aria-invalid]="tieneError(index2, 'url')"
+                       [attr.aria-describedby]="'url-' + index2 + '-error'">
+              </div>
+              <div class="eliminar-enlace-row">
+                <button type="button"
+                        (click)="eliminarEnlace(index2)"
+                        class="btn-eliminar btn-eliminar-enlace"
+                        [attr.aria-label]="'Eliminar enlace ' + (index2 + 1)">
+                  <span class="icono-eliminar" aria-hidden="true">×</span>
+                  <span class="texto-eliminar">Eliminar</span>
+                </button>
+              </div>
             </div>
 
             @if (formularioEvento.get('enlaces')?.hasError('requiereEnlaces') && formularioEvento.get('enlaces')?.touched && index2 === 0) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    <span class="error-icon" aria-hidden="true">!</span>
-                    <span class="error-text">
-                        <strong>Error: </strong>
-                        Se debe introducir al menos un enlace
-                    </span>
+                    Se debe introducir al menos un enlace
                 </div>
             }
 
             @if (tieneError(index2, 'tipo')) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    <span class="error-icon" aria-hidden="true">!</span>
-                    <span class="error-text">
-                        <strong>Error: </strong>
-                        Debes seleccionar el tipo de enlace
-                    </span>
+                    Debes seleccionar el tipo de enlace
                 </div>
+            } @else {
+                <span [id]="'tipo-' + index2 + '-error'" class="visually-hidden"></span>
             }
             @if (tieneError(index2, 'url')) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    <span class="error-icon" aria-hidden="true">!</span>
-                    <span class="error-text">
-                        <strong>Error: </strong>
-                        @if (listadoEnlaces.at(index2).get('tipo')?.value === 'Instagram') {
+                    @if (listadoEnlaces.at(index2).get('tipo')?.value === 'Instagram') {
                             La URL debe ser un enlace válido de Instagram (ej: https://www.instagram.com/)
                         } @else if (listadoEnlaces.at(index2).get('tipo')?.value === 'X') {
                             La URL debe ser un enlace válido de X (ej: https://x.com/)
@@ -476,8 +474,9 @@
                         } @else {
                             Completa el enlace antes de añadir uno nuevo
                         }
-                    </span>
                 </div>
+            } @else {
+                <span [id]="'url-' + index2 + '-error'" class="visually-hidden"></span>
             }
         </div>
     }
@@ -536,12 +535,11 @@
                                [id]="'fecha-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                <span class="error-icon" aria-hidden="true">!</span>
-                                <span class="error-text">
-                                    <strong>Error: </strong>
-                                    La fecha es obligatoria
-                                </span>
+                                La fecha es obligatoria
                             </p>
+                        }
+                        @if (!(ubicacion.get('fecha')?.invalid && ubicacion.get('fecha')?.touched)) {
+                            <span [id]="'fecha-' + i + '-error'" class="visually-hidden"></span>
                         }
                     </div>
 
@@ -561,7 +559,9 @@
                                        formControlName="tipoHorario" 
                                        value="hora" 
                                        (change)="toggleTipoHorario(false, ubicacion)"
-                                       [attr.aria-describedby]="'tipo-horario-' + i + '-desc hora-unica-' + i + '-desc'">
+                                       [attr.aria-describedby]="'tipo-horario-' + i + '-desc hora-unica-' + i + '-desc'"
+                                       [required]="true">
+                                <span [id]="'hora-unica-' + i + '-desc'" class="visually-hidden"></span>
                                 <label [for]="'horaUnica-' + i">Hora única</label>
                             </div>
                             <div class="radio-option">
@@ -570,7 +570,9 @@
                                        formControlName="tipoHorario" 
                                        value="horario" 
                                        (change)="toggleTipoHorario(true, ubicacion)"
-                                       [attr.aria-describedby]="'tipo-horario-' + i + '-desc horario-completo-' + i + '-desc'">
+                                       [attr.aria-describedby]="'tipo-horario-' + i + '-desc horario-completo-' + i + '-desc'"
+                                       [required]="true">
+                                <span [id]="'horario-completo-' + i + '-desc'" class="visually-hidden"></span>
                                 <label [for]="'horarioCompleto-' + i">Horario completo</label>
                             </div>
                         </div>
@@ -582,11 +584,7 @@
                                [id]="'tipo-horario-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                <span class="error-icon" aria-hidden="true">!</span>
-                                <span class="error-text">
-                                    <strong>Error: </strong>
-                                    Debe seleccionar un tipo de horario
-                                </span>
+                                Debe seleccionar un tipo de horario
                             </p>
                         }
 
@@ -608,12 +606,11 @@
                                        [id]="'hora-inicio-' + i + '-error'" 
                                        role="alert"
                                        aria-live="assertive">
-                                        <span class="error-icon" aria-hidden="true">!</span>
-                                        <span class="error-text">
-                                            <strong>Error: </strong>
-                                            La hora es obligatoria
-                                        </span>
+                                        La hora es obligatoria
                                     </p>
+                                }
+                                @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
+                                    <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
                                 }
                             </div>
                         }
@@ -637,11 +634,7 @@
                                            [id]="'hora-inicio-' + i + '-error'" 
                                            role="alert"
                                            aria-live="assertive">
-                                            <span class="error-icon" aria-hidden="true">!</span>
-                                            <span class="error-text">
-                                                <strong>Error: </strong>
-                                                La hora de inicio es obligatoria
-                                            </span>
+                                            La hora de inicio es obligatoria
                                         </p>
                                     }
                                 </div>
@@ -663,11 +656,7 @@
                                            [id]="'hora-fin-' + i + '-error'" 
                                            role="alert"
                                            aria-live="assertive">
-                                            <span class="error-icon" aria-hidden="true">!</span>
-                                            <span class="error-text">
-                                                <strong>Error: </strong>
-                                                La hora de fin es obligatoria
-                                            </span>
+                                            La hora de fin es obligatoria
                                         </p>
                                     }
                                 </div>
@@ -709,12 +698,11 @@
                                [id]="'lugar-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                <span class="error-icon" aria-hidden="true">!</span>
-                                <span class="error-text">
-                                    <strong>Error: </strong>
-                                    Debe seleccionar el lugar donde se realiza el evento
-                                </span>
+                                Debe seleccionar el lugar donde se realiza el evento
                             </p>
+                        }
+                        @if (!(ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched)) {
+                            <span [id]="'lugar-' + i + '-error'" class="visually-hidden"></span>
                         }
 
                         @if (ubicacion.get('lugar')?.value === 'Facultad') {
@@ -735,12 +723,11 @@
                                        [id]="'aula-' + i + '-error'" 
                                        role="alert"
                                        aria-live="assertive">
-                                        <span class="error-icon" aria-hidden="true">!</span>
-                                        <span class="error-text">
-                                            <strong>Error: </strong>
-                                            Debe especificar el aula o espacio de la facultad
-                                        </span>
+                                        Debe especificar el aula o espacio de la facultad
                                     </p>
+                                }
+                                @if (!(ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched)) {
+                                    <span [id]="'aula-' + i + '-error'" class="visually-hidden"></span>
                                 }
                             </div>
                         }
