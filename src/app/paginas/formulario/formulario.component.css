@@ -12,7 +12,7 @@
   --color-texto-input: #000;
 }
 
-body.modo-oscuro, .modo-oscuro :root {
+body.modo-oscuro, .modo-oscuro :root, .dark-mode, :host-context(.dark-mode) {
   --color-texto-principal: #fff;
   --color-texto-secundario: #e0e0e0;
   --color-fondo: #181818;
@@ -20,6 +20,23 @@ body.modo-oscuro, .modo-oscuro :root {
   --color-borde: #fff;
   --color-fondo-input: #232323;
   --color-texto-input: #fff;
+}
+
+/* Selectores y opciones: fondo y texto según modo */
+select, .tipo-enlace, .select-container select, .campo-form select, .campo-form .select-container select {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+  border: 2px solid var(--color-borde);
+}
+
+select option, .tipo-enlace option, .select-container select option {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+}
+
+select:disabled, select option:disabled {
+  color: #888 !important;
+  background-color: #222 !important;
 }
 
 /* =========================

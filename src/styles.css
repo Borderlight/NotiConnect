@@ -11,6 +11,8 @@
   --color-fondo-seccion: #f8f9fa;
   --color-sombra: rgba(0, 0, 0, 0.1);
   --color-error: #8d0512;
+  --color-fondo-input: #fff;
+  --color-texto-input: #111;
 }
 
 /* Modo oscuro */
@@ -44,10 +46,21 @@ button:hover {
   background-color: var(--color-primario-hover);
 }
 
-input, select, textarea {
-  background-color: #fff;
-  color: #111;
-  border: 1px solid var(--color-borde);
+/* Global select/input/textarea color fix for all app (overrides) */
+select, .tipo-enlace, .select-container select, .campo-form select, .campo-form .select-container select, input, textarea {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+  border: 1.5px solid var(--color-borde);
+}
+
+select option, .tipo-enlace option, .select-container select option {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+}
+
+select:disabled, select option:disabled {
+  color: #888 !important;
+  background-color: #222 !important;
 }
 
 @media (prefers-color-scheme: dark) {
