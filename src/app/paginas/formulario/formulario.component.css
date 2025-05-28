@@ -206,6 +206,52 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* Botón Eliminar universal (estilo igual que en enlaces) */
+.btn-eliminar,
+.btn-eliminar-enlace {
+  background: #fff0f0 !important;
+  color: #b30000 !important;
+  border: 2px solid #b30000 !important;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: 0;
+  box-shadow: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-eliminar:hover, .btn-eliminar:focus,
+.btn-eliminar-enlace:hover, .btn-eliminar-enlace:focus {
+  background: #ffdddd !important;
+  color: #a00000 !important;
+  border-color: #a00000 !important;
+}
+
+.eliminar-enlace-row, .servicio-header, .ubicacion-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.btn-eliminar .icono-eliminar, .btn-eliminar-enlace .icono-eliminar {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-right: 0.3em;
+}
+
+.btn-eliminar .texto-eliminar, .btn-eliminar-enlace .texto-eliminar {
+  font-weight: 600;
+}
+
 /* =========================
    Actividad y servicios
    ========================= */
