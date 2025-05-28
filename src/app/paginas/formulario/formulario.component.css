@@ -234,6 +234,48 @@ button:disabled {
   border-color: #a00000 !important;
 }
 
+.btn-agregar-actividad {
+  background: #005FCC;
+  color: #fff;
+  border: 2px solid #005FCC;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-agregar-actividad:hover, .btn-agregar-actividad:focus {
+  background: #003e8a;
+  border-color: #003e8a;
+  color: #fff;
+}
+
+.btn-agregar-actividad.cancelar {
+  background: #c41425;
+  color: #fff;
+  border: 2px solid #c41425;
+}
+
+.btn-agregar-actividad.cancelar:hover, .btn-agregar-actividad.cancelar:focus {
+  background: #a00015;
+  border-color: #a00015;
+  color: #fff;
+}
+
+.btn-confirmar,
+.btn-agregar-inline {
+  background: #1ca14a;
+  color: #fff;
+  border: 2px solid #1ca14a;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-confirmar:hover, .btn-confirmar:focus,
+.btn-agregar-inline:hover, .btn-agregar-inline:focus {
+  background: #157a36;
+  border-color: #157a36;
+  color: #fff;
+}
+
 .eliminar-enlace-row, .servicio-header, .ubicacion-header {
   display: flex;
   flex-direction: row;
