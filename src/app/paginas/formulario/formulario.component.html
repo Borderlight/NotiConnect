@@ -8,10 +8,9 @@
         </p>
 
         <div class="campo-form">
-            <label for="titulo" id="titulo-label">Título del Evento *</label>
+            <label for="titulo" id="titulo-label">Título del Evento <span class="campo-requerido">*</span></label>
             <p id="titulo-desc" class="campo-descripcion">
-                Introduce el título del evento. Solo se permiten letras y espacios.
-                <span class="campo-requerido">Campo obligatorio</span>
+                Introduce el título del evento.
             </p>
             <input type="text" 
                    id="titulo" 
@@ -35,10 +34,9 @@
         </div>
 
         <div class="campo-form">
-            <label for="ponente" id="ponente-label">Ponente del Evento *</label>
+            <label for="ponente" id="ponente-label">Ponente del Evento <span class="campo-requerido">*</span></label>
             <p id="ponente-desc" class="campo-descripcion">
                 Introduce el nombre completo del ponente del evento.
-                <span class="campo-requerido">Campo obligatorio</span>
             </p>
             <input type="text" 
                    id="ponente" 
@@ -54,10 +52,9 @@
         </div>
 
         <div class="campo-form">
-            <label for="empresaOrganizadora" id="empresa-label">Empresa Organizadora *</label>
+            <label for="empresaOrganizadora" id="empresa-label">Empresa Organizadora <span class="campo-requerido">*</span></label>
             <p id="empresa-desc" class="campo-descripcion">
                 Introduce el nombre completo de la empresa que organiza el evento.
-                <span class="campo-requerido">Campo obligatorio</span>
             </p>
             <input type="text" 
                    id="empresaOrganizadora" 
@@ -75,10 +72,9 @@
         </div>
 
         <div class="campo-form">
-            <label for="tipoEvento" id="tipo-label">Tipo de Evento *</label>
+            <label for="tipoEvento" id="tipo-label">Tipo de Evento <span class="campo-requerido">*</span></label>
             <p id="tipo-desc" class="campo-descripcion">
                 Selecciona el tipo de evento de la lista desplegable.
-                <span class="campo-requerido">Campo obligatorio</span>
             </p>
             <select id="tipoEvento" 
                     formControlName="tipoEvento" 
@@ -108,10 +104,9 @@
         </div>
 
         <div class="campo-form">
-            <label for="descripcion" id="descripcion-label">Descripción del Evento *</label>
+            <label for="descripcion" id="descripcion-label">Descripción del Evento <span class="campo-requerido">*</span></label>
             <p id="descripcion-desc" class="campo-descripcion">
                 Introduce una descripción detallada del evento (mínimo 20 caracteres).
-                <span class="campo-requerido">Campo obligatorio</span>
             </p>
             <textarea id="descripcion" 
                      formControlName="descripcion" 
@@ -141,10 +136,9 @@
         </p>
 
         <div class="campo-form">
-            <label for="actividad_relacionada" id="actividad-label">Actividad Relacionada *</label>
+            <label for="actividad_relacionada" id="actividad-label">Actividad Relacionada <span class="campo-requerido">*</span></label>
             <p id="actividad-desc" class="campo-descripcion">
                 Seleccione una actividad de la lista o añada una si no encuentra la que necesita.
-                <span class="campo-requerido">Campo obligatorio</span>
             </p>
             <div class="actividad-container">
                 <div class="select-container">
@@ -206,10 +200,9 @@
         </div>
 
         <div class="campo-form" formArrayName="servicios">
-            <label for="servicios-titulo" id="servicio-titulo">Servicios Relacionados *</label>
+            <label for="servicios-titulo" id="servicio-titulo">Servicios Relacionados <span class="campo-requerido">*</span></label>
             <p class="descripcion-campo" id="servicios-desc">
-                Seleccione los servicios o facultades relacionados con el evento.<span class="campo-requerido">Campo obligatorio</span>
-
+                Seleccione los servicios o facultades relacionados con el evento.
             </p>
         @for (campo of listadoServicios.controls; track campo; let i = $index) {
                 <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
@@ -289,7 +282,6 @@
                             </label>
                             <p [id]="'grado-' + i + '-desc'" class="campo-descripcion">
                                 Seleccione el grado específico de la facultad seleccionada
-                                <span class="campo-requerido">Campo obligatorio</span>
                             </p>
                             <div class="select-container">
                                 <select [id]="'grado-' + i" 
@@ -337,9 +329,7 @@
 
         <div class="campo-form adjuntos-section" role="group" aria-labelledby="adjuntos-label">
             <label for="adjuntos" id="adjuntos-label" class="form-label">
-                Archivos Adjuntos
-                <span class="campo-requerido" aria-hidden="true">*</span>
-                <span class="visually-hidden">campo obligatorio</span>
+                Archivos Adjuntos <span class="campo-requerido">*</span>
             </label>
             
             <div class="campo-descripcion-container">
@@ -377,9 +367,7 @@
 
         <div class="campo-form" formArrayName="enlaces">
             <label for="enlaces" id="enlaces-label" class="form-label">
-                Enlaces Relacionados
-                <span class="campo-requerido" aria-hidden="true">*</span>
-                <span class="visually-hidden">campo obligatorio</span>
+                Enlaces Relacionados <span class="campo-requerido">*</span>
             </label>
             
             <div class="campo-descripcion-container">
@@ -519,10 +507,9 @@
                     </div>
 
                     <div class="campo-form">
-                        <label [for]="'fecha-' + i" [id]="'fecha-' + i + '-label'">Fecha del Evento *</label>
+                        <label [for]="'fecha-' + i" [id]="'fecha-' + i + '-label'">Fecha del Evento <span class="campo-requerido">*</span></label>
                         <p [id]="'fecha-' + i + '-desc'" class="campo-descripcion">
                             Seleccione la fecha en que se realizará el evento.
-                            <span class="campo-requerido">Campo obligatorio</span>
                         </p>
                         <input type="date" 
                                [id]="'fecha-' + i" 
@@ -544,10 +531,9 @@
                     </div>
 
                     <div class="campo-form">
-                        <label [id]="'tipo-horario-' + i + '-label'">Tipo de Horario *</label>
+                        <label [id]="'tipo-horario-' + i + '-label'">Tipo de Horario <span class="campo-requerido">*</span></label>
                         <p [id]="'tipo-horario-' + i + '-desc'" class="campo-descripcion">
                             Seleccione el tipo de horario para el evento.
-                            <span class="campo-requerido">Campo obligatorio</span>
                         </p>
                         <div class="tipo-horario-selector" 
                              role="radiogroup" 
@@ -590,10 +576,9 @@
 
                         @if (ubicacion.get('tipoHorario')?.value === 'hora') {
                             <div class="campo-hora">
-                                <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora del evento *</label>
+                                <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora del evento <span class="campo-requerido">*</span></label>
                                 <p [id]="'hora-inicio-' + i + '-desc'" class="campo-descripcion">
                                     Seleccione la hora en que se realizará el evento.
-                                    <span class="campo-requerido">Campo obligatorio</span>
                                 </p>
                                 <input type="time" 
                                        [id]="'horaInicio-' + i" 
@@ -618,10 +603,9 @@
                         @if (ubicacion.get('tipoHorario')?.value === 'horario') {
                             <div class="horario-container">
                                 <div class="campo-hora">
-                                    <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora de inicio *</label>
+                                    <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora de inicio <span class="campo-requerido">*</span></label>
                                     <p [id]="'hora-inicio-' + i + '-desc'" class="campo-descripcion">
                                         Seleccione la hora de inicio del evento.
-                                        <span class="campo-requerido">Campo obligatorio</span>
                                     </p>
                                     <input type="time" 
                                            [id]="'horaInicio-' + i" 
@@ -640,10 +624,9 @@
                                 </div>
 
                                 <div class="campo-hora">
-                                    <label [for]="'horaFin-' + i" [id]="'hora-fin-' + i + '-label'">Hora de fin *</label>
+                                    <label [for]="'horaFin-' + i" [id]="'hora-fin-' + i + '-label'">Hora de fin <span class="campo-requerido">*</span></label>
                                     <p [id]="'hora-fin-' + i + '-desc'" class="campo-descripcion">
                                         Seleccione la hora de fin del evento.
-                                        <span class="campo-requerido">Campo obligatorio</span>
                                     </p>
                                     <input type="time" 
                                            [id]="'horaFin-' + i" 
@@ -665,7 +648,7 @@
                     </div>
 
                     <div class="campo-form lugar-section" role="group" [attr.aria-labelledby]="'lugar-' + i + '-label'">
-                        <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">Lugar del Evento *</label>
+                        <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">Lugar del Evento <span class="campo-requerido">*</span></label>
                         <p [id]="'lugar-' + i + '-desc'" class="campo-descripcion">
                             Seleccione el lugar donde se realizará el evento.
                             <span class="campo-requerido">Campo obligatorio</span>
@@ -707,7 +690,7 @@
 
                         @if (ubicacion.get('lugar')?.value === 'Facultad') {
                             <div class="campo-aula">
-                                <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">Aula o Espacio *</label>
+                                <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">Aula o Espacio <span class="campo-requerido">*</span></label>
                                 <p [id]="'aula-' + i + '-desc'" class="campo-descripcion">
                                     Especifique el aula o espacio específico de la facultad donde se realizará el evento.
                                     <span class="campo-requerido">Campo obligatorio</span>

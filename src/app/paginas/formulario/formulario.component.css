@@ -75,11 +75,31 @@ form {
   border-radius: 4px;
 }
 
-.campo-form label {
+.campo-form label,
+.campo-form .form-label,
+.campo-form .enlace-label,
+.campo-form .url-input-label,
+.campo-form .servicio-header label,
+.campo-form .campo-grado label,
+.campo-form .campo-hora label,
+.campo-form .lugar-section label,
+.campo-form .campo-aula label {
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1.15rem;
   color: var(--color-texto-principal);
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+}
+
+.campo-requerido {
+  color: var(--color-error);
+  font-weight: bold;
+  font-size: 1.15em;
+  margin-left: 0.2em;
+}
+
+.campo-form .campo-descripcion .campo-requerido,
+.campo-form .descripcion-campo .campo-requerido {
+  display: none;
 }
 
 .campo-form input,
