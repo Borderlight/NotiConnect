@@ -323,3 +323,56 @@ body.modo-oscuro {
   object-fit: contain;
   display: block;
 }
+
+.tipo-horario-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #005FCC;
+  width: 22px;
+  height: 22px;
+  margin-right: 0.7rem;
+  border: 2px solid var(--color-borde);
+  background: var(--color-fondo-input);
+  box-shadow: 0 0 0 2px var(--color-borde);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.radio-option input[type="radio"]:focus {
+  outline: 2px solid #005FCC;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px #b3d4fc;
+}
+
+.radio-option input[type="radio"]:checked {
+  box-shadow: 0 0 0 3px #005FCC;
+  border-color: #005FCC;
+}
+
+.radio-option label {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: var(--color-texto-principal);
+  cursor: pointer;
+}
+
+body.modo-oscuro .radio-option input[type="radio"] {
+  accent-color: #4caf50;
+  background: #232323;
+  border-color: #fff;
+}
+
+body.modo-oscuro .radio-option label {
+  color: #fff;
+}
