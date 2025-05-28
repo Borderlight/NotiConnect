@@ -400,7 +400,7 @@
                         <option [value]="tipo.nombre">{{ tipo.nombre }}</option>
                     }
                   </select>
-                  <label [id]="'tipo-label-' + index2" class="visually-hidden"></label>
+                  <label [id]="'tipo-label-' + index2" class="sr-only">Tipo de enlace</label>
                 </div>
                 <div class="icono-enlace-container">
                   @if (listadoEnlaces.at(index2).get('tipo')?.value) {
@@ -412,16 +412,17 @@
                 </div>
               </div>
               <div class="url-input-container">
-                <label [for]="'url-' + index2" class="url-input-label">
+                <p class="campo-formato">
                   Introduce la URL
                   <span class="campo-formato">(Ej: https://www.ejemplo.com)</span>
-                </label>
+                </p>
                 <input type="url" 
                        [id]="'url-' + index2"
                        formControlName="url" 
                        class="input-enlace"
                        [attr.aria-invalid]="tieneError(index2, 'url')"
-                       [attr.aria-describedby]="'url-' + index2 + '-error'">
+                       [attr.aria-describedby]="'url-' + index2 + '-error'"
+                       aria-label="Introduce la URL del enlace relacionado">
               </div>
               <div class="eliminar-enlace-row">
                 <button type="button"
@@ -621,6 +622,9 @@
                                             La hora de inicio es obligatoria
                                         </p>
                                     }
+                                    @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
+                                        <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
+                                    }
                                 </div>
 
                                 <div class="campo-hora">
@@ -641,6 +645,9 @@
                                            aria-live="assertive">
                                             La hora de fin es obligatoria
                                         </p>
+                                    }
+                                    @if (!(ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched)) {
+                                        <span [id]="'hora-fin-' + i + '-error'" class="visually-hidden"></span>
                                     }
                                 </div>
                             </div>
