@@ -210,6 +210,7 @@
         "ERROR": "You must select a schedule type"
       },
       "EVENT_TIME": {
+        "LABEL": "Event Time",
         "DESCRIPTION": "Select the event time.",
         "ERROR": "Time is required"
       },
@@ -232,7 +233,19 @@
         "DESCRIPTION": "Indicate the specific room or space.",
         "ERROR": "Room is required"
       },
-      "ADD_DATE_PLACE": "Add Date and Location"
+      "ADD_DATE_PLACE": "Add Date and Location",
+      "START": {
+        "LABEL": "Start Time",
+        "DESCRIPTION": "Select the start time."
+      },
+      "END": {
+        "LABEL": "End Time",
+        "DESCRIPTION": "Select the end time."
+      },
+      "TIME": {
+        "LABEL": "Time",
+        "DESCRIPTION": "Select the event time."
+      }
     },
     "SUBMIT_BUTTON": "Submit",
     "DIALOG": {

@@ -44,6 +44,9 @@ export class BusquedaComponent implements OnInit {
     'Voluntariado'
   ];
 
+  // Lugares disponibles
+  lugares = ['Facultad', 'Aula Magna', 'Biblioteca', 'Online'];
+
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
@@ -54,7 +57,11 @@ export class BusquedaComponent implements OnInit {
       tipoEvento: [''],
       ponente: [''],
       actividad: [''],
-      servicio: ['']
+      servicio: [''],
+      fecha: [''],
+      horaInicio: [''],
+      horaFin: [''],
+      lugar: ['']
     });
   }
 
@@ -100,24 +107,20 @@ export class BusquedaComponent implements OnInit {
         }
       }
 
-      if (filtros.horaInicio && evento.horaInicio !== filtros.horaInicio) {
-        cumpleFiltros = false;
+      if (filtros.horaInicio) {
+        const horaFiltro = new Date(`1970-01-01T${filtros.horaInicio}:00`);
+        const horaEvento = new Date(`1970-01-01T${evento.horaInicio}:00`);
+        if (horaFiltro.getHours() !== horaEvento.getHours()) {
+          cumpleFiltros = false;
+        }
       }
 
       if (filtros.horaFin && evento.horaFin !== filtros.horaFin) {
         cumpleFiltros = false;
       }
 
-      if (filtros.lugar) {
-        if (filtros.lugar === 'Facultad') {
-          if (evento.lugar !== 'Facultad' || !evento.aula) {
-            cumpleFiltros = false;
-          }
-        } else {
-          if (evento.lugar !== filtros.lugar) {
-            cumpleFiltros = false;
-          }
-        }
+      if (filtros.lugar && evento.lugar !== filtros.lugar) {
+        cumpleFiltros = false;
       }
 
       return cumpleFiltros;
@@ -248,7 +251,7 @@ export class BusquedaComponent implements OnInit {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'normal');
 
-      const camposSeleccionados = ['titulo', 'ponente', 'empresaOrganizadora', 'tipoEvento', 'fecha', 'horaInicio', 'horaFin', 'lugar', 'aula', 'descripcion', 'actividad', 'adjuntos', 'enlaces', 'servicios'];
+      const camposSeleccionados = ['titulo', 'ponente', 'empresaOrganizadora', 'tipoEvento', 'fecha', 'horaInicio', 'horaFin', 'lugar', 'descripcion', 'actividad', 'adjuntos', 'enlaces', 'servicios'];
       camposSeleccionados.forEach(campo => {
         const valor = this.obtenerValorCampo(evento, campo);
         if (valor) {
@@ -283,7 +286,6 @@ export class BusquedaComponent implements OnInit {
       horaInicio: 'Hora de Inicio',
       horaFin: 'Hora de Fin',
       lugar: 'Lugar',
-      aula: 'Aula',
       descripcion: 'Descripción',
       actividad: 'Actividad',
       adjuntos: 'Adjuntos',
@@ -311,8 +313,6 @@ export class BusquedaComponent implements OnInit {
         return evento.horaFin ? new Date(evento.horaFin).toLocaleTimeString() : null;
       case 'lugar':
         return evento.lugar || null;
-      case 'aula':
-        return evento.aula || null;
       case 'descripcion':
         return evento.descripcion || null;
       case 'actividad':

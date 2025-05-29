@@ -20,7 +20,7 @@
         </div>
 
         <!-- Ponente -->
-        <div class="campo-filtro">
+        <div class="campo-filtro" style="margin-right: 20px;">
           <label for="ponente" id="ponente-label">{{ 'SEARCH.SPEAKER' | translate }}</label>
           <input type="text" 
                  id="ponente" 
@@ -31,7 +31,7 @@
         </div>
 
         <!-- Actividad -->
-        <div class="campo-filtro">
+        <div class="campo-filtro" style="margin-right: 20px;">
           <label for="actividad" id="actividad-label">{{ 'SEARCH.ACTIVITY' | translate }}</label>
           <select id="actividad" 
                   formControlName="actividad"
@@ -59,6 +59,53 @@
         </div>
       </div>
 
+      <!-- Segunda fila de filtros -->
+      <div class="fila-filtros" style="margin-bottom: 20px;">
+        <!-- Fecha -->
+        <div class="campo-filtro" style="margin-right: 15px;">
+          <label for="fecha" id="fecha-label">Fecha</label>
+          <input type="date" 
+                 id="fecha" 
+                 formControlName="fecha"
+                 aria-labelledby="fecha-label"
+                 class="filtro-input">
+        </div>
+
+        <!-- Hora de Inicio -->
+        <div class="campo-filtro" style="margin-right: 15px;">
+          <label for="horaInicio" id="hora-inicio-label">Hora de Inicio</label>
+          <input type="time" 
+                 id="horaInicio" 
+                 formControlName="horaInicio"
+                 aria-labelledby="hora-inicio-label"
+                 class="filtro-input">
+        </div>
+
+        <!-- Hora de Fin -->
+        <div class="campo-filtro" style="margin-right: 15px;">
+          <label for="horaFin" id="hora-fin-label">Hora de Fin</label>
+          <input type="time" 
+                 id="horaFin" 
+                 formControlName="horaFin"
+                 aria-labelledby="hora-fin-label"
+                 class="filtro-input">
+        </div>
+
+        <!-- Lugar -->
+        <div class="campo-filtro">
+          <label for="lugar" id="lugar-label">Lugar</label>
+          <select id="lugar" 
+                  formControlName="lugar"
+                  aria-labelledby="lugar-label"
+                  class="filtro-select">
+            <option value="">Todos los lugares</option>
+            @for (lugar of lugares; track lugar) {
+              <option [value]="lugar">{{ lugar }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
       <!-- Botones de acción -->
       <div class="botones-container">
         <button type="submit" class="btn-buscar">
@@ -74,7 +121,7 @@
 
     @if (mostrarResultados) {
       <div class="opciones-resultados">
-        <div class="botones-resultados">
+        <div class="botones-resultados" style="display: flex; justify-content: flex-start; gap: 15px;">
           <button class="btn-opcion btn-descargar" (click)="abrirModalDescarga()">
             <i class="fas fa-download"></i>
             {{ 'SEARCH.DOWNLOAD' | translate }}

@@ -232,7 +232,19 @@
         "DESCRIPTION": "Indica el aula o espacio específico.",
         "ERROR": "El aula es obligatoria"
       },
-      "ADD_DATE_PLACE": "Añadir Fecha y Lugar"
+      "ADD_DATE_PLACE": "Añadir Fecha y Lugar",
+      "START": {
+        "LABEL": "Hora de Inicio",
+        "DESCRIPTION": "Selecciona la hora de inicio."
+      },
+      "END": {
+        "LABEL": "Hora de Fin",
+        "DESCRIPTION": "Selecciona la hora de fin."
+      },
+      "TIME": {
+        "LABEL": "Hora",
+        "DESCRIPTION": "Seleccione la hora del evento."
+      }
     },
     "SUBMIT_BUTTON": "Finalizar",
     "DIALOG": {

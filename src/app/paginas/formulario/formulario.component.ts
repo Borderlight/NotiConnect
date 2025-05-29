@@ -441,6 +441,11 @@ export class FormularioComponent {
       }
     });
 
+    // Marcar específicamente horaInicio como tocado
+    this.listadoUbicaciones.controls.forEach(ubicacion => {
+      ubicacion.get('horaInicio')?.markAsTouched();
+    });
+
     if (this.formularioEvento.valid) {
       const enlaces = this.formularioEvento.get('enlaces') as FormArray;
       let enlacesValidos = true;
@@ -484,6 +489,9 @@ export class FormularioComponent {
       ubicacionControl.get('horaFin')?.clearValidators();
       ubicacionControl.get('horaFin')?.setValue('');
     }
+    ubicacionControl.get('tipoHorario')?.setValidators([Validators.required]);
+    ubicacionControl.get('tipoHorario')?.updateValueAndValidity();
+    ubicacionControl.get('horaInicio')?.updateValueAndValidity();
     ubicacionControl.get('horaFin')?.updateValueAndValidity();
   }
 

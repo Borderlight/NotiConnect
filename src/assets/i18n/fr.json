@@ -231,7 +231,19 @@
         "DESCRIPTION": "Indiquez la salle ou l'espace spécifique.",
         "ERROR": "La salle est obligatoire"
       },
-      "ADD_DATE_PLACE": "Ajouter Date et Lieu"
+      "ADD_DATE_PLACE": "Ajouter Date et Lieu",
+      "START": {
+        "LABEL": "Heure de Début",
+        "DESCRIPTION": "Sélectionnez l'heure de début."
+      },
+      "END": {
+        "LABEL": "Heure de Fin",
+        "DESCRIPTION": "Sélectionnez l'heure de fin."
+      },
+      "TIME": {
+        "LABEL": "Heure",
+        "DESCRIPTION": "Sélectionnez l'heure de l'événement."
+      }
     },
     "SUBMIT_BUTTON": "Soumettre",
     "DIALOG": {
