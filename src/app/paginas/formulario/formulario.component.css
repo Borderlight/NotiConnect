@@ -276,6 +276,20 @@ button:disabled {
   color: #fff;
 }
 
+.btn-finalizar {
+  background: #FF9800;
+  color: #fff;
+  border: 2px solid #FF9800;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-finalizar:hover, .btn-finalizar:focus {
+  background: #F57C00;
+  border-color: #F57C00;
+  color: #fff;
+}
+
 .eliminar-enlace-row, .servicio-header, .ubicacion-header {
   display: flex;
   flex-direction: row;
