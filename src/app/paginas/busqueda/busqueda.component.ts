@@ -45,7 +45,7 @@ export class BusquedaComponent implements OnInit {
   ];
 
   // Lugares disponibles
-  lugares = ['Facultad', 'Aula Magna', 'Biblioteca', 'Online'];
+  lugares: { key: string, value: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -69,6 +69,19 @@ export class BusquedaComponent implements OnInit {
     this.eventoService.getEventos().subscribe(eventos => {
       this.eventosDisponibles = eventos;
     });
+
+    // Prepare translation keys for lugares
+    const updateLugares = () => {
+      this.lugares = [
+        { key: 'LOCATIONS.FACULTY', value: 'Facultad' },
+        { key: 'LOCATIONS.AULA_MAGNA', value: 'Aula Magna' },
+        { key: 'LOCATIONS.LIBRARY', value: 'Biblioteca' },
+        { key: 'LOCATIONS.ONLINE', value: 'Online' }
+      ];
+    };
+
+    updateLugares();
+    this.translate.onLangChange.subscribe(() => updateLugares());
   }
 
   buscarEventos() {

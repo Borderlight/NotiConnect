@@ -35,7 +35,15 @@
     "TODOS_TIPOS": "Tous les types",
     "TODAS_ACTIVIDADES": "Toutes les activités",
     "TODOS_SERVICIOS": "Tous les services",
-    "TODOS_LUGARES": "Tous les lieux"
+    "TODOS_LUGARES": "Tous les lieux",
+    "FECHA": "Date",
+    "SELECCIONA_FECHA": "Sélectionnez la date",
+    "HORA_INICIO": "Heure de Début",
+    "SELECCIONA_HORA_INICIO": "Sélectionnez l'heure de début",
+    "HORA_FIN": "Heure de Fin",
+    "SELECCIONA_HORA_FIN": "Sélectionnez l'heure de fin",
+    "LUGAR": "Lieu",
+    "SELECCIONA_LUGAR": "Sélectionnez le lieu"
   },
   "SETTINGS": {
     "TITLE": "Paramètres",
@@ -320,5 +328,11 @@
     "FormacionPermanente": "Formation Continue",
     "ComunidadUniversitaria": "Communauté Universitaire",
     "InternacionalesCooperacion": "International et Coopération"
+  },
+  "LOCATIONS": {
+    "FACULTY": "Faculté",
+    "AULA_MAGNA": "Salle principale",
+    "LIBRARY": "Bibliothèque",
+    "ONLINE": "En ligne"
   }
 }

@@ -35,7 +35,15 @@
     "TODOS_TIPOS": "Todos los tipos",
     "TODAS_ACTIVIDADES": "Todas las actividades",
     "TODOS_SERVICIOS": "Todos los servicios",
-    "TODOS_LUGARES": "Todos los lugares"
+    "TODOS_LUGARES": "Todos los lugares",
+    "FECHA": "Fecha",
+    "SELECCIONA_FECHA": "Selecciona la fecha",
+    "HORA_INICIO": "Hora de Inicio",
+    "SELECCIONA_HORA_INICIO": "Selecciona la hora de inicio",
+    "HORA_FIN": "Hora de Fin",
+    "SELECCIONA_HORA_FIN": "Selecciona la hora de fin",
+    "LUGAR": "Lugar",
+    "SELECCIONA_LUGAR": "Selecciona el lugar"
   },
   "SETTINGS": {
     "TITLE": "Ajustes",
@@ -340,5 +348,11 @@
     "FormacionPermanente": "Formación Permanente",
     "ComunidadUniversitaria": "Comunidad Universitaria",
     "InternacionalesCooperacion": "Internacionales y Cooperación"
+  },
+  "LOCATIONS": {
+    "FACULTY": "Facultad",
+    "AULA_MAGNA": "Aula Magna",
+    "LIBRARY": "Biblioteca",
+    "ONLINE": "En línea"
   }
 }

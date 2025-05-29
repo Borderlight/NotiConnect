@@ -8,11 +8,12 @@
         <!-- Tipo de Evento -->
         <div class="campo-filtro">
           <label for="tipoEvento" id="tipo-label">{{ 'SEARCH.EVENT_TYPE' | translate }}</label>
+          <p>Selecciona el tipo de evento</p>
           <select id="tipoEvento" 
                   formControlName="tipoEvento"
                   aria-labelledby="tipo-label"
                   class="filtro-select">
-            <option value="">{{ 'SEARCH.ALL_TYPES' | translate }}</option>
+            <option value="">{{ 'FILTROS.TODOS_TIPOS' | translate }}</option>
             @for (tipo of tiposEvento; track tipo) {
               <option [value]="tipo">{{ 'EVENT_TYPES.' + tipo | translate }}</option>
             }
@@ -20,24 +21,25 @@
         </div>
 
         <!-- Ponente -->
-        <div class="campo-filtro" style="margin-right: 20px;">
+        <div class="campo-filtro">
           <label for="ponente" id="ponente-label">{{ 'SEARCH.SPEAKER' | translate }}</label>
+          <p>Introduce el nombre del ponente</p>
           <input type="text" 
                  id="ponente" 
                  formControlName="ponente"
                  aria-labelledby="ponente-label"
-                 [placeholder]="'SEARCH.SPEAKER_PLACEHOLDER' | translate"
                  class="filtro-input">
         </div>
 
         <!-- Actividad -->
-        <div class="campo-filtro" style="margin-right: 20px;">
+        <div class="campo-filtro">
           <label for="actividad" id="actividad-label">{{ 'SEARCH.ACTIVITY' | translate }}</label>
+          <p>Selecciona la actividad</p>
           <select id="actividad" 
                   formControlName="actividad"
                   aria-labelledby="actividad-label"
                   class="filtro-select">
-            <option value="">{{ 'SEARCH.ALL_ACTIVITIES' | translate }}</option>
+            <option value="">{{ 'FILTROS.TODAS_ACTIVIDADES' | translate }}</option>
             @for (actividad of actividadesRelacionadas; track actividad) {
               <option [value]="actividad">{{ actividad }}</option>
             }
@@ -47,11 +49,12 @@
         <!-- Servicios -->
         <div class="campo-filtro">
           <label for="servicio" id="servicio-label">{{ 'SEARCH.SERVICE' | translate }}</label>
+          <p>Selecciona el servicio</p>
           <select id="servicio" 
                   formControlName="servicio"
                   aria-labelledby="servicio-label"
                   class="filtro-select">
-            <option value="">{{ 'SEARCH.ALL_SERVICES' | translate }}</option>
+            <option value="">{{ 'FILTROS.TODOS_SERVICIOS' | translate }}</option>
             @for (servicio of serviciosDisponibles; track servicio) {
               <option [value]="servicio">{{ 'SERVICES.' + servicio | translate }}</option>
             }
@@ -62,8 +65,9 @@
       <!-- Segunda fila de filtros -->
       <div class="fila-filtros" style="margin-bottom: 20px;">
         <!-- Fecha -->
-        <div class="campo-filtro" style="margin-right: 15px;">
-          <label for="fecha" id="fecha-label">Fecha</label>
+        <div class="campo-filtro">
+          <label for="fecha" id="fecha-label">{{ 'FILTROS.FECHA' | translate }}</label>
+          <p>{{ 'FILTROS.SELECCIONA_FECHA' | translate }}</p>
           <input type="date" 
                  id="fecha" 
                  formControlName="fecha"
@@ -72,8 +76,9 @@
         </div>
 
         <!-- Hora de Inicio -->
-        <div class="campo-filtro" style="margin-right: 15px;">
-          <label for="horaInicio" id="hora-inicio-label">Hora de Inicio</label>
+        <div class="campo-filtro">
+          <label for="horaInicio" id="hora-inicio-label">{{ 'FILTROS.HORA_INICIO' | translate }}</label>
+          <p>{{ 'FILTROS.SELECCIONA_HORA_INICIO' | translate }}</p>
           <input type="time" 
                  id="horaInicio" 
                  formControlName="horaInicio"
@@ -82,8 +87,9 @@
         </div>
 
         <!-- Hora de Fin -->
-        <div class="campo-filtro" style="margin-right: 15px;">
-          <label for="horaFin" id="hora-fin-label">Hora de Fin</label>
+        <div class="campo-filtro">
+          <label for="horaFin" id="hora-fin-label">{{ 'FILTROS.HORA_FIN' | translate }}</label>
+          <p>{{ 'FILTROS.SELECCIONA_HORA_FIN' | translate }}</p>
           <input type="time" 
                  id="horaFin" 
                  formControlName="horaFin"
@@ -93,14 +99,15 @@
 
         <!-- Lugar -->
         <div class="campo-filtro">
-          <label for="lugar" id="lugar-label">Lugar</label>
+          <label for="lugar" id="lugar-label">{{ 'FILTROS.LUGAR' | translate }}</label>
+          <p>{{ 'FILTROS.SELECCIONA_LUGAR' | translate }}</p>
           <select id="lugar" 
                   formControlName="lugar"
                   aria-labelledby="lugar-label"
                   class="filtro-select">
-            <option value="">Todos los lugares</option>
+            <option value="">{{ 'FILTROS.TODOS_LUGARES' | translate }}</option>
             @for (lugar of lugares; track lugar) {
-              <option [value]="lugar">{{ lugar }}</option>
+              <option [value]="lugar.value">{{ lugar.key | translate }}</option>
             }
           </select>
         </div>
