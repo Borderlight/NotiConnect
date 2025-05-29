@@ -1,43 +1,43 @@
 <div class="busqueda-container">
   <section class="filtros-section" aria-labelledby="filtros-titulo">
-    <h2 id="filtros-titulo">Filtros de Búsqueda</h2>
+    <h2 id="filtros-titulo">{{ 'SEARCH.FILTERS_TITLE' | translate }}</h2>
     
     <form [formGroup]="formularioBusqueda" (ngSubmit)="buscarEventos()" class="filtros-form">
       <!-- Primera fila de filtros -->
       <div class="fila-filtros">
         <!-- Tipo de Evento -->
         <div class="campo-filtro">
-          <label for="tipoEvento" id="tipo-label">Tipo de Evento</label>
+          <label for="tipoEvento" id="tipo-label">{{ 'SEARCH.EVENT_TYPE' | translate }}</label>
           <select id="tipoEvento" 
                   formControlName="tipoEvento"
                   aria-labelledby="tipo-label"
                   class="filtro-select">
-            <option value="">Todos los tipos</option>
+            <option value="">{{ 'SEARCH.ALL_TYPES' | translate }}</option>
             @for (tipo of tiposEvento; track tipo) {
-              <option [value]="tipo">{{ tipo }}</option>
+              <option [value]="tipo">{{ 'EVENT_TYPES.' + tipo | translate }}</option>
             }
           </select>
         </div>
 
         <!-- Ponente -->
         <div class="campo-filtro">
-          <label for="ponente" id="ponente-label">Ponente</label>
+          <label for="ponente" id="ponente-label">{{ 'SEARCH.SPEAKER' | translate }}</label>
           <input type="text" 
                  id="ponente" 
                  formControlName="ponente"
                  aria-labelledby="ponente-label"
-                 placeholder="Nombre del ponente"
+                 [placeholder]="'SEARCH.SPEAKER_PLACEHOLDER' | translate"
                  class="filtro-input">
         </div>
 
         <!-- Actividad -->
         <div class="campo-filtro">
-          <label for="actividad" id="actividad-label">Actividad</label>
+          <label for="actividad" id="actividad-label">{{ 'SEARCH.ACTIVITY' | translate }}</label>
           <select id="actividad" 
                   formControlName="actividad"
                   aria-labelledby="actividad-label"
                   class="filtro-select">
-            <option value="">Todas las actividades</option>
+            <option value="">{{ 'SEARCH.ALL_ACTIVITIES' | translate }}</option>
             @for (actividad of actividadesRelacionadas; track actividad) {
               <option [value]="actividad">{{ actividad }}</option>
             }
@@ -46,100 +46,42 @@
 
         <!-- Servicios -->
         <div class="campo-filtro">
-          <label for="servicio" id="servicio-label">Servicio</label>
+          <label for="servicio" id="servicio-label">{{ 'SEARCH.SERVICE' | translate }}</label>
           <select id="servicio" 
                   formControlName="servicio"
                   aria-labelledby="servicio-label"
                   class="filtro-select">
-            <option value="">Todos los servicios</option>
-            <optgroup label="Facultades">
-              @for (facultad of servicios.facultades; track facultad) {
-                <option [value]="facultad.facultad">{{ facultad.facultad }}</option>
-              }
-            </optgroup>
-            <optgroup label="Servicios">
-              @for (servicio of servicios.otros; track servicio) {
-                <option [value]="servicio">{{ servicio }}</option>
-              }
-            </optgroup>
-            <optgroup label="Vicerrectorados">
-              @for (vicerrectorado of servicios.vicerrectorados; track vicerrectorado) {
-                <option [value]="vicerrectorado">{{ vicerrectorado }}</option>
-              }
-            </optgroup>
-          </select>
-        </div>
-      </div>
-
-      <!-- Segunda fila de filtros -->
-      <div class="fila-filtros">
-        <!-- Fecha -->
-        <div class="campo-filtro">
-          <label for="fecha" id="fecha-label">Fecha</label>
-          <input type="date" 
-                 id="fecha" 
-                 formControlName="fecha"
-                 class="filtro-input">
-        </div>
-
-        <!-- Hora de Inicio -->
-        <div class="campo-filtro">
-          <label for="horaInicio" id="hora-inicio-label">Hora de Inicio</label>
-          <input type="time" 
-                 id="horaInicio" 
-                 formControlName="horaInicio"
-                 class="filtro-input">
-        </div>
-
-        <!-- Hora de Fin -->
-        <div class="campo-filtro">
-          <label for="horaFin" id="hora-fin-label">Hora de Fin</label>
-          <input type="time" 
-                 id="horaFin" 
-                 formControlName="horaFin"
-                 class="filtro-input">
-        </div>
-
-        <!-- Lugar -->
-        <div class="campo-filtro">
-          <label for="lugar" id="lugar-label">Lugar</label>
-          <select id="lugar" 
-                  formControlName="lugar"
-                  aria-labelledby="lugar-label"
-                  class="filtro-select">
-            <option value="">Todos los lugares</option>
-            @for (lugar of lugares; track lugar) {
-              <option [value]="lugar">{{ lugar }}</option>
+            <option value="">{{ 'SEARCH.ALL_SERVICES' | translate }}</option>
+            @for (servicio of serviciosDisponibles; track servicio) {
+              <option [value]="servicio">{{ 'SERVICES.' + servicio | translate }}</option>
             }
           </select>
         </div>
       </div>
 
-      <!-- Botones de búsqueda -->
+      <!-- Botones de acción -->
       <div class="botones-container">
         <button type="submit" class="btn-buscar">
           <i class="fas fa-search"></i>
-          Buscar
+          {{ 'SEARCH.SEARCH_BUTTON' | translate }}
         </button>
         <button type="button" class="btn-limpiar" (click)="limpiarFiltros()">
-          <i class="fas fa-times"></i>
-          Limpiar filtros
+          <i class="fas fa-eraser"></i>
+          {{ 'SEARCH.CLEAR_BUTTON' | translate }}
         </button>
       </div>
     </form>
 
-    <!-- Nuevo recuadro de opciones -->
-    @if (mostrarResultados && eventosFiltrados.length > 0) {
+    @if (mostrarResultados) {
       <div class="opciones-resultados">
-        <h3>Opciones para resultados filtrados</h3>
-        <div class="opciones-botones">
-          <button class="btn-opcion" (click)="abrirModalDescarga()">
+        <div class="botones-resultados">
+          <button class="btn-opcion btn-descargar" (click)="abrirModalDescarga()">
             <i class="fas fa-download"></i>
-            Descargar
+            {{ 'SEARCH.DOWNLOAD' | translate }}
           </button>
           <button class="btn-opcion btn-eliminar" (click)="eliminarEventosFiltrados()">
             <i class="fas fa-trash"></i>
-            Borrar
+            {{ 'SEARCH.DELETE' | translate }}
           </button>
         </div>
       </div>
@@ -159,8 +101,8 @@
   @if (mostrarResultados) {
     <section class="resultados-section">
       <div class="resultados-header">
-        <h2>Resultados de la búsqueda</h2>
-        <span class="contador-resultados">{{eventosFiltrados.length}} eventos encontrados</span>
+        <h2>{{ 'SEARCH.RESULTS_TITLE' | translate }}</h2>
+        <span class="contador-resultados">{{eventosFiltrados.length}} {{ 'SEARCH.EVENTS_FOUND' | translate }}</span>
       </div>
 
       @if (eventosFiltrados.length > 0) {
@@ -174,7 +116,7 @@
         </div>
       } @else {
         <div class="no-resultados">
-          <p>No se encontraron eventos que coincidan con los criterios de búsqueda.</p>
+          <p>{{ 'SEARCH.NO_RESULTS' | translate }}</p>
         </div>
       }
     </section>

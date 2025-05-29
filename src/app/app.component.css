@@ -212,3 +212,22 @@ h1 {
     padding: 1rem;
   }
 }
+
+/* Selector de idioma */
+.selector-idioma {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-fondo);
+  color: var(--color-texto-principal);
+  font-size: 0.9rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.selector-idioma:hover {
+  border-color: var(--color-primario);
+}

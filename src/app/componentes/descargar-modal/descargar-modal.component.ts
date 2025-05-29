@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Evento } from '../../interfaces/evento.interface';
 
 interface DownloadOptions {
@@ -17,7 +18,7 @@ interface DownloadOptions {
 @Component({
   selector: 'app-descargar-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './descargar-modal.component.html',
   styleUrls: ['./descargar-modal.component.css']
 })
@@ -25,6 +26,23 @@ export class DescargarModalComponent {
   @Input() eventos: Evento[] = [];
   @Output() cerrar = new EventEmitter<void>();
   @Output() descargar = new EventEmitter<DownloadOptions>();
+
+  availableFields = [
+    { value: 'titulo', label: 'DOWNLOAD_MODAL.FIELDS.TITLE' },
+    { value: 'ponente', label: 'DOWNLOAD_MODAL.FIELDS.SPEAKER' },
+    { value: 'empresaOrganizadora', label: 'DOWNLOAD_MODAL.FIELDS.ORGANIZER' },
+    { value: 'tipoEvento', label: 'DOWNLOAD_MODAL.FIELDS.TYPE' },
+    { value: 'fecha', label: 'DOWNLOAD_MODAL.FIELDS.DATE' },
+    { value: 'horaInicio', label: 'DOWNLOAD_MODAL.FIELDS.START_TIME' },
+    { value: 'horaFin', label: 'DOWNLOAD_MODAL.FIELDS.END_TIME' },
+    { value: 'lugar', label: 'DOWNLOAD_MODAL.FIELDS.PLACE' },
+    { value: 'aula', label: 'DOWNLOAD_MODAL.FIELDS.CLASSROOM' },
+    { value: 'descripcion', label: 'DOWNLOAD_MODAL.FIELDS.DESCRIPTION' },
+    { value: 'actividad', label: 'DOWNLOAD_MODAL.FIELDS.ACTIVITY' },
+    { value: 'adjuntos', label: 'DOWNLOAD_MODAL.FIELDS.ATTACHMENTS' },
+    { value: 'enlaces', label: 'DOWNLOAD_MODAL.FIELDS.LINKS' },
+    { value: 'servicios', label: 'DOWNLOAD_MODAL.FIELDS.SERVICES' }
+  ];
 
   options: DownloadOptions = {
     formats: {
@@ -50,22 +68,7 @@ export class DescargarModalComponent {
     }
   };
 
-  availableFields = [
-    { value: 'titulo', label: 'Título' },
-    { value: 'ponente', label: 'Ponente' },
-    { value: 'empresaOrganizadora', label: 'Empresa Organizadora' },
-    { value: 'tipoEvento', label: 'Tipo de Evento' },
-    { value: 'fecha', label: 'Fecha' },
-    { value: 'horaInicio', label: 'Hora de Inicio' },
-    { value: 'horaFin', label: 'Hora de Fin' },
-    { value: 'lugar', label: 'Lugar' },
-    { value: 'aula', label: 'Aula' },
-    { value: 'descripcion', label: 'Descripción' },
-    { value: 'actividad', label: 'Actividad' },
-    { value: 'adjuntos', label: 'Adjuntos' },
-    { value: 'enlaces', label: 'Enlaces' },
-    { value: 'servicios', label: 'Servicios' }
-  ];
+  constructor(private translateService: TranslateService) {}
 
   isValidSelection(): boolean {
     const hasFormat = Object.values(this.options.formats).some(v => v);
@@ -80,4 +83,4 @@ export class DescargarModalComponent {
   cerrarModal() {
     this.cerrar.emit();
   }
-} 
+}

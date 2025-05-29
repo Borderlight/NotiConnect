@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Evento } from '../interfaces/evento.interface';
+import { EventType } from '../enums/event-type.enum'; // Asegúrate de importar el enum
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class EventoService {
       imagen: '/assets/images/conferencia-ia.jpg',
       titulo: 'Inteligencia Artificial y el Futuro del Desarrollo Web',
       ponente: 'Dra. María González',
-      tipoEvento: 'Congreso/Conferencia',
+      tipoEvento: EventType.ConferenceOrCongress, // Cambiar el valor de tipoEvento para que use el valor del enum
       fecha: new Date('2024-04-15'),
       lugar: 'Facultad',
       aula: 'Aula 5',
@@ -50,7 +51,7 @@ export class EventoService {
       imagen: '/assets/images/taller-psicologia.jpg',
       titulo: 'Taller de Mindfulness y Bienestar Emocional',
       ponente: 'Dr. Juan Pérez',
-      tipoEvento: 'Taller',
+      tipoEvento: EventType.Workshop, // Cambiar el valor de tipoEvento para que use el valor del enum
       fecha: new Date('2024-04-20'),
       lugar: 'Aula de grados',
       horaInicio: '16:00',
@@ -86,7 +87,7 @@ export class EventoService {
       imagen: '/assets/images/presentacion-libro.jpg',
       titulo: 'La Teología en el Mundo Contemporáneo',
       ponente: 'P. Antonio Martínez',
-      tipoEvento: 'Presentación de Libro',
+      tipoEvento: EventType.BookPresentation, // Cambiar el valor de tipoEvento para que use el valor del enum
       fecha: new Date('2024-04-25'),
       lugar: 'Biblioteca Vargas-Zuñiga',
       horaInicio: '18:00',
@@ -212,4 +213,4 @@ export class EventoService {
       observer.complete();
     });
   }
-} 
+}

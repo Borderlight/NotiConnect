@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { TraductorService } from '../../servicios/traductor.service';
 import { TemaService } from '../../servicios/tema.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Idioma {
   codigo: string;
   nombre: string;
+  bandera: string;
 }
 
 @Component({
@@ -15,16 +17,20 @@ interface Idioma {
   templateUrl: './ajustes.component.html',
   styleUrls: ['./ajustes.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule]
+  imports: [FormsModule, CommonModule, HttpClientModule, TranslateModule]
 })
 export class AjustesComponent implements OnInit {
   modoOscuro: boolean = false;
   idiomaSeleccionado: string = 'es';
-  idiomas: Idioma[] = [];
+  idiomas: Idioma[] = [
+    { codigo: 'es', nombre: 'COMMON.SPANISH', bandera: '🇪🇸' },
+    { codigo: 'en', nombre: 'COMMON.ENGLISH', bandera: '🇬🇧' },
+    { codigo: 'fr', nombre: 'COMMON.FRENCH', bandera: '🇫🇷' }
+  ];
 
   constructor(
     private temaService: TemaService,
-    private traductorService: TraductorService
+    private idiomaService: IdiomaService
   ) {}
 
   ngOnInit() {
@@ -32,35 +38,22 @@ export class AjustesComponent implements OnInit {
       modoOscuro => this.modoOscuro = modoOscuro
     );
 
-    // Cargar idiomas disponibles desde Google Cloud al iniciar
-    this.traductorService.obtenerIdiomas().subscribe(respuesta => {
-      if (respuesta && respuesta.data && respuesta.data.languages) {
-        this.idiomas = respuesta.data.languages.map((idioma: any) => ({
-          codigo: idioma.language,
-          nombre: idioma.name
-        }));
-      }
-    });
+    this.idiomaService.obtenerIdiomaActual().subscribe(
+      idioma => this.idiomaSeleccionado = idioma
+    );
   }
 
   toggleModoOscuro() {
     this.temaService.toggleModoOscuro();
   }
 
-  traducirElementos(evento: Event) {
+  cambiarIdioma(evento: Event) {
     const idiomaSeleccionado = (evento.target as HTMLSelectElement).value;
-    this.idiomaSeleccionado = idiomaSeleccionado;
+    this.idiomaService.cambiarIdioma(idiomaSeleccionado);
+  }
 
-    const elementosATraducir: NodeListOf<HTMLElement> = document.querySelectorAll('[data-traduccion]');
-
-    elementosATraducir.forEach((elemento: HTMLElement) => {
-      const textoOriginal = elemento.getAttribute('data-original-text') || elemento.textContent || '';
-      elemento.setAttribute('data-original-text', textoOriginal);
-
-      this.traductorService.traducir(textoOriginal, idiomaSeleccionado).subscribe(respuesta => {
-        const textoTraducido = respuesta.data.translations[0].translatedText;
-        elemento.textContent = textoTraducido;
-      });
-    });
+  getBanderaPorCodigo(codigo: string): string {
+    const idioma = this.idiomas.find(i => i.codigo === codigo);
+    return idioma ? idioma.bandera : '';
   }
 }

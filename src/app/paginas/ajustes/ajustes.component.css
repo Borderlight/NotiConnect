@@ -1,10 +1,7 @@
 .ajustes-container {
     max-width: 800px;
     margin: 2rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
 }
 
 h1 {
@@ -14,18 +11,21 @@ h1 {
 }
 
 .ajuste-seccion {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
+    background: var(--fondo-secundario);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .ajuste-seccion h2 {
-    color: #666;
-    font-size: 1.25rem;
+    margin-top: 0;
     margin-bottom: 1rem;
+    color: var(--texto-primario);
 }
 
 .ajuste-item {
+    margin: 1rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,8 +33,42 @@ h1 {
 }
 
 .ajuste-titulo {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--texto-primario);
     font-size: 1rem;
-    color: #333;
+}
+
+/* Estilos para el selector de idioma */
+.idioma-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.idioma-bandera {
+    font-size: 1.5rem;
+    min-width: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.selector-idioma {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    background-color: var(--fondo-primario);
+    color: var(--texto-primario);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.selector-idioma option {
+    background-color: var(--fondo-primario);
+    color: var(--texto-primario);
+    padding: 0.5rem;
 }
 
 /* Estilos para el switch del modo oscuro */
@@ -83,27 +117,11 @@ h1 {
 }
 
 input:checked + .slider {
-    background-color: #2e7d32;
+    background-color: #2196F3;
 }
 
 input:checked + .slider:before {
     transform: translateX(26px);
-}
-
-/* Estilos para el selector de idioma */
-.selector-idioma {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-    min-width: 200px;
-    color: #333;
-}
-
-.selector-idioma:focus {
-    outline: none;
-    border-color: #2e7d32;
 }
 
 /* Estilos para modo oscuro */

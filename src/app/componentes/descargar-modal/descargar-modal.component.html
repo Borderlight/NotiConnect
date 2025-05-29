@@ -1,9 +1,9 @@
 <div class="modal-backdrop" (click)="cerrarModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>Opciones de descarga</h2>
+    <h2>{{ 'DOWNLOAD_MODAL.TITLE' | translate }}</h2>
     
     <div class="seccion">
-      <h3>Formato de descarga</h3>
+      <h3>{{ 'DOWNLOAD_MODAL.FORMAT_SECTION.TITLE' | translate }}</h3>
       <div class="checkbox-group">
         <label>
           <input type="checkbox" [(ngModel)]="options.formats.json"> JSON
@@ -18,12 +18,12 @@
     </div>
 
     <div class="seccion">
-      <h3>Campos a incluir</h3>
+      <h3>{{ 'DOWNLOAD_MODAL.FIELDS_SECTION.TITLE' | translate }}</h3>
       <div class="checkbox-group campos">
         @for (field of availableFields; track field) {
           <label>
             <input type="checkbox" [(ngModel)]="options.fields[field.value]">
-            {{ field.label }}
+            {{ field.label | translate }}
           </label>
         }
       </div>
@@ -33,9 +33,9 @@
       <button class="btn-descargar" 
               [disabled]="!isValidSelection()" 
               (click)="descargarSeleccionado()">
-        Descargar seleccionado
+        {{ 'DOWNLOAD_MODAL.BUTTONS.DOWNLOAD' | translate }}
       </button>
-      <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn-cancelar" (click)="cerrarModal()">{{ 'DOWNLOAD_MODAL.BUTTONS.CANCEL' | translate }}</button>
     </div>
   </div>
-</div> 
+</div>

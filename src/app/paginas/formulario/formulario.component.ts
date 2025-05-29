@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BasicosValidator } from '../../validadores/basicos.validator';
 import { EnlacesValidator } from '../../validadores/enlaces.validator';
 import { ServiciosValidator } from '../../validadores/servicios.validator';
 import { UbicacionValidator } from '../../validadores/ubicacion.validator';
 import { EventoService } from '../../servicios/evento.service';
 import { Router } from '@angular/router';
+import { EventType } from '../../enums/event-type.enum';
 
 interface Servicio {
   servicios: string;
@@ -16,13 +18,15 @@ interface Servicio {
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, TranslateModule],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
   standalone: true
 })
 export class FormularioComponent {
-  //serviciosValidator = inject(ServiciosValidator)
+  currentLang: string;
+  private translateService = inject(TranslateService);
+
   mostrarError: boolean = false
   opcionSeleccionada: string = '0'
   seleccionado : string = ''
@@ -39,13 +43,19 @@ export class FormularioComponent {
   mostrarHorarioCompleto: boolean = false;
   
   // Array de actividades disponibles
-  actividadesRelacionadas: string[] = ['Semana de la Ciencia'];
+  actividadesRelacionadas: string[] = [];
+  actividadesPorDefecto: string[] = ['Semana de la Ciencia'];
+
+  // Devuelve la lista de actividades para el selector (sin traducción)
+  get actividadesRelacionadasTraducidas(): string[] {
+    return this.actividadesRelacionadas;
+  }
 
   // Añadir nueva propiedad para manejar errores por índice
   enlacesConError: { [key: number]: { tipo: boolean, url: boolean } } = {};
 
   // Método para agregar nueva actividad
-  agregarNuevaActividad() {
+  async agregarNuevaActividad() {
     const actividadTrimmed = this.nuevaActividad.trim();
     if (actividadTrimmed) {
       // Comprobar si la actividad ya existe (ignorando mayúsculas/minúsculas)
@@ -58,8 +68,12 @@ export class FormularioComponent {
         this.mensajeErrorActividad = 'Esta actividad ya existe. Por favor, comprueba el listado de actividades.';
         return;
       }
-
       this.actividadesRelacionadas.push(actividadTrimmed);
+      // Guardar en localStorage
+      const customActs = localStorage.getItem('actividadesPersonalizadas');
+      const customActsArr = customActs ? JSON.parse(customActs) : [];
+      customActsArr.push(actividadTrimmed);
+      localStorage.setItem('actividadesPersonalizadas', JSON.stringify(customActsArr));
       this.formularioEvento.patchValue({
         actividad_relacionada: actividadTrimmed
       });
@@ -186,6 +200,9 @@ export class FormularioComponent {
     { nombre: 'Otros', icono: '/assets/iconosenlaces/otros.png'},
   ]
 
+  // Types of events available
+  tiposEvento = Object.values(EventType);
+
   eventos: any [] = []
 
   formularioEvento: FormGroup
@@ -229,6 +246,16 @@ export class FormularioComponent {
       }
       horaFin?.updateValueAndValidity();
     });
+
+    this.currentLang = this.translateService.currentLang || this.translateService.getDefaultLang();
+    this.translateService.onLangChange.subscribe(event => {
+      this.currentLang = event.lang;
+    });
+
+    // Recuperar actividades personalizadas de localStorage
+    const customActs = localStorage.getItem('actividadesPersonalizadas');
+    const customActsArr = customActs ? JSON.parse(customActs) : [];
+    this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
   }
 
   get listadoServicios(){
@@ -499,4 +526,53 @@ export class FormularioComponent {
     }
   }
 
+  // Listas fijas para selects traducibles
+  serviciosFijos: string[] = [
+    'Gestión de la Investigación y Transferencia',
+    'Unidad de Empleabilidad y Prácticas',
+    'Movilidad Internacional',
+    'Capellanía',
+    'Deportes',
+    'Coro',
+    'Servicio de Asistencia Psicológica Sanitaria',
+    'Unidad de Cultura Científica y de la Innovación',
+    'Unidad de Igualdad',
+    'Voluntariado'
+  ];
+  vicerrectorados: string[] = [
+    'InvestigacionTransferencia',
+    'OrdenacionAcademica',
+    'FormacionPermanente',
+    'ComunidadUniversitaria',
+    'InternacionalesCooperacion'
+  ];
+  lugaresPresenciales: string[] = [
+    'Facultad',
+    'AulaDeGrados',
+    'HUBdeInnovacion',
+    'BibliotecaVargasZuniga',
+    'AuditorioJuanPablo'
+  ];
+  lugaresVirtuales: string[] = [
+    'Online'
+  ];
+
+  // Al cambiar de idioma, volver a unir las actividades personalizadas y aplicar traducción si existe
+  ngOnInit() {
+    this.translateService.onLangChange.subscribe(event => {
+      const customActs = localStorage.getItem('actividadesPersonalizadas');
+      const customActsArr = customActs ? JSON.parse(customActs) : [];
+      this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
+      this.currentLang = event.lang;
+      // Forzar actualización del valor seleccionado si existe
+      const selected = this.formularioEvento.get('actividad_relacionada')?.value;
+      if (selected && !this.actividadesRelacionadas.includes(selected)) {
+        this.formularioEvento.patchValue({ actividad_relacionada: '' });
+      }
+    });
+    // Inicialización normal
+    const customActs = localStorage.getItem('actividadesPersonalizadas');
+    const customActsArr = customActs ? JSON.parse(customActs) : [];
+    this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
+  }
 }

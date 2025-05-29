@@ -4,15 +4,17 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EventoComponent } from '../../componentes/evento/evento.component';
 import { DescargarModalComponent } from '../../componentes/descargar-modal/descargar-modal.component';
 import { Evento } from '../../interfaces/evento.interface';
+import { EventType } from '../../enums/event-type.enum';
 import { EventoService } from '../../servicios/evento.service';
 import { NavigationService } from '../../servicios/navigation.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 @Component({
   selector: 'app-busqueda',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, EventoComponent, DescargarModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, EventoComponent, DescargarModalComponent, TranslateModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css']
 })
@@ -22,172 +24,37 @@ export class BusquedaComponent implements OnInit {
   eventosDisponibles: Evento[] = [];
   mostrarResultados: boolean = false;
   mostrarModalDescarga = false;
-  
-  // Tipos de eventos disponibles
-  tiposEvento = [
-    'Evento',
-    'Curso',
-    'Taller',
-    'Congreso/Conferencia',
-    'Presentación de Libro',
-    'Charla',
-    'Exposición',
-    'Certamen o Concurso',
-    'Visita',
-    'Entrevista',
-    'Resultados de Investigación',
-    'Espectáculos',
-    'Visitas o Excursiones'
-  ];
+    // Tipos de eventos disponibles
+  tiposEvento = Object.values(EventType);
 
   // Actividades relacionadas
   actividadesRelacionadas = ['Semana de la Ciencia'];
 
-  // Lugares disponibles
-  lugares = [
-    'Facultad',
-    'Aula de grados',
-    'HUB de Innovación',
-    'Biblioteca Vargas-Zuñiga',
-    'Auditorio Juan Pablo II',
-    'Online'
+  // Facultades y servicios disponibles
+  serviciosDisponibles = [
+    'Gestión de la Investigación y Transferencia',
+    'Unidad de Empleabilidad y Prácticas',
+    'Movilidad Internacional',
+    'Capellanía',
+    'Deportes',
+    'Coro',
+    'Servicio de Asistencia Psicológica Sanitaria',
+    'Unidad de Cultura Científica y de la Innovación',
+    'Unidad de Igualdad',
+    'Voluntariado'
   ];
-
-  // Servicios y facultades
-  servicios = {
-    facultades: [
-      {
-        facultad: "Facultad de Ciencias de la Salud",
-        grados: [
-          "Grado en Logopedia",
-          "Grado en Enfermería",
-          "Grado en Fisioterapia",
-          "Grado en Nutrición Humana y Dietética"
-        ]
-      },
-      {
-        facultad: "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
-        grados: [
-          "Grado en Administración y Dirección de Empresas",
-          "Grado en Relaciones Internacionales",
-          "Grado en Derecho"
-        ]
-      },
-      {
-        facultad: "Facultad de Ciencias Humanas y Sociales",
-        grados: [
-          "Máster de Formación Permanente en Gobernanza Ética",
-          "Grado en Filosofía"
-        ]
-      },
-      {
-        facultad: "Facultad de Comunicación",
-        grados: [
-          "Grado en Periodismo",
-          "Grado en Comunicación Audiovisual"
-        ]
-      },
-      {
-        facultad: "Facultad de Derecho Canónico",
-        grados: [
-          "Doctorado Eclesiástico en Derecho Canónico",
-          "Licenciatura en Derecho Canónico"
-        ]
-      },
-      {
-        facultad: "Facultad de Educación",
-        grados: [
-          "Grado en Ciencias de la Actividad Física y del Deporte",
-          "Grado en Maestro en Educación Infantil",
-          "Grado en Maestro en Educación Primaria",
-          "Curso de Formación Pedagógica y Didáctica",
-          "Máster en Formación Permanente en Musicoterapia",
-          "Máster en Formación Permanente en Entrenamiento y Rendimiento en Fútbol",
-          "Máster Universitario en Formación del Profesorado de ESO y Bachillerato, FP y Enseñanza de Idiomas",
-          "Doble Grado en Maestro en Educación Primaria y Maestro en Educación Infantil",
-          "Máster Universitario en Psicopedagogía",
-          "Máster de Formación Permanente en Gestión en Situaciones de Crisis"
-        ]
-      },
-      {
-        facultad: "Facultad de Enfermería y Fisioterapia Salus Infirmorum",
-        grados: [
-          "Grado en Fisioterapia (Madrid)",
-          "Grado en Enfermería (Madrid)"
-        ]
-      },
-      {
-        facultad: "Facultad de Informática",
-        grados: [
-          "Doble Grado en ADE Tecnológico e Ingeniería Informática",
-          "Grado en Administración y Dirección de Empresas Tecnológicas",
-          "Doble Grado en Ingeniería Informática y ADET",
-          "Grado en Ingeniería Informática",
-          "Diploma de Especialista en Inteligencia Artificial & Big Data Analytics",
-          "Máster Universitario en Informática Móvil",
-          "Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos"
-        ]
-      },
-      {
-        facultad: "Facultad de Psicología",
-        grados: [
-          "Grado en Psicología",
-          "Máster Universitario en Psicología General Sanitaria",
-          "Diploma de Experto en Invtervención Psicosocial"
-        ]
-      },
-      {
-        facultad: "Facultad de Teología",
-        grados: [
-          "Bachiller en Teología",
-          "Licenciatura en Teología Bíblica",
-          "Licenciatura en Teología Dogmática",
-          "Licenciatura en Teología Práctica",
-          "Licenciatura en Teología Pastoral",
-          "Doctorado Eclesiástico en Teología Bíblica",
-          "Doctorado Eclesiástico en Teología Dogmática",
-          "Doctorado Eclesiástico en Teología Práctica",
-          "Doctorado Eclesiástico en Teología Pastoral",
-          "Doctorado Eclesiástico en Teología de la Vida Consagrada",
-          "Máster Universitario en Doctrina Social de la Iglesia"
-        ]
-      }
-    ],
-    otros: [
-      'Gestión de la Investigación y Transferencia',
-      'Unidad de Empleabilidad y Prácticas',
-      'Movilidad Internacional',
-      'Capellanía',
-      'Deportes',
-      'Coro',
-      'Servicio de Asistencia Psicológica Sanitaria',
-      'Unidad de Cultura Científica y de la Innovación',
-      'Unidad de Igualdad',
-      'Voluntariado'
-    ],
-    vicerrectorados: [
-      'Vicerrectorado de Investigación y Transferencia',
-      'Vicerrectorado de Ordenación Académica, Profesorado y Calidad',
-      'Vicerrectorado de Formación Permanente y Doctorado',
-      'Vicerrectorado de Comunidad Universitaria y Estudiantes',
-      'Vicerrectorado de Relaciones Internacionales y Cooperación'
-    ]
-  };
 
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private translate: TranslateService
   ) {
     this.formularioBusqueda = this.fb.group({
       tipoEvento: [''],
       ponente: [''],
       actividad: [''],
-      servicio: [''],
-      fecha: [''],
-      horaInicio: [''],
-      horaFin: [''],
-      lugar: ['']
+      servicio: ['']
     });
   }
 

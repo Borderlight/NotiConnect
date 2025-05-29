@@ -293,7 +293,7 @@ button:disabled {
 .eliminar-enlace-row, .servicio-header, .ubicacion-header {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start; /* Cambiado de flex-end a flex-start */
   align-items: flex-end;
   width: 100%;
 }
@@ -477,4 +477,15 @@ body.modo-oscuro .radio-option input[type="radio"] {
 
 body.modo-oscuro .radio-option label {
   color: #fff;
+}
+
+.fecha-lugar {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.align-left {
+  text-align: left;
 }

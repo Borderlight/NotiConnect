@@ -1,16 +1,17 @@
-<form data-traduccion [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" role="form" aria-labelledby="form-title" lang="es">
-    <h1 id="form-title" data-traduccion>Formulario de Incorporación de Eventos</h1>
+<form [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" role="form" aria-labelledby="form-title" [attr.lang]="currentLang">
+    <h1 id="form-title">{{ 'FORM.TITLE' | translate }}</h1>
     
     <div class="evento-info-section" role="region" aria-labelledby="info-basica-titulo">
-        <h2 id="info-basica-titulo">Información básica del evento</h2>
+        <h2 id="info-basica-titulo">{{ 'FORM.BASIC_INFO.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="info-basica-desc">
-            Rellene la información básica del evento. <br>Los campos con asterisco (*) son obligatorios.
+            {{ 'FORM.BASIC_INFO.DESCRIPTION' | translate }} <br>
+            {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
         </p>
 
         <div class="campo-form">
-            <label for="titulo" id="titulo-label">Título del Evento <span class="campo-requerido">*</span></label>
+            <label for="titulo" id="titulo-label">{{ 'FORM.EVENT.TITLE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="titulo-desc" class="campo-descripcion">
-                Introduce el título del evento.
+                {{ 'FORM.EVENT.TITLE.DESC' | translate }}
             </p>
             <input type="text" 
                    id="titulo" 
@@ -21,22 +22,22 @@
                    [attr.aria-invalid]="formularioEvento.get('titulo')?.invalid && formularioEvento.get('titulo')?.touched"
                    autocomplete="off"
                    spellcheck="true"
-                   aria-label="Campo para introducir el título del evento">
+                   [attr.aria-label]="'FORM.EVENT.TITLE.LABEL' | translate">
             @if (formularioEvento.get('titulo')?.invalid && formularioEvento.get('titulo')?.touched) {
                 <p class="mensaje_error" 
                    id="titulo-error" 
                    role="alert"
                    aria-live="assertive">
-                    El título es obligatorio y solo puede contener letras y espacios
+                    {{ 'FORM.EVENT.TITLE.ERROR' | translate }}
                 </p>
             }
-             <span id="titulo-error" class="visually-hidden"></span>
+            <span id="titulo-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
-            <label for="ponente" id="ponente-label">Ponente del Evento <span class="campo-requerido">*</span></label>
+            <label for="ponente" id="ponente-label">{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="ponente-desc" class="campo-descripcion">
-                Introduce el nombre completo del ponente del evento.
+                {{ 'FORM.EVENT.SPEAKER.DESC' | translate }}
             </p>
             <input type="text" 
                    id="ponente" 
@@ -44,17 +45,17 @@
                    aria-describedby="ponente-desc ponente-error"
                    aria-required="true"
                    [attr.aria-invalid]="formularioEvento.get('ponente')?.invalid && formularioEvento.get('ponente')?.touched"
-                   aria-label="Campo para introducir el nombre del ponente del evento">
+                   [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
             @if (formularioEvento.get('ponente')?.invalid && formularioEvento.get('ponente')?.touched) {
-                <p class="mensaje_error" id="ponente-error" role="alert">El ponente es obligatorio y solo puede contener letras y espacios</p>
+                <p class="mensaje_error" id="ponente-error" role="alert">{{ 'FORM.EVENT.SPEAKER.ERROR' | translate }}</p>
             }
             <span id="ponente-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
-            <label for="empresaOrganizadora" id="empresa-label">Empresa Organizadora <span class="campo-requerido">*</span></label>
+            <label for="empresaOrganizadora" id="empresa-label">{{ 'FORM.EVENT.ORGANIZER.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="empresa-desc" class="campo-descripcion">
-                Introduce el nombre completo de la empresa que organiza el evento.
+                {{ 'FORM.EVENT.ORGANIZER.DESC' | translate }}
             </p>
             <input type="text" 
                    id="empresaOrganizadora" 
@@ -62,51 +63,41 @@
                    aria-describedby="empresa-desc empresa-error"
                    aria-required="true"
                    [attr.aria-invalid]="formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched"
-                   aria-label="Campo para introducir el nombre de la empresa organizadora">
+                   [attr.aria-label]="'FORM.EVENT.ORGANIZER.LABEL' | translate">
           
 
             @if (formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched) {
-                <p class="mensaje_error" id="empresa-error" role="alert">La empresa organizadora es obligatoria y solo puede contener letras y espacios</p>
+                <p class="mensaje_error" id="empresa-error" role="alert">{{ 'FORM.EVENT.ORGANIZER.ERROR' | translate }}</p>
             }
             <span id="empresa-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
-            <label for="tipoEvento" id="tipo-label">Tipo de Evento <span class="campo-requerido">*</span></label>
+            <label for="tipoEvento" id="tipo-label">{{ 'FORM.EVENT.TYPE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="tipo-desc" class="campo-descripcion">
-                Selecciona el tipo de evento de la lista desplegable.
+                {{ 'FORM.EVENT.TYPE.DESC' | translate }}
             </p>
             <select id="tipoEvento" 
                     formControlName="tipoEvento" 
                     aria-describedby="tipo-desc tipo-error"
                     aria-required="true"
                     [attr.aria-invalid]="formularioEvento.get('tipoEvento')?.invalid && formularioEvento.get('tipoEvento')?.touched"
-                    aria-label="Lista desplegable para seleccionar el tipo de evento">
-                <option value="">Selecciona una opción</option>
-                <option value="Evento">Evento</option>
-            <option value="Curso">Curso</option>
-            <option value="Taller">Taller</option>
-                <option value="Congreso/Conferencia">Congreso o Conferencia</option>
-            <option value="PresentacionLibro">Presentación de Libro</option>
-            <option value="Charla">Charla</option>
-                <option value="Exposicion">Exposición</option>
-            <option value="Certamen/Concurso">Certamen o Concurso</option>
-            <option value="Visita">Visita</option>
-            <option value="Entrevista">Entrevista</option>
-            <option value="ResultadosInvestigacion">Resultados de Investigación</option>
-            <option value="Espectaculos">Espectáculos</option>
-            <option value="VisitasOExcursiones">Visitas o Excursiones</option>
+                    [attr.aria-label]="'FORM.EVENT.TYPE.LABEL' | translate">
+                <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
+                @for (tipo of tiposEvento; track tipo) {
+                    <option [value]="tipo">{{ 'EVENT_TYPES.' + tipo | translate }}</option>
+                }
             </select>
             @if (formularioEvento.get('tipoEvento')?.invalid && formularioEvento.get('tipoEvento')?.touched) {
-                <p class="mensaje_error" id="tipo-error" role="alert">Debes seleccionar un tipo de evento</p>
+                <p class="mensaje_error" id="tipo-error" role="alert">{{ 'FORM.EVENT.TYPE.ERROR' | translate }}</p>
             }
             <span id="tipo-error" class="visually-hidden"></span>
         </div>
 
         <div class="campo-form">
-            <label for="descripcion" id="descripcion-label">Descripción del Evento <span class="campo-requerido">*</span></label>
+            <label for="descripcion" id="descripcion-label">{{ 'FORM.EVENT.DESCRIPTION.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="descripcion-desc" class="campo-descripcion">
-                Introduce una descripción detallada del evento (mínimo 20 caracteres).
+                {{ 'FORM.EVENT.DESCRIPTION.DESC' | translate }}
             </p>
             <textarea id="descripcion" 
                      formControlName="descripcion" 
@@ -114,13 +105,13 @@
                      aria-describedby="descripcion-desc descripcion-error"
                      aria-required="true"
                      [attr.aria-invalid]="formularioEvento.get('descripcion')?.invalid && formularioEvento.get('descripcion')?.touched"
-                     aria-label="Campo para introducir la descripción detallada del evento"></textarea>
+                     [attr.aria-label]="'FORM.EVENT.DESCRIPTION.LABEL' | translate"></textarea>
             @if (formularioEvento.get('descripcion')?.invalid && formularioEvento.get('descripcion')?.touched) {
                 <p class="mensaje_error" 
                    id="descripcion-error" 
                    role="alert"
                    aria-live="assertive">
-                    La descripción es obligatoria y debe tener al menos 20 caracteres
+                    {{ 'FORM.EVENT.DESCRIPTION.ERROR' | translate }}
                 </p>
             }
             <span id="descripcion-error" class="visually-hidden"></span>
@@ -128,17 +119,17 @@
     </div>
 
     <div class="evento-info-section" role="region" aria-labelledby="actividad-servicios-titulo">
-        <h2 id="actividad-servicios-titulo">Actividad y Servicios Relacionados</h2>
+        <h2 id="actividad-servicios-titulo">{{ 'FORM.ACTIVITY_SERVICES.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="actividad-servicios-desc">
-            Rellene la información sobre la actividad y servicios relacionados con el evento. <br>Los campos con asterisco (*) son obligatorios.
+            {{ 'FORM.ACTIVITY_SERVICES.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
 
 
         </p>
 
         <div class="campo-form">
-            <label for="actividad_relacionada" id="actividad-label">Actividad Relacionada <span class="campo-requerido">*</span></label>
+            <label for="actividad_relacionada" id="actividad-label">{{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="actividad-desc" class="campo-descripcion">
-                Seleccione una actividad de la lista o añada una si no encuentra la que necesita.
+                {{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.DESC' | translate }}
             </p>
             <div class="actividad-container">
                 <div class="select-container">
@@ -147,10 +138,10 @@
                             aria-describedby="actividad-desc actividad-error"
                             aria-required="true"
                             [attr.aria-invalid]="formularioEvento.get('actividad_relacionada')?.invalid && formularioEvento.get('actividad_relacionada')?.touched"
-                            aria-label="Lista de actividades disponibles">
-                        <option value="" disabled selected>Seleccione una actividad existente</option>
-                        @for (actividad of actividadesRelacionadas; track actividad) {
-                            <option [value]="actividad">{{actividad}}</option>
+                            [attr.aria-label]="'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.LABEL' | translate">
+                        <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
+                        @for (actividad of actividadesRelacionadasTraducidas; track actividad) {
+                            <option [value]="actividad">{{ actividad }}</option>
                         }
                     </select>
                     @if (formularioEvento.get('actividad_relacionada')?.invalid && formularioEvento.get('actividad_relacionada')?.touched) {
@@ -158,7 +149,7 @@
                            id="actividad-error" 
                            role="alert"
                            aria-live="assertive">
-                            Debe seleccionar una actividad existente o añadir una nueva
+                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.ERROR' | translate }}
                         </p>
                     }
                     <span id="actividad-error" class="visually-hidden"></span>
@@ -169,8 +160,8 @@
                         (click)="toggleInputActividad()"
                         [attr.aria-expanded]="mostrarInputActividad"
                         aria-controls="nueva-actividad-form"
-                        [attr.aria-label]="mostrarInputActividad ? 'Cancelar añadir nueva actividad' : 'Añadir nueva actividad'">
-                    <span class="button-text">{{ mostrarInputActividad ? 'Cancelar' : 'Añadir nueva actividad' }}</span>
+                        [attr.aria-label]="mostrarInputActividad ? ('FORM.ACTIVITY_CANCEL' | translate) : ('FORM.ACTIVITY_ADD' | translate)">
+                    <span class="button-text">{{ mostrarInputActividad ? ('FORM.ACTIVITY_CANCEL' | translate) : ('FORM.ACTIVITY_ADD' | translate) }}</span>
                 </button>
             </div>
 
@@ -179,18 +170,21 @@
                      class="nueva-actividad-container" 
                      role="form" 
                      aria-label="Formulario para añadir nueva actividad">
-                    <input type="text" 
-                           [(ngModel)]="nuevaActividad" 
-                           [ngModelOptions]="{standalone: true}"
-                           placeholder="Escriba el nombre de la nueva actividad"
-                           aria-label="Campo para escribir el nombre de la nueva actividad">
-                    <button type="button" 
-                            (click)="agregarNuevaActividad()"
-                            [disabled]="!nuevaActividad.trim()"
-                            class="btn-confirmar"
-                            aria-label="Confirmar nueva actividad">
-                        Confirmar
-                    </button>
+                    <p class="campo-descripcion" style="margin-bottom: 0.5rem;">{{ 'FORM.ACTIVITY_HELP' | translate }}</p>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" 
+                               [(ngModel)]="nuevaActividad" 
+                               [ngModelOptions]="{standalone: true}"
+                               aria-label="Campo para escribir el nombre de la nueva actividad"
+                               style="flex: 1;">
+                        <button type="button" 
+                                (click)="agregarNuevaActividad()"
+                                [disabled]="!nuevaActividad.trim()"
+                                class="btn-confirmar"
+                                [attr.aria-label]="'FORM.ACTIVITY_CONFIRM' | translate">
+                            {{ 'FORM.ACTIVITY_CONFIRM' | translate }}
+                        </button>
+                    </div>
                 </div>
                 @if (mostrarErrorActividad) {
                     <p class="mensaje_error" role="alert" aria-live="assertive">{{ mensajeErrorActividad }}</p>
@@ -200,9 +194,9 @@
         </div>
 
         <div class="campo-form" formArrayName="servicios">
-            <label for="servicios-titulo" id="servicio-titulo">Servicios Relacionados <span class="campo-requerido">*</span></label>
+            <label for="servicios-titulo" id="servicio-titulo">{{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p class="descripcion-campo" id="servicios-desc">
-                Seleccione los servicios o facultades relacionados con el evento.
+                {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.DESC' | translate }}
             </p>
         @for (campo of listadoServicios.controls; track campo; let i = $index) {
                 <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
@@ -217,7 +211,7 @@
                             [attr.aria-label]="'Eliminar servicio ' + (i + 1)"
                             aria-describedby="eliminar-desc">
                             <span class="icono-eliminar" aria-hidden="true">×</span>
-                            <span class="texto-eliminar">Eliminar</span>
+                            <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
                         </button>
                     </div>
                     <p id="eliminar-desc" class="visually-hidden">Al pulsar se eliminará este servicio</p>
@@ -230,34 +224,23 @@
                                 [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched"
                                 [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
                                 [attr.aria-labelledby]="'servicio-' + i + '-label'">
-                            <option value="" disabled selected>Seleccione un servicio o facultad</option>
-                        <optgroup label="Facultades">
-                            @for (facultadObj of facultadesGrados; track facultadObj) {
-                                <option [value]="facultadObj.facultad" data-type-facultad>
-                                    {{ facultadObj.facultad }}
-                                </option>
-                            }
-                        </optgroup>
-                        <optgroup label="Servicios">
-                            <option value="Gestión de la Investigación y Transferencia">Gestión de la Investigación y Transferencia</option>
-                            <option value="Unidad de Empleabilidad y Prácticas">Unidad de Empleabilidad y Prácticas</option>
-                            <option value="Movilidad Internacional">Movilidad Internacional</option>
-                            <option value="Capellanía">Capellanía</option>
-                            <option value="Deportes">Deportes</option>
-                            <option value="Coro">Coro</option>
-                            <option value="Servicio de Asistencia Psicológica Sanitaria">Servicio de Asistencia Psicológica Sanitaria</option>
-                            <option value="Unidad de Cultura Científica y de la Innovación">Unidad de Cultura Científica y de la Innovación</option>
-                            <option value="Unidad de Igualdad">Unidad de Igualdad</option>
-                            <option value="Voluntariado">Voluntariado</option>
-                        </optgroup>
-                        <optgroup label="Vicerrectorados">
-                            <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
-                            <option value="Vicerrectorado de Ordenación Académica, Profesorado y Calidad">Vicerrectorado de Ordenación Académica, Profesorado y Calidad</option>
-                            <option value="Vicerrectorado de Formación Permanente y Doctorado">Vicerrectorado de Formación Permanente y Doctorado</option>
-                            <option value="Vicerrectorado de Comunidad Universitaria y Estudiantes">Vicerrectorado de Comunidad Universitaria y Estudiantes</option>
-                            <option value="Vicerrectorado de Relaciones Internacionales y Cooperación">Vicerrectorado de Relaciones Internacionales y Cooperación</option>
-                        </optgroup>
-                    </select>
+                            <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
+                            <optgroup label="Facultades">
+                                @for (facultadObj of facultadesGrados; track facultadObj) {
+                                    <option [value]="facultadObj.facultad">{{ facultadObj.facultad }}</option>
+                                }
+                            </optgroup>
+                            <optgroup label="Servicios">
+                                @for (servicio of serviciosFijos; track servicio) {
+                                    <option [value]="servicio">{{ 'SERVICES.' + servicio | translate }}</option>
+                                }
+                            </optgroup>
+                            <optgroup label="Vicerrectorados">
+                                @for (vic of vicerrectorados; track vic) {
+                                    <option [value]="vic">{{ 'VICERRECTORADOS.' + vic | translate }}</option>
+                                }
+                            </optgroup>
+                        </select>
                     </div>
 
                     <p [id]="'servicio-' + i + '-desc'" class="visually-hidden"></p>
@@ -267,7 +250,7 @@
                            [id]="'servicio-' + i + '-error'"
                            role="alert"
                            aria-live="assertive">
-                            Debe seleccionar un servicio o facultad
+                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ERROR' | translate }}
                         </p>
                     }
                     @if (!(campo.get('servicios')?.invalid && campo.get('servicios')?.touched)) {
@@ -289,7 +272,7 @@
                                         [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'"
                                         aria-required="true"
                                         [attr.aria-invalid]="campo.get('grado')?.invalid && campo.get('grado')?.touched">
-                                    <option value="">Seleccione un grado</option>
+                                    <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                                 @for (grado of obtenerGrados(campo.get('servicios')?.value); track grado) {
                                     <option [value]="grado">{{ grado }}</option>
                                 }
@@ -300,7 +283,7 @@
                                    [id]="'grado-' + i + '-error'"
                                    role="alert"
                                    aria-live="assertive">
-                                    Debe seleccionar un grado antes de añadir un nuevo servicio
+                                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.GRADE.ERROR' | translate }}
                                 </p>
                             }
                         <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
@@ -315,30 +298,30 @@
                         class="btn-agregar-inline"
                         aria-label="Añadir nuevo servicio">
                     <span class="icono-agregar" aria-hidden="true">+</span>
-                    Añadir nuevo servicio
+                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ADD_BUTTON' | translate }}
                 </button>
             </div>
         </div>
     </div>
 
     <div class="evento-info-section" role="region" aria-labelledby="recursos-digitales-titulo">
-        <h2 id="recursos-digitales-titulo">Recursos Digitales</h2>
+        <h2 id="recursos-digitales-titulo">{{ 'FORM.DIGITAL_RESOURCES.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="recursos-digitales-desc">
-            Agregue los archivos y enlaces relacionados con el evento. <br>Los campos con asterisco (*) son obligatorios.
+            {{ 'FORM.DIGITAL_RESOURCES.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
         </p>
 
         <div class="campo-form adjuntos-section" role="group" aria-labelledby="adjuntos-label">
             <label for="adjuntos" id="adjuntos-label" class="form-label">
-                Archivos Adjuntos <span class="campo-requerido">*</span>
+                {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.LABEL' | translate }} <span class="campo-requerido">*</span>
             </label>
             
             <div class="campo-descripcion-container">
                 <p id="adjuntos-desc" class="campo-descripcion">
-                    Seleccione las imágenes, vídeos u otros archivos relacionados con el evento.
+                    {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.DESCRIPTION' | translate }}
                     <span class="campo-requerido">Campo obligatorio</span>
                 </p>
                 <p id="adjuntos-formato" class="campo-formato">
-                    Formatos aceptados: JPG, PNG, PDF, MP4. Tamaño máximo: 10MB por archivo
+                    {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.ACCEPTED_FORMATS' | translate }}
                 </p>
             </div>
 
@@ -354,25 +337,25 @@
                        formControlName="adjuntos">
                 
                 <p id="adjuntos-help" class="campo-ayuda">
-                    Pulse espacio o enter para abrir el selector de archivos
+                    {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.FILE_SELECTOR_HELP' | translate }}
                 </p>
             </div>
 
             @if (formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    Debes adjuntar al menos un archivo. Por favor, selecciona los archivos necesarios.
+                    {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.ERROR' | translate }}
                 </div>
         }
         </div>
 
         <div class="campo-form" formArrayName="enlaces">
             <label for="enlaces" id="enlaces-label" class="form-label">
-                Enlaces Relacionados <span class="campo-requerido">*</span>
+                {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.LABEL' | translate }} <span class="campo-requerido">*</span>
             </label>
             
             <div class="campo-descripcion-container">
                 <p id="enlaces-desc" class="campo-descripcion">
-                    Agregue los enlaces relacionados con el evento.
+                    {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.DESCRIPTION' | translate }}
                     <span class="campo-requerido">Campo obligatorio</span>
                 </p>
             </div>
@@ -395,9 +378,9 @@
                           [attr.aria-describedby]="'tipo-' + index2 + '-error'"
                           [attr.aria-label]="'Tipo de enlace número ' + (index2 + 1)"
                           [attr.aria-labelledby]="'tipo-label-' + index2" >
-                    <option value="">Selecciona el tipo de enlace</option>
+                    <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                     @for (tipo of tiposEnlace; track tipo) {
-                        <option [value]="tipo.nombre">{{ tipo.nombre }}</option>
+                        <option [value]="tipo.nombre">{{ 'LINK_TYPES.' + tipo.nombre | translate }}</option>
                     }
                   </select>
                   <label [id]="'tipo-label-' + index2" class="sr-only">Tipo de enlace</label>
@@ -413,8 +396,8 @@
               </div>
               <div class="url-input-container">
                 <p class="campo-formato">
-                  Introduce la URL
-                  <span class="campo-formato">(Ej: https://www.ejemplo.com)</span>
+                  {{ 'FORM.URL_HELP' | translate }}
+                  <span class="campo-formato">({{ 'FORM.URL_EXAMPLE' | translate }})</span>
                 </p>
                 <input type="url" 
                        [id]="'url-' + index2"
@@ -430,20 +413,20 @@
                         class="btn-eliminar btn-eliminar-enlace"
                         [attr.aria-label]="'Eliminar enlace ' + (index2 + 1)">
                   <span class="icono-eliminar" aria-hidden="true">×</span>
-                  <span class="texto-eliminar">Eliminar</span>
+                  <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
                 </button>
               </div>
             </div>
 
             @if (formularioEvento.get('enlaces')?.hasError('requiereEnlaces') && formularioEvento.get('enlaces')?.touched && index2 === 0) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    Se debe introducir al menos un enlace
+                    {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.REQUIRE_LINK' | translate }}
                 </div>
             }
 
             @if (tieneError(index2, 'tipo')) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
-                    Debes seleccionar el tipo de enlace
+                    {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.SELECT_TYPE' | translate }}
                 </div>
             } @else {
                 <span [id]="'tipo-' + index2 + '-error'" class="visually-hidden"></span>
@@ -451,17 +434,17 @@
             @if (tieneError(index2, 'url')) {
                 <div class="mensaje_error" role="alert" aria-live="polite">
                     @if (listadoEnlaces.at(index2).get('tipo')?.value === 'Instagram') {
-                            La URL debe ser un enlace válido de Instagram (ej: https://www.instagram.com/)
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.INVALID_URL_INSTAGRAM' | translate }}
                         } @else if (listadoEnlaces.at(index2).get('tipo')?.value === 'X') {
-                            La URL debe ser un enlace válido de X (ej: https://x.com/)
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.INVALID_URL_X' | translate }}
                         } @else if (listadoEnlaces.at(index2).get('tipo')?.value === 'TikTok') {
-                            La URL debe ser un enlace válido de TikTok (ej: https://www.tiktok.com/)
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.INVALID_URL_TIKTOK' | translate }}
                         } @else if (listadoEnlaces.at(index2).get('tipo')?.value === 'YouTube') {
-                            La URL debe ser un enlace válido de YouTube (ej: https://www.youtube.com/)
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.INVALID_URL_YOUTUBE' | translate }}
                         } @else if (listadoEnlaces.at(index2).get('tipo')?.value === 'LinkedIn') {
-                            La URL debe ser un enlace válido de LinkedIn (ej: https://www.linkedin.com/)
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.INVALID_URL_LINKEDIN' | translate }}
                         } @else {
-                            Completa el enlace antes de añadir uno nuevo
+                            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ERROR.COMPLETE_LINK' | translate }}
                         }
                 </div>
             } @else {
@@ -476,24 +459,24 @@
                 class="btn-agregar-inline"
                 aria-label="Añadir nuevo enlace">
             <span class="icono-agregar" aria-hidden="true">+</span>
-            Añadir nuevo enlace
+            {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.ADD_BUTTON' | translate }}
         </button>
     </div>
 </div>
     </div>
         
     <div class="evento-info-section" role="region" aria-labelledby="ubicacion-horario-titulo">
-        <h2 id="ubicacion-horario-titulo">Ubicación y Horario del Evento</h2>
+        <h2 id="ubicacion-horario-titulo">{{ 'FORM.LOCATION_TIME.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="ubicacion-horario-desc">
-            Especifique las fechas, horarios y lugares donde se realizará el evento. <br>Los campos con asterisco (*) son obligatorios.
+            {{ 'FORM.LOCATION_TIME.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
         </p>
 
         <div class="campo-form" formArrayName="ubicaciones">
             @for (ubicacion of listadoUbicaciones.controls; track ubicacion; let i = $index) {
                 <div [formGroupName]="i" class="ubicacion-section" role="group" [attr.aria-labelledby]="'ubicacion-' + i + '-label'">
                     <div class="ubicacion-header">
-                        <h3 [id]="'ubicacion-' + i + '-label'">
-                            Fecha y Lugar {{i + 1}}
+                        <h3 [id]="'ubicacion-' + i + '-label'" class="align-left">
+                            {{ 'FORM.LOCATION_TIME.DATE_PLACE' | translate }} {{i + 1}}
                             <span class="campo-requerido">*</span>
                         </h3>
                         @if (i > 0) {
@@ -507,10 +490,10 @@
                         }
                     </div>
 
-                    <div class="campo-form">
-                        <label [for]="'fecha-' + i" [id]="'fecha-' + i + '-label'">Fecha del Evento <span class="campo-requerido">*</span></label>
-                        <p [id]="'fecha-' + i + '-desc'" class="campo-descripcion">
-                            Seleccione la fecha en que se realizará el evento.
+                    <div class="campo-form fecha-lugar">
+                        <label [for]="'fecha-' + i" [id]="'fecha-' + i + '-label'" class="align-left">{{ 'FORM.LOCATION_TIME.EVENT_DATE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
+                        <p [id]="'fecha-' + i + '-desc'" class="campo-descripcion align-left">
+                            {{ 'FORM.LOCATION_TIME.EVENT_DATE.DESCRIPTION' | translate }}
                         </p>
                         <input type="date" 
                                [id]="'fecha-' + i" 
@@ -519,11 +502,11 @@
                                aria-required="true"
                                [attr.aria-invalid]="ubicacion.get('fecha')?.invalid && ubicacion.get('fecha')?.touched">
                         @if (ubicacion.get('fecha')?.invalid && ubicacion.get('fecha')?.touched) {
-                            <p class="mensaje_error" 
+                            <p class="mensaje_error align-left" 
                                [id]="'fecha-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                La fecha es obligatoria
+                                {{ 'FORM.LOCATION_TIME.EVENT_DATE.ERROR' | translate }}
                             </p>
                         }
                         @if (!(ubicacion.get('fecha')?.invalid && ubicacion.get('fecha')?.touched)) {
@@ -532,9 +515,9 @@
                     </div>
 
                     <div class="campo-form">
-                        <label [id]="'tipo-horario-' + i + '-label'">Tipo de Horario <span class="campo-requerido">*</span></label>
+                        <label [id]="'tipo-horario-' + i + '-label'">{{ 'FORM.LOCATION_TIME.TIME_TYPE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                         <p [id]="'tipo-horario-' + i + '-desc'" class="campo-descripcion">
-                            Seleccione el tipo de horario para el evento.
+                            {{ 'FORM.LOCATION_TIME.TIME_TYPE.DESCRIPTION' | translate }}
                         </p>
                         <div class="tipo-horario-selector" 
                              role="radiogroup" 
@@ -549,7 +532,7 @@
                                        [attr.aria-describedby]="'tipo-horario-' + i + '-desc hora-unica-' + i + '-desc'"
                                        [required]="true">
                                 <span [id]="'hora-unica-' + i + '-desc'" class="visually-hidden"></span>
-                                <label [for]="'horaUnica-' + i">Hora única</label>
+                                <label [for]="'horaUnica-' + i" >{{ 'FORM.LOCATION_TIME.TIME_TYPE.UNIQUE_TIME' | translate }}</label>
                             </div>
                             <div class="radio-option">
                                 <input type="radio" 
@@ -560,104 +543,65 @@
                                        [attr.aria-describedby]="'tipo-horario-' + i + '-desc horario-completo-' + i + '-desc'"
                                        [required]="true">
                                 <span [id]="'horario-completo-' + i + '-desc'" class="visually-hidden"></span>
-                                <label [for]="'horarioCompleto-' + i">Horario completo</label>
+                                <label [for]="'horarioCompleto-' + i" >{{ 'FORM.LOCATION_TIME.TIME_TYPE.FULL_SCHEDULE' | translate }}</label>
                             </div>
                         </div>
                         <p [id]="'tipo-horario-' + i + '-hint'" class="campo-ayuda">
-                            Elija "Hora única" para eventos puntuales u "Horario completo" para eventos con duración específica
+                            {{ 'FORM.LOCATION_TIME.TIME_TYPE.HINT' | translate }}
                         </p>
                         @if (ubicacion.get('tipoHorario')?.invalid && ubicacion.get('tipoHorario')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'tipo-horario-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                Debe seleccionar un tipo de horario
+                                {{ 'FORM.LOCATION_TIME.TIME_TYPE.ERROR' | translate }}
                             </p>
                         }
 
                         @if (ubicacion.get('tipoHorario')?.value === 'hora') {
                             <div class="campo-hora">
-                                <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora del evento <span class="campo-requerido">*</span></label>
+                                <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">{{ 'FORM.LOCATION_TIME.TIME.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                 <p [id]="'hora-inicio-' + i + '-desc'" class="campo-descripcion">
-                                    Seleccione la hora en que se realizará el evento.
+                                    {{ 'FORM.LOCATION_TIME.TIME.DESCRIPTION' | translate }}
                                 </p>
                                 <input type="time" 
                                        [id]="'horaInicio-' + i" 
                                        formControlName="horaInicio"
                                        [attr.aria-describedby]="'hora-inicio-' + i + '-desc hora-inicio-' + i + '-error'"
-                                       aria-required="true"
-                                       [attr.aria-invalid]="ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched">
-                                @if (ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched) {
-                                    <p class="mensaje_error" 
-                                       [id]="'hora-inicio-' + i + '-error'" 
-                                       role="alert"
-                                       aria-live="assertive">
-                                        La hora es obligatoria
-                                    </p>
-                                }
-                                @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
-                                    <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
-                                }
+                                       aria-required="true">
                             </div>
                         }
 
                         @if (ubicacion.get('tipoHorario')?.value === 'horario') {
                             <div class="horario-container">
                                 <div class="campo-hora">
-                                    <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">Hora de inicio <span class="campo-requerido">*</span></label>
+                                    <label [for]="'horaInicio-' + i" [id]="'hora-inicio-' + i + '-label'">{{ 'FORM.LOCATION_TIME.START.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                     <p [id]="'hora-inicio-' + i + '-desc'" class="campo-descripcion">
-                                        Seleccione la hora de inicio del evento.
+                                        {{ 'FORM.LOCATION_TIME.START.DESCRIPTION' | translate }}
                                     </p>
                                     <input type="time" 
                                            [id]="'horaInicio-' + i" 
-                                           formControlName="horaInicio"
-                                           [attr.aria-describedby]="'hora-inicio-' + i + '-desc hora-inicio-' + i + '-error'"
-                                           aria-required="true"
-                                           [attr.aria-invalid]="ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched">
-                                    @if (ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched) {
-                                        <p class="mensaje_error" 
-                                           [id]="'hora-inicio-' + i + '-error'" 
-                                           role="alert"
-                                           aria-live="assertive">
-                                            La hora de inicio es obligatoria
-                                        </p>
-                                    }
-                                    @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
-                                        <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
-                                    }
+                                           formControlName="horaInicio">
                                 </div>
 
                                 <div class="campo-hora">
-                                    <label [for]="'horaFin-' + i" [id]="'hora-fin-' + i + '-label'">Hora de fin <span class="campo-requerido">*</span></label>
+                                    <label [for]="'horaFin-' + i" [id]="'hora-fin-' + i + '-label'">{{ 'FORM.LOCATION_TIME.END.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                     <p [id]="'hora-fin-' + i + '-desc'" class="campo-descripcion">
-                                        Seleccione la hora de fin del evento.
+                                        {{ 'FORM.LOCATION_TIME.END.DESCRIPTION' | translate }}
                                     </p>
                                     <input type="time" 
                                            [id]="'horaFin-' + i" 
                                            formControlName="horaFin"
-                                           [attr.aria-describedby]="'hora-fin-' + i + '-desc hora-fin-' + i + '-error'"
-                                           aria-required="true"
-                                           [attr.aria-invalid]="ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched">
-                                    @if (ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched) {
-                                        <p class="mensaje_error" 
-                                           [id]="'hora-fin-' + i + '-error'" 
-                                           role="alert"
-                                           aria-live="assertive">
-                                            La hora de fin es obligatoria
-                                        </p>
-                                    }
-                                    @if (!(ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched)) {
-                                        <span [id]="'hora-fin-' + i + '-error'" class="visually-hidden"></span>
-                                    }
+                                           [attr.aria-describedby]="'hora-fin-' + i + '-desc hora-fin-' + i + '-error'">
                                 </div>
                             </div>
                         }
                     </div>
 
                     <div class="campo-form lugar-section" role="group" [attr.aria-labelledby]="'lugar-' + i + '-label'">
-                        <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">Lugar del Evento <span class="campo-requerido">*</span></label>
+                        <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">{{ 'FORM.LOCATION_TIME.EVENT_PLACE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                         <p [id]="'lugar-' + i + '-desc'" class="campo-descripcion">
-                            Seleccione el lugar donde se realizará el evento.
+                            {{ 'FORM.LOCATION_TIME.EVENT_PLACE.DESCRIPTION' | translate }}
                             <span class="campo-requerido">Campo obligatorio</span>
                         </p>
                         <div class="select-container">
@@ -666,29 +610,28 @@
                                     [attr.aria-describedby]="'lugar-' + i + '-desc lugar-' + i + '-hint lugar-' + i + '-error'"
                                     aria-required="true"
                                     [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched">
-                                <option value="" disabled>Seleccione un lugar</option>
+                                <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                                 <optgroup label="Espacios Presenciales">
-        <option value="Facultad">Facultad</option>
-        <option value="AulaDeGrados">Aula de grados</option>
-                                    <option value="HUBdeInnovacion">HUB de Innovación</option>
-        <option value="BibliotecaVargas-Zuniga">Biblioteca Vargas-Zuñiga</option>
-        <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
+                                    @for (lugarPresencial of lugaresPresenciales; track lugarPresencial) {
+                                        <option [value]="lugarPresencial">{{ 'LOCATIONS.' + lugarPresencial | translate }}</option>
+                                    }
                                 </optgroup>
                                 <optgroup label="Espacios Virtuales">
-        <option value="Online">Online</option>
+                                    @for (lugarVirtual of lugaresVirtuales; track lugarVirtual) {
+                                        <option [value]="lugarVirtual">{{ 'LOCATIONS.' + lugarVirtual | translate }}</option>
+                                    }
                                 </optgroup>
                             </select>
                         </div>
                         <p [id]="'lugar-' + i + '-hint'" class="campo-ayuda">
-                            Si el evento es presencial, seleccione uno de los espacios físicos disponibles. 
-                            Para eventos virtuales, seleccione la opción "Online"
+                            {{ 'FORM.LOCATION_TIME.EVENT_PLACE.HINT' | translate }}
                         </p>
                         @if (ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'lugar-' + i + '-error'" 
                                role="alert"
                                aria-live="assertive">
-                                Debe seleccionar el lugar donde se realiza el evento
+                                {{ 'FORM.LOCATION_TIME.EVENT_PLACE.ERROR' | translate }}
                             </p>
                         }
                         @if (!(ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched)) {
@@ -697,9 +640,9 @@
 
                         @if (ubicacion.get('lugar')?.value === 'Facultad') {
                             <div class="campo-aula">
-                                <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">Aula o Espacio <span class="campo-requerido">*</span></label>
+                                <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">{{ 'FORM.LOCATION_TIME.CLASSROOM.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                 <p [id]="'aula-' + i + '-desc'" class="campo-descripcion">
-                                    Especifique el aula o espacio específico de la facultad donde se realizará el evento.
+                                    {{ 'FORM.LOCATION_TIME.CLASSROOM.DESCRIPTION' | translate }}
                                     <span class="campo-requerido">Campo obligatorio</span>
                                 </p>
                                 <input type="text" 
@@ -713,7 +656,7 @@
                                        [id]="'aula-' + i + '-error'" 
                                        role="alert"
                                        aria-live="assertive">
-                                        Debe especificar el aula o espacio de la facultad
+                                        {{ 'FORM.LOCATION_TIME.CLASSROOM.ERROR' | translate }}
                                     </p>
                                 }
                                 @if (!(ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched)) {
@@ -734,13 +677,13 @@
                         class="btn-agregar-inline"
                         aria-label="Añadir nueva fecha y lugar">
                     <span class="icono-agregar" aria-hidden="true">+</span>
-                    Añadir nueva fecha y lugar
+                    {{ 'FORM.LOCATION_TIME.ADD_DATE_PLACE' | translate }}
                 </button>
             </div>
         </div>
     </div>
 
-    <button type="submit"  class="btn-finalizar">Finalizar Formulario</button>
+    <button type="submit"  class="btn-finalizar">{{ 'FORM.SUBMIT_BUTTON' | translate }}</button>
 </form>
 
 <!-- Diálogo de confirmación -->
@@ -754,13 +697,13 @@
             aria-labelledby="dialog-title"
             aria-describedby="dialog-content"
             (keydown.escape)="closeDialog()">
-            <h2 id="dialog-title" tabindex="-1">Evento creado</h2>
-            <p id="dialog-content">El evento se ha guardado correctamente.</p>
+            <h2 id="dialog-title" tabindex="-1">{{ 'FORM.DIALOG.EVENT_CREATED.TITLE' | translate }}</h2>
+            <p id="dialog-content">{{ 'FORM.DIALOG.EVENT_CREATED.MESSAGE' | translate }}</p>
             <form method="dialog">
                 <button 
                     (click)="closeDialog()"
                     aria-label="Aceptar">
-                    Aceptar
+                    {{ 'FORM.DIALOG.ACCEPT' | translate }}
                 </button>
             </form>
         </dialog>

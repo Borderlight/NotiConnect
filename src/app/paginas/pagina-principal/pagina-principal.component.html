@@ -1,29 +1,29 @@
-<nav aria-label="Navegación principal">
-  <h1 class="sr-only">Página principal de NotiConnect</h1>
+<nav [attr.aria-label]="'NAV.MAIN' | translate">
+  <h1 class="sr-only">{{ 'NAV.HOME_TITLE' | translate }}</h1>
   <div class="iconos-container">
     <div class="icono-bloque">
       <button class="boton-icono" [routerLink]="['/formulario']">
-        <img src="assets/pagina-principal/formulario.png" alt="Crear Evento">
+        <img src="assets/pagina-principal/formulario.png" [alt]="'NAV.CREATE_EVENT' | translate">
       </button>
-      <div class="icono-texto">Crear Evento</div>
+      <div class="icono-texto">{{ 'NAV.CREATE_EVENT' | translate }}</div>
     </div>
     <div class="icono-bloque">
       <button class="boton-icono" [routerLink]="['/busqueda']">
-        <img src="assets/pagina-principal/busqueda.png" alt="Realizar Búsqueda">
+        <img src="assets/pagina-principal/busqueda.png" [alt]="'NAV.SEARCH' | translate">
       </button>
-      <div class="icono-texto">Realizar Búsqueda</div>
+      <div class="icono-texto">{{ 'NAV.SEARCH' | translate }}</div>
     </div>
     <div class="icono-bloque">
       <button class="boton-icono" [routerLink]="['/roles']">
-        <img src="assets/pagina-principal/roles.png" alt="Consultar Roles">
+        <img src="assets/pagina-principal/roles.png" [alt]="'NAV.ROLES' | translate">
       </button>
-      <div class="icono-texto">Consultar Roles</div>
+      <div class="icono-texto">{{ 'NAV.ROLES' | translate }}</div>
     </div>
     <div class="icono-bloque">
       <button class="boton-icono" [routerLink]="['/ajustes']">
-        <img src="assets/pagina-principal/ajustes.png" alt="Modificar Ajustes">
+        <img src="assets/pagina-principal/ajustes.png" [alt]="'NAV.SETTINGS' | translate">
       </button>
-      <div class="icono-texto">Modificar Ajustes</div>
+      <div class="icono-texto">{{ 'NAV.SETTINGS' | translate }}</div>
     </div>
   </div>
 </nav>

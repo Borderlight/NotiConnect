@@ -1,10 +1,10 @@
 <div class="dialog-backdrop" (click)="cerrarDialog()">
   <div class="dialog-content" (click)="$event.stopPropagation()">
-    <h2>Confirmar Eliminación</h2>
-    <p>¿Estás seguro de que deseas eliminar a {{ nombreAdmin }} del rol de administrador?</p>
+    <h2>{{ 'ROLES.DELETE_DIALOG.TITLE' | translate }}</h2>
+    <p>{{ 'ROLES.DELETE_DIALOG.MESSAGE' | translate: { name: nombreAdmin } }}</p>
     <div class="dialog-buttons">
-      <button class="btn-cancelar" (click)="cerrarDialog()">Cancelar</button>
-      <button class="btn-eliminar" (click)="confirmarEliminacion()">Eliminar</button>
+      <button class="btn-cancelar" (click)="cerrarDialog()">{{ 'ROLES.DELETE_DIALOG.CANCEL' | translate }}</button>
+      <button class="btn-eliminar" (click)="confirmarEliminacion()">{{ 'ROLES.DELETE_DIALOG.CONFIRM' | translate }}</button>
     </div>
   </div>
-</div> 
+</div>

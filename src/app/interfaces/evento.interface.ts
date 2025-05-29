@@ -1,10 +1,12 @@
+import { EventType } from '../enums/event-type.enum';
+
 export interface Evento {
   _id?: string;
   imagen: string;
   titulo: string;
   ponente: string;
   empresaOrganizadora: string;
-  tipoEvento: string;
+  tipoEvento: EventType;
   descripcion: string;
   adjuntos: string[];
   servicios: Servicio[];

@@ -1,0 +1,332 @@
+{
+  "COMMON": {
+    "BUSCAR": "Buscar",
+    "LIMPIAR": "Limpiar",
+    "GUARDAR": "Guardar",
+    "CANCELAR": "Cancelar",
+    "ELIMINAR": "Eliminar",
+    "CONFIRMAR": "Confirmar",
+    "VOLVER": "Volver",
+    "BACK": "Volver",
+    "GO_HOME": "Ir a la página principal",
+    "UPSA_LOGO_ALT": "Logo de la Universidad Pontificia de Salamanca",
+    "NOTICONNECT_LOGO_ALT": "Logo de NotiConnect",
+    "COPYRIGHT": "© 2025 NotiConnect - Todos los derechos reservados",
+    "SELECT_LANGUAGE": "Seleccionar idioma",
+    "SPANISH": "Español",
+    "ENGLISH": "Inglés",
+    "FRENCH": "Francés"
+  },
+  "EVENTOS": {
+    "TITULO": "Título",
+    "DESCRIPCION": "Descripción",
+    "FECHA": "Fecha",
+    "HORA_INICIO": "Hora de inicio",
+    "HORA_FIN": "Hora de fin",
+    "LUGAR": "Lugar",
+    "ACTIVIDAD": "Actividad relacionada",
+    "SERVICIOS": "Servicios relacionados",
+    "ENLACES": "Enlaces relacionados"
+  },
+  "FILTROS": {
+    "TITULO": "Filtros de búsqueda",
+    "TIPO_EVENTO": "Tipo de evento",
+    "PONENTE": "Ponente",
+    "TODOS_TIPOS": "Todos los tipos",
+    "TODAS_ACTIVIDADES": "Todas las actividades",
+    "TODOS_SERVICIOS": "Todos los servicios",
+    "TODOS_LUGARES": "Todos los lugares"
+  },
+  "SETTINGS": {
+    "TITLE": "Ajustes",
+    "APPEARANCE": "Apariencia",
+    "DARK_MODE": "Modo Oscuro",
+    "TOGGLE_DARK_MODE": "Activar modo oscuro",
+    "LANGUAGE": "Idioma",
+    "SELECT_LANGUAGE": "Seleccionar Idioma"
+  },
+  "NAV": {
+    "MAIN": "Navegación principal",
+    "HOME_TITLE": "Página principal de NotiConnect",
+    "CREATE_EVENT": "Crear Evento",
+    "SEARCH": "Realizar Búsqueda",
+    "ROLES": "Consultar Roles",
+    "SETTINGS": "Modificar Ajustes"
+  },
+  "SEARCH": {
+    "FILTERS_TITLE": "Filtros de Búsqueda",
+    "EVENT_TYPE": "Tipo de Evento",
+    "SPEAKER": "Ponente",
+    "SPEAKER_PLACEHOLDER": "Nombre del ponente",
+    "ACTIVITY": "Actividad",
+    "SERVICE": "Servicio",
+    "ALL_TYPES": "Todos los tipos",
+    "ALL_ACTIVITIES": "Todas las actividades",
+    "ALL_SERVICES": "Todos los servicios",
+    "SEARCH_BUTTON": "Buscar",
+    "CLEAR_BUTTON": "Limpiar filtros",
+    "RESULTS_TITLE": "Resultados de la búsqueda",
+    "EVENTS_FOUND": "eventos encontrados",
+    "NO_RESULTS": "No se encontraron eventos que coincidan con los criterios de búsqueda.",
+    "DOWNLOAD": "Descargar",
+    "DELETE": "Borrar"
+  },
+  "EVENT_TYPES": {
+    "EVENT": "Evento",
+    "COURSE": "Curso",
+    "WORKSHOP": "Taller",
+    "CONFERENCE_OR_CONGRESS": "Congreso/Conferencia",
+    "BOOK_PRESENTATION": "Presentación de Libro",
+    "TALK": "Charla",
+    "EXHIBITION": "Exposición",
+    "CONTEST_OR_COMPETITION": "Certamen o Concurso",
+    "VISIT": "Visita",
+    "INTERVIEW": "Entrevista",
+    "RESEARCH_RESULTS": "Resultados de Investigación",
+    "SHOWS": "Espectáculos",
+    "VISITS_OR_EXCURSIONS": "Visitas o Excursiones"
+  },
+  "SERVICES": {
+    "Gestión de la Investigación y Transferencia": "Gestión de la Investigación y Transferencia",
+    "Unidad de Empleabilidad y Prácticas": "Unidad de Empleabilidad y Prácticas",
+    "Movilidad Internacional": "Movilidad Internacional",
+    "Capellanía": "Capellanía",
+    "Deportes": "Deportes",
+    "Coro": "Coro",
+    "Servicio de Asistencia Psicológica Sanitaria": "Servicio de Asistencia Psicológica Sanitaria",
+    "Unidad de Cultura Científica y de la Innovación": "Unidad de Cultura Científica y de la Innovación",
+    "Unidad de Igualdad": "Unidad de Igualdad",
+    "Voluntariado": "Voluntariado"
+  },
+  "EVENT_DETAILS": {
+    "EVENT_IMAGE": "Imagen del evento:",
+    "DESCRIPTION": "Descripción",
+    "DATE_LOCATION": "Fecha y Ubicación",
+    "DATE": "Fecha",
+    "SCHEDULE": "Horario",
+    "LOCATION": "Lugar",
+    "SPEAKER": "Ponente",
+    "ORGANIZER": "Organizador",
+    "SERVICES_FACULTIES": "Servicios y Facultades Relacionadas",
+    "RELATED_LINKS": "Enlaces Relacionados",
+    "ATTACHED_DOCUMENTS": "Documentos Adjuntos",
+    "RELATED_ACTIVITY": "Actividad Relacionada",
+    "LOADING": "Cargando detalles del evento..."
+  },
+  "FORM": {
+    "SELECT_OPTION": "Selecciona una opción",
+    "TITLE": "Formulario de Incorporación de Eventos",
+    "BASIC_INFO": {
+      "TITLE": "Información básica del evento",
+      "DESCRIPTION": "Rellene la información básica del evento.",
+      "REQUIRED_FIELDS": "Los campos con asterisco (*) son obligatorios."
+    },
+    "EVENT": {
+      "TITLE": {
+        "LABEL": "Título del Evento",
+        "DESC": "Introduce el título del evento.",
+        "ERROR": "El título es obligatorio y solo puede contener letras y espacios"
+      },
+      "SPEAKER": {
+        "LABEL": "Ponente del Evento",
+        "DESC": "Introduce el nombre completo del ponente del evento.",
+        "ERROR": "El ponente es obligatorio y solo puede contener letras y espacios"
+      },
+      "ORGANIZER": {
+        "LABEL": "Empresa Organizadora",
+        "DESC": "Introduce el nombre de la empresa u organización que organiza el evento.",
+        "ERROR": "La empresa organizadora es obligatoria"
+      },
+      "TYPE": {
+        "LABEL": "Tipo de Evento",
+        "DESC": "Selecciona el tipo de evento.",
+        "ERROR": "Debes seleccionar un tipo de evento"
+      },
+      "DESCRIPTION": {
+        "LABEL": "Descripción",
+        "DESC": "Describe brevemente el evento.",
+        "ERROR": "La descripción es obligatoria"
+      }
+    },
+    "ACTIVITY_SERVICES": {
+      "TITLE": "Actividad y Servicios Relacionados",
+      "DESCRIPTION": "Selecciona la actividad relacionada y los servicios asociados al evento.",
+      "RELATED_ACTIVITY": {
+        "LABEL": "Actividad Relacionada",
+        "DESC": "Selecciona o añade una actividad relacionada con el evento.",
+        "ERROR": "Debes seleccionar o añadir una actividad relacionada"
+      },
+      "RELATED_SERVICES": {
+        "LABEL": "Servicios Relacionados",
+        "DESC": "Añade los servicios relacionados con el evento.",
+        "ERROR": "Debes añadir al menos un servicio",
+        "ADD_BUTTON": "Añadir Servicio",
+        "GRADE": {
+          "ERROR": "El grado es obligatorio para este servicio"
+        }
+      }
+    },
+    "DIGITAL_RESOURCES": {
+      "TITLE": "Recursos Digitales",
+      "DESCRIPTION": "Adjunta archivos y añade enlaces relacionados con el evento.",
+      "ATTACHED_FILES": {
+        "LABEL": "Archivos Adjuntos",
+        "DESCRIPTION": "Adjunta los archivos relacionados con el evento.",
+        "ACCEPTED_FORMATS": "Formatos aceptados: PDF, DOC, DOCX, PPT, PPTX",
+        "FILE_SELECTOR_HELP": "Haz clic aquí o arrastra archivos para adjuntarlos",
+        "ERROR": "Debes adjuntar al menos un archivo"
+      },
+      "RELATED_LINKS": {
+        "LABEL": "Enlaces Relacionados",
+        "DESCRIPTION": "Añade enlaces a recursos relacionados con el evento.",
+        "ERROR": {
+          "REQUIRE_LINK": "Debes añadir al menos un enlace",
+          "SELECT_TYPE": "Debes seleccionar un tipo de enlace",
+          "INVALID_URL_INSTAGRAM": "La URL de Instagram no es válida",
+          "INVALID_URL_X": "La URL de X no es válida",
+          "INVALID_URL_TIKTOK": "La URL de TikTok no es válida",
+          "INVALID_URL_YOUTUBE": "La URL de YouTube no es válida",
+          "INVALID_URL_LINKEDIN": "La URL de LinkedIn no es válida",
+          "COMPLETE_LINK": "Debes completar el enlace"
+        },
+        "ADD_BUTTON": "Añadir Enlace"
+      }
+    },
+    "LOCATION_TIME": {
+      "TITLE": "Ubicación y Horario",
+      "DESCRIPTION": "Indica dónde y cuándo tendrá lugar el evento.",
+      "DATE_PLACE": "Fecha y Lugar",
+      "EVENT_DATE": {
+        "LABEL": "Fecha del Evento",
+        "DESCRIPTION": "Selecciona la fecha del evento.",
+        "ERROR": "La fecha es obligatoria"
+      },
+      "TIME_TYPE": {
+        "LABEL": "Tipo de Horario",
+        "DESCRIPTION": "Selecciona el tipo de horario del evento.",
+        "UNIQUE_TIME": "Hora Única",
+        "FULL_SCHEDULE": "Horario Completo",
+        "HINT": "Selecciona si el evento tiene una hora única o un horario de inicio y fin",
+        "ERROR": "Debes seleccionar un tipo de horario"
+      },
+      "EVENT_TIME": {
+        "DESCRIPTION": "Selecciona la hora del evento.",
+        "ERROR": "La hora es obligatoria"
+      },
+      "START_TIME": {
+        "DESCRIPTION": "Selecciona la hora de inicio.",
+        "ERROR": "La hora de inicio es obligatoria"
+      },
+      "END_TIME": {
+        "DESCRIPTION": "Selecciona la hora de fin.",
+        "ERROR": "La hora de fin es obligatoria"
+      },
+      "EVENT_PLACE": {
+        "LABEL": "Lugar",
+        "DESCRIPTION": "Selecciona el lugar donde se realizará el evento.",
+        "HINT": "Elige el edificio o instalación",
+        "ERROR": "El lugar es obligatorio"
+      },
+      "CLASSROOM": {
+        "LABEL": "Aula",
+        "DESCRIPTION": "Indica el aula o espacio específico.",
+        "ERROR": "El aula es obligatoria"
+      },
+      "ADD_DATE_PLACE": "Añadir Fecha y Lugar"
+    },
+    "SUBMIT_BUTTON": "Finalizar",
+    "DIALOG": {
+      "EVENT_CREATED": {
+        "TITLE": "¡Evento Creado!",
+        "MESSAGE": "El evento ha sido creado exitosamente."
+      },
+      "ACCEPT": "Aceptar"
+    },
+    "URL_HELP": "Introduce la URL",
+    "URL_EXAMPLE": "Ej: https://www.ejemplo.com",
+    "DELETE_BUTTON": "Eliminar",
+    "ACTIVITY_ADD": "Añadir nueva actividad",
+    "ACTIVITY_CANCEL": "Cancelar",
+    "ACTIVITY_CONFIRM": "Confirmar",
+    "ACTIVITY_HELP": "Añade aquí la actividad"
+  },
+  "ROLES": {
+    "TITLE": "Gestión de Administradores",
+    "GO_BACK": "Volver atrás",
+    "ADD_ADMIN": {
+      "TITLE": "Agregar Nuevo Administrador",
+      "NAME": {
+        "LABEL": "Nombre",
+        "PLACEHOLDER": "Nombre del administrador"
+      },
+      "EMAIL": {
+        "LABEL": "Email",
+        "PLACEHOLDER": "Email del administrador"
+      },
+      "SUBMIT": "Agregar Administrador"
+    },
+    "ADMIN_LIST": {
+      "TITLE": "Administradores Actuales",
+      "SEARCH": {
+        "PLACEHOLDER": "Buscar administradores..."
+      },
+      "NO_RESULTS": "No se encontraron administradores",
+      "ADDED_ON": "Agregado",
+      "DELETE": "Eliminar"
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Confirmar Eliminación",
+      "MESSAGE": "¿Está seguro que desea eliminar al administrador {name}?",
+      "CONFIRM": "Eliminar",
+      "CANCEL": "Cancelar"
+    }
+  },
+  "DOWNLOAD_MODAL": {
+    "TITLE": "Opciones de descarga",
+    "FORMAT_SECTION": {
+      "TITLE": "Formato de descarga"
+    },
+    "FIELDS_SECTION": {
+      "TITLE": "Campos a incluir"
+    },
+    "FIELDS": {
+      "TITLE": "Título",
+      "SPEAKER": "Ponente",
+      "ORGANIZER": "Empresa organizadora",
+      "TYPE": "Tipo de evento",
+      "DATE": "Fecha",
+      "START_TIME": "Hora de inicio",
+      "END_TIME": "Hora de fin",
+      "PLACE": "Lugar",
+      "CLASSROOM": "Aula",
+      "DESCRIPTION": "Descripción",
+      "ACTIVITY": "Actividad relacionada",
+      "ATTACHMENTS": "Archivos adjuntos",
+      "LINKS": "Enlaces",
+      "SERVICES": "Servicios"
+    },
+    "BUTTONS": {
+      "DOWNLOAD": "Descargar seleccionado",
+      "CANCEL": "Cancelar"
+    }
+  },
+  "LINK_TYPES": {
+    "YouTube": "YouTube",
+    "Instagram": "Instagram",
+    "TikTok": "TikTok",
+    "Periódico": "Periódico",
+    "LinkedIn": "LinkedIn",
+    "X": "X",
+    "Otros": "Otros"
+  },
+  "ACTIVITIES": {
+    "Semana de la Ciencia": "Semana de la Ciencia"
+  },
+  "VICERRECTORADOS": {
+    "InvestigacionTransferencia": "Investigación y Transferencia",
+    "OrdenacionAcademica": "Ordenación Académica",
+    "FormacionPermanente": "Formación Permanente",
+    "ComunidadUniversitaria": "Comunidad Universitaria",
+    "InternacionalesCooperacion": "Internacionales y Cooperación"
+  }
+}

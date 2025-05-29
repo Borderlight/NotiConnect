@@ -1,26 +1,29 @@
-<div class="evento-card" (click)="verDetalles()" role="button" tabindex="0" [attr.aria-label]="'Ver detalles de ' + evento.titulo">
+<div class="evento-card" (click)="verDetalles()" role="button" tabindex="0" [attr.aria-label]="'EVENT_CARD.VIEW_DETAILS' | translate:{title: evento.titulo}">
   <div class="evento-imagen-container">
-    <img [src]="evento.imagen" [alt]="'Imagen del evento: ' + evento.titulo" class="evento-imagen">
+    <img [src]="evento.imagen" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
   </div>
   <div class="evento-contenido">
     <div class="evento-header">
-      <span class="evento-tipo">{{ evento.tipoEvento }}</span>
-      <button class="btn-eliminar" (click)="eliminarEvento($event)" aria-label="Eliminar evento">
-        <img src="/assets/evento/papelera.png" alt="Eliminar" class="icono-papelera">
+      <span class="evento-tipo">{{ 'EVENT_TYPES.' + evento.tipoEvento | translate }}</span>
+      <button class="btn-eliminar" (click)="eliminarEvento($event)" [attr.aria-label]="'EVENT_CARD.DELETE_EVENT' | translate">
+        <img src="/assets/evento/papelera.png" [alt]="'EVENT_CARD.DELETE' | translate" class="icono-papelera">
       </button>
     </div>
     <h2 class="evento-titulo">{{ evento.titulo }}</h2>
     <div class="evento-info">
       <p class="evento-ponente">
         <i class="fas fa-user"></i>
+        <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}:</span>
         {{ evento.ponente }}
       </p>
       <p class="evento-fecha">
         <i class="fas fa-calendar"></i>
-        {{ evento.fecha | date:'fullDate':'':'es' }}
+        <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}:</span>
+        {{ evento.fecha | date:'fullDate':'':currentLang }}
       </p>
       <p class="evento-hora">
         <i class="fas fa-clock"></i>
+        <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}:</span>
         {{ evento.horaInicio }}
         @if (evento.horaFin) {
           - {{ evento.horaFin }}
@@ -28,6 +31,7 @@
       </p>
       <p class="evento-lugar">
         <i class="fas fa-map-marker-alt"></i>
+        <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}:</span>
         {{ evento.lugar }}
         @if (evento.aula) {
           - {{ evento.aula }}

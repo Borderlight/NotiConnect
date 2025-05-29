@@ -1,17 +1,17 @@
 <header class="app-header" role="banner">
   <div class="header-content">
-    <button class="back-button" aria-label="Volver" (click)="volver()">
-      <img src="/assets/pantalla-principal/volver atras.png" alt="Volver atrás" class="icono-volver" />
+    <button class="back-button" [attr.aria-label]="'COMMON.BACK' | translate" (click)="volver()">
+      <img src="/assets/pantalla-principal/volver atras.png" [alt]="'COMMON.BACK' | translate" class="icono-volver" />
     </button>
     <div class="logo-upsa-container">
       <img src="/assets/pantalla-principal/logo_upsa.png"
-           alt="Logo de la Universidad Pontificia de Salamanca"
+           [alt]="'COMMON.UPSA_LOGO_ALT' | translate"
            class="logo-upsa">
     </div>
     <div class="center-content">
-      <button class="logo-noticonnect-btn" aria-label="Ir a la página principal de NotiConnect" (click)="navegarInicio()">
+      <button class="logo-noticonnect-btn" [attr.aria-label]="'COMMON.GO_HOME' | translate" (click)="navegarInicio()">
         <img src="/assets/pantalla-principal/NotiConnect logo.png"
-             alt="Logo de NotiConnect"
+             [alt]="'COMMON.NOTICONNECT_LOGO_ALT' | translate"
              class="logo-noticonnect" 
              style="cursor: pointer;"
              />
@@ -21,12 +21,12 @@
   
 </header>
 
-<main  class="app-main" role="main">
+<main class="app-main" role="main">
   <router-outlet></router-outlet>
 </main>
 
 <footer class="app-footer" role="contentinfo">
-  <p>&copy; 2025 NotiConnect - Todos los derechos reservados</p>
+  <p>{{ 'COMMON.COPYRIGHT' | translate }}</p>
 </footer>
 
 

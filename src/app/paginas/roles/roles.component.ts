@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { NavigationService } from '../../servicios/navigation.service';
 import { AdministradorService, Administrador } from '../../servicios/administrador.service';
 import { EliminarAdminDialogComponent } from '../../componentes/eliminar-admin-dialog/eliminar-admin-dialog.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-roles',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, EliminarAdminDialogComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, EliminarAdminDialogComponent, TranslateModule],
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.css']
 })
@@ -19,15 +20,22 @@ export class RolesComponent implements OnInit {
   terminoBusqueda: string = '';
   mostrarDialog: boolean = false;
   adminAEliminar: Administrador | null = null;
+  currentLang: string;
 
   constructor(
     private fb: FormBuilder,
     private navigationService: NavigationService,
-    private administradorService: AdministradorService
+    private administradorService: AdministradorService,
+    private translateService: TranslateService
   ) {
     this.formularioAdmin = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]]
+    });
+    
+    this.currentLang = this.translateService.currentLang || this.translateService.getDefaultLang();
+    this.translateService.onLangChange.subscribe(event => {
+      this.currentLang = event.lang;
     });
   }
 
