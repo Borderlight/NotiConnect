@@ -338,5 +338,12 @@
     "AULA_MAGNA": "Salle principale",
     "LIBRARY": "Bibliothèque",
     "ONLINE": "En ligne"
+  },
+  "EVENT_CARD": {
+    "SPEAKER": "Intervenant :",
+    "DATE": "Date :",
+    "TIME": "Heure :",
+    "LOCATION": "Lieu :",
+    "EVENT_IMAGE": "Image de l'événement :"
   }
 }
