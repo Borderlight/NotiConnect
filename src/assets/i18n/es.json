@@ -77,7 +77,11 @@
     "EVENTS_FOUND": "eventos encontrados",
     "NO_RESULTS": "No se encontraron eventos que coincidan con los criterios de búsqueda.",
     "DOWNLOAD": "Descargar",
-    "DELETE": "Borrar"
+    "DELETE": "Borrar",
+    "SELECT_EVENT_TYPE": "Selecciona el tipo de evento",
+    "ENTER_SPEAKER_NAME": "Introduce el nombre del ponente",
+    "SELECT_ACTIVITY": "Selecciona la actividad",
+    "SELECT_SERVICE": "Selecciona el servicio"
   },
   "EVENT_TYPES": {
     "EVENT": "Evento",
