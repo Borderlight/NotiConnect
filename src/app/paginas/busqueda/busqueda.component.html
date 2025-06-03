@@ -55,9 +55,21 @@
                   aria-labelledby="servicio-label"
                   class="filtro-select">
             <option value="">{{ 'FILTROS.TODOS_SERVICIOS' | translate }}</option>
-            @for (servicio of serviciosDisponibles; track servicio) {
-              <option [value]="servicio">{{ 'SERVICES.' + servicio | translate }}</option>
-            }
+            <optgroup label="{{ 'FORM.FACULTIES_LABEL' | translate }}">
+              @for (facultadObj of facultadesGrados; track facultadObj) {
+                <option [value]="facultadObj.facultad">{{ 'FACULTADES.' + facultadObj.facultad | translate }}</option>
+              }
+            </optgroup>
+            <optgroup label="{{ 'FORM.SERVICES_LABEL' | translate }}">
+              @for (servicio of serviciosFijos; track servicio) {
+                <option [value]="servicio">{{ servicio | translate }}</option>
+              }
+            </optgroup>
+            <optgroup label="{{ 'FORM.VICERRECTORADOS_LABEL' | translate }}">
+              @for (vic of vicerrectorados; track vic) {
+                <option [value]="vic">{{ 'VICERRECTORADOS.' + vic | translate }}</option>
+              }
+            </optgroup>
           </select>
         </div>
       </div>

@@ -47,6 +47,40 @@ export class BusquedaComponent implements OnInit {
   // Lugares disponibles
   lugares: { key: string, value: string }[] = [];
 
+  // Facultades, servicios y vicerrectorados para el filtro
+  facultadesGrados = [
+    { facultad: 'Facultad de Comunicación' },
+    { facultad: 'Facultad de Derecho Canónico' },
+    { facultad: 'Facultad de Educación' },
+    { facultad: 'Facultad de Enfermería y Fisioterapia Salus Infirmorum' },
+    { facultad: 'Facultad de Filosofía' },
+    { facultad: 'Facultad de Informática' },
+    { facultad: 'Facultad de Psicología' },
+    { facultad: 'Facultad de Teología' },
+    { facultad: 'Facultad de Ciencias de la Salud' },
+    { facultad: 'Facultad de Ciencias del Seguro, Jurídicas y de la Empresa' },
+    { facultad: 'Facultad de Ciencias Humanas y Sociales' }
+  ];
+  serviciosFijos: string[] = [
+    'SERVICES.GESTION_INVESTIGACION',
+    'SERVICES.UNIDAD_EMPLEABILIDAD',
+    'SERVICES.MOVILIDAD_INTERNACIONAL',
+    'SERVICES.CAPELLANIA',
+    'SERVICES.DEPORTES',
+    'SERVICES.CORO',
+    'SERVICES.ASISTENCIA_PSICOLOGICA',
+    'SERVICES.CULTURA_CIENTIFICA',
+    'SERVICES.UNIDAD_IGUALDAD',
+    'SERVICES.VOLUNTARIADO'
+  ];
+  vicerrectorados: string[] = [
+    'InvestigacionTransferencia',
+    'OrdenacionAcademica',
+    'FormacionPermanente',
+    'ComunidadUniversitaria',
+    'InternacionalesCooperacion'
+  ];
+
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
