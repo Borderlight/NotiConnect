@@ -133,6 +133,51 @@ option {
   color: var(--color-texto-principal);
 }
 
+/* Unificar estilos de selectores con formulario.component.css */
+:root {
+  --color-texto-principal: #000;
+  --color-texto-secundario: #1a1a1a;
+  --color-fondo: #fff;
+  --color-fondo-seccion: #f8f9fa;
+  --color-borde: #000;
+  --color-error: #c41425;
+  --color-fondo-input: #fff;
+  --color-texto-input: #000;
+}
+
+body.modo-oscuro, .modo-oscuro :root, .dark-mode, :host-context(.dark-mode) {
+  --color-texto-principal: #fff;
+  --color-texto-secundario: #e0e0e0;
+  --color-fondo: #181818;
+  --color-fondo-seccion: #232323;
+  --color-borde: #fff;
+  --color-fondo-input: #232323;
+  --color-texto-input: #fff;
+}
+
+select, .filtro-select, .campo-filtro select {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+  border: 2px solid var(--color-borde);
+}
+
+select option, .filtro-select option {
+  background-color: var(--color-fondo-input) !important;
+  color: var(--color-texto-input) !important;
+}
+
+select:disabled, select option:disabled {
+  color: #888 !important;
+  background-color: #222 !important;
+}
+
+/* Accesibilidad y enfoque */
+*:focus {
+  outline: 3px solid #005FCC;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(0, 95, 204, 0.2);
+}
+
 /* Soporte para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .filtros-section {

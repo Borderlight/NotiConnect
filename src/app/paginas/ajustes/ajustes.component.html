@@ -22,7 +22,9 @@
         <div class="ajuste-item">
             <label for="idioma" class="ajuste-titulo">{{ 'SETTINGS.SELECT_LANGUAGE' | translate }}</label>
             <div class="idioma-selector-container">
-                <span class="idioma-bandera">{{ getBanderaPorCodigo(idiomaSeleccionado) }}</span>
+                <img *ngIf="idiomaSeleccionado === 'es'" src="assets/idiomas/Flag_of_Spain.jpg" alt="Español" class="idioma-bandera" width="28" height="20">
+                <img *ngIf="idiomaSeleccionado === 'en'" src="assets/idiomas/Flag_of_the_United_Kingdom.jpg" alt="English" class="idioma-bandera" width="28" height="20">
+                <img *ngIf="idiomaSeleccionado === 'fr'" src="assets/idiomas/Flag_of_France.jpg" alt="Français" class="idioma-bandera" width="28" height="20">
                 <select id="idioma"
                         [(ngModel)]="idiomaSeleccionado"
                         (change)="cambiarIdioma($event)"
@@ -30,7 +32,7 @@
                         [attr.aria-label]="'SETTINGS.SELECT_LANGUAGE' | translate">
                     @for (idioma of idiomas; track idioma.codigo) {
                         <option [value]="idioma.codigo">
-                            {{ idioma.bandera }} {{ idioma.nombre | translate }}
+                            {{ idioma.nombre | translate }}
                         </option>
                     }
                 </select>
