@@ -225,17 +225,17 @@
                                 [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
                                 [attr.aria-labelledby]="'servicio-' + i + '-label'">
                             <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
-                            <optgroup label="Facultades">
+                            <optgroup label="{{ 'FORM.FACULTIES_LABEL' | translate }}">
                                 @for (facultadObj of facultadesGrados; track facultadObj) {
-                                    <option [value]="facultadObj.facultad">{{ facultadObj.facultad }}</option>
+                                    <option [value]="facultadObj.facultad">{{ 'FACULTADES.' + facultadObj.facultad | translate }}</option>
                                 }
                             </optgroup>
-                            <optgroup label="Servicios">
+                            <optgroup label="{{ 'FORM.SERVICES_LABEL' | translate }}">
                                 @for (servicio of serviciosFijos; track servicio) {
-                                    <option [value]="servicio">{{ 'SERVICES.' + servicio | translate }}</option>
+                                    <option [value]="servicio">{{ servicio | translate }}</option>
                                 }
                             </optgroup>
-                            <optgroup label="Vicerrectorados">
+                            <optgroup label="{{ 'FORM.VICERRECTORADOS_LABEL' | translate }}">
                                 @for (vic of vicerrectorados; track vic) {
                                     <option [value]="vic">{{ 'VICERRECTORADOS.' + vic | translate }}</option>
                                 }
@@ -610,13 +610,13 @@
                                     [attr.aria-describedby]="'lugar-' + i + '-desc lugar-' + i + '-hint lugar-' + i + '-error'"
                                     aria-required="true"
                                     [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched">
-                                <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
-                                <optgroup label="Espacios Presenciales">
+                                <option value="">{{ 'LOCATIONS.SELECT_OPTION' | translate }}</option>
+                                <optgroup [label]="'LOCATIONS.PRESENTIAL_SPACES' | translate">
                                     @for (lugarPresencial of lugaresPresenciales; track lugarPresencial) {
                                         <option [value]="lugarPresencial">{{ 'LOCATIONS.' + lugarPresencial | translate }}</option>
                                     }
                                 </optgroup>
-                                <optgroup label="Espacios Virtuales">
+                                <optgroup [label]="'LOCATIONS.VIRTUAL_SPACES' | translate">
                                     @for (lugarVirtual of lugaresVirtuales; track lugarVirtual) {
                                         <option [value]="lugarVirtual">{{ 'LOCATIONS.' + lugarVirtual | translate }}</option>
                                     }
@@ -709,4 +709,3 @@
         </dialog>
     </div>
 }
-

@@ -536,16 +536,16 @@ export class FormularioComponent {
 
   // Listas fijas para selects traducibles
   serviciosFijos: string[] = [
-    'Gestión de la Investigación y Transferencia',
-    'Unidad de Empleabilidad y Prácticas',
-    'Movilidad Internacional',
-    'Capellanía',
-    'Deportes',
-    'Coro',
-    'Servicio de Asistencia Psicológica Sanitaria',
-    'Unidad de Cultura Científica y de la Innovación',
-    'Unidad de Igualdad',
-    'Voluntariado'
+    'SERVICES.GESTION_INVESTIGACION',
+    'SERVICES.UNIDAD_EMPLEABILIDAD',
+    'SERVICES.MOVILIDAD_INTERNACIONAL',
+    'SERVICES.CAPELLANIA',
+    'SERVICES.DEPORTES',
+    'SERVICES.CORO',
+    'SERVICES.ASISTENCIA_PSICOLOGICA',
+    'SERVICES.CULTURA_CIENTIFICA',
+    'SERVICES.UNIDAD_IGUALDAD',
+    'SERVICES.VOLUNTARIADO'
   ];
   vicerrectorados: string[] = [
     'InvestigacionTransferencia',
@@ -555,14 +555,14 @@ export class FormularioComponent {
     'InternacionalesCooperacion'
   ];
   lugaresPresenciales: string[] = [
-    'Facultad',
-    'AulaDeGrados',
+    'FACULTY',
+    'AULA_MAGNA',
     'HUBdeInnovacion',
-    'BibliotecaVargasZuniga',
+    'LIBRARY',
     'AuditorioJuanPablo'
   ];
   lugaresVirtuales: string[] = [
-    'Online'
+    'ONLINE'
   ];
 
   // Al cambiar de idioma, volver a unir las actividades personalizadas y aplicar traducción si existe

@@ -99,16 +99,16 @@
     "VISITS_OR_EXCURSIONS": "Visits or Excursions"
   },
   "SERVICES": {
-    "Gestión de la Investigación y Transferencia": "Research and Transfer Management",
-    "Unidad de Empleabilidad y Prácticas": "Employability and Internships Unit",
-    "Movilidad Internacional": "International Mobility",
-    "Capellanía": "Chaplaincy",
-    "Deportes": "Sports",
-    "Coro": "Choir",
-    "Servicio de Asistencia Psicológica Sanitaria": "Psychological Health Assistance Service",
-    "Unidad de Cultura Científica y de la Innovación": "Scientific Culture and Innovation Unit",
-    "Unidad de Igualdad": "Equality Unit",
-    "Voluntariado": "Volunteering"
+    "GESTION_INVESTIGACION": "Research and Transfer Management",
+    "UNIDAD_EMPLEABILIDAD": "Employability and Internships Unit",
+    "MOVILIDAD_INTERNACIONAL": "International Mobility",
+    "CAPELLANIA": "Chaplaincy",
+    "DEPORTES": "Sports",
+    "CORO": "Choir",
+    "ASISTENCIA_PSICOLOGICA": "Psychological Health Assistance Service",
+    "CULTURA_CIENTIFICA": "Scientific Culture and Innovation Unit",
+    "UNIDAD_IGUALDAD": "Equality Unit",
+    "VOLUNTARIADO": "Volunteering"
   },
   "EVENT_DETAILS": {
     "EVENT_IMAGE": "Event image:",
@@ -349,7 +349,7 @@
   },
   "VICERRECTORADOS": {
     "InvestigacionTransferencia": "Research and Transfer",
-    "OrdenacionAcademica": "Academic Management",
+    "OrdenacionAcademica": "Academic Organization",
     "FormacionPermanente": "Continuing Education",
     "ComunidadUniversitaria": "University Community",
     "InternacionalesCooperacion": "International and Cooperation"
@@ -358,7 +358,12 @@
     "FACULTY": "Faculty",
     "AULA_MAGNA": "Main Hall",
     "LIBRARY": "Library",
-    "ONLINE": "Online"
+    "ONLINE": "Online",
+    "SELECT_OPTION": "Select an option",
+    "PRESENTIAL_SPACES": "Presential Spaces",
+    "VIRTUAL_SPACES": "Virtual Spaces",
+    "HUBdeInnovacion": "Innovation Hub",
+    "AuditorioJuanPablo": "Juan Pablo Auditorium"
   },
   "EVENT_CARD": {
     "SPEAKER": "Speaker:",
@@ -366,5 +371,19 @@
     "TIME": "Time:",
     "LOCATION": "Location:",
     "EVENT_IMAGE": "Event Image:"
+  },
+  "FACULTIES": {
+    "Facultad de Ciencias de la Salud": "Faculty of Health Sciences",
+    "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa": "Faculty of Insurance, Legal and Business Sciences",
+    "Facultad de Ciencias Humanas y Sociales": "Faculty of Humanities and Social Sciences",
+    "Facultad de Comunicación": "Faculty of Communication",
+    "Facultad de Derecho Canónico": "Faculty of Canon Law",
+    "Facultad de Educación": "Faculty of Education",
+    "Facultad de Enfermería y Fisioterapia Salus Infirmorum": "Faculty of Nursing and Physiotherapy Salus Infirmorum",
+    "Facultad de Informática": "Faculty of Informatics",
+    "Facultad de Psicología": "Faculty of Psychology",
+    "Facultad de Teología": "Faculty of Theology"
   }
+  
+  
 }

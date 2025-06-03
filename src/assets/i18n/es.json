@@ -99,16 +99,16 @@
     "VISITS_OR_EXCURSIONS": "Visitas o Excursiones"
   },
   "SERVICES": {
-    "Gestión de la Investigación y Transferencia": "Gestión de la Investigación y Transferencia",
-    "Unidad de Empleabilidad y Prácticas": "Unidad de Empleabilidad y Prácticas",
-    "Movilidad Internacional": "Movilidad Internacional",
-    "Capellanía": "Capellanía",
-    "Deportes": "Deportes",
-    "Coro": "Coro",
-    "Servicio de Asistencia Psicológica Sanitaria": "Servicio de Asistencia Psicológica Sanitaria",
-    "Unidad de Cultura Científica y de la Innovación": "Unidad de Cultura Científica y de la Innovación",
-    "Unidad de Igualdad": "Unidad de Igualdad",
-    "Voluntariado": "Voluntariado"
+    "GESTION_INVESTIGACION": "Gestión de la Investigación y Transferencia",
+    "UNIDAD_EMPLEABILIDAD": "Unidad de Empleabilidad y Prácticas",
+    "MOVILIDAD_INTERNACIONAL": "Movilidad Internacional",
+    "CAPELLANIA": "Capellanía",
+    "DEPORTES": "Deportes",
+    "CORO": "Coro",
+    "ASISTENCIA_PSICOLOGICA": "Servicio de Asistencia Psicológica Sanitaria",
+    "CULTURA_CIENTIFICA": "Unidad de Cultura Científica y de la Innovación",
+    "UNIDAD_IGUALDAD": "Unidad de Igualdad",
+    "VOLUNTARIADO": "Voluntariado"
   },
   "EVENT_DETAILS": {
     "EVENT_IMAGE": "Imagen del evento:",
@@ -272,7 +272,10 @@
     "ACTIVITY_ADD": "Añadir nueva actividad",
     "ACTIVITY_CANCEL": "Cancelar",
     "ACTIVITY_CONFIRM": "Confirmar",
-    "ACTIVITY_HELP": "Añade aquí la actividad"
+    "ACTIVITY_HELP": "Añade aquí la actividad",
+    "FACULTIES_LABEL": "Facultades",
+    "SERVICES_LABEL": "Servicios",
+    "VICERRECTORADOS_LABEL": "Vicerrectorados"
   },
   "ROLES": {
     "TITLE": "Gestión de Administradores",
@@ -357,7 +360,12 @@
     "FACULTY": "Facultad",
     "AULA_MAGNA": "Aula Magna",
     "LIBRARY": "Biblioteca",
-    "ONLINE": "En línea"
+    "ONLINE": "En línea",
+    "SELECT_OPTION": "Selecciona una opción",
+    "PRESENTIAL_SPACES": "Espacios Presenciales",
+    "VIRTUAL_SPACES": "Espacios Virtuales",
+    "HUBdeInnovacion": "Hub de Innovación",
+    "AuditorioJuanPablo": "Auditorio Juan Pablo"
   },
   "EVENT_CARD": {
     "SPEAKER": "Ponente:",
@@ -365,5 +373,20 @@
     "TIME": "Hora:",
     "LOCATION": "Ubicación:",
     "EVENT_IMAGE": "Imagen del evento:"
-  }
+  },
+  "FACULTADES": {
+    "Facultad de Ciencias de la Salud": "Facultad de Ciencias de la Salud",
+    "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
+    "Facultad de Ciencias Humanas y Sociales": "Facultad de Ciencias Humanas y Sociales",
+    "Facultad de Comunicación": "Facultad de Comunicación",
+    "Facultad de Derecho Canónico": "Facultad de Derecho Canónico",
+    "Facultad de Educación": "Facultad de Educación",
+    "Facultad de Enfermería y Fisioterapia Salus Infirmorum": "Facultad de Enfermería y Fisioterapia Salus Infirmorum",
+    "Facultad de Informática": "Facultad de Informática",
+    "Facultad de Psicología": "Facultad de Psicología",
+    "Facultad de Teología": "Facultad de Teología"
+  },
+  "FACULTIES_LABEL": "Facultades",
+  "SERVICES_LABEL": "Servicios",
+  "VICERRECTORADOS_LABEL": "Vicerrectorados"
 }

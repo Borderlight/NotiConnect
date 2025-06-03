@@ -99,16 +99,16 @@
     "VISITS_OR_EXCURSIONS": "Visites ou Excursions"
   },
   "SERVICES": {
-    "Gestión de la Investigación y Transferencia": "Gestion de la Recherche et du Transfert",
-    "Unidad de Empleabilidad y Prácticas": "Unité d'Employabilité et de Stages",
-    "Movilidad Internacional": "Mobilité Internationale",
-    "Capellanía": "Aumônerie",
-    "Deportes": "Sports",
-    "Coro": "Chorale",
-    "Servicio de Asistencia Psicológica Sanitaria": "Service d'Assistance Psychologique et Sanitaire",
-    "Unidad de Cultura Científica y de la Innovación": "Unité de Culture Scientifique et d'Innovation",
-    "Unidad de Igualdad": "Unité d'Égalité",
-    "Voluntariado": "Bénévolat"
+    "GESTION_INVESTIGACION": "Gestion de la Recherche et du Transfert",
+    "UNIDAD_EMPLEABILIDAD": "Unité d'Employabilité et de Stages",
+    "MOVILIDAD_INTERNACIONAL": "Mobilité Internationale",
+    "CAPELLANIA": "Aumônerie",
+    "DEPORTES": "Sports",
+    "CORO": "Chorale",
+    "ASISTENCIA_PSICOLOGICA": "Service d'Assistance Psychologique",
+    "CULTURA_CIENTIFICA": "Unité de Culture Scientifique et d'Innovation",
+    "UNIDAD_IGUALDAD": "Unité d'Égalité",
+    "VOLUNTARIADO": "Bénévolat"
   },
   "EVENT_DETAILS": {
     "EVENT_IMAGE": "Image de l'événement :",
@@ -264,7 +264,10 @@
         "MESSAGE": "L'événement a été créé avec succès."
       },
       "ACCEPT": "Accepter"
-    }
+    },
+    "FACULTIES_LABEL": "Facultés",
+    "SERVICES_LABEL": "Services",
+    "VICERRECTORADOS_LABEL": "Vice-rectorats"
   },
   "ROLES": {
     "TITLE": "Gestion des Administrateurs",
@@ -328,7 +331,7 @@
   },
   "VICERRECTORADOS": {
     "InvestigacionTransferencia": "Recherche et Transfert",
-    "OrdenacionAcademica": "Gestion Académique",
+    "OrdenacionAcademica": "Organisation Académique",
     "FormacionPermanente": "Formation Continue",
     "ComunidadUniversitaria": "Communauté Universitaire",
     "InternacionalesCooperacion": "International et Coopération"
@@ -337,7 +340,12 @@
     "FACULTY": "Faculté",
     "AULA_MAGNA": "Salle principale",
     "LIBRARY": "Bibliothèque",
-    "ONLINE": "En ligne"
+    "ONLINE": "En ligne",
+    "SELECT_OPTION": "Sélectionnez une option",
+    "PRESENTIAL_SPACES": "Espaces Présentiels",
+    "VIRTUAL_SPACES": "Espaces Virtuels",
+    "HUBdeInnovacion": "Hub d'Innovation",
+    "AuditorioJuanPablo": "Auditorium Juan Pablo"
   },
   "EVENT_CARD": {
     "SPEAKER": "Intervenant :",
@@ -345,5 +353,20 @@
     "TIME": "Heure :",
     "LOCATION": "Lieu :",
     "EVENT_IMAGE": "Image de l'événement :"
-  }
+  },
+  "FACULTES": {
+    "Facultad de Ciencias de la Salud": "Faculté des Sciences de la Santé",
+    "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa": "Faculté des Sciences de l'Assurance, Juridiques et Commerciales",
+    "Facultad de Ciencias Humanas y Sociales": "Faculté des Sciences Humaines et Sociales",
+    "Facultad de Comunicación": "Faculté de Communication",
+    "Facultad de Derecho Canónico": "Faculté de Droit Canonique",
+    "Facultad de Educación": "Faculté d'Éducation",
+    "Facultad de Enfermería y Fisioterapia Salus Infirmorum": "Faculté d'Infirmiers et de Physiothérapie Salus Infirmorum",
+    "Facultad de Informática": "Faculté d'Informatique",
+    "Facultad de Psicología": "Faculté de Psychologie",
+    "Facultad de Teología": "Faculté de Théologie"
+  },
+  "FACULTIES_LABEL": "Facultés",
+  "SERVICES_LABEL": "Services",
+  "VICERRECTORADOS_LABEL": "Vice-rectorats"
 }
