@@ -208,13 +208,11 @@
                         <button type="button" 
                             (click)="eliminarServicio(i)"
                             class="btn-eliminar"
-                            [attr.aria-label]="'Eliminar servicio ' + (i + 1)"
-                            aria-describedby="eliminar-desc">
+                            [attr.aria-label]="'Eliminar servicio ' + (i + 1)">
                             <span class="icono-eliminar" aria-hidden="true">×</span>
                             <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
                         </button>
                     </div>
-                    <p id="eliminar-desc" class="visually-hidden">Al pulsar se eliminará este servicio</p>
 
                     <div class="select-container">
                         <select [id]="'servicio-' + i" 
