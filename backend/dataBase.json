@@ -1,0 +1,70 @@
+[
+  {
+    "imagen": "",
+    "titulo": "Jornada de Innovación",
+    "ponente": "Dra. Ana Pérez",
+    "empresaOrganizadora": "Innovatech",
+    "tipoEvento": "Conferencia",
+    "descripcion": "Una jornada sobre innovación tecnológica.",
+    "adjuntos": ["https://ejemplo.com/programa.pdf"],
+    "servicios": [
+      { "servicios": "Facultad de Ingeniería", "grado": "Grado en Informática" },
+      { "servicios": "Biblioteca" }
+    ],
+    "enlaces": [
+      { "tipo": "YouTube", "url": "https://youtube.com/ejemplo" },
+      { "tipo": "Instagram", "url": "https://instagram.com/ejemplo" }
+    ],
+    "actividad": "Mesa redonda",
+    "ubicaciones": [
+      { "lugar": "Facultad de Ingeniería", "aula": "A101", "fecha": "2025-06-10T10:00:00.000Z", "tipoHorario": "hora", "horaInicio": "10:00", "horaFin": "12:00" }
+    ],
+    "fecha": "2025-06-10T00:00:00.000Z",
+    "lugar": "Facultad de Ingeniería",
+    "aula": "A101",
+    "horaInicio": "10:00",
+    "horaFin": "12:00"
+  },
+  {
+    "imagen": "",
+    "titulo": "Seminario básico",
+    "ponente": "",
+    "empresaOrganizadora": "",
+    "tipoEvento": "Seminario",
+    "descripcion": "Evento solo con lo esencial.",
+    "adjuntos": [],
+    "servicios": [],
+    "enlaces": [],
+    "actividad": "Seminario",
+    "ubicaciones": [],
+    "fecha": "2025-06-15T00:00:00.000Z",
+    "lugar": "Aula Magna",
+    "aula": "",
+    "horaInicio": "12:00",
+    "horaFin": "13:00"
+  },
+  {
+    "imagen": "",
+    "titulo": "Taller de LinkedIn",
+    "ponente": "Juan López",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "Taller",
+    "descripcion": "Aprende a mejorar tu perfil.",
+    "adjuntos": [],
+    "servicios": [
+      { "servicios": "Facultad de Economía" }
+    ],
+    "enlaces": [
+      { "tipo": "LinkedIn", "url": "https://linkedin.com/ejemplo" }
+    ],
+    "actividad": "Taller",
+    "ubicaciones": [
+      { "lugar": "Facultad de Economía", "aula": "B202", "fecha": "2025-06-20T10:00:00.000Z", "tipoHorario": "horario", "horaInicio": "10:00", "horaFin": "12:00" }
+    ],
+    "fecha": "2025-06-20T00:00:00.000Z",
+    "lugar": "Facultad de Economía",
+    "aula": "B202",
+    "horaInicio": "10:00",
+    "horaFin": "12:00"
+  }
+]
