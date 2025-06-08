@@ -514,7 +514,7 @@
 
                     <div class="campo-form">
                         <label [id]="'tipo-horario-' + i + '-label'">{{ 'FORM.LOCATION_TIME.TIME_TYPE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
-                        <p [id]="'tipo-horario-' + i + '-desc'" class="campo-descripcion">
+                        <p [id]="'tipo-horario-' + i + '-desc'" class="campo-descripcion visually-hidden" aria-hidden="true" tabindex="-1">
                             {{ 'FORM.LOCATION_TIME.TIME_TYPE.DESCRIPTION' | translate }}
                         </p>
                         <div class="tipo-horario-selector" 
@@ -544,9 +544,7 @@
                                 <label [for]="'horarioCompleto-' + i" >{{ 'FORM.LOCATION_TIME.TIME_TYPE.FULL_SCHEDULE' | translate }}</label>
                             </div>
                         </div>
-                        <p [id]="'tipo-horario-' + i + '-hint'" class="campo-ayuda">
-                            {{ 'FORM.LOCATION_TIME.TIME_TYPE.HINT' | translate }}
-                        </p>
+                       
                         @if (ubicacion.get('tipoHorario')?.invalid && ubicacion.get('tipoHorario')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'tipo-horario-' + i + '-error'" 
@@ -598,7 +596,7 @@
 
                     <div class="campo-form lugar-section" role="group" [attr.aria-labelledby]="'lugar-' + i + '-label'">
                         <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">{{ 'FORM.LOCATION_TIME.EVENT_PLACE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
-                        <p [id]="'lugar-' + i + '-desc'" class="campo-descripcion">
+                        <p [id]="'lugar-' + i + '-desc'" class="campo-descripcion visually-hidden">
                             {{ 'FORM.LOCATION_TIME.EVENT_PLACE.DESCRIPTION' | translate }}
                             <span class="campo-requerido">Campo obligatorio</span>
                         </p>
@@ -621,9 +619,7 @@
                                 </optgroup>
                             </select>
                         </div>
-                        <p [id]="'lugar-' + i + '-hint'" class="campo-ayuda">
-                            {{ 'FORM.LOCATION_TIME.EVENT_PLACE.HINT' | translate }}
-                        </p>
+                       
                         @if (ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'lugar-' + i + '-error'" 
@@ -636,7 +632,7 @@
                             <span [id]="'lugar-' + i + '-error'" class="visually-hidden"></span>
                         }
 
-                        @if (ubicacion.get('lugar')?.value === 'Facultad') {
+                        @if (ubicacion.get('lugar')?.value === 'FACULTY') {
                             <div class="campo-aula">
                                 <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">{{ 'FORM.LOCATION_TIME.CLASSROOM.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                 <p [id]="'aula-' + i + '-desc'" class="campo-descripcion">

@@ -110,6 +110,8 @@ export class BusquedaComponent implements OnInit {
         { key: 'LOCATIONS.FACULTY', value: 'Facultad' },
         { key: 'LOCATIONS.AULA_MAGNA', value: 'Aula Magna' },
         { key: 'LOCATIONS.LIBRARY', value: 'Biblioteca' },
+        { key: 'LOCATIONS.HUBdeInnovacion', value: 'Hub de Innovación' },
+        { key: 'LOCATIONS.AuditorioJuanPablo', value: 'Auditorio Juan Pablo' },
         { key: 'LOCATIONS.ONLINE', value: 'Online' }
       ];
     };

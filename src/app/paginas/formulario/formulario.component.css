@@ -489,3 +489,69 @@ body.modo-oscuro .radio-option label {
 .align-left {
   text-align: left;
 }
+
+/* Diálogo de confirmación centrado y fondo oscurecido para <dialog> */
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-backdrop dialog {
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border: none;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  background: var(--color-fondo, #fff);
+  color: var(--color-texto-principal, #000);
+  min-width: 300px;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog-backdrop dialog h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.dialog-backdrop dialog p {
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.dialog-backdrop dialog form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-backdrop dialog button {
+  background: #005FCC;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dialog-backdrop dialog button:hover,
+.dialog-backdrop dialog button:focus {
+  background: #003e8a;
+}

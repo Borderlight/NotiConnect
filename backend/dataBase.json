@@ -8,7 +8,7 @@
     "descripcion": "Una jornada sobre innovación tecnológica.",
     "adjuntos": ["https://ejemplo.com/programa.pdf"],
     "servicios": [
-      { "servicios": "Facultad de Ingeniería", "grado": "Grado en Informática" },
+      { "servicios": "Facultad", "grado": "Grado en Informática" },
       { "servicios": "Biblioteca" }
     ],
     "enlaces": [
@@ -21,7 +21,7 @@
         "fecha": "2025-06-10T10:00:00.000Z",
         "tipoHorario": "hora",
         "hora": "10:00",
-        "lugar": "Facultad de Ingeniería",
+        "lugar": "Facultad",
         "aula": "A101"
       },
       {
@@ -62,7 +62,7 @@
     "descripcion": "Aprende a mejorar tu perfil.",
     "adjuntos": [],
     "servicios": [
-      { "servicios": "Facultad de Economía" }
+      { "servicios": "Facultad" }
     ],
     "enlaces": [
       { "tipo": "LinkedIn", "url": "https://linkedin.com/ejemplo" }
@@ -74,7 +74,7 @@
         "tipoHorario": "horario",
         "horaInicio": "10:00",
         "horaFin": "12:00",
-        "lugar": "Facultad de Economía",
+        "lugar": "Facultad",
         "aula": "B202"
       },
       {
