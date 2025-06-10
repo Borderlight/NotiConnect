@@ -184,7 +184,7 @@
       "ATTACHED_FILES": {
         "LABEL": "Attached Files",
         "DESCRIPTION": "Attach files related to the event.",
-        "ACCEPTED_FORMATS": "Accepted formats: PDF, DOC, DOCX, PPT, PPTX",
+        "ACCEPTED_FORMATS": "Accepted formats: JPG, JPEG, PNG, GIF, BMP, WEBP",
         "FILE_SELECTOR_HELP": "Click here or drag files to attach",
         "ERROR": "You must attach at least one file"
       },

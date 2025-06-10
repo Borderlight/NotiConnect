@@ -8,18 +8,18 @@
 .logo-upsa {
     background: #fff;
     border-radius: 12px;
-    padding: 8px;
+    padding: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: 36px; /* Reducido */
+    width: auto;
 }
 .logo-noticonnect {
-  max-width: 220px;
-  width: 40vw;
-  min-width: 120px;
-  height: auto;
+  height: 36px; /* Reducido */
+  width: auto;
   display: block;
   background: #fff;
   border-radius: 16px;
-  padding: 6px 12px;
+  padding: 4px 8px; /* Reducido */
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   margin: 0 auto;
 }
@@ -33,7 +33,7 @@
 /* Header */
 .app-header {
   background-color: var(--color-fondo);
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem; /* Reducido */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 120px;
+  min-height: 70px; /* Reducido */
 }
 
 /* UPSA logo in top-left, solo decorativo */
@@ -63,18 +63,19 @@
 .logo-upsa {
   background: #fff;
   border-radius: 12px;
-  padding: 8px;
+  padding: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  height: 48px; /* Más pequeño */
+  height: 36px; /* Reducido */
   width: auto;
 }
 
 /* Contenedor central para logo y título */
 .center-content {
   flex: 1;
+  flex-direction: column;
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .logo-container {
@@ -230,4 +231,14 @@ h1 {
 
 .selector-idioma:hover {
   border-color: var(--color-primario);
+}
+
+/* Estilos para el texto 'NotiConnect' */
+.noticonnect-label {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 0.1rem;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
 }

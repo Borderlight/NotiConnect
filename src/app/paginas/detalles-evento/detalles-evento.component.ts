@@ -37,14 +37,20 @@ export class DetallesEventoComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const eventoEncontrado = this.eventoService.getEventoPorId(id);
-      if (eventoEncontrado) {
-        this.evento = eventoEncontrado;
-      } else {
-        this.router.navigate(['/busqueda']);
-      }
+      this.eventoService.getEventoPorId(id).subscribe({
+        next: (evento) => {
+          this.evento = evento;
+        },
+        error: () => {
+          this.router.navigate(['/busqueda']);
+        }
+      });
     } else {
       this.router.navigate(['/busqueda']);
     }
+  }
+
+  esImagen(adjunto: string): boolean {
+    return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(adjunto);
   }
 }

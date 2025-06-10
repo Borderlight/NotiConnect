@@ -1,67 +1,243 @@
-const Evento = require('../models/evento');
+const fs = require('fs');
+const path = require('path');
+const DATA_BASE_PATH = path.join(__dirname, '../dataBase.json');
 
-// Obtener todos los eventos
+// Obtener todos los eventos con filtros
 const getEventos = async (req, res) => {
-    try {
-        const eventos = await Evento.find();
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al leer dataBase.json' });
+        }
+        try {
+            let eventos = JSON.parse(data);
+            const {
+                tipoEvento,
+                ponente,
+                actividad,
+                servicio,
+                fecha,
+                horaInicio,
+                horaFin,
+                lugar
+            } = req.query;
+
+            // Solo aplicar filtro si el valor es real (no vacío, no "Todos")
+            if (tipoEvento && tipoEvento !== '' && tipoEvento !== 'Todos') {
+                eventos = eventos.filter(ev => ev.tipoEvento === tipoEvento);
+            }
+            if (ponente && ponente !== '' && ponente !== 'Todos') {
+                eventos = eventos.filter(ev => ev.ponente && ev.ponente.toLowerCase().includes(ponente.toLowerCase()));
+            }
+            if (actividad && actividad !== '' && actividad !== 'Todos') {
+                eventos = eventos.filter(ev => ev.actividad === actividad);
+            }
+            if (servicio && servicio !== '' && servicio !== 'Todos') {
+                eventos = eventos.filter(ev => Array.isArray(ev.servicios) && ev.servicios.some(s => s.servicios === servicio));
+            }
+
+            // Filtros sobre ubicaciones
+            if ((fecha && fecha !== '' && fecha !== 'Todos') ||
+                (horaInicio && horaInicio !== '' && horaInicio !== 'Todos') ||
+                (horaFin && horaFin !== '' && horaFin !== 'Todos') ||
+                (lugar && lugar !== '' && lugar !== 'Todos')) {
+                eventos = eventos.filter(ev => {
+                    if (!Array.isArray(ev.ubicaciones)) return false;
+                    return ev.ubicaciones.some(ub => {
+                        let cumple = true;
+                        if (fecha && fecha !== '' && fecha !== 'Todos') {
+                            if (!ub.fecha) return false;
+                            const fechaEvento = new Date(ub.fecha);
+                            const fechaFiltro = new Date(fecha);
+                            cumple = cumple && (fechaEvento.toDateString() === fechaFiltro.toDateString());
+                        }
+                        if (horaInicio && horaInicio !== '' && horaInicio !== 'Todos') {
+                            if (!ub.horaInicio && !ub.hora) return false;
+                            const horaEv = ub.horaInicio || ub.hora;
+                            cumple = cumple && (horaEv && horaEv.substring(0,5) === horaInicio.substring(0,5));
+                        }
+                        if (horaFin && horaFin !== '' && horaFin !== 'Todos') {
+                            if (!ub.horaFin) return false;
+                            cumple = cumple && (ub.horaFin.substring(0,5) === horaFin.substring(0,5));
+                        }
+                        if (lugar && lugar !== '' && lugar !== 'Todos') {
+                            cumple = cumple && (ub.lugar === lugar);
+                        }
+                        return cumple;
+                    });
+                });
+            }
+            res.status(200).json(eventos);
+        } catch (e) {
+            res.status(500).json({ message: 'Error al parsear dataBase.json' });
+        }
+    });
 };
 
 // Obtener un evento por ID
 const getEventoById = async (req, res) => {
-    try {
-        const evento = await Evento.findById(req.params.id);
-        if (!evento) {
-            return res.status(404).json({ message: 'Evento no encontrado' });
+    fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al leer dataBase.json' });
         }
-        res.status(200).json(evento);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        try {
+            const eventos = JSON.parse(data);
+            const evento = eventos.find(ev => ev._id == req.params.id || (ev._id && ev._id.$oid === req.params.id));
+            if (!evento) {
+                return res.status(404).json({ message: 'Evento no encontrado' });
+            }
+            res.status(200).json(evento);
+        } catch (e) {
+            res.status(500).json({ message: 'Error al parsear dataBase.json' });
+        }
+    });
 };
 
 // Crear nuevo evento
 const createEvento = async (req, res) => {
-    const evento = new Evento(req.body);
-    try {
-        const nuevoEvento = await evento.save();
-        res.status(201).json(nuevoEvento);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+    console.log('=== DEBUGGING createEvento ===');
+    console.log('req.body:', req.body);
+    console.log('req.files:', req.files);
+    
+    fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
+        let eventos = [];
+        if (!err && data) {
+            try {
+                eventos = JSON.parse(data);
+            } catch (e) { eventos = []; }
+        }
+
+        // Generar un _id único
+        const _id = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+        
+        // Crear el nuevo evento con campos obligatorios inicializados
+        const nuevoEvento = {
+            _id,
+            titulo: req.body.titulo || '',
+            ponente: req.body.ponente || '',
+            empresaOrganizadora: req.body.empresaOrganizadora || '',
+            tipoEvento: req.body.tipoEvento || '',
+            descripcion: req.body.descripcion || '',
+            servicios: [],
+            enlaces: [],
+            adjuntos: [],
+            imagen: '',
+            actividad_relacionada: req.body.actividad_relacionada || '',
+            ubicaciones: []
+        };
+        
+        console.log('nuevoEvento inicial:', nuevoEvento);
+
+        // Parsear campos que vienen como string pero son arrays/objetos
+        try {
+            if (req.body.servicios) {
+                nuevoEvento.servicios = typeof req.body.servicios === 'string' ? 
+                    JSON.parse(req.body.servicios) : req.body.servicios;
+            }
+            
+            if (req.body.enlaces) {
+                nuevoEvento.enlaces = typeof req.body.enlaces === 'string' ? 
+                    JSON.parse(req.body.enlaces) : req.body.enlaces;
+            }
+            
+            if (req.body.ubicaciones) {
+                nuevoEvento.ubicaciones = typeof req.body.ubicaciones === 'string' ? 
+                    JSON.parse(req.body.ubicaciones) : req.body.ubicaciones;
+            }
+        } catch (e) {
+            console.error('Error al parsear campos:', e);
+        }
+
+        // Manejo de archivos adjuntos
+        const archivosAdjuntos = Array.isArray(req.files?.archivos) ? 
+            req.files.archivos : (req.files?.archivos ? [req.files.archivos] : []);
+
+        if (archivosAdjuntos.length > 0) {
+            // El primer archivo será la imagen principal
+            const imagenPrincipal = archivosAdjuntos[0];
+            const nombreLimpio = imagenPrincipal.originalname
+                .replace(/^.*[\\\/]/, '') // Elimina C:\fakepath\
+                .replace(/[^a-zA-Z0-9-_\.]/g, '_'); // Sanitiza el nombre
+            
+            nuevoEvento.imagen = `/uploads/${nombreLimpio}`;
+            
+            // Todos los archivos van a adjuntos con nombres limpios
+            nuevoEvento.adjuntos = archivosAdjuntos.map(file => {
+                const nombre = file.originalname
+                    .replace(/^.*[\\\/]/, '')
+                    .replace(/[^a-zA-Z0-9-_\.]/g, '_');
+                return `/uploads/${nombre}`;
+            });
+        } else {
+            nuevoEvento.imagen = '';
+            nuevoEvento.adjuntos = [];
+        }
+
+        eventos.push(nuevoEvento);
+        fs.writeFile(DATA_BASE_PATH, JSON.stringify(eventos, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al escribir en dataBase.json' });
+            }
+            res.status(201).json(nuevoEvento);
+        });
+    });
 };
 
 // Actualizar evento
 const updateEvento = async (req, res) => {
-    try {
-        const evento = await Evento.findByIdAndUpdate(
-            req.params.id, 
-            req.body,
-            { new: true }
-        );
-        if (!evento) {
+    fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
+        let eventos = [];
+        if (!err && data) {
+            try {
+                eventos = JSON.parse(data);
+            } catch (e) { eventos = []; }
+        }
+        const idx = eventos.findIndex(ev => ev._id == req.params.id || (ev._id && ev._id.$oid === req.params.id));
+        if (idx === -1) {
             return res.status(404).json({ message: 'Evento no encontrado' });
         }
-        res.status(200).json(evento);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+        eventos[idx] = { ...eventos[idx], ...req.body, _id: eventos[idx]._id };
+
+        // Manejo de imágenes
+        const adjuntos = req.files;
+        if (adjuntos && adjuntos.length > 0) {
+            const imagenPrincipal = adjuntos[0];
+            eventos[idx].imagen = `/uploads/${path.basename(imagenPrincipal.originalname)}`; // Usar el nombre original del archivo
+
+            eventos[idx].adjuntos = adjuntos.map(file => `/uploads/${path.basename(file.originalname)}`);
+        } else {
+            eventos[idx].imagen = null;
+            eventos[idx].adjuntos = [];
+        }
+
+        fs.writeFile(DATA_BASE_PATH, JSON.stringify(eventos, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al escribir en dataBase.json' });
+            }
+            res.status(200).json(eventos[idx]);
+        });
+    });
 };
 
 // Eliminar evento
 const deleteEvento = async (req, res) => {
-    try {
-        const evento = await Evento.findByIdAndDelete(req.params.id);
-        if (!evento) {
+    fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
+        let eventos = [];
+        if (!err && data) {
+            try {
+                eventos = JSON.parse(data);
+            } catch (e) { eventos = []; }
+        }
+        const eventosFiltrados = eventos.filter(ev => ev._id != req.params.id && (!ev._id || ev._id.$oid !== req.params.id));
+        if (eventos.length === eventosFiltrados.length) {
             return res.status(404).json({ message: 'Evento no encontrado' });
         }
-        res.status(200).json({ message: 'Evento eliminado correctamente' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        fs.writeFile(DATA_BASE_PATH, JSON.stringify(eventosFiltrados, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al escribir en dataBase.json' });
+            }
+            res.status(200).json({ message: 'Evento eliminado correctamente' });
+        });
+    });
 };
 
 module.exports = {

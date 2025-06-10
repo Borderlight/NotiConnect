@@ -324,20 +324,28 @@
             </div>
 
             <div class="file-input-container">
-                <input type="file" 
-                       id="adjuntos" 
-                       name="adjuntos"
-                       multiple 
-                       accept=".jpg,.jpeg,.png,.pdf,.mp4"
-                       aria-required="true"
-                       aria-describedby="adjuntos-desc adjuntos-formato adjuntos-help"
+                <input type="file"
+                       id="adjuntos"
+                       #adjuntosInput
+                       formControlName="adjuntos"
+                       name="archivos"
+                       multiple
+                       accept=".jpg,.jpeg,.png,.gif,.bmp,.webp"
+                       (change)="onAdjuntosSelected($event)"
                        [attr.aria-invalid]="formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched"
-                       formControlName="adjuntos">
-                
-                <p id="adjuntos-help" class="campo-ayuda">
-                    {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.FILE_SELECTOR_HELP' | translate }}
-                </p>
-            </div>
+                       aria-required="true"
+                       aria-describedby="adjuntos-desc adjuntos-formato adjuntos-help" />
+                </div>
+
+            @if (selectedAdjuntos.length) {
+                <div class="adjuntos-preview">
+                    @for (img of selectedAdjuntos; track $index) {
+                        <div class="preview-item">
+                            <img [src]="img" [alt]="'Adjunto ' + ($index+1)" class="preview-img" style="max-width:100px; margin:0.5rem; border-radius:6px;" />
+                        </div>
+                    }
+                </div>
+            }
 
             @if (formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched) {
                 <div class="mensaje_error" role="alert" aria-live="polite">

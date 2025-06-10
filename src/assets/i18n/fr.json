@@ -183,7 +183,7 @@
       "ATTACHED_FILES": {
         "LABEL": "Fichiers Joints",
         "DESCRIPTION": "Joignez les fichiers liés à l'événement.",
-        "ACCEPTED_FORMATS": "Formats acceptés : PDF, DOC, DOCX, PPT, PPTX",
+        "ACCEPTED_FORMATS": "Formats acceptés : JPG, JPEG, PNG, GIF, BMP, WEBP",
         "FILE_SELECTOR_HELP": "Cliquez ici ou faites glisser des fichiers pour les joindre",
         "ERROR": "Vous devez joindre au moins un fichier"
       },

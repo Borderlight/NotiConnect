@@ -95,11 +95,18 @@
       <section class="evento-adjuntos">
         <h2>{{ 'EVENT_DETAILS.ATTACHED_DOCUMENTS' | translate }}</h2>
         <div class="adjuntos-lista">
-          @for (adjunto of evento.adjuntos; track adjunto) {
-            <a href="#" class="adjunto-item">
-              <i class="fas fa-file"></i>
-              {{ adjunto }}
-            </a>
+          @for (adjunto of evento.adjuntos; track $index) {
+            @if (esImagen(adjunto)) {
+              <a [href]="adjunto" target="_blank" rel="noopener noreferrer" class="adjunto-item">
+                <img [src]="adjunto" [alt]="adjunto.split('/').pop()" class="miniatura-adjunto" style="max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 0.5rem;" />
+                <div>{{ adjunto.split('/').pop() }}</div>
+              </a>
+            } @else {
+              <a [href]="adjunto" target="_blank" rel="noopener noreferrer" class="adjunto-item">
+                <i class="fas fa-file"></i>
+                {{ adjunto.split('/').pop() }}
+              </a>
+            }
           }
         </div>
       </section>

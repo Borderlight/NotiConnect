@@ -24,13 +24,8 @@ export class BusquedaComponent implements OnInit {
   eventosDisponibles: Evento[] = [];
   mostrarResultados: boolean = false;
   mostrarModalDescarga = false;
-    // Tipos de eventos disponibles
   tiposEvento = Object.values(EventType);
-
-  // Actividades relacionadas
   actividadesRelacionadas = ['Semana de la Ciencia'];
-
-  // Facultades y servicios disponibles
   serviciosDisponibles = [
     'Gestión de la Investigación y Transferencia',
     'Unidad de Empleabilidad y Prácticas',
@@ -38,29 +33,81 @@ export class BusquedaComponent implements OnInit {
     'Capellanía',
     'Deportes',
     'Coro',
-    'Servicio de Asistencia Psicológica Sanitaria',
-    'Unidad de Cultura Científica y de la Innovación',
-    'Unidad de Igualdad',
-    'Voluntariado'
+    'FormacionPermanente',
+    'ComunidadUniversitaria',
+    'InternacionalesCooperacion'
   ];
 
-  // Lugares disponibles
-  lugares: { key: string, value: string }[] = [];
-
-  // Facultades, servicios y vicerrectorados para el filtro
+  // === Filtros avanzados ===
   facultadesGrados = [
-    { facultad: 'Facultad de Comunicación' },
-    { facultad: 'Facultad de Derecho Canónico' },
-    { facultad: 'Facultad de Educación' },
-    { facultad: 'Facultad de Enfermería y Fisioterapia Salus Infirmorum' },
-    { facultad: 'Facultad de Filosofía' },
-    { facultad: 'Facultad de Informática' },
-    { facultad: 'Facultad de Psicología' },
-    { facultad: 'Facultad de Teología' },
-    { facultad: 'Facultad de Ciencias de la Salud' },
-    { facultad: 'Facultad de Ciencias del Seguro, Jurídicas y de la Empresa' },
-    { facultad: 'Facultad de Ciencias Humanas y Sociales' }
+    { facultad: 'Facultad de Ciencias de la Salud', grados: [
+      'Grado en Logopedia',
+      'Grado en Enfermería',
+      'Grado en Fisioterapia',
+      'Grado en Nutrición Humana y Dietética'
+    ]},
+    { facultad: 'Facultad de Ciencias del Seguro, Jurídicas y de la Empresa', grados: [
+      'Grado en Administración y Dirección de Empresas',
+      'Grado en Relaciones Internacionales',
+      'Grado en Derecho'
+    ]},
+    { facultad: 'Facultad de Ciencias Humanas y Sociales', grados: [
+      'Máster de Formación Permanente en Gobernanza Ética',
+      'Grado en Filosofía'
+    ]},
+    { facultad: 'Facultad de Comunicación', grados: [
+      'Grado en Periodismo',
+      'Grado en Comunicación Audiovisual'
+    ]},
+    { facultad: 'Facultad de Derecho Canónico', grados: [
+      'Doctorado Eclesiástico en Derecho Canónico',
+      'Licenciatura en Derecho Canónico'
+    ]},
+    { facultad: 'Facultad de Educación', grados: [
+      'Grado en Ciencias de la Actividad Física y del Deporte',
+      'Grado en Maestro en Educación Infantil',
+      'Grado en Maestro en Educación Primaria',
+      'Curso de Formación Pedagógica y Didáctica',
+      'Máster en Formación Permanente en Musicoterapia',
+      'Máster en Formación Permanente en Entrenamiento y Rendimiento en Fútbol',
+      'Máster Universitario en Formación del Profesorado de ESO y Bachillerato, FP y Enseñanza de Idiomas',
+      'Doble Grado en Maestro en Educación Primaria y Maestro en Educación Infantil',
+      'Máster Universitario en Psicopedagogía',
+      'Máster de Formación Permanente en Gestión en Situaciones de Crisis'
+    ]},
+    { facultad: 'Facultad de Enfermería y Fisioterapia Salus Infirmorum', grados: [
+      'Grado en Fisioterapia (Madrid)',
+      'Grado en Enfermería (Madrid)'
+    ]},
+    { facultad: 'Facultad de Informática', grados: [
+      'Doble Grado en ADE Tecnológico e Ingeniería Informática',
+      'Grado en Administración y Dirección de Empresas Tecnológicas',
+      'Doble Grado en Ingeniería Informática y ADET',
+      'Grado en Ingeniería Informática',
+      'Diploma de Especialista en Inteligencia Artificial & Big Data Analytics',
+      'Máster Universitario en Informática Móvil',
+      'Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos'
+    ]},
+    { facultad: 'Facultad de Psicología', grados: [
+      'Grado en Psicología',
+      'Máster Universitario en Psicología General Sanitaria',
+      'Diploma de Experto en Invtervención Psicosocial'
+    ]},
+    { facultad: 'Facultad de Teología', grados: [
+      'Bachiller en Teología',
+      'Licenciatura en Teología Bíblica',
+      'Licenciatura en Teología Dogmática',
+      'Licenciatura en Teología Práctica',
+      'Licenciatura en Teología Pastoral',
+      'Doctorado Eclesiástico en Teología Bíblica',
+      'Doctorado Eclesiástico en Teología Dogmática',
+      'Doctorado Eclesiástico en Teología Práctica',
+      'Doctorado Eclesiástico en Teología Pastoral',
+      'Doctorado Eclesiástico en Teología de la Vida Consagrada',
+      'Máster Universitario en Doctrina Social de la Iglesia'
+    ]}
   ];
+
   serviciosFijos: string[] = [
     'SERVICES.GESTION_INVESTIGACION',
     'SERVICES.UNIDAD_EMPLEABILIDAD',
@@ -73,6 +120,7 @@ export class BusquedaComponent implements OnInit {
     'SERVICES.UNIDAD_IGUALDAD',
     'SERVICES.VOLUNTARIADO'
   ];
+
   vicerrectorados: string[] = [
     'InvestigacionTransferencia',
     'OrdenacionAcademica',
@@ -80,6 +128,7 @@ export class BusquedaComponent implements OnInit {
     'ComunidadUniversitaria',
     'InternacionalesCooperacion'
   ];
+  lugares: { key: string, value: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -122,60 +171,42 @@ export class BusquedaComponent implements OnInit {
 
   buscarEventos() {
     this.mostrarResultados = true;
-    let eventos = this.eventosDisponibles;
-    const filtros = this.formularioBusqueda.value;
-
-    eventos = eventos.filter(evento => {
-      let cumpleFiltros = true;
-
-      if (filtros.tipoEvento && evento.tipoEvento !== filtros.tipoEvento) {
-        cumpleFiltros = false;
+    const filtrosRaw = this.formularioBusqueda.value;
+    // Solo enviar filtros con valor definido y no vacío
+    const filtros: any = {};
+    Object.keys(filtrosRaw).forEach(key => {
+      if (filtrosRaw[key] !== undefined && filtrosRaw[key] !== null && filtrosRaw[key] !== '') {
+        filtros[key] = filtrosRaw[key];
       }
-
-      if (filtros.ponente) {
-        const ponenteNormalizado = evento.ponente.toLowerCase();
-        const busquedaNormalizada = filtros.ponente.toLowerCase();
-        if (!ponenteNormalizado.includes(busquedaNormalizada)) {
-          cumpleFiltros = false;
-        }
-      }
-
-      if (filtros.actividad && evento.actividad !== filtros.actividad) {
-        cumpleFiltros = false;
-      }
-
-      if (filtros.servicio && !evento.servicios?.some(s => s.servicios === filtros.servicio)) {
-        cumpleFiltros = false;
-      }
-
-      if (filtros.fecha) {
-        const fechaFiltro = new Date(filtros.fecha);
-        const fechaEvento = new Date(evento.fecha);
-        if (fechaFiltro.toDateString() !== fechaEvento.toDateString()) {
-          cumpleFiltros = false;
-        }
-      }
-
-      if (filtros.horaInicio) {
-        const horaFiltro = new Date(`1970-01-01T${filtros.horaInicio}:00`);
-        const horaEvento = new Date(`1970-01-01T${evento.horaInicio}:00`);
-        if (horaFiltro.getHours() !== horaEvento.getHours()) {
-          cumpleFiltros = false;
-        }
-      }
-
-      if (filtros.horaFin && evento.horaFin !== filtros.horaFin) {
-        cumpleFiltros = false;
-      }
-
-      if (filtros.lugar && evento.lugar !== filtros.lugar) {
-        cumpleFiltros = false;
-      }
-
-      return cumpleFiltros;
     });
-
-    this.eventosFiltrados = eventos;
+    this.eventoService.getEventosFiltrados(filtros).subscribe(eventos => {
+      console.log('Eventos recibidos:', eventos); // <-- Depuración
+      // Aplanar ubicaciones: si hay una sola, copiar sus campos a la raíz
+      this.eventosFiltrados = eventos.map(ev => {
+        if (Array.isArray(ev.ubicaciones) && ev.ubicaciones.length > 0) {
+          const ub = ev.ubicaciones[0];
+          // Soportar ambos tipos de ubicaciones (hora única y horario)
+          let horaInicio = '';
+          let horaFin = undefined;
+          if (ub.horaInicio) {
+            horaInicio = ub.horaInicio;
+            horaFin = ub.horaFin;
+          } else if (ub.hora) {
+            horaInicio = ub.hora;
+          }
+          return {
+            ...ev,
+            fecha: ub.fecha,
+            lugar: ub.lugar,
+            aula: ub.aula,
+            horaInicio,
+            horaFin
+          };
+        }
+        return ev;
+      }) as Evento[];
+      console.log('Eventos filtrados:', this.eventosFiltrados); // <-- Depuración
+    });
   }
 
   limpiarFiltros() {
@@ -184,21 +215,28 @@ export class BusquedaComponent implements OnInit {
     this.eventosFiltrados = [];
   }
 
+  eliminarEvento(eventoId: string) {
+    this.eventoService.eliminarEvento(eventoId).subscribe({
+      next: () => {
+        this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== eventoId);
+        this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== eventoId);
+        if (this.eventosFiltrados.length === 0) {
+          this.mostrarResultados = false;
+        }
+      },
+      error: (error: Error) => {
+        console.error('Error al eliminar el evento:', error);
+      }
+    });
+  }
+
   eliminarEventosFiltrados() {
-    // Obtener los IDs de los eventos filtrados que no son undefined
-    const idsAEliminar = this.eventosFiltrados
-      .map(evento => evento._id)
-      .filter((id): id is string => id !== undefined);
-    
-    // Eliminar cada evento usando el servicio
+    const idsAEliminar = this.eventosFiltrados.map(evento => evento._id).filter((id): id is string => id !== undefined);
     idsAEliminar.forEach(id => {
       this.eventoService.eliminarEvento(id).subscribe({
         next: () => {
-          // Actualizar las listas locales después de eliminar cada evento
           this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== id);
           this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== id);
-          
-          // Si no quedan eventos filtrados, ocultar los resultados
           if (this.eventosFiltrados.length === 0) {
             this.mostrarResultados = false;
           }
@@ -387,24 +425,6 @@ export class BusquedaComponent implements OnInit {
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-  }
-
-  eliminarEvento(eventoId: string) {
-    this.eventoService.eliminarEvento(eventoId).subscribe({
-      next: () => {
-        // Actualizar las listas locales después de eliminar el evento
-        this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== eventoId);
-        this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== eventoId);
-        
-        // Si no quedan eventos filtrados, ocultar la sección de resultados
-        if (this.eventosFiltrados.length === 0) {
-          this.mostrarResultados = false;
-        }
-      },
-      error: (error: Error) => {
-        console.error('Error al eliminar el evento:', error);
-      }
-    });
   }
 
   goBack(): void {

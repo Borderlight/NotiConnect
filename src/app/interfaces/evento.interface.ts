@@ -37,4 +37,5 @@ export interface Ubicacion {
   tipoHorario: 'hora' | 'horario';
   horaInicio: string;
   horaFin?: string;
-} 
+  hora?: string; // Soporte para ubicaciones con hora única
+}

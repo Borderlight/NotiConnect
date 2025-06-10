@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -202,8 +202,6 @@ export class FormularioComponent {
 
   // Types of events available
   tiposEvento = Object.values(EventType);
-
-  eventos: any [] = []
 
   formularioEvento: FormGroup
   constructor(
@@ -409,27 +407,41 @@ export class FormularioComponent {
     return tipoEncontrado ? `${tipoEncontrado.icono}` : '';
   }
   
-  
+  @ViewChild('adjuntosInput') adjuntosInput!: ElementRef<HTMLInputElement>;
 
-  closeDialog() {
-    this.formularioEvento.reset();
-    this.mostrarDialog = false;
-    this.listadoServicios.clear();
-    this.listadoServicios.push(this.crearCampoServicio());
-    this.listadoEnlaces.clear();
-    this.listadoEnlaces.push(this.crearEnlace());
+  selectedAdjuntos: string[] = [];
+
+  trackByIndex(index: number): number {
+    return index;
   }
 
-  onSubmit() {
+  onAdjuntosSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+    this.selectedAdjuntos = [];
+    Array.from(input.files).forEach(file => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => this.selectedAdjuntos.push(e.target.result);
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  closeDialog(): void {
+    this.mostrarDialog = false;
+  }
+
+  onSubmit(): void {
     // Marcar todos los campos como tocados para mostrar errores
     Object.keys(this.formularioEvento.controls).forEach(key => {
       const control = this.formularioEvento.get(key);
       if (control instanceof FormArray) {
-        control.markAsTouched();  // Marcar el FormArray como tocado
+        control.markAsTouched();
         control.controls.forEach(ctrl => {
           if (ctrl instanceof FormGroup) {
-            ctrl.markAsTouched();  // Marcar el FormGroup como tocado
-            Object.values(ctrl.controls).forEach(c => {
+            ctrl.markAsTouched();
+            Object.entries(ctrl.controls).forEach(([subKey, c]) => {
               if (c instanceof FormControl) {
                 c.markAsTouched();
               }
@@ -446,6 +458,41 @@ export class FormularioComponent {
       ubicacion.get('horaInicio')?.markAsTouched();
     });
 
+    if (!this.formularioEvento.valid) {
+      // Log detallado de errores
+      const errores: any = {};
+      Object.keys(this.formularioEvento.controls).forEach(key => {
+        const control = this.formularioEvento.get(key);
+        if (control instanceof FormArray) {
+          errores[key] = [];
+          control.controls.forEach((ctrl, idx) => {
+            if (ctrl instanceof FormGroup) {
+              const subErrores: any = {};
+              Object.entries(ctrl.controls).forEach(([subKey, c]) => {
+                if (c.errors) {
+                  subErrores[subKey] = c.errors;
+                }
+              });
+              if (Object.keys(subErrores).length > 0) {
+                errores[key][idx] = subErrores;
+              }
+            } else if (ctrl.errors) {
+              errores[key][idx] = ctrl.errors;
+            }
+          });
+        } else if (control?.errors) {
+          errores[key] = control.errors;
+        }
+      });
+      console.log('Errores de validación detallados:', errores);
+      return;
+    }
+
+    // Marcar específicamente horaInicio como tocado
+    this.listadoUbicaciones.controls.forEach(ubicacion => {
+      ubicacion.get('horaInicio')?.markAsTouched();
+    });
+
     if (this.formularioEvento.valid) {
       const enlaces = this.formularioEvento.get('enlaces') as FormArray;
       let enlacesValidos = true;
@@ -453,7 +500,6 @@ export class FormularioComponent {
       enlaces.controls.forEach((enlace, index) => {
         const tipo = enlace.get('tipo')?.value;
         const url = enlace.get('url')?.value;
-        
         if (tipo && this.socialMediaValidators[tipo] && !this.validateSocialMediaUrl(tipo, url)) {
           enlacesValidos = false;
           this.mostrarErrorUrl = true;
@@ -464,12 +510,32 @@ export class FormularioComponent {
         return;
       }
 
-      // Agregar el evento usando el servicio
-      const nuevoEvento = this.eventoService.agregarEvento(this.formularioEvento.value);
-      
-      // Mostrar el diálogo existente
-      this.mostrarDialog = true;
-      
+      const formData = new FormData();
+      // Append form fields except adjuntos
+      Object.keys(this.formularioEvento.controls).forEach(key => {
+        if (key !== 'adjuntos') {
+          const value = this.formularioEvento.get(key)?.value;
+          formData.append(key, value);
+        }
+      });
+      // Append files
+      const files: FileList | null = this.adjuntosInput.nativeElement.files;
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append('adjuntos', files[i], files[i].name);
+        }
+      }
+      // Submit as multipart/form-data
+      this.eventoService.agregarEvento(formData).subscribe({
+        next: () => {
+          this.mostrarDialog = true;
+          this.formularioEvento.reset();
+          this.adjuntosInput.nativeElement.value = '';
+        },
+        error: (err) => {
+          console.error('Error al crear evento:', err);
+        }
+      });
     } else {
       console.log('Formulario inválido');
       // Mostrar los errores específicos

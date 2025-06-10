@@ -184,7 +184,7 @@
       "ATTACHED_FILES": {
         "LABEL": "Archivos Adjuntos",
         "DESCRIPTION": "Adjunta los archivos relacionados con el evento.",
-        "ACCEPTED_FORMATS": "Formatos aceptados: PDF, DOC, DOCX, PPT, PPTX",
+        "ACCEPTED_FORMATS": "Formatos aceptados: JPG, JPEG, PNG, GIF, BMP, WEBP",
         "FILE_SELECTOR_HELP": "Haz clic aquí o arrastra archivos para adjuntarlos",
         "ERROR": "Debes adjuntar al menos un archivo"
       },
