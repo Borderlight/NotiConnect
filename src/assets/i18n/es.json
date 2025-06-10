@@ -43,7 +43,8 @@
     "HORA_FIN": "Hora de Fin",
     "SELECCIONA_HORA_FIN": "Selecciona la hora de fin",
     "LUGAR": "Lugar",
-    "SELECCIONA_LUGAR": "Selecciona el lugar"
+    "SELECCIONA_LUGAR": "Selecciona el lugar",
+    "SELECCIONA_FECHA_RANGO": "Selecciona un rango de fechas"
   },
   "SETTINGS": {
     "TITLE": "Ajustes",

@@ -1,0 +1,183 @@
+[33mcommit 65f194bbe85400eab49de263be943757141c8d93[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 10 19:07:48 2025 +0200
+
+    cambios de filtros
+
+[33mcommit cc375fd907e3a054f5b0642745a643b8d2f50170[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 10 13:52:22 2025 +0200
+
+    modificación del header
+
+[33mcommit 892347d551b26ed783290a000970c945e4041211[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Sun Jun 8 22:37:50 2025 +0200
+
+    eliminar frases redundantes formulario
+
+[33mcommit e55646d075452f7bdbf8c352e55d86ebd9d690f9[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Sun Jun 8 21:07:19 2025 +0200
+
+    modificacion dataBase.json
+
+[33mcommit eb016f2a14ddbeb913cad8e91bf6172824cd530a[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Sat Jun 7 16:54:25 2025 +0200
+
+    creacion json como base de datos
+
+[33mcommit 8257af8b6f95b8373b0a20c253c81543b7c41112[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Sat Jun 7 16:27:24 2025 +0200
+
+    cambio del backend
+
+[33mcommit 6e2b19ae81d1e7674ac2d8f5e1e337afca563726[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 3 21:24:31 2025 +0200
+
+    peuqeños detalles a eliminar en formulario
+
+[33mcommit a44f9597f3e0aad6a2adc5b5f1619ad5ab77d7dd[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 3 21:18:43 2025 +0200
+
+    ajuste de banderas
+
+[33mcommit 04a85ba0eb5647d7d7ff61f034186d3e6984ea7b[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 3 13:44:40 2025 +0200
+
+    selector servicios en busqueda
+
+[33mcommit 3578b8d9de21d9e715ea7eedfbbd9eeeafab211e[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Jun 3 13:25:41 2025 +0200
+
+    traducciones varias en formulario de selectores
+
+[33mcommit f06c7553ce9933078f0be682e6d938227b3c369e[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Mon Jun 2 23:22:01 2025 +0200
+
+    alineacion cards
+
+[33mcommit c9a289ca6d55457cc18b55b3f7d361183d228e1d[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Mon Jun 2 23:20:22 2025 +0200
+
+    traduccion total busqueda
+
+[33mcommit 5ca46e61f0c6ca5731ce37aaa420190ff3b50211[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Mon Jun 2 23:06:39 2025 +0200
+
+    correcion de pequeños errores
+
+[33mcommit 38ac96231fd6d26045e63d752c44eaffbacadaa1[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Thu May 29 21:52:20 2025 +0200
+
+    traduccion de filtros de busqueda correctamente
+
+[33mcommit fa4b2134ed99642cfc67668b885cfff7f7c3a097[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Thu May 29 19:20:06 2025 +0200
+
+    Refactorizar código y reestructurar partes de búsqueda
+
+[33mcommit ff9fc17d88c1169a67acb6b5f637735f7c5bcb7b[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Thu May 29 16:46:07 2025 +0200
+
+    cambiando API por traducciones manuales en inglés y francés
+
+[33mcommit bc3dab975dca92e43bc6c8beafc5eef5e3117749[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Thu May 29 10:58:33 2025 +0200
+
+    conexion a mongodb
+
+[33mcommit 0ea42b65af3bed9897b9f7b9ef1c61eecd46cab9[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Thu May 29 10:42:46 2025 +0200
+
+    backend y configuracion con github
+
+[33mcommit d5c616b190d8e960abe0e9898778c2673c94d0d4[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 19:58:55 2025 +0200
+
+    botones cambiados para que sean más visibles
+
+[33mcommit c963b0afe058e9377ed91c31c44149120332c01b[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 19:51:20 2025 +0200
+
+    arreglados todos los problemas de accesibilidad en formulario
+
+[33mcommit bc442c5b6af10ceca7fd53d71c8ef5df251494a3[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 19:01:06 2025 +0200
+
+    Boton eliminar rojo y modo plantilla para todos
+
+[33mcommit 46d6f86cab3d177ecf2b9f800dbcef7a5774d4c9[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 18:56:47 2025 +0200
+
+    hora unica y horario completo arreglado
+
+[33mcommit 27efe0871fe7e4fa29eb4d4ebc6e144c329b2057[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 18:50:29 2025 +0200
+
+    arreglados los selectores de en modo normal y oscuro
+
+[33mcommit a2e00a3fa557fd785997fb40df2f611454986739[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 18:42:18 2025 +0200
+
+    * obligatorio y titulo de mini sector
+
+[33mcommit cf7978d9e7d952281bab6ff2c8c741121eacd9c4[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Wed May 28 18:33:36 2025 +0200
+
+    Correción de color rojo de errores, iconos de enlaces y modo oscuro de selectores
+
+[33mcommit e1e4253a02fd0e36f70677e92bd088250c0f33fe[m
+Merge: dfbcba7 373ab37
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Mon May 26 14:55:26 2025 +0200
+
+    Merge branch 'main' of https://github.com/Borderlight/NotiConnect
+
+[33mcommit dfbcba7b82ce19fc8239c4e07f7ec2481651a5e2[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Mon May 26 14:52:33 2025 +0200
+
+    Limpiar css de formulario y agregar imagenes de la
+    pagina principal
+
+[33mcommit 373ab37b3dfac3d3e9a945c924e3ea4681686a06[m
+Author: Iván <167407261+Borderlight@users.noreply.github.com>
+Date:   Tue Apr 8 18:27:47 2025 +0200
+
+    Create LICENSE
+    
+    Agregar licencia personalizada para uso exclusivo de la Universidad Pontificia
+
+[33mcommit ddf04b4d5a701ff5adbc7775bbd9a0a9f93d485f[m
+Author: Iván <ilazarolu.inf@upsa.es>
+Date:   Tue Apr 8 17:47:47 2025 +0200
+
+    "prototipo NotiConnect con fallos CSS"
+
+[33mcommit 97684feea3f52ad814a82ff33232ec2ff445fb62[m
+Author: Ivan <ilazarolu.inf@upsa.es>
+Date:   Mon Feb 24 10:55:28 2025 +0100
+
+    initial commit

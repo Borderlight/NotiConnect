@@ -76,15 +76,25 @@
 
       <!-- Segunda fila de filtros -->
       <div class="fila-filtros" style="margin-bottom: 20px;">
-        <!-- Fecha -->
+        <!-- Fecha (rango) -->
         <div class="campo-filtro">
-          <label for="fecha" id="fecha-label">{{ 'FILTROS.FECHA' | translate }}</label>
-          <p>{{ 'FILTROS.SELECCIONA_FECHA' | translate }}</p>
-          <input type="date" 
-                 id="fecha" 
-                 formControlName="fecha"
-                 aria-labelledby="fecha-label"
-                 class="filtro-input">
+          <label id="fecha-label">{{ 'FILTROS.FECHA' | translate }}</label>
+          <p>{{ 'FILTROS.SELECCIONA_FECHA_RANGO' | translate }}</p>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="date"
+                   id="fechaInicio"
+                   formControlName="fechaInicio"
+                   aria-labelledby="fecha-label"
+                   class="filtro-input"
+                   placeholder="{{ 'FILTROS.FECHA_INICIO' | translate }}">
+            <span>-</span>
+            <input type="date"
+                   id="fechaFin"
+                   formControlName="fechaFin"
+                   aria-labelledby="fecha-label"
+                   class="filtro-input"
+                   placeholder="{{ 'FILTROS.FECHA_FIN' | translate }}">
+          </div>
         </div>
 
         <!-- Hora de Inicio -->

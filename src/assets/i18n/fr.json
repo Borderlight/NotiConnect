@@ -43,7 +43,8 @@
     "HORA_FIN": "Heure de Fin",
     "SELECCIONA_HORA_FIN": "Sélectionnez l'heure de fin",
     "LUGAR": "Lieu",
-    "SELECCIONA_LUGAR": "Sélectionnez le lieu"
+    "SELECCIONA_LUGAR": "Sélectionnez le lieu",
+    "SELECCIONA_FECHA_RANGO": "Sélectionnez une plage de dates"
   },
   "SETTINGS": {
     "TITLE": "Paramètres",
