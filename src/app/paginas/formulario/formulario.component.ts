@@ -210,8 +210,8 @@ export class FormularioComponent {
     private router: Router
   ){
     this.formularioEvento = this.fb.group({
-      titulo: ['', [Validators.required, BasicosValidator.soloLetrasYEspacios()]],
-      ponente: ['', [Validators.required, BasicosValidator.soloLetrasYEspacios()]],
+      titulo: ['', [Validators.required]],
+      ponente: ['', [Validators.required]],
       empresaOrganizadora: ['', [Validators.required, BasicosValidator.soloLetrasYEspacios()]],
       tipoEvento: ['', Validators.required],
       descripcion: ['', [Validators.required, BasicosValidator.descripcionMinima(20)]],

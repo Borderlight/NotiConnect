@@ -137,12 +137,12 @@
       "TITLE": {
         "LABEL": "Titre de l'Événement",
         "DESC": "Saisissez le titre de l'événement.",
-        "ERROR": "Le titre est obligatoire et ne peut contenir que des lettres et des espaces"
+        "ERROR": "Le titre est obligatoire"
       },
       "SPEAKER": {
         "LABEL": "Intervenant",
         "DESC": "Saisissez le nom complet de l'intervenant.",
-        "ERROR": "Le nom de l'intervenant est obligatoire et ne peut contenir que des lettres et des espaces"
+        "ERROR": "Le nom de l'intervenant est obligatoire"
       },
       "ORGANIZER": {
         "LABEL": "Entreprise Organisatrice",

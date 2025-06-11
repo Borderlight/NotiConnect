@@ -51,7 +51,7 @@
     "APPEARANCE": "Apariencia",
     "DARK_MODE": "Modo Oscuro",
     "TOGGLE_DARK_MODE": "Activar modo oscuro",
-    "LANGUAGE": "Idioma",
+    "LANGUAGE": "Idioma", 
     "SELECT_LANGUAGE": "Seleccionar Idioma"
   },
   "NAV": {
@@ -138,12 +138,12 @@
       "TITLE": {
         "LABEL": "Título del Evento",
         "DESC": "Introduce el título del evento.",
-        "ERROR": "El título es obligatorio y solo puede contener letras y espacios"
+        "ERROR": "El título es obligatorio"
       },
       "SPEAKER": {
         "LABEL": "Ponente del Evento",
         "DESC": "Introduce el nombre completo del ponente del evento.",
-        "ERROR": "El ponente es obligatorio y solo puede contener letras y espacios"
+        "ERROR": "El ponente es obligatorio"
       },
       "ORGANIZER": {
         "LABEL": "Empresa Organizadora",

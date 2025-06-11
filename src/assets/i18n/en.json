@@ -138,12 +138,12 @@
       "TITLE": {
         "LABEL": "Event Title",
         "DESC": "Enter the event title.",
-        "ERROR": "Title is required and can only contain letters and spaces"
+        "ERROR": "Title is required"
       },
       "SPEAKER": {
         "LABEL": "Event Speaker",
         "DESC": "Enter the full name of the event speaker.",
-        "ERROR": "Speaker name is required and can only contain letters and spaces"
+        "ERROR": "Speaker name is required"
       },
       "ORGANIZER": {
         "LABEL": "Organizing Company",
