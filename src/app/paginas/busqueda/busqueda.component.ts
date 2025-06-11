@@ -430,4 +430,26 @@ export class BusquedaComponent implements OnInit {
   goBack(): void {
     this.navigationService.goBack();
   }
+
+  actualizarEvento(eventoEditado: Partial<Evento>) {
+    if (!eventoEditado._id) return;
+    // Buscar el evento original
+    const original = this.eventosDisponibles.find(ev => ev._id === eventoEditado._id);
+    if (!original) return;
+    // Crear objeto completo para el backend
+    const eventoParaActualizar: Evento = { ...original, ...eventoEditado };
+    this.eventoService.actualizarEvento(eventoParaActualizar._id as string, eventoParaActualizar).subscribe({
+      next: (eventoActualizado) => {
+        this.eventosDisponibles = this.eventosDisponibles.map(ev =>
+          ev._id === eventoActualizado._id ? { ...ev, ...eventoActualizado } : ev
+        );
+        this.eventosFiltrados = this.eventosFiltrados.map(ev =>
+          ev._id === eventoActualizado._id ? { ...ev, ...eventoActualizado } : ev
+        );
+      },
+      error: (error) => {
+        console.error('Error al actualizar el evento:', error);
+      }
+    });
+  }
 }

@@ -186,7 +186,8 @@
           @for (evento of eventosFiltrados; track evento._id) {
             <app-evento 
               [evento]="evento"
-              (eliminar)="eliminarEvento($event)">
+              (eliminar)="eliminarEvento($event)"
+              (actualizar)="actualizarEvento($event)">
             </app-evento>
           }
         </div>

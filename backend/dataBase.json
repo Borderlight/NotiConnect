@@ -1,57 +1,9 @@
 [
   {
-    "_id": "evt1",
-    "imagen": "",
-    "titulo": "Jornada de Innovación",
-    "ponente": "Dra. Ana Pérez",
-    "empresaOrganizadora": "Innovatech",
-    "tipoEvento": "CONFERENCE_OR_CONGRESS",
-    "descripcion": "Una jornada sobre innovación tecnológica.",
-    "adjuntos": [
-      "https://ejemplo.com/programa.pdf"
-    ],
-    "servicios": [
-      {
-        "servicios": "Facultad",
-        "grado": "Grado en Informática"
-      },
-      {
-        "servicios": "Biblioteca"
-      }
-    ],
-    "enlaces": [
-      {
-        "tipo": "YouTube",
-        "url": "https://youtube.com/ejemplo"
-      },
-      {
-        "tipo": "Instagram",
-        "url": "https://instagram.com/ejemplo"
-      }
-    ],
-    "actividad": "Mesa redonda",
-    "ubicaciones": [
-      {
-        "fecha": "2025-06-10T10:00:00.000Z",
-        "tipoHorario": "hora",
-        "hora": "10:00",
-        "lugar": "Facultad",
-        "aula": "A101"
-      },
-      {
-        "fecha": "2025-06-10T12:00:00.000Z",
-        "tipoHorario": "horario",
-        "horaInicio": "12:00",
-        "horaFin": "14:00",
-        "lugar": "Aula Magna"
-      }
-    ]
-  },
-  {
     "_id": "evt2",
-    "imagen": "",
+    "imagen": null,
     "titulo": "Seminario básico",
-    "ponente": "",
+    "ponente": "Nuevo ponente",
     "empresaOrganizadora": "",
     "tipoEvento": "CONFERENCE_OR_CONGRESS",
     "descripcion": "Evento solo con lo esencial.",
@@ -66,7 +18,12 @@
         "hora": "12:00",
         "lugar": "Aula Magna"
       }
-    ]
+    ],
+    "fecha": "2025-06-15T12:00:00.000Z",
+    "horaInicio": "12:00",
+    "horaFin": null,
+    "lugar": "Aula Magna",
+    "aula": null
   },
   {
     "_id": "evt3",
