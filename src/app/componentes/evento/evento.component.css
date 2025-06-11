@@ -131,9 +131,19 @@
 
 .evento-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+.evento-header span.evento-tipo {
+  flex: 1;
+}
+
+.evento-header .acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .btn-eliminar {
@@ -155,4 +165,34 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+
+.btn-editar {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.15s;
+}
+
+.btn-editar:focus {
+  outline: 2px solid #1976d2;
+}
+
+.btn-editar:hover .icono-lapiz,
+.btn-editar:focus .icono-lapiz {
+  transform: scale(1.25);
+  filter: brightness(1.2);
+}
+
+.icono-lapiz {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  vertical-align: middle;
+  transition: transform 0.15s, filter 0.15s;
 }

@@ -34,4 +34,10 @@ export class EventoComponent {
     event.stopPropagation(); // Evitar que se propague al click del contenedor
     this.eliminar.emit(this.evento._id);
   }
+
+  editarEvento(event: Event) {
+    event.stopPropagation();
+    // Aquí se implementará la lógica de edición (por ahora solo log)
+    console.log('Editar evento', this.evento._id);
+  }
 }
