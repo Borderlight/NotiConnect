@@ -4,7 +4,7 @@
   </div>
   <div class="evento-contenido">
     <div class="evento-header">
-      <span class="evento-tipo">{{ evento.tipoEvento | translate }}</span>
+      <span class="evento-tipo">{{ 'EVENT_TYPES.' + evento.tipoEvento | translate }}</span>
       <button class="btn-eliminar" (click)="eliminarEvento($event)" [attr.aria-label]="'EVENT_CARD.DELETE_EVENT' | translate">
         <img src="/assets/evento/papelera.png" [alt]="'EVENT_CARD.DELETE' | translate" class="icono-papelera">
       </button>
