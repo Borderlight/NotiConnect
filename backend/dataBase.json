@@ -2,7 +2,7 @@
   {
     "_id": "evt2",
     "imagen": null,
-    "titulo": "Seminario básico",
+    "titulo": "Seminario básicoaa",
     "ponente": "Nuevo ponente",
     "empresaOrganizadora": "",
     "tipoEvento": "CONFERENCE_OR_CONGRESS",
@@ -27,9 +27,9 @@
   },
   {
     "_id": "evt3",
-    "imagen": "",
+    "imagen": null,
     "titulo": "Taller de LinkedIn",
-    "ponente": "Juan López",
+    "ponente": "Juan pepe",
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "CONFERENCE_OR_CONGRESS",
     "descripcion": "Aprende a mejorar tu perfil.",
@@ -61,7 +61,12 @@
         "hora": "16:00",
         "lugar": "En línea"
       }
-    ]
+    ],
+    "fecha": "2025-06-20T10:00:00.000Z",
+    "horaInicio": "10:00",
+    "horaFin": "12:00",
+    "lugar": "Facultad",
+    "aula": "B202"
   },
   {
     "_id": "mbob10q4i5alf5jy6",
@@ -70,9 +75,7 @@
     "empresaOrganizadora": "empresa ",
     "tipoEvento": "CONFERENCE_OR_CONGRESS",
     "descripcion": "Esto es una prueba de descripción",
-    "adjuntos": [
-      "C:\\fakepath\\Anteproyecto Formulario B.pdf"
-    ],
+    "adjuntos": [],
     "servicios": [
       {
         "servicios": "SERVICES.MOVILIDAD_INTERNACIONAL",
@@ -103,7 +106,13 @@
         "lugar": "FACULTY",
         "aula": "S-41"
       }
-    ]
+    ],
+    "fecha": "2010-10-10",
+    "horaInicio": "10:00",
+    "horaFin": "",
+    "lugar": "FACULTY",
+    "aula": "S-41",
+    "imagen": null
   },
   {
     "_id": "mbomj7ml5wywxgwu0",
@@ -209,11 +218,5 @@
   },
   {
     "_id": "mboqp45aokyuyzue9"
-  },
-  {
-    "_id": "mboqpe5ip23ipm5em"
-  },
-  {
-    "_id": "mboqpg899az94f4oi"
   }
 ]

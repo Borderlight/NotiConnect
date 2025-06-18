@@ -141,7 +141,8 @@ export class BusquedaComponent implements OnInit {
       ponente: [''],
       actividad: [''],
       servicio: [''],
-      fecha: [''],
+      fechaInicio: [''],
+      fechaFin: [''],
       horaInicio: [''],
       horaFin: [''],
       lugar: ['']

@@ -24,67 +24,63 @@
         {{ evento.titulo }}
       } @else {
         <form [formGroup]="editForm" class="form-edicion-inline">
-          <input type="text" formControlName="titulo" class="input-editar" />
+          <input type="text" formControlName="titulo" class="input-editar" placeholder="Título del evento" />
+          <div class="evento-info">
+            <p class="evento-ponente">
+              <i class="fas fa-user"></i>
+              <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}</span>
+              <input type="text" formControlName="ponente" class="input-editar" placeholder="Ponente" />
+            </p>
+            <p class="evento-fecha">
+              <i class="fas fa-calendar"></i>
+              <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}</span>
+              <input type="date" formControlName="fecha" class="input-editar" />
+            </p>
+            <p class="evento-hora">
+              <i class="fas fa-clock"></i>
+              <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}</span>
+              <input type="time" formControlName="horaInicio" class="input-editar input-hora" />
+              <span>- <input type="time" formControlName="horaFin" class="input-editar input-hora" /></span>
+            </p>
+            <p class="evento-lugar">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}</span>
+              <input type="text" formControlName="lugar" class="input-editar" placeholder="Lugar" />
+              <span>- <input type="text" formControlName="aula" class="input-editar input-aula" placeholder="Aula" /></span>
+            </p>
+          </div>
         </form>
       }
     </h2>
-    <div class="evento-info">
-      <p class="evento-ponente">
-        <i class="fas fa-user"></i>
-        <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}:</span>
-        @if (!editMode) {
+    @if (!editMode) {
+      <div class="evento-info">
+        <p class="evento-ponente">
+          <i class="fas fa-user"></i>
+          <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}</span>
           {{ evento.ponente }}
-        } @else {
-          <form [formGroup]="editForm" class="form-edicion-inline">
-            <input type="text" formControlName="ponente" class="input-editar" />
-          </form>
-        }
-      </p>
-      <p class="evento-fecha">
-        <i class="fas fa-calendar"></i>
-        <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}:</span>
-        @if (!editMode) {
+        </p>
+        <p class="evento-fecha">
+          <i class="fas fa-calendar"></i>
+          <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}</span>
           {{ evento.fecha | date:'fullDate':'':currentLang }}
-        } @else {
-          <form [formGroup]="editForm" class="form-edicion-inline">
-            <input type="date" formControlName="fecha" class="input-editar" />
-          </form>
-        }
-      </p>
-      <p class="evento-hora">
-        <i class="fas fa-clock"></i>
-        <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}:</span>
-        @if (!editMode) {
+        </p>
+        <p class="evento-hora">
+          <i class="fas fa-clock"></i>
+          <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}</span>
           {{ evento.horaInicio }}
           @if (evento.horaFin) {
             - {{ evento.horaFin }}
           }
-        } @else {
-          <form [formGroup]="editForm" class="form-edicion-inline">
-            <input type="time" formControlName="horaInicio" class="input-editar input-hora" />
-            <span>
-              - <input type="time" formControlName="horaFin" class="input-editar input-hora" />
-            </span>
-          </form>
-        }
-      </p>
-      <p class="evento-lugar">
-        <i class="fas fa-map-marker-alt"></i>
-        <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}:</span>
-        @if (!editMode) {
+        </p>
+        <p class="evento-lugar">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}</span>
           {{ evento.lugar }}
           @if (evento.aula) {
             - {{ evento.aula }}
           }
-        } @else {
-          <form [formGroup]="editForm" class="form-edicion-inline">
-            <input type="text" formControlName="lugar" class="input-editar" />
-            <span>
-              - <input type="text" formControlName="aula" class="input-editar input-aula" />
-            </span>
-          </form>
-        }
-      </p>
-    </div>
+        </p>
+      </div>
+    }
   </div>
 </div>
