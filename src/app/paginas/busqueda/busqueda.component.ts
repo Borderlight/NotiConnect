@@ -235,13 +235,17 @@ export class BusquedaComponent implements OnInit {
 
   eliminarEventosFiltrados() {
     const idsAEliminar = this.eventosFiltrados.map(evento => evento._id).filter((id): id is string => id !== undefined);
+    if (idsAEliminar.length === 0) return;
+    let eliminados = 0;
     idsAEliminar.forEach(id => {
       this.eventoService.eliminarEvento(id).subscribe({
         next: () => {
+          eliminados++;
           this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== id);
           this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== id);
-          if (this.eventosFiltrados.length === 0) {
-            this.mostrarResultados = false;
+          // Cuando se hayan eliminado todos, refrescar búsqueda
+          if (eliminados === idsAEliminar.length) {
+            this.buscarEventos();
           }
         },
         error: (error: Error) => {
