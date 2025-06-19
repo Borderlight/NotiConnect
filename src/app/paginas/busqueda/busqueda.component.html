@@ -167,7 +167,7 @@
   <!-- Modal de descarga -->
   @if (mostrarModalDescarga) {
     <app-descargar-modal
-      [eventos]="eventosFiltrados"
+      [eventos]="eventoDescargaIndividual ? [eventoDescargaIndividual] : eventosFiltrados"
       (cerrar)="cerrarModalDescarga()"
       (descargar)="manejarDescarga($event)">
     </app-descargar-modal>
@@ -187,7 +187,8 @@
             <app-evento 
               [evento]="evento"
               (eliminar)="eliminarEvento($event)"
-              (actualizar)="actualizarEvento($event)">
+              (actualizar)="actualizarEvento($event)"
+              (descargarIndividual)="abrirModalDescargaIndividual($event)">
             </app-evento>
           }
         </div>

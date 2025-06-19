@@ -18,6 +18,7 @@ export class EventoComponent {
   @Input() evento!: Evento;
   @Output() eliminar = new EventEmitter<string>();
   @Output() actualizar = new EventEmitter<Partial<Evento>>();
+  @Output() descargarIndividual = new EventEmitter<Evento>();
   currentLang: string = 'es';
 
   editMode = false;
@@ -80,15 +81,7 @@ export class EventoComponent {
 
   descargarEvento(event: Event) {
     event.stopPropagation();
-    const evento = this.evento;
-    // Descargar como JSON
-    const json = JSON.stringify(evento, null, 2);
-    this.descargarArchivo(json, `evento_${evento._id}.json`, 'application/json');
-    // Descargar como CSV
-    const csv = this.convertirEventoACSV(evento);
-    this.descargarArchivo(csv, `evento_${evento._id}.csv`, 'text/csv');
-    // Descargar como PDF (simple)
-    this.descargarPDF(evento);
+    this.descargarIndividual.emit(this.evento);
   }
 
   private descargarArchivo(contenido: string, nombreArchivo: string, tipo: string) {

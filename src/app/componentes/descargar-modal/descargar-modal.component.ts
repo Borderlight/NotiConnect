@@ -9,6 +9,7 @@ interface DownloadOptions {
     json: boolean;
     csv: boolean;
     pdf: boolean;
+    word: boolean;
   };
   fields: {
     [key: string]: boolean;
@@ -48,7 +49,8 @@ export class DescargarModalComponent {
     formats: {
       json: false,
       csv: false,
-      pdf: false
+      pdf: false,
+      word: false
     },
     fields: {
       titulo: false,
