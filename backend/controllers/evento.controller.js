@@ -16,6 +16,8 @@ const getEventos = async (req, res) => {
                 actividad,
                 servicio,
                 fecha,
+                fechaInicio, // <-- nuevo
+                fechaFin,    // <-- nuevo
                 horaInicio,
                 horaFin,
                 lugar
@@ -36,15 +38,36 @@ const getEventos = async (req, res) => {
             }
 
             // Filtros sobre ubicaciones
-            if ((fecha && fecha !== '' && fecha !== 'Todos') ||
+            if (
+                (fecha && fecha !== '' && fecha !== 'Todos') ||
+                (fechaInicio && fechaInicio !== '') ||
+                (fechaFin && fechaFin !== '') ||
                 (horaInicio && horaInicio !== '' && horaInicio !== 'Todos') ||
                 (horaFin && horaFin !== '' && horaFin !== 'Todos') ||
-                (lugar && lugar !== '' && lugar !== 'Todos')) {
+                (lugar && lugar !== '' && lugar !== 'Todos')
+            ) {
                 eventos = eventos.filter(ev => {
                     if (!Array.isArray(ev.ubicaciones)) return false;
                     return ev.ubicaciones.some(ub => {
                         let cumple = true;
-                        if (fecha && fecha !== '' && fecha !== 'Todos') {
+                        // Filtro por rango de fechas (tiene prioridad)
+                        if ((fechaInicio && fechaInicio !== '') || (fechaFin && fechaFin !== '')) {
+                            if (!ub.fecha) return false;
+                            const fechaEvento = new Date(ub.fecha);
+                            let cumpleRango = true;
+                            if (fechaInicio && fechaInicio !== '') {
+                                const inicio = new Date(fechaInicio);
+                                inicio.setHours(0,0,0,0);
+                                cumpleRango = cumpleRango && (fechaEvento >= inicio);
+                            }
+                            if (fechaFin && fechaFin !== '') {
+                                const fin = new Date(fechaFin);
+                                fin.setHours(23,59,59,999);
+                                cumpleRango = cumpleRango && (fechaEvento <= fin);
+                            }
+                            cumple = cumple && cumpleRango;
+                        } else if (fecha && fecha !== '' && fecha !== 'Todos') {
+                            // Solo si no hay rango, aplicar filtro exacto
                             if (!ub.fecha) return false;
                             const fechaEvento = new Date(ub.fecha);
                             const fechaFiltro = new Date(fecha);
