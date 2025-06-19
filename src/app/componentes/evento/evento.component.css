@@ -196,3 +196,32 @@
   vertical-align: middle;
   transition: transform 0.15s, filter 0.15s;
 }
+
+.btn-descargar {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0.2rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.15s;
+}
+
+.btn-descargar:focus {
+  outline: 2px solid #1976d2;
+}
+
+.btn-descargar:hover .icono-descargar,
+.btn-descargar:focus .icono-descargar {
+  transform: scale(1.25);
+  filter: brightness(1.2);
+}
+
+.icono-descargar {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  vertical-align: middle;
+  transition: transform 0.15s, filter 0.15s;
+}

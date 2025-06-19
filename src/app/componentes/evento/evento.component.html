@@ -10,6 +10,9 @@
           <button class="btn-editar" (click)="editarEvento($event)" [attr.aria-label]="'EVENT_CARD.EDIT_EVENT' | translate">
             <img src="/assets/evento/lapiz.png" alt="Editar" class="icono-lapiz">
           </button>
+          <button class="btn-descargar" (click)="descargarEvento($event)" [attr.aria-label]="'EVENT_CARD.DOWNLOAD_EVENT' | translate">
+            <img src="/assets/evento/descargar.webp" alt="Descargar" class="icono-descargar">
+          </button>
         } @else {
           <button class="btn-guardar" (click)="guardarEdicion($event)" [attr.aria-label]="'EVENT_CARD.SAVE_EVENT' | translate">💾</button>
           <button class="btn-cancelar" (click)="cancelarEdicion($event)" [attr.aria-label]="'EVENT_CARD.CANCEL_EDIT' | translate">✖</button>

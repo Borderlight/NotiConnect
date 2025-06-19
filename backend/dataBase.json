@@ -1,31 +1,5 @@
 [
   {
-    "_id": "evt2",
-    "imagen": null,
-    "titulo": "Seminario básicoaa",
-    "ponente": "Nuevo ponente",
-    "empresaOrganizadora": "",
-    "tipoEvento": "CONFERENCE_OR_CONGRESS",
-    "descripcion": "Evento solo con lo esencial.",
-    "adjuntos": [],
-    "servicios": [],
-    "enlaces": [],
-    "actividad": "Seminario",
-    "ubicaciones": [
-      {
-        "fecha": "2025-06-15T12:00:00.000Z",
-        "tipoHorario": "hora",
-        "hora": "12:00",
-        "lugar": "Aula Magna"
-      }
-    ],
-    "fecha": "2025-06-15T12:00:00.000Z",
-    "horaInicio": "12:00",
-    "horaFin": null,
-    "lugar": "Aula Magna",
-    "aula": null
-  },
-  {
     "_id": "evt3",
     "imagen": null,
     "titulo": "Taller de LinkedIn",

@@ -77,4 +77,58 @@ export class EventoComponent {
       this.editForm.markAllAsTouched();
     }
   }
+
+  descargarEvento(event: Event) {
+    event.stopPropagation();
+    const evento = this.evento;
+    // Descargar como JSON
+    const json = JSON.stringify(evento, null, 2);
+    this.descargarArchivo(json, `evento_${evento._id}.json`, 'application/json');
+    // Descargar como CSV
+    const csv = this.convertirEventoACSV(evento);
+    this.descargarArchivo(csv, `evento_${evento._id}.csv`, 'text/csv');
+    // Descargar como PDF (simple)
+    this.descargarPDF(evento);
+  }
+
+  private descargarArchivo(contenido: string, nombreArchivo: string, tipo: string) {
+    const blob = new Blob([contenido], { type: tipo });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = nombreArchivo;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
+  private convertirEventoACSV(evento: any): string {
+    const headers = Object.keys(evento);
+    const values = headers.map(h => {
+      let cell = evento[h]?.toString() || '';
+      if (cell.includes(',') || cell.includes('"')) {
+        cell = `"${cell.replace(/"/g, '""')}"`;
+      }
+      return cell;
+    });
+    return headers.join(',') + '\n' + values.join(',');
+  }
+
+  private descargarPDF(evento: any) {
+    // Solo si jsPDF está disponible
+    if (typeof window !== 'undefined' && (window as any).jsPDF) {
+      const doc = new (window as any).jsPDF();
+      let y = 20;
+      doc.setFontSize(16);
+      doc.text('Evento', 20, y);
+      y += 10;
+      doc.setFontSize(12);
+      Object.keys(evento).forEach(key => {
+        doc.text(`${key}: ${evento[key]}`, 20, y);
+        y += 8;
+      });
+      doc.save(`evento_${evento._id}.pdf`);
+    }
+  }
 }
