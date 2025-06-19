@@ -6,12 +6,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmarModalComponent } from '../confirmar-modal/confirmar-modal.component';
 
 @Component({
   selector: 'app-evento',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, ConfirmarModalComponent],
+  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule],
   templateUrl: './evento.component.html',
   styleUrls: ['./evento.component.css']
 })
@@ -25,6 +24,7 @@ export class EventoComponent {
 
   editMode = false;
   editForm!: FormGroup;
+  mostrarDetalles = false;
 
   constructor(
     private router: Router,
@@ -57,7 +57,12 @@ export class EventoComponent {
       horaInicio: [this.evento.horaInicio, Validators.required],
       horaFin: [this.evento.horaFin],
       lugar: [this.evento.lugar, Validators.required],
-      aula: [this.evento.aula]
+      aula: [this.evento.aula],
+      actividad: [this.evento.actividad],
+      descripcion: [this.descripcionTexto],
+      servicios: [this.serviciosTexto],
+      adjuntos: [this.adjuntosTexto],
+      enlaces: [this.enlacesTexto]
     });
   }
 
@@ -66,14 +71,59 @@ export class EventoComponent {
     this.editMode = false;
   }
 
+  get serviciosTexto(): string {
+    return this.evento?.servicios?.map(s => s.servicios).join(', ') || '';
+  }
+  set serviciosTexto(valor: string) {
+    this.evento.servicios = valor.split(',').map(s => ({ servicios: s.trim() })).filter(s => s.servicios);
+  }
+
+  get adjuntosTexto(): string {
+    return this.evento?.adjuntos?.join(', ') || '';
+  }
+  set adjuntosTexto(valor: string) {
+    this.evento.adjuntos = valor.split(',').map(a => a.trim()).filter(a => a);
+  }
+
+  get enlacesTexto(): string {
+    return this.evento?.enlaces?.map(e => e.url).join(', ') || '';
+  }
+  set enlacesTexto(valor: string) {
+    this.evento.enlaces = valor.split(',').map(url => ({ tipo: 'otro', url: url.trim() })).filter(e => e.url);
+  }
+
+  get descripcionTexto(): string {
+    return this.evento?.descripcion || '';
+  }
+  set descripcionTexto(valor: string) {
+    this.evento.descripcion = valor;
+  }
+
+  get fechaFormateada(): string {
+    if (!this.evento?.fecha) return '';
+    const fecha = new Date(this.evento.fecha);
+    const opciones: Intl.DateTimeFormatOptions = {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    };
+    return fecha.toLocaleDateString('es-ES', opciones);
+  }
+
+  // Al guardar, sincroniza los campos complejos
   guardarEdicion(event: Event) {
     event.stopPropagation();
     if (this.editForm.valid) {
+      this.descripcionTexto = this.editForm.value.descripcion;
+      this.serviciosTexto = this.editForm.value.servicios;
+      this.adjuntosTexto = this.editForm.value.adjuntos;
+      this.enlacesTexto = this.editForm.value.enlaces;
       this.actualizar.emit({
         _id: this.evento._id,
-        ...this.editForm.value
+        ...this.editForm.value,
+        descripcion: this.evento.descripcion,
+        servicios: this.evento.servicios,
+        adjuntos: this.evento.adjuntos,
+        enlaces: this.evento.enlaces
       });
-      // Actualiza la card localmente para feedback inmediato
       Object.assign(this.evento, this.editForm.value);
       this.editMode = false;
     } else {
@@ -84,6 +134,11 @@ export class EventoComponent {
   descargarEvento(event: Event) {
     event.stopPropagation();
     this.descargarIndividual.emit(this.evento);
+  }
+
+  toggleDetalles(event: Event) {
+    event.stopPropagation();
+    this.mostrarDetalles = !this.mostrarDetalles;
   }
 
   private descargarArchivo(contenido: string, nombreArchivo: string, tipo: string) {

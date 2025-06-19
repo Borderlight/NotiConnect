@@ -7,6 +7,9 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
+  align-items: flex-start;
+  min-height: 120px;
+  position: relative;
 }
 
 .evento-card:hover {
@@ -14,22 +17,49 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+.evento-card-visual {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem 1.5rem 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.evento-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.evento-header span.evento-tipo {
+  flex: 1;
+}
+
+.evento-header .acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.evento-imagen-col {
+  flex: 0 0 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-right: 2rem;
+  background: #fff;
+  min-width: 100px;
+  min-height: 100px;
+}
+
 .evento-imagen {
-  width: 300px;
-  height: 200px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.evento-imagen img {
-  width: 100%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.evento-card:hover .evento-imagen img {
-  transform: scale(1.05);
+  border-radius: 10px;
+  background: #f3f3f3;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
 .evento-contenido {
@@ -81,6 +111,172 @@
   color: var(--color-texto-principal);
 }
 
+/* Nuevos estilos para detalles en columnas */
+.detalles-evento-columns {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.detalles-evento-columns .columna {
+  flex: 1;
+  min-width: 180px;
+}
+@media (max-width: 700px) {
+  .detalles-evento-columns {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.evento-card-columns {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex: 1;
+}
+.columna-izquierda {
+  flex: 1 1 60%;
+  min-width: 220px;
+}
+.columna-derecha {
+  flex: 1 1 40%;
+  min-width: 180px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+@media (max-width: 900px) {
+  .evento-card-flex {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .evento-card-columns {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .columna-derecha {
+    margin-top: 1rem;
+  }
+  .evento-imagen-col {
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Estilos para el grid: imagen a la izquierda, campos principales, detalles extra y botones alineados arriba a la derecha */
+.evento-card-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 50px 2.2fr 1fr 70px;
+  width: 100%;
+  max-width: none;
+  gap: 1.2rem;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 1.5rem 1.5rem 1.5rem 1rem;
+}
+.evento-imagen-col {
+  grid-column: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 50px;
+  max-width: 50px;
+}
+.evento-imagen {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f3f3f3;
+}
+.evento-main-col {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1.7rem; /* aumenta el margen para separar de la imagen */
+}
+.evento-detalles-col {
+  grid-column: 3;
+  background: none;
+  border-radius: 0;
+  padding: 0.8rem 0 0.8rem 0.5rem;
+  box-shadow: none;
+  min-width: 170px;
+  margin-left: 0.5rem;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  align-self: flex-start;
+  margin-top: 0;
+}
+.evento-card-grid.mostrar-detalles .evento-detalles-col {
+  visibility: visible;
+  opacity: 1;
+}
+.evento-card-grid:not(.mostrar-detalles) .evento-detalles-col {
+  visibility: hidden;
+  opacity: 0;
+}
+.evento-botones-col {
+  grid-column: 4;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 0.2rem;
+}
+.evento-botones-topright {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 2;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+.acciones {
+  display: flex !important;
+}
+@media (max-width: 1100px) {
+  .evento-card-grid {
+    grid-template-columns: 90px 1fr 1fr 50px;
+    gap: 0.7rem;
+  }
+}
+@media (max-width: 900px) {
+  .evento-card-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .evento-imagen-col, .evento-main-col, .evento-detalles-col, .evento-botones-col {
+    grid-column: 1;
+  }
+  .evento-botones-col {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .acciones {
+    display: none;
+  }
+  .evento-detalles-col {
+    margin-left: 0;
+  }
+}
+
 /* Soporte para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .evento-card {
@@ -127,23 +323,6 @@
   .evento-titulo {
     font-size: 1.25rem;
   }
-}
-
-.evento-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.evento-header span.evento-tipo {
-  flex: 1;
-}
-
-.evento-header .acciones {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
 }
 
 .btn-eliminar {
@@ -224,4 +403,60 @@
   object-fit: contain;
   vertical-align: middle;
   transition: transform 0.15s, filter 0.15s;
+}
+
+.evento-titulo-detalles-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2.2rem;
+}
+.evento-detalles-col {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  min-width: 170px;
+  margin-left: 0.5rem;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  align-self: flex-start;
+  margin-top: 0;
+}
+.evento-titulo-detalles-row-alineado {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2.5rem;
+}
+.evento-titulo-col {
+  flex: 1 1 0%;
+  min-width: 180px;
+}
+
+.evento-detalles-col-alineado {
+  flex: 1 1 0%;
+  min-width: 180px;
+}
+
+@media (max-width: 700px) {
+  .evento-card {
+    flex-direction: column;
+    min-height: unset;
+  }
+  .evento-imagen-col {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    justify-content: flex-start;
+    min-width: unset;
+    min-height: unset;
+  }
+  .evento-main-col {
+    padding-right: 0;
+  }
+  .evento-titulo-detalles-row-alineado {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
 }

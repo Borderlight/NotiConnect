@@ -1,89 +1,78 @@
-<div class="evento-card" (click)="verDetalles()" role="button" tabindex="0" [attr.aria-label]="'EVENT_CARD.VIEW_DETAILS' | translate:{title: evento.titulo}">
-  <div class="evento-imagen-container">
+<div class="evento-card{{ mostrarDetalles ? ' mostrar-detalles' : '' }}">
+  <div class="evento-botones-topright">
+    @if (!editMode) {
+      <button class="btn-editar" (click)="editarEvento($event)" [attr.aria-label]="'EVENT_CARD.EDIT_EVENT' | translate">
+        <img src="/assets/evento/lapiz.png" alt="Editar" class="icono-lapiz">
+      </button>
+      <button class="btn-descargar" (click)="descargarEvento($event)" [attr.aria-label]="'EVENT_CARD.DOWNLOAD_EVENT' | translate">
+        <img src="/assets/evento/descargar.webp" alt="Descargar" class="icono-descargar">
+      </button>
+      <button class="btn-eliminar" (click)="eliminarEvento($event)" [attr.aria-label]="'EVENT_CARD.DELETE_EVENT' | translate">
+        <img src="/assets/evento/papelera.png" [alt]="'EVENT_CARD.DELETE' | translate" class="icono-papelera">
+      </button>
+    } @else {
+      <button class="btn-guardar" (click)="guardarEdicion($event)" [attr.aria-label]="'EVENT_CARD.SAVE_EVENT' | translate">💾</button>
+      <button class="btn-cancelar" (click)="cancelarEdicion($event)" [attr.aria-label]="'EVENT_CARD.CANCEL_EDIT' | translate">✖</button>
+    }
+  </div>
+  <div class="evento-imagen-col">
     <img [src]="evento.imagen" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
   </div>
-  <div class="evento-contenido">
+  <div class="evento-main-col">
     <div class="evento-header">
       <span class="evento-tipo">{{ 'EVENT_TYPES.' + evento.tipoEvento | translate }}</span>
       <span class="acciones">
-        @if (!editMode) {
-          <button class="btn-editar" (click)="editarEvento($event)" [attr.aria-label]="'EVENT_CARD.EDIT_EVENT' | translate">
-            <img src="/assets/evento/lapiz.png" alt="Editar" class="icono-lapiz">
-          </button>
-          <button class="btn-descargar" (click)="descargarEvento($event)" [attr.aria-label]="'EVENT_CARD.DOWNLOAD_EVENT' | translate">
-            <img src="/assets/evento/descargar.webp" alt="Descargar" class="icono-descargar">
-          </button>
-        } @else {
-          <button class="btn-guardar" (click)="guardarEdicion($event)" [attr.aria-label]="'EVENT_CARD.SAVE_EVENT' | translate">💾</button>
-          <button class="btn-cancelar" (click)="cancelarEdicion($event)" [attr.aria-label]="'EVENT_CARD.CANCEL_EDIT' | translate">✖</button>
-        }
-        <button class="btn-eliminar" (click)="eliminarEvento($event)" [attr.aria-label]="'EVENT_CARD.DELETE_EVENT' | translate">
-          <img src="/assets/evento/papelera.png" [alt]="'EVENT_CARD.DELETE' | translate" class="icono-papelera">
-        </button>
+        <!-- Los botones aquí quedan ocultos por CSS -->
       </span>
     </div>
-    <h2 class="evento-titulo">
-      @if (!editMode) {
-        {{ evento.titulo }}
-      } @else {
-        <form [formGroup]="editForm" class="form-edicion-inline">
-          <input type="text" formControlName="titulo" class="input-editar" placeholder="Título del evento" />
-          <div class="evento-info">
-            <p class="evento-ponente">
-              <i class="fas fa-user"></i>
-              <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}</span>
-              <input type="text" formControlName="ponente" class="input-editar" placeholder="Ponente" />
-            </p>
-            <p class="evento-fecha">
-              <i class="fas fa-calendar"></i>
-              <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}</span>
-              <input type="date" formControlName="fecha" class="input-editar" />
-            </p>
-            <p class="evento-hora">
-              <i class="fas fa-clock"></i>
-              <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}</span>
-              <input type="time" formControlName="horaInicio" class="input-editar input-hora" />
-              <span>- <input type="time" formControlName="horaFin" class="input-editar input-hora" /></span>
-            </p>
-            <p class="evento-lugar">
-              <i class="fas fa-map-marker-alt"></i>
-              <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}</span>
-              <input type="text" formControlName="lugar" class="input-editar" placeholder="Lugar" />
-              <span>- <input type="text" formControlName="aula" class="input-editar input-aula" placeholder="Aula" /></span>
-            </p>
-          </div>
-        </form>
-      }
-    </h2>
-    @if (!editMode) {
-      <div class="evento-info">
-        <p class="evento-ponente">
-          <i class="fas fa-user"></i>
-          <span class="info-label">{{ 'EVENT_CARD.SPEAKER' | translate }}</span>
-          {{ evento.ponente }}
-        </p>
-        <p class="evento-fecha">
-          <i class="fas fa-calendar"></i>
-          <span class="info-label">{{ 'EVENT_CARD.DATE' | translate }}</span>
-          {{ evento.fecha | date:'fullDate':'':currentLang }}
-        </p>
-        <p class="evento-hora">
-          <i class="fas fa-clock"></i>
-          <span class="info-label">{{ 'EVENT_CARD.TIME' | translate }}</span>
-          {{ evento.horaInicio }}
-          @if (evento.horaFin) {
-            - {{ evento.horaFin }}
+    <div class="evento-titulo-detalles-row-alineado">
+      <div class="evento-titulo-col">
+        @if (!editMode) {
+          <h2 class="evento-titulo">{{ evento.titulo }}</h2>
+          @if (evento.ponente) {
+            <p><strong>Ponente:</strong> {{ evento.ponente }}</p>
           }
-        </p>
-        <p class="evento-lugar">
-          <i class="fas fa-map-marker-alt"></i>
-          <span class="info-label">{{ 'EVENT_CARD.LOCATION' | translate }}</span>
-          {{ evento.lugar }}
-          @if (evento.aula) {
-            - {{ evento.aula }}
+          <p><strong>Fecha:</strong> {{ fechaFormateada }}</p>
+          <p><strong>Hora:</strong> {{ evento.horaInicio }}<span *ngIf="evento.horaFin"> - {{ evento.horaFin }}</span></p>
+          <p><strong>Lugar:</strong> {{ evento.lugar }}<span *ngIf="evento.aula"> - {{ evento.aula }}</span></p>
+          @if (evento.actividad) {
+            <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
           }
-        </p>
+          <button class="btn-ver-mas" (click)="toggleDetalles($event)">
+            {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
+          </button>
+        } @else {
+          <h2 class="evento-titulo"><input formControlName="titulo" class="input-edit" [ngModel]="evento.titulo" /></h2>
+          <p><strong>Ponente:</strong> <input formControlName="ponente" class="input-edit" [ngModel]="evento.ponente" /></p>
+          <p><strong>Fecha:</strong> <input formControlName="fecha" class="input-edit" type="date" [ngModel]="evento.fecha | date:'yyyy-MM-dd'" /></p>
+          <p><strong>Hora:</strong> <input formControlName="horaInicio" class="input-edit" type="time" [ngModel]="evento.horaInicio" /><span *ngIf="evento.horaFin"> - <input formControlName="horaFin" class="input-edit" type="time" [ngModel]="evento.horaFin" /></span></p>
+          <p><strong>Lugar:</strong> <input formControlName="lugar" class="input-edit" [ngModel]="evento.lugar" />
+            <span *ngIf="evento.aula"> - <input formControlName="aula" class="input-edit" [ngModel]="evento.aula" /></span>
+          </p>
+          <p *ngIf="evento.actividad"><strong>Actividad:</strong> <input formControlName="actividad" class="input-edit" [ngModel]="evento.actividad" /></p>
+          <button class="btn-ver-mas" (click)="toggleDetalles($event)">
+            {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
+          </button>
+        }
       </div>
-    }
+      @if (mostrarDetalles) {
+        <div class="evento-detalles-col-alineado">
+          <div class="detalles-evento">
+            @if (!editMode) {
+              <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+              <p><strong>Servicios:</strong> {{ serviciosTexto || '-' }}</p>
+              <p><strong>Adjuntos:</strong> {{ adjuntosTexto || '-' }}</p>
+              <p><strong>Enlaces:</strong> {{ enlacesTexto || '-' }}</p>
+            } @else {
+              <p><strong>Descripción:</strong> <input formControlName="descripcion" class="input-edit" [value]="descripcionTexto" /></p>
+              <p><strong>Servicios:</strong> <input formControlName="servicios" class="input-edit" [value]="serviciosTexto" /></p>
+              <p><strong>Adjuntos:</strong> <input formControlName="adjuntos" class="input-edit" [value]="adjuntosTexto" /></p>
+              <p><strong>Enlaces:</strong> <input formControlName="enlaces" class="input-edit" [value]="enlacesTexto" /></p>
+            }
+            <div style="height: 1.7em;"></div>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 </div>

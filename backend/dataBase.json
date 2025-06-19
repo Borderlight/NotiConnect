@@ -95,9 +95,7 @@
     "empresaOrganizadora": "empresa",
     "tipoEvento": "COURSE",
     "descripcion": "descripciondescripciondescripciondescripciondescripcion",
-    "adjuntos": [
-      "C:\\fakepath\\Customer Journey Map.png"
-    ],
+    "adjuntos": [],
     "servicios": [
       {
         "servicios": "SERVICES.CORO",
@@ -120,9 +118,214 @@
         "lugar": "FACULTY",
         "aula": "S-41"
       }
-    ]
+    ],
+    "fecha": "2010-10-10",
+    "horaInicio": "10:00",
+    "horaFin": "",
+    "lugar": "FACULTY",
+    "aula": "S-41",
+    "imagen": null
   },
   {
     "_id": "mboqp45aokyuyzue9"
+  },
+  {
+    "_id": "evt4",
+    "imagen": null,
+    "titulo": "Seminario de IA Generativa",
+    "ponente": "Ana Torres",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "SEMINAR",
+    "descripcion": "Descubre el potencial de la IA generativa en la educación.",
+    "adjuntos": ["presentacion.pdf", "ejemplo-codigo.zip"],
+    "servicios": [
+      { "servicios": "Facultad de Ingeniería" },
+      { "servicios": "Biblioteca" }
+    ],
+    "enlaces": [
+      { "tipo": "Webinar", "url": "https://upsa.es/ia-generativa" },
+      { "tipo": "Material", "url": "https://upsa.es/materiales/ia" }
+    ],
+    "actividad": "Seminario",
+    "ubicaciones": [
+      {
+        "fecha": "2025-07-01T09:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "09:00",
+        "horaFin": "11:00",
+        "lugar": "Aula Magna",
+        "aula": "A100"
+      }
+    ],
+    "fecha": "2025-07-01T09:00:00.000Z",
+    "horaInicio": "09:00",
+    "horaFin": "11:00",
+    "lugar": "Aula Magna",
+    "aula": "A100"
+  },
+  {
+    "_id": "evt5",
+    "imagen": null,
+    "titulo": "Jornada de Puertas Abiertas",
+    "ponente": "Equipo UPSA",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "OPEN_DAY",
+    "descripcion": "Conoce nuestras instalaciones y oferta académica.",
+    "adjuntos": ["folleto.pdf"],
+    "servicios": [
+      { "servicios": "Atención al estudiante" }
+    ],
+    "enlaces": [
+      { "tipo": "Inscripción", "url": "https://upsa.es/inscripcion" }
+    ],
+    "actividad": "Jornada",
+    "ubicaciones": [
+      {
+        "fecha": "2025-09-15T10:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "10:00",
+        "horaFin": "14:00",
+        "lugar": "Hall principal",
+        "aula": "Recepción"
+      }
+    ],
+    "fecha": "2025-09-15T10:00:00.000Z",
+    "horaInicio": "10:00",
+    "horaFin": "14:00",
+    "lugar": "Hall principal",
+    "aula": "Recepción"
+  },
+  {
+    "_id": "evt6",
+    "imagen": null,
+    "titulo": "Hackathon Universitario",
+    "ponente": "Varios",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "HACKATHON",
+    "descripcion": "Participa en el reto de programación más grande del año.",
+    "adjuntos": ["bases.pdf", "premios.pdf"],
+    "servicios": [
+      { "servicios": "Cafetería" },
+      { "servicios": "Soporte técnico" }
+    ],
+    "enlaces": [
+      { "tipo": "Inscripción", "url": "https://upsa.es/hackathon" },
+      { "tipo": "Reglamento", "url": "https://upsa.es/hackathon/reglamento" }
+    ],
+    "actividad": "Competición",
+    "ubicaciones": [
+      {
+        "fecha": "2025-10-10T09:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "09:00",
+        "horaFin": "21:00",
+        "lugar": "Sala de actos",
+        "aula": "Aula 1"
+      }
+    ],
+    "fecha": "2025-10-10T09:00:00.000Z",
+    "horaInicio": "09:00",
+    "horaFin": "21:00",
+    "lugar": "Sala de actos",
+    "aula": "Aula 1"
+  },
+  {
+    "_id": "evt7",
+    "imagen": null,
+    "titulo": "Charla sobre Ciberseguridad",
+    "ponente": "Laura Gómez",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "TALK",
+    "descripcion": "Aprende los conceptos básicos para proteger tu identidad digital.",
+    "adjuntos": ["guia-ciberseguridad.pdf"],
+    "servicios": [
+      { "servicios": "Soporte informático" }
+    ],
+    "enlaces": [
+      { "tipo": "Registro", "url": "https://upsa.es/ciberseguridad/registro" }
+    ],
+    "actividad": "Charla",
+    "ubicaciones": [
+      {
+        "fecha": "2025-11-05T17:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "17:00",
+        "horaFin": "18:30",
+        "lugar": "Aula 2",
+        "aula": "B201"
+      }
+    ],
+    "fecha": "2025-11-05T17:00:00.000Z",
+    "horaInicio": "17:00",
+    "horaFin": "18:30",
+    "lugar": "Aula 2",
+    "aula": "B201"
+  },
+  {
+    "_id": "evt8",
+    "imagen": null,
+    "titulo": "Mesa redonda: Emprendimiento joven",
+    "ponente": "Varios ponentes",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "ROUND_TABLE",
+    "descripcion": "Experiencias y consejos de jóvenes emprendedores.",
+    "adjuntos": ["resumen-mesa.pdf"],
+    "servicios": [
+      { "servicios": "Cafetería" },
+      { "servicios": "Networking" }
+    ],
+    "enlaces": [
+      { "tipo": "Streaming", "url": "https://upsa.es/mesa-emprendimiento" }
+    ],
+    "actividad": "Mesa redonda",
+    "ubicaciones": [
+      {
+        "fecha": "2025-10-22T12:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "12:00",
+        "horaFin": "14:00",
+        "lugar": "Salón de actos",
+        "aula": "Principal"
+      }
+    ],
+    "fecha": "2025-10-22T12:00:00.000Z",
+    "horaInicio": "12:00",
+    "horaFin": "14:00",
+    "lugar": "Salón de actos",
+    "aula": "Principal"
+  },
+  {
+    "_id": "evt9",
+    "imagen": null,
+    "titulo": "Curso intensivo de Python",
+    "ponente": "Carlos Ruiz",
+    "empresaOrganizadora": "UPSA",
+    "tipoEvento": "COURSE",
+    "descripcion": "Aprende Python desde cero en solo una semana.",
+    "adjuntos": ["temario.pdf", "ejercicios.zip"],
+    "servicios": [
+      { "servicios": "Aula virtual" },
+      { "servicios": "Tutorías" }
+    ],
+    "enlaces": [
+      { "tipo": "Inscripción", "url": "https://upsa.es/python" },
+      { "tipo": "Material", "url": "https://upsa.es/python/material" }
+    ],
+    "actividad": "Curso",
+    "ubicaciones": [
+      {
+        "fecha": "2025-08-10T09:00:00.000Z",
+        "tipoHorario": "horario",
+        "horaInicio": "09:00",
+        "horaFin": "13:00",
+        "lugar": "Laboratorio 3",
+        "aula": "L3"
+      }
+    ],
+    "fecha": "2025-08-10T09:00:00.000Z",
+    "horaInicio": "09:00",
+    "horaFin": "13:00",
+    "lugar": "Laboratorio 3",
+    "aula": "L3"
   }
 ]
