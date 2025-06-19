@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EventoComponent } from '../../componentes/evento/evento.component';
 import { DescargarModalComponent } from '../../componentes/descargar-modal/descargar-modal.component';
+import { ConfirmarModalComponent } from '../../componentes/confirmar-modal/confirmar-modal.component';
 import { Evento } from '../../interfaces/evento.interface';
 import { EventType } from '../../enums/event-type.enum';
 import { EventoService } from '../../servicios/evento.service';
@@ -13,7 +14,7 @@ import { DescargaService } from '../../servicios/descarga.service';
 @Component({
   selector: 'app-busqueda',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, EventoComponent, DescargarModalComponent, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, EventoComponent, DescargarModalComponent, TranslateModule, ConfirmarModalComponent],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css']
 })
@@ -23,6 +24,10 @@ export class BusquedaComponent implements OnInit {
   eventosDisponibles: Evento[] = [];
   mostrarResultados: boolean = false;
   mostrarModalDescarga = false;
+  mostrarModalConfirmar = false;
+  mensajeConfirmar = '';
+  borradoPendiente: 'masivo' | 'individual' | null = null;
+  idEventoAEliminar: string | null = null;
   tiposEvento = Object.values(EventType);
   actividadesRelacionadas = ['Semana de la Ciencia'];
   serviciosDisponibles = [
@@ -218,6 +223,14 @@ export class BusquedaComponent implements OnInit {
     this.eventosFiltrados = [];
   }
 
+  // Cambia el handler del evento de la card
+  onSolicitarConfirmacionEliminar(id: string) {
+    this.mensajeConfirmar = '¿Estás seguro de borrar este evento?';
+    this.mostrarModalConfirmar = true;
+    this.borradoPendiente = 'individual';
+    this.idEventoAEliminar = id;
+  }
+
   eliminarEvento(eventoId: string) {
     this.eventoService.eliminarEvento(eventoId).subscribe({
       next: () => {
@@ -376,5 +389,45 @@ export class BusquedaComponent implements OnInit {
         console.error('Error al actualizar el evento:', error);
       }
     });
+  }
+
+  // Cambia el botón para solo mostrar el modal, no ejecutar el borrado directamente
+  mostrarConfirmacionBorradoMasivo() {
+    if (this.mostrarModalConfirmar) return; // Evita doble apertura
+    this.mensajeConfirmar = '¿Estás seguro de borrar todos los eventos filtrados?';
+    this.mostrarModalConfirmar = true;
+    this.borradoPendiente = 'masivo';
+  }
+
+  onConfirmarBorrado() {
+    this.mostrarModalConfirmar = false;
+    if (this.borradoPendiente === 'masivo') {
+      setTimeout(() => this.eliminarEventosFiltrados(), 0);
+    } else if (this.borradoPendiente === 'individual' && this.idEventoAEliminar) {
+      setTimeout(() => this.eliminarEventoDesdePadre(this.idEventoAEliminar!), 0);
+    }
+    this.borradoPendiente = null;
+    this.idEventoAEliminar = null;
+  }
+
+  eliminarEventoDesdePadre(id: string) {
+    this.eventoService.eliminarEvento(id).subscribe({
+      next: () => {
+        this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== id);
+        this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== id);
+        if (this.eventosFiltrados.length === 0) {
+          this.mostrarResultados = false;
+        }
+      },
+      error: (error: Error) => {
+        console.error('Error al eliminar el evento:', error);
+      }
+    });
+  }
+
+  onCancelarBorrado() {
+    this.mostrarModalConfirmar = false;
+    this.borradoPendiente = null;
+    this.idEventoAEliminar = null;
   }
 }

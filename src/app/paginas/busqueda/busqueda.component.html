@@ -155,7 +155,7 @@
             <i class="fas fa-download"></i>
             {{ 'SEARCH.DOWNLOAD' | translate }}
           </button>
-          <button class="btn-opcion btn-eliminar" (click)="eliminarEventosFiltrados()">
+          <button class="btn-opcion btn-eliminar" (click)="mostrarConfirmacionBorradoMasivo()">
             <i class="fas fa-trash"></i>
             {{ 'SEARCH.DELETE' | translate }}
           </button>
@@ -168,10 +168,17 @@
   @if (mostrarModalDescarga) {
     <app-descargar-modal
       [eventos]="eventoDescargaIndividual ? [eventoDescargaIndividual] : eventosFiltrados"
-      (cerrar)="cerrarModalDescarga()"
-      (descargar)="manejarDescarga($event)">
-    </app-descargar-modal>
+      (cerrar)="mostrarModalDescarga = false"
+    />
   }
+
+  <!-- Modal de confirmación de borrado masivo -->
+  <app-confirmar-modal
+    [mensaje]="mensajeConfirmar"
+    [visible]="mostrarModalConfirmar"
+    (confirmar)="onConfirmarBorrado()"
+    (cancelar)="onCancelarBorrado()"
+  />
 
   <!-- Resultados de la búsqueda -->
   @if (mostrarResultados) {
@@ -188,7 +195,8 @@
               [evento]="evento"
               (eliminar)="eliminarEvento($event)"
               (actualizar)="actualizarEvento($event)"
-              (descargarIndividual)="abrirModalDescargaIndividual($event)">
+              (descargarIndividual)="abrirModalDescargaIndividual($event)"
+              (solicitarConfirmacionEliminar)="onSolicitarConfirmacionEliminar($event)">
             </app-evento>
           }
         </div>

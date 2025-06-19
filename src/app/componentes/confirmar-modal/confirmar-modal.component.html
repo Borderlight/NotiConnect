@@ -1,0 +1,11 @@
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <p>{{ mensaje }}</p>
+      <div class="modal-actions">
+        <button class="btn-confirmar" (click)="onConfirmar()">Eliminar</button>
+        <button class="btn-cancelar" (click)="onCancelar()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+}

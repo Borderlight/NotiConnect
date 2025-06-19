@@ -6,11 +6,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmarModalComponent } from '../confirmar-modal/confirmar-modal.component';
 
 @Component({
   selector: 'app-evento',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, ConfirmarModalComponent],
   templateUrl: './evento.component.html',
   styleUrls: ['./evento.component.css']
 })
@@ -19,6 +20,7 @@ export class EventoComponent {
   @Output() eliminar = new EventEmitter<string>();
   @Output() actualizar = new EventEmitter<Partial<Evento>>();
   @Output() descargarIndividual = new EventEmitter<Evento>();
+  @Output() solicitarConfirmacionEliminar = new EventEmitter<string>();
   currentLang: string = 'es';
 
   editMode = false;
@@ -36,13 +38,13 @@ export class EventoComponent {
 
   verDetalles() {
     if (!this.editMode) {
-      this.router.navigate(['/detalles-evento', this.evento._id]);
+      this.router.navigate(['/detalles_evento', this.evento._id]);
     }
   }
 
   eliminarEvento(event: Event) {
     event.stopPropagation();
-    this.eliminar.emit(this.evento._id);
+    this.solicitarConfirmacionEliminar.emit(this.evento._id);
   }
 
   editarEvento(event: Event) {
