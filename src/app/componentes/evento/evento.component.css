@@ -460,3 +460,59 @@
     gap: 1.2rem;
   }
 }
+
+.btn-guardar, .btn-cancelar {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0.2rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.15s;
+  font-size: 1.2rem;
+  color: var(--color-texto-principal);
+}
+
+.btn-guardar:focus, .btn-cancelar:focus {
+  outline: 2px solid #1976d2;
+}
+
+.btn-guardar:hover, .btn-cancelar:hover {
+  transform: scale(1.25);
+  color: #1976d2;
+}
+
+.btn-cancelar {
+  color: #d32f2f; /* rojo fuerte, típico de cancelar o eliminar */
+}
+
+.btn-cancelar:hover {
+  color: #b71c1c; /* rojo más oscuro al pasar el cursor */
+}
+
+.btn-guardar {
+  /* Puedes poner un icono si lo deseas, igual que los otros botones */
+}
+
+.btn-ver-mas {
+  display: block;
+  margin: 1.2rem auto 0 auto;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.08rem;
+  background: none;
+  border: 2px solid #1976d2;
+  color: #1976d2;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, transform 0.15s;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.07);
+}
+
+.btn-ver-mas:hover, .btn-ver-mas:focus {
+  background: #1976d2;
+  color: #fff;
+  transform: scale(1.08);
+  outline: none;
+}
