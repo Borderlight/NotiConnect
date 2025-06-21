@@ -219,7 +219,10 @@ export class FormularioComponent {
       servicios: this.fb.array([this.crearCampoServicio()]),
       enlaces: this.fb.array([this.crearEnlace()], [EnlacesValidator.requiereEnlaces()]),
       actividad_relacionada: ['', Validators.required],
-      ubicaciones: this.fb.array([this.crearUbicacion()])
+      ubicaciones: this.fb.array([this.crearUbicacion()]),
+      ponentes: this.fb.array([
+        this.fb.group({ nombre: ['', Validators.required], afiliacion: [''] })
+      ])
     });
 
     // Suscribirse a cambios en lugar para actualizar validaciones del aula
@@ -648,5 +651,19 @@ export class FormularioComponent {
     const customActs = localStorage.getItem('actividadesPersonalizadas');
     const customActsArr = customActs ? JSON.parse(customActs) : [];
     this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
+  }
+
+  get listadoPonentes() {
+    return this.formularioEvento.get('ponentes') as FormArray;
+  }
+
+  agregarPonente() {
+    this.listadoPonentes.push(this.fb.group({ nombre: ['', Validators.required], afiliacion: [''] }));
+  }
+
+  eliminarPonente(index: number) {
+    if (this.listadoPonentes.length > 1) {
+      this.listadoPonentes.removeAt(index);
+    }
   }
 }
