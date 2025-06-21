@@ -38,9 +38,11 @@
           @if (evento.actividad) {
             <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
           }
-          <button class="btn-ver-mas" (click)="toggleDetalles($event)">
-            {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
-          </button>
+          <div class="btn-ver-mas-wrapper">
+            <button class="btn-ver-mas" (click)="toggleDetalles($event)">
+              {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
+            </button>
+          </div>
         } @else {
           <form [formGroup]="editForm">
             <h2 class="evento-titulo"><input formControlName="titulo" class="input-edit" /></h2>
@@ -51,9 +53,11 @@
               <span *ngIf="evento.aula"> - <input formControlName="aula" class="input-edit" /></span>
             </p>
             <p *ngIf="evento.actividad"><strong>Actividad:</strong> <input formControlName="actividad" class="input-edit" /></p>
-            <button class="btn-ver-mas" (click)="toggleDetalles($event)">
-              {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
-            </button>
+            <div class="btn-ver-mas-wrapper">
+              <button class="btn-ver-mas" (click)="toggleDetalles($event)">
+                {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
+              </button>
+            </div>
           </form>
         }
       </div>
