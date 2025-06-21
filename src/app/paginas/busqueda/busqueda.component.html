@@ -169,6 +169,7 @@
     <app-descargar-modal
       [eventos]="eventoDescargaIndividual ? [eventoDescargaIndividual] : eventosFiltrados"
       (cerrar)="mostrarModalDescarga = false"
+      (descargar)="manejarDescarga($event)"
     />
   }
 

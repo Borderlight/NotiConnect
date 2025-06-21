@@ -10,12 +10,12 @@
     "adjuntos": [],
     "servicios": [
       {
-        "servicios": "Facultad"
+        "servicios": "f"
       }
     ],
     "enlaces": [
       {
-        "tipo": "LinkedIn",
+        "tipo": "otro",
         "url": "https://linkedin.com/ejemplo"
       }
     ],
@@ -137,14 +137,27 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "SEMINAR",
     "descripcion": "Descubre el potencial de la IA generativa en la educación.",
-    "adjuntos": ["presentacion.pdf", "ejemplo-codigo.zip"],
+    "adjuntos": [
+      "presentacion.pdf",
+      "ejemplo-codigo.zip"
+    ],
     "servicios": [
-      { "servicios": "Facultad de Ingeniería" },
-      { "servicios": "Biblioteca" }
+      {
+        "servicios": "Facultad de Ingeniería"
+      },
+      {
+        "servicios": "Biblioteca"
+      }
     ],
     "enlaces": [
-      { "tipo": "Webinar", "url": "https://upsa.es/ia-generativa" },
-      { "tipo": "Material", "url": "https://upsa.es/materiales/ia" }
+      {
+        "tipo": "Webinar",
+        "url": "https://upsa.es/ia-generativa"
+      },
+      {
+        "tipo": "Material",
+        "url": "https://upsa.es/materiales/ia"
+      }
     ],
     "actividad": "Seminario",
     "ubicaciones": [
@@ -171,12 +184,19 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "OPEN_DAY",
     "descripcion": "Conoce nuestras instalaciones y oferta académica.",
-    "adjuntos": ["folleto.pdf"],
+    "adjuntos": [
+      "folleto.pdf"
+    ],
     "servicios": [
-      { "servicios": "Atención al estudiante" }
+      {
+        "servicios": "Atención al estudiante"
+      }
     ],
     "enlaces": [
-      { "tipo": "Inscripción", "url": "https://upsa.es/inscripcion" }
+      {
+        "tipo": "Inscripción",
+        "url": "https://upsa.es/inscripcion"
+      }
     ],
     "actividad": "Jornada",
     "ubicaciones": [
@@ -203,14 +223,27 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "HACKATHON",
     "descripcion": "Participa en el reto de programación más grande del año.",
-    "adjuntos": ["bases.pdf", "premios.pdf"],
+    "adjuntos": [
+      "bases.pdf",
+      "premios.pdf"
+    ],
     "servicios": [
-      { "servicios": "Cafetería" },
-      { "servicios": "Soporte técnico" }
+      {
+        "servicios": "Cafetería"
+      },
+      {
+        "servicios": "Soporte técnico"
+      }
     ],
     "enlaces": [
-      { "tipo": "Inscripción", "url": "https://upsa.es/hackathon" },
-      { "tipo": "Reglamento", "url": "https://upsa.es/hackathon/reglamento" }
+      {
+        "tipo": "Inscripción",
+        "url": "https://upsa.es/hackathon"
+      },
+      {
+        "tipo": "Reglamento",
+        "url": "https://upsa.es/hackathon/reglamento"
+      }
     ],
     "actividad": "Competición",
     "ubicaciones": [
@@ -237,12 +270,19 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "TALK",
     "descripcion": "Aprende los conceptos básicos para proteger tu identidad digital.",
-    "adjuntos": ["guia-ciberseguridad.pdf"],
+    "adjuntos": [
+      "guia-ciberseguridad.pdf"
+    ],
     "servicios": [
-      { "servicios": "Soporte informático" }
+      {
+        "servicios": "Soporte informático"
+      }
     ],
     "enlaces": [
-      { "tipo": "Registro", "url": "https://upsa.es/ciberseguridad/registro" }
+      {
+        "tipo": "Registro",
+        "url": "https://upsa.es/ciberseguridad/registro"
+      }
     ],
     "actividad": "Charla",
     "ubicaciones": [
@@ -269,13 +309,22 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "ROUND_TABLE",
     "descripcion": "Experiencias y consejos de jóvenes emprendedores.",
-    "adjuntos": ["resumen-mesa.pdf"],
+    "adjuntos": [
+      "resumen-mesa.pdf"
+    ],
     "servicios": [
-      { "servicios": "Cafetería" },
-      { "servicios": "Networking" }
+      {
+        "servicios": "Cafetería"
+      },
+      {
+        "servicios": "Networking"
+      }
     ],
     "enlaces": [
-      { "tipo": "Streaming", "url": "https://upsa.es/mesa-emprendimiento" }
+      {
+        "tipo": "Streaming",
+        "url": "https://upsa.es/mesa-emprendimiento"
+      }
     ],
     "actividad": "Mesa redonda",
     "ubicaciones": [
@@ -302,14 +351,27 @@
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "COURSE",
     "descripcion": "Aprende Python desde cero en solo una semana.",
-    "adjuntos": ["temario.pdf", "ejercicios.zip"],
+    "adjuntos": [
+      "temario.pdf",
+      "ejercicios.zip"
+    ],
     "servicios": [
-      { "servicios": "Aula virtual" },
-      { "servicios": "Tutorías" }
+      {
+        "servicios": "Aula virtual"
+      },
+      {
+        "servicios": "Tutorías"
+      }
     ],
     "enlaces": [
-      { "tipo": "Inscripción", "url": "https://upsa.es/python" },
-      { "tipo": "Material", "url": "https://upsa.es/python/material" }
+      {
+        "tipo": "Inscripción",
+        "url": "https://upsa.es/python"
+      },
+      {
+        "tipo": "Material",
+        "url": "https://upsa.es/python/material"
+      }
     ],
     "actividad": "Curso",
     "ubicaciones": [
