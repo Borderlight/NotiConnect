@@ -33,8 +33,16 @@
             <p><strong>Ponente:</strong> {{ evento.ponente }}</p>
           }
           <p><strong>Fecha:</strong> {{ fechaFormateada }}</p>
-          <p><strong>Hora:</strong> {{ evento.horaInicio }}<span *ngIf="evento.horaFin"> - {{ evento.horaFin }}</span></p>
-          <p><strong>Lugar:</strong> {{ evento.lugar }}<span *ngIf="evento.aula"> - {{ evento.aula }}</span></p>
+          <p><strong>Hora:</strong> {{ evento.horaInicio }}
+            @if (evento.horaFin) {
+              <span> - {{ evento.horaFin }}</span>
+            }
+          </p>
+          <p><strong>Lugar:</strong> {{ evento.lugar }}
+            @if (evento.aula) {
+              <span> - {{ evento.aula }}</span>
+            }
+          </p>
           @if (evento.actividad) {
             <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
           }
@@ -48,11 +56,19 @@
             <h2 class="evento-titulo"><input formControlName="titulo" class="input-edit" /></h2>
             <p><strong>Ponente:</strong> <input formControlName="ponente" class="input-edit" /></p>
             <p><strong>Fecha:</strong> <input formControlName="fecha" class="input-edit" type="date" /></p>
-            <p><strong>Hora:</strong> <input formControlName="horaInicio" class="input-edit" type="time" /><span *ngIf="evento.horaFin"> - <input formControlName="horaFin" class="input-edit" type="time" /></span></p>
-            <p><strong>Lugar:</strong> <input formControlName="lugar" class="input-edit" />
-              <span *ngIf="evento.aula"> - <input formControlName="aula" class="input-edit" /></span>
+            <p><strong>Hora:</strong> <input formControlName="horaInicio" class="input-edit" type="time" />
+              @if (evento.horaFin) {
+                <span> - <input formControlName="horaFin" class="input-edit" type="time" /></span>
+              }
             </p>
-            <p *ngIf="evento.actividad"><strong>Actividad:</strong> <input formControlName="actividad" class="input-edit" /></p>
+            <p><strong>Lugar:</strong> <input formControlName="lugar" class="input-edit" />
+              @if (evento.aula) {
+                <span> - <input formControlName="aula" class="input-edit" /></span>
+              }
+            </p>
+            @if (evento.actividad) {
+              <p><strong>Actividad:</strong> <input formControlName="actividad" class="input-edit" /></p>
+            }
             <div class="btn-ver-mas-wrapper">
               <button class="btn-ver-mas" (click)="toggleDetalles($event)">
                 {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
