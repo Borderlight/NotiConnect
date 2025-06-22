@@ -36,14 +36,24 @@
 
         <div class="campo-form" formArrayName="ponentes">
             <label>{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }} <span class="campo-requerido">*</span></label>
-            @for (ponente of listadoPonentes.controls; track $index) {
-                <div [formGroupName]="$index" class="ponente-row">
-                    <input type="text" formControlName="nombre" placeholder="Nombre del ponente" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
-                    <input type="text" formControlName="afiliacion" placeholder="Afiliación" [attr.aria-label]="'Afiliación del ponente'">
-                    @if (listadoPonentes.length > 1) {
-                      <button type="button" (click)="eliminarPonente($index)">-</button>
-                    }
-                </div>
+            <p class="campo-descripcion">Añade los ponentes relacionados con el evento y su afiliación.</p>
+            @for (ponente of listadoPonentes.controls; track trackByPonenteId(i, ponente); let i = $index) {
+              <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
+                <label class="ponente-label">Ponente {{ i + 1 }}</label>
+                <input type="text" formControlName="nombre" placeholder="Nombre del ponente" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
+                <input type="text" formControlName="afiliacion" placeholder="Afiliación" [attr.aria-label]="'Afiliación del ponente'">
+                @if (listadoPonentes.length > 1 && i > 0) {
+                  <div class="servicio-header">
+                    <button type="button"
+                            (click)="eliminarPonentePorId(ponente.get('id')?.value)"
+                            class="btn-eliminar"
+                            [attr.aria-label]="'Eliminar ponente ' + (i + 1)">
+                      <span class="icono-eliminar" aria-hidden="true">×</span>
+                      <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
+                    </button>
+                  </div>
+                }
+              </div>
             }
             <div class="boton-agregar-container">
                 <button type="button" (click)="agregarPonente()" class="btn-agregar-inline" aria-label="Añadir nuevo ponente">

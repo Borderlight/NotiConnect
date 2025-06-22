@@ -555,3 +555,22 @@ body.modo-oscuro .radio-option label {
 .dialog-backdrop dialog button:focus {
   background: #003e8a;
 }
+
+/* Ponentes: separación y etiquetas */
+.ponente-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+.ponente-separado {
+  margin-top: 1.5rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1.5rem;
+}
+.ponente-label {
+  font-weight: bold;
+  font-size: 1.08rem;
+  margin-bottom: 0.2rem;
+  color: var(--color-texto-principal);
+}

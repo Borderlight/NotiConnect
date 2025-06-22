@@ -414,7 +414,7 @@ export class FormularioComponent {
 
   selectedAdjuntos: string[] = [];
 
-  trackByIndex(index: number): number {
+  trackByIndex(index: number, item: any): any {
     return index;
   }
 
@@ -657,13 +657,31 @@ export class FormularioComponent {
     return this.formularioEvento.get('ponentes') as FormArray;
   }
 
+  // Generador simple de IDs únicos para ponentes
+  private ponenteIdCounter = 0;
+
   agregarPonente() {
-    this.listadoPonentes.push(this.fb.group({ nombre: ['', Validators.required], afiliacion: [''] }));
+    this.listadoPonentes.push(this.fb.group({
+      id: [this.ponenteIdCounter++],
+      nombre: ['', Validators.required],
+      afiliacion: ['']
+    }));
   }
 
-  eliminarPonente(index: number) {
-    if (this.listadoPonentes.length > 1) {
+  eliminarPonentePorId(id: number) {
+    const index = this.listadoPonentes.controls.findIndex(ctrl => ctrl.get('id')?.value === id);
+    if (index > -1 && this.listadoPonentes.length > 1) {
       this.listadoPonentes.removeAt(index);
     }
+  }
+
+  // Nuevo método para saber si el ponente es el único (no mostrar botón eliminar)
+  esPrimerPonente(id: number): boolean {
+    // Si solo hay un ponente, devolver true si el id coincide
+    return this.listadoPonentes.length === 1 && this.listadoPonentes.at(0).get('id')?.value === id;
+  }
+
+  trackByPonenteId(index: number, item: AbstractControl) {
+    return item.get('id')?.value;
   }
 }
