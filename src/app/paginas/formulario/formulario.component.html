@@ -56,7 +56,11 @@
                   </select>
                 }
                 @if (ponente.get('afiliacion')?.value === 'Otros') {
-                  <input type="text" formControlName="afiliacionOtro" placeholder="Introduce afiliación" [attr.aria-label]="'Introduce afiliación'">
+                  <input type="text"
+                         formControlName="afiliacionOtro"
+                         placeholder="Introduce afiliación"
+                         [attr.aria-label]="'Introduce afiliación'"
+                         (input)="actualizarAfiliacionOtro(i)">
                 }
                 @if (listadoPonentes.length > 1 && i > 0) {
                   <div class="servicio-header">

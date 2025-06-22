@@ -708,4 +708,13 @@ export class FormularioComponent {
   get nombresFacultades(): string[] {
     return this.facultadesGrados.map(f => f.facultad);
   }
+
+  // Método para actualizar afiliación cuando se escribe en 'Otros'
+  actualizarAfiliacionOtro(index: number) {
+    const ponente = this.listadoPonentes.at(index);
+    const valorOtro = ponente.get('afiliacionOtro')?.value;
+    if (ponente.get('afiliacion')?.value === 'Otros' && valorOtro) {
+      ponente.get('afiliacion')?.setValue(valorOtro, { emitEvent: false });
+    }
+  }
 }

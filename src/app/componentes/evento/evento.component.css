@@ -496,9 +496,7 @@
   color: #b71c1c; /* rojo más oscuro al pasar el cursor */
 }
 
-.btn-guardar {
-  /* Puedes poner un icono si lo deseas, igual que los otros botones */
-}
+/* Puedes poner un icono si lo deseas, igual que los otros botones */
 
 .btn-ver-mas {
   display: block;
