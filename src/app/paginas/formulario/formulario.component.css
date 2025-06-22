@@ -574,3 +574,27 @@ body.modo-oscuro .radio-option label {
   margin-bottom: 0.2rem;
   color: var(--color-texto-principal);
 }
+
+.boton-agregar-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Ajuste extra: si solo hay un ponente, más separación */
+.campo-form[formArrayName="ponentes"] .boton-agregar-container {
+  margin-top: 2.5rem;
+}
+
+.facultad-extra-select {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.7rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--color-fondo-input);
+  color: var(--color-texto-input);
+  box-sizing: border-box;
+  z-index: 2;
+}

@@ -41,7 +41,23 @@
               <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
                 <label class="ponente-label">Ponente {{ i + 1 }}</label>
                 <input type="text" formControlName="nombre" placeholder="Nombre del ponente" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
-                <input type="text" formControlName="afiliacion" placeholder="Afiliación" [attr.aria-label]="'Afiliación del ponente'">
+                <select formControlName="afiliacion" [attr.aria-label]="'Afiliación del ponente'">
+                  <option value="">Selecciona afiliación</option>
+                  @for (opcion of opcionesAfiliacion; track opcion) {
+                    <option [value]="opcion">{{ opcion }}</option>
+                  }
+                </select>
+                @if (ponente.get('afiliacion')?.value === 'Facultad') {
+                  <select formControlName="facultadSeleccionada" class="facultad-extra-select" [attr.aria-label]="'Selecciona facultad'">
+                    <option value="">Selecciona facultad</option>
+                    @for (facultad of nombresFacultades; track facultad) {
+                      <option [value]="facultad">{{ facultad }}</option>
+                    }
+                  </select>
+                }
+                @if (ponente.get('afiliacion')?.value === 'Otros') {
+                  <input type="text" formControlName="afiliacionOtro" placeholder="Introduce afiliación" [attr.aria-label]="'Introduce afiliación'">
+                }
                 @if (listadoPonentes.length > 1 && i > 0) {
                   <div class="servicio-header">
                     <button type="button"

@@ -221,7 +221,13 @@ export class FormularioComponent {
       actividad_relacionada: ['', Validators.required],
       ubicaciones: this.fb.array([this.crearUbicacion()]),
       ponentes: this.fb.array([
-        this.fb.group({ nombre: ['', Validators.required], afiliacion: [''] })
+        this.fb.group({
+          id: [0],
+          nombre: ['', Validators.required],
+          afiliacion: [''],
+          facultadSeleccionada: [''],
+          afiliacionOtro: ['']
+        })
       ])
     });
 
@@ -634,6 +640,17 @@ export class FormularioComponent {
     'ONLINE'
   ];
 
+  // Opciones fijas para afiliación de ponentes
+  opcionesAfiliacion: string[] = [
+    'Biblioteca',
+    'UCI',
+    'GIT',
+    'Facultad',
+    'Formación Permanente',
+    'Internacionales',
+    'Otros'
+  ];
+
   // Al cambiar de idioma, volver a unir las actividades personalizadas y aplicar traducción si existe
   ngOnInit() {
     this.translateService.onLangChange.subscribe(event => {
@@ -664,7 +681,9 @@ export class FormularioComponent {
     this.listadoPonentes.push(this.fb.group({
       id: [this.ponenteIdCounter++],
       nombre: ['', Validators.required],
-      afiliacion: ['']
+      afiliacion: [''],
+      facultadSeleccionada: [''],
+      afiliacionOtro: ['']
     }));
   }
 
@@ -683,5 +702,10 @@ export class FormularioComponent {
 
   trackByPonenteId(index: number, item: AbstractControl) {
     return item.get('id')?.value;
+  }
+
+  // Devuelve solo los nombres de las facultades para el selector
+  get nombresFacultades(): string[] {
+    return this.facultadesGrados.map(f => f.facultad);
   }
 }
