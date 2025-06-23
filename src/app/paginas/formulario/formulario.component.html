@@ -40,7 +40,9 @@
             @for (ponente of listadoPonentes.controls; track trackByPonenteId(i, ponente); let i = $index) {
               <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
                 <label class="ponente-label">Ponente {{ i + 1 }}</label>
-                <input type="text" formControlName="nombre" placeholder="Nombre del ponente" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
+                <p class="descripcion-campo" style="margin-bottom: 0.3rem;">Introduce el nombre completo del ponente</p>
+                <input type="text" formControlName="nombre" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
+                <p class="descripcion-campo" style="margin-bottom: 0.3rem;">Selecciona la afiliación del ponente, si no está escoge "Otros" y escríbela a continuación</p>
                 <select formControlName="afiliacion" [attr.aria-label]="'Afiliación del ponente'">
                   <option value="">Selecciona afiliación</option>
                   @for (opcion of opcionesAfiliacion; track opcion) {
