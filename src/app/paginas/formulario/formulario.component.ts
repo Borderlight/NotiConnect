@@ -224,9 +224,7 @@ export class FormularioComponent {
         this.fb.group({
           id: [0],
           nombre: ['', Validators.required],
-          afiliacion: [''],
-          facultadSeleccionada: [''],
-          afiliacionOtro: ['']
+          afiliacion: ['']
         })
       ])
     });
@@ -640,8 +638,8 @@ export class FormularioComponent {
     'ONLINE'
   ];
 
-  // Opciones fijas para afiliación de ponentes
-  opcionesAfiliacion: string[] = [
+  // --- DEPARTAMENTO ORGANIZADOR PERSONALIZADO ---
+  opcionesDepartamento: string[] = [
     'Biblioteca',
     'UCI',
     'GIT',
@@ -650,69 +648,60 @@ export class FormularioComponent {
     'Internacionales',
     'Otros'
   ];
+  departamentosPersonalizados: string[] = [];
+  mostrarInputDepartamento = false;
+  nuevoDepartamento = '';
+  mostrarErrorDepartamento = false;
+  mensajeErrorDepartamento = '';
 
-  // Afiliaciones personalizadas para ponentes
-  afiliacionesPersonalizadas: string[] = [];
-  mostrarInputAfiliacion: boolean[] = [];
-  nuevaAfiliacion: string[] = [];
-  mostrarErrorAfiliacion: boolean[] = [];
-  mensajeErrorAfiliacion: string[] = [];
-
-  // --- PERSISTENCIA DE AFILIACIONES PERSONALIZADAS ---
-  private cargarAfiliacionesPersonalizadas() {
-    const data = localStorage.getItem('afiliacionesPersonalizadas');
-    this.afiliacionesPersonalizadas = data ? JSON.parse(data) : [];
+  getOpcionesDepartamento(): string[] {
+    return [...this.opcionesDepartamento, ...this.departamentosPersonalizados];
   }
 
-  private guardarAfiliacionesPersonalizadas() {
-    localStorage.setItem('afiliacionesPersonalizadas', JSON.stringify(this.afiliacionesPersonalizadas));
-  }
-
-  // Método para alternar el input de nueva afiliación para un ponente (botón cambia entre "Añadir nueva afiliación" y "Cancelar")
-  toggleInputNuevaAfiliacion(index: number) {
-    this.mostrarInputAfiliacion[index] = !this.mostrarInputAfiliacion[index];
-    if (this.mostrarInputAfiliacion[index]) {
-      this.nuevaAfiliacion[index] = '';
-    } else {
-      this.nuevaAfiliacion[index] = '';
+  toggleInputNuevoDepartamento() {
+    this.mostrarInputDepartamento = !this.mostrarInputDepartamento;
+    if (!this.mostrarInputDepartamento) {
+      this.nuevoDepartamento = '';
+      this.mostrarErrorDepartamento = false;
+      this.mensajeErrorDepartamento = '';
     }
   }
 
-  agregarNuevaAfiliacion(index: number) {
-    const valor = this.nuevaAfiliacion[index]?.trim();
-    const existe = this.getOpcionesAfiliacion().some(
+  onNuevoDepartamentoInput(event: Event) {
+    const value = (event.target as HTMLInputElement)?.value ?? '';
+    this.nuevoDepartamento = value;
+    this.mostrarErrorDepartamento = false;
+    this.mensajeErrorDepartamento = '';
+  }
+
+  agregarNuevoDepartamento() {
+    const valor = this.nuevoDepartamento?.trim();
+    const existe = this.getOpcionesDepartamento().some(
       opcion => opcion.toLowerCase() === valor?.toLowerCase()
     );
     if (valor && existe) {
-      this.mostrarErrorAfiliacion[index] = true;
-      this.mensajeErrorAfiliacion[index] = 'Esta afiliación ya existe. Por favor, comprueba el listado de afiliaciones.';
+      this.mostrarErrorDepartamento = true;
+      this.mensajeErrorDepartamento = 'Este departamento ya existe. Por favor, comprueba el listado.';
       return;
     }
-    if (valor && !this.opcionesAfiliacion.includes(valor) && !this.afiliacionesPersonalizadas.includes(valor)) {
-      this.afiliacionesPersonalizadas.push(valor);
-      this.guardarAfiliacionesPersonalizadas(); // Guardar en localStorage
-      this.listadoPonentes.at(index).get('afiliacion')?.setValue(valor);
-      this.mostrarInputAfiliacion[index] = false;
-      this.nuevaAfiliacion[index] = '';
-      this.mostrarErrorAfiliacion[index] = false;
-      this.mensajeErrorAfiliacion[index] = '';
+    if (valor && !this.opcionesDepartamento.includes(valor) && !this.departamentosPersonalizados.includes(valor)) {
+      this.departamentosPersonalizados.push(valor);
+      localStorage.setItem('departamentosPersonalizados', JSON.stringify(this.departamentosPersonalizados));
+      this.formularioEvento.get('empresaOrganizadora')?.setValue(valor);
+      this.mostrarInputDepartamento = false;
+      this.nuevoDepartamento = '';
+      this.mostrarErrorDepartamento = false;
+      this.mensajeErrorDepartamento = '';
     }
   }
 
-  // Maneja el input de nueva afiliación para evitar errores de tipado y parser en Angular
-  onNuevaAfiliacionInput(event: Event, i: number) {
-    const value = (event.target as HTMLInputElement)?.value ?? '';
-    this.nuevaAfiliacion[i] = value;
+  private cargarDepartamentosPersonalizados() {
+    const data = localStorage.getItem('departamentosPersonalizados');
+    this.departamentosPersonalizados = data ? JSON.parse(data) : [];
   }
 
-  // Devuelve las opciones de afiliación para el ponente (incluyendo personalizadas)
-  getOpcionesAfiliacion(): string[] {
-    return [...this.opcionesAfiliacion, ...this.afiliacionesPersonalizadas];
-  }
-
-  // Al cambiar de idioma, volver a unir las actividades personalizadas y aplicar traducción si existe
   ngOnInit() {
-    this.cargarAfiliacionesPersonalizadas(); // Cargar afiliaciones personalizadas al iniciar
+    this.cargarDepartamentosPersonalizados();
     this.translateService.onLangChange.subscribe(event => {
       const customActs = localStorage.getItem('actividadesPersonalizadas');
       const customActsArr = customActs ? JSON.parse(customActs) : [];
@@ -741,27 +730,14 @@ export class FormularioComponent {
     this.listadoPonentes.push(this.fb.group({
       id: [this.ponenteIdCounter++],
       nombre: ['', Validators.required],
-      afiliacion: [''],
-      facultadSeleccionada: [''],
-      afiliacionOtro: ['']
+      afiliacion: ['']
     }));
   }
 
-  eliminarPonentePorId(id: number) {
-    const index = this.listadoPonentes.controls.findIndex(ctrl => ctrl.get('id')?.value === id);
-    if (index > -1 && this.listadoPonentes.length > 1) {
+  eliminarPonente(index: number) {
+    if (this.listadoPonentes.length > 1) {
       this.listadoPonentes.removeAt(index);
     }
-  }
-
-  // Nuevo método para saber si el ponente es el único (no mostrar botón eliminar)
-  esPrimerPonente(id: number): boolean {
-    // Si solo hay un ponente, devolver true si el id coincide
-    return this.listadoPonentes.length === 1 && this.listadoPonentes.at(0).get('id')?.value === id;
-  }
-
-  trackByPonenteId(index: number, item: AbstractControl) {
-    return item.get('id')?.value;
   }
 
   // Devuelve solo los nombres de las facultades para el selector
@@ -769,18 +745,7 @@ export class FormularioComponent {
     return this.facultadesGrados.map(f => f.facultad);
   }
 
-  // Método para actualizar afiliación cuando se escribe en 'Otros'
-  actualizarAfiliacionOtro(index: number) {
-    const ponente = this.listadoPonentes.at(index);
-    const valorOtro = ponente.get('afiliacionOtro')?.value;
-    // Si el valor del select no es "Otros", no hacer nada
-    if (ponente.get('afiliacion')?.value !== 'Otros' && !this.opcionesAfiliacion.includes(ponente.get('afiliacion')?.value)) {
-      ponente.get('afiliacion')?.setValue('Otros', { emitEvent: false });
-    }
-    // Mantener el input abierto y sincronizar el valor del select con el input
-    if (ponente.get('afiliacion')?.value === 'Otros') {
-      // No cambiar el valor del select, solo mantener el input visible
-      // El valor real de la afiliación será el del input
-    }
+  trackByPonenteId(index: number, ponente: AbstractControl) {
+    return ponente.get('id')?.value;
   }
 }

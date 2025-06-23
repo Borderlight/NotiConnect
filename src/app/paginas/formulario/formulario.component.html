@@ -37,71 +37,17 @@
         <div class="campo-form" formArrayName="ponentes">
             <label>{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p class="campo-descripcion">Añade los ponentes relacionados con el evento y su afiliación.</p>
-            @for (ponente of listadoPonentes.controls; track trackByPonenteId(i, ponente); let i = $index) {
+            @for (ponente of listadoPonentes.controls; let i = $index; track trackByPonenteId(i, ponente)) {
               <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
                 <label class="ponente-label">Ponente {{ i + 1 }}</label>
                 <p class="descripcion-campo" style="margin-bottom: 0.3rem;">Introduce el nombre completo del ponente</p>
                 <input type="text" formControlName="nombre" [attr.aria-label]="'FORM.EVENT.SPEAKER.LABEL' | translate">
-                <p class="descripcion-campo afiliacion-descripcion-match" style="margin-bottom: 0.3rem;">Selecciona o añade una afiliación relacionada con el ponente</p>
-                <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
-                  <select formControlName="afiliacion" [attr.aria-label]="'Afiliación del ponente'" style="flex: 1 1 auto;">
-                    <option value="">Selecciona afiliación</option>
-                    @for (opcion of getOpcionesAfiliacion(); track opcion) {
-                      @if (opcion !== 'Otros' && opcion.toLowerCase() !== 'a') {
-                        <option [value]="opcion">{{ opcion }}</option>
-                      }
-                    }
-                  </select>
-                  <button type="button"
-                          class="btn-agregar-inline cancelar"
-                          [ngStyle]="mostrarInputAfiliacion[i] ? { 'background': '#d32f2f', 'color': '#fff', 'border': '2px solid #d32f2f' } : { 'background': '#005fcc', 'color': '#fff', 'border': '2px solid #005fcc' }"
-                          (click)="toggleInputNuevaAfiliacion(i)">
-                    {{ mostrarInputAfiliacion[i] ? 'Cancelar' : 'Añadir nueva afiliación' }}
-                  </button>
-                </div>
-                @if (mostrarInputAfiliacion[i]) {
-                  <div class="nueva-afiliacion-box actividad-style" style="display: flex; flex-direction: column; align-items: stretch;">
-                    <div style="display: flex; gap: 0.5rem; align-items: center;">
-                      <label for="nuevaAfiliacion-{{i}}" class="actividad-label" style="font-size: 1rem; font-weight: 400; font-family: inherit; margin-bottom: 0;">Añade aquí la afiliación</label>
-                      <input id="nuevaAfiliacion-{{i}}"
-                             type="text"
-                             class="input-nueva-afiliacion"
-                             [value]="nuevaAfiliacion[i]"
-                             (input)="onNuevaAfiliacionInput($event, i)"
-                             [attr.aria-label]="'Añade aquí la afiliación'">
-                      <button type="button"
-                              class="btn-guardar"
-                              [ngStyle]="{ 'background': (nuevaAfiliacion[i] && nuevaAfiliacion[i].trim()) ? '#2e7d32' : '#bdbdbd', 'color': '#fff', 'border-radius': '8px', 'font-weight': '600', 'padding': '0.35rem 1rem', 'border': '2px solid', 'border-color': (nuevaAfiliacion[i] && nuevaAfiliacion[i].trim()) ? '#2e7d32' : '#bdbdbd' }"
-                              [disabled]="!(nuevaAfiliacion[i] && nuevaAfiliacion[i].trim())"
-                              (click)="agregarNuevaAfiliacion(i)">
-                        Confirmar
-                      </button>
-                    </div>
-                    @if (mostrarErrorAfiliacion[i]) {
-                      <p class="mensaje_error" role="alert" style="margin-top: 0.5rem; margin-bottom: 0; border: 1.5px solid #b71c1c; background: #fff4f4; color: #b71c1c; padding: 0.5rem 1rem; border-radius: 8px; font-size: 1rem; font-weight: 500; width: 100%; display: flex; align-items: center; gap: 0.5rem;">
-                        {{ mensajeErrorAfiliacion[i] }}
-                      </p>
-                    }
-                  </div>
-                }
-                @if (ponente.get('afiliacion')?.value === 'Facultad') {
-                  <select formControlName="facultadSeleccionada" class="facultad-extra-select" [attr.aria-label]="'Selecciona facultad'">
-                    <option value="">Selecciona facultad</option>
-                    @for (facultad of nombresFacultades; track facultad) {
-                      <option [value]="facultad">{{ facultad }}</option>
-                    }
-                  </select>
-                }
-                @if (ponente.get('afiliacion')?.value === 'Otros') {
-                  <input type="text"
-                         formControlName="afiliacionOtro"
-                         [attr.aria-label]="'Introduce afiliación'"
-                         (input)="actualizarAfiliacionOtro(i)">
-                }
+                <p class="descripcion-campo afiliacion-descripcion-match" style="margin-bottom: 0.3rem;">Introduce la afiliación del ponente</p>
+                <input type="text" formControlName="afiliacion" [attr.aria-label]="'Afiliación del ponente'">
                 @if (listadoPonentes.length > 1 && i > 0) {
                   <div class="servicio-header">
                     <button type="button"
-                            (click)="eliminarPonentePorId(ponente.get('id')?.value)"
+                            (click)="eliminarPonente(i)"
                             class="btn-eliminar"
                             [attr.aria-label]="'Eliminar ponente ' + (i + 1)">
                       <span class="icono-eliminar" aria-hidden="true">×</span>
@@ -124,15 +70,47 @@
             <p id="empresa-desc" class="campo-descripcion">
                 Indica el departamento organizador del evento.
             </p>
-            <input type="text" 
-                   id="empresaOrganizadora" 
-                   formControlName="empresaOrganizadora" 
-                   aria-describedby="empresa-desc empresa-error"
-                   aria-required="true"
-                   [attr.aria-invalid]="formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched"
-                   [attr.aria-label]="'Departamento Organizador'">
-          
-
+            <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <select formControlName="empresaOrganizadora" [attr.aria-label]="'Departamento Organizador'" style="flex: 1 1 auto;">
+                <option value="">Selecciona departamento</option>
+                @for (opcion of getOpcionesDepartamento(); track opcion) {
+                  @if (opcion !== 'Otros' && opcion.toLowerCase() !== 'a') {
+                    <option [value]="opcion">{{ opcion }}</option>
+                  }
+                }
+              </select>
+              <button type="button"
+                      class="btn-agregar-inline cancelar"
+                      [ngStyle]="mostrarInputDepartamento ? { 'background': '#d32f2f', 'color': '#fff', 'border': '2px solid #d32f2f' } : { 'background': '#005fcc', 'color': '#fff', 'border': '2px solid #005fcc' }"
+                      (click)="toggleInputNuevoDepartamento()">
+                {{ mostrarInputDepartamento ? 'Cancelar' : 'Añadir nuevo departamento' }}
+              </button>
+            </div>
+            @if (mostrarInputDepartamento) {
+              <div class="nueva-afiliacion-box actividad-style" style="display: flex; flex-direction: column; align-items: stretch;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <label for="nuevoDepartamento" class="actividad-label" style="font-size: 1rem; font-weight: 400; font-family: inherit; margin-bottom: 0;">Añade aquí el departamento</label>
+                  <input id="nuevoDepartamento"
+                         type="text"
+                         class="input-nueva-afiliacion"
+                         [value]="nuevoDepartamento"
+                         (input)="onNuevoDepartamentoInput($event)"
+                         [attr.aria-label]="'Añade aquí el departamento'">
+                  <button type="button"
+                          class="btn-guardar"
+                          [ngStyle]="{ 'background': (nuevoDepartamento && nuevoDepartamento.trim()) ? '#2e7d32' : '#bdbdbd', 'color': '#fff', 'border-radius': '8px', 'font-weight': '600', 'padding': '0.35rem 1rem', 'border': '2px solid', 'border-color': (nuevoDepartamento && nuevoDepartamento.trim()) ? '#2e7d32' : '#bdbdbd' }"
+                          [disabled]="!(nuevoDepartamento && nuevoDepartamento.trim())"
+                          (click)="agregarNuevoDepartamento()">
+                    Confirmar
+                  </button>
+                </div>
+                @if (mostrarErrorDepartamento) {
+                  <p class="mensaje_error" role="alert" style="margin-top: 0.5rem; margin-bottom: 0; border: 1.5px solid #b71c1c; background: #fff4f4; color: #b71c1c; padding: 0.5rem 1rem; border-radius: 8px; font-size: 1rem; font-weight: 500; width: 100%; display: flex; align-items: center; gap: 0.5rem;">
+                    {{ mensajeErrorDepartamento }}
+                  </p>
+                }
+              </div>
+            }
             @if (formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched) {
                 <p class="mensaje_error" id="empresa-error" role="alert">Este campo es obligatorio.</p>
             }
@@ -358,7 +336,7 @@
                 </div>
             }
             <div class="boton-agregar-container">
-                <button type="button" 
+                <button type="button"
                         (click)="anadirCampoServicio()"
                         class="btn-agregar-inline"
                         aria-label="Añadir nuevo servicio">

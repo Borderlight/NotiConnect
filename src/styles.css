@@ -112,6 +112,12 @@ select:disabled, select option:disabled {
   background: #e53935 !important;
   border-color: #e53935 !important;
 }
+.btn-agregar-inline:not(.cancelar):hover {
+  background: #003e8a !important;
+  border-color: #003e8a !important;
+  color: #fff !important;
+  transition: background 0.2s, border-color 0.2s;
+}
 
 .btn-guardar {
   transition: background 0.2s, border-color 0.2s;
