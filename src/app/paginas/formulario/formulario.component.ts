@@ -651,8 +651,68 @@ export class FormularioComponent {
     'Otros'
   ];
 
+  // Afiliaciones personalizadas para ponentes
+  afiliacionesPersonalizadas: string[] = [];
+  mostrarInputAfiliacion: boolean[] = [];
+  nuevaAfiliacion: string[] = [];
+  mostrarErrorAfiliacion: boolean[] = [];
+  mensajeErrorAfiliacion: string[] = [];
+
+  // --- PERSISTENCIA DE AFILIACIONES PERSONALIZADAS ---
+  private cargarAfiliacionesPersonalizadas() {
+    const data = localStorage.getItem('afiliacionesPersonalizadas');
+    this.afiliacionesPersonalizadas = data ? JSON.parse(data) : [];
+  }
+
+  private guardarAfiliacionesPersonalizadas() {
+    localStorage.setItem('afiliacionesPersonalizadas', JSON.stringify(this.afiliacionesPersonalizadas));
+  }
+
+  // Método para alternar el input de nueva afiliación para un ponente (botón cambia entre "Añadir nueva afiliación" y "Cancelar")
+  toggleInputNuevaAfiliacion(index: number) {
+    this.mostrarInputAfiliacion[index] = !this.mostrarInputAfiliacion[index];
+    if (this.mostrarInputAfiliacion[index]) {
+      this.nuevaAfiliacion[index] = '';
+    } else {
+      this.nuevaAfiliacion[index] = '';
+    }
+  }
+
+  agregarNuevaAfiliacion(index: number) {
+    const valor = this.nuevaAfiliacion[index]?.trim();
+    const existe = this.getOpcionesAfiliacion().some(
+      opcion => opcion.toLowerCase() === valor?.toLowerCase()
+    );
+    if (valor && existe) {
+      this.mostrarErrorAfiliacion[index] = true;
+      this.mensajeErrorAfiliacion[index] = 'Esta afiliación ya existe. Por favor, comprueba el listado de afiliaciones.';
+      return;
+    }
+    if (valor && !this.opcionesAfiliacion.includes(valor) && !this.afiliacionesPersonalizadas.includes(valor)) {
+      this.afiliacionesPersonalizadas.push(valor);
+      this.guardarAfiliacionesPersonalizadas(); // Guardar en localStorage
+      this.listadoPonentes.at(index).get('afiliacion')?.setValue(valor);
+      this.mostrarInputAfiliacion[index] = false;
+      this.nuevaAfiliacion[index] = '';
+      this.mostrarErrorAfiliacion[index] = false;
+      this.mensajeErrorAfiliacion[index] = '';
+    }
+  }
+
+  // Maneja el input de nueva afiliación para evitar errores de tipado y parser en Angular
+  onNuevaAfiliacionInput(event: Event, i: number) {
+    const value = (event.target as HTMLInputElement)?.value ?? '';
+    this.nuevaAfiliacion[i] = value;
+  }
+
+  // Devuelve las opciones de afiliación para el ponente (incluyendo personalizadas)
+  getOpcionesAfiliacion(): string[] {
+    return [...this.opcionesAfiliacion, ...this.afiliacionesPersonalizadas];
+  }
+
   // Al cambiar de idioma, volver a unir las actividades personalizadas y aplicar traducción si existe
   ngOnInit() {
+    this.cargarAfiliacionesPersonalizadas(); // Cargar afiliaciones personalizadas al iniciar
     this.translateService.onLangChange.subscribe(event => {
       const customActs = localStorage.getItem('actividadesPersonalizadas');
       const customActsArr = customActs ? JSON.parse(customActs) : [];
@@ -713,8 +773,14 @@ export class FormularioComponent {
   actualizarAfiliacionOtro(index: number) {
     const ponente = this.listadoPonentes.at(index);
     const valorOtro = ponente.get('afiliacionOtro')?.value;
-    if (ponente.get('afiliacion')?.value === 'Otros' && valorOtro) {
-      ponente.get('afiliacion')?.setValue(valorOtro, { emitEvent: false });
+    // Si el valor del select no es "Otros", no hacer nada
+    if (ponente.get('afiliacion')?.value !== 'Otros' && !this.opcionesAfiliacion.includes(ponente.get('afiliacion')?.value)) {
+      ponente.get('afiliacion')?.setValue('Otros', { emitEvent: false });
+    }
+    // Mantener el input abierto y sincronizar el valor del select con el input
+    if (ponente.get('afiliacion')?.value === 'Otros') {
+      // No cambiar el valor del select, solo mantener el input visible
+      // El valor real de la afiliación será el del input
     }
   }
 }

@@ -100,3 +100,43 @@ select:disabled, select option:disabled {
   clip: rect(0,0,0,0);
   border: 0;
 }
+
+.btn-agregar-inline {
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-agregar-inline:not(:disabled):hover {
+  background: #003e99 !important;
+  border-color: #003e99 !important;
+}
+.btn-agregar-inline.cancelar:not(:disabled):hover {
+  background: #e53935 !important;
+  border-color: #e53935 !important;
+}
+
+.btn-guardar {
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-guardar:not(:disabled):hover {
+  background: #256025 !important;
+  border-color: #256025 !important;
+}
+
+.btn-confirmar {
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-confirmar:not(:disabled):hover {
+  background: #256025 !important;
+  border-color: #256025 !important;
+}
+
+.btn-agregar-actividad {
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-agregar-actividad:not(:disabled):hover {
+  background: #003e99 !important;
+  border-color: #003e99 !important;
+}
+.btn-agregar-actividad.cancelar:not(:disabled):hover {
+  background: #e53935 !important;
+  border-color: #e53935 !important;
+}
