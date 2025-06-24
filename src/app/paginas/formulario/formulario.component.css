@@ -810,3 +810,46 @@ body.modo-oscuro .radio-option label {
   margin-bottom: 0.3rem;
   padding: 0;
 }
+
+/* =========================
+   Colores de fondo accesibles para secciones diferenciadas (actualizado)
+   ========================= */
+.seccion-basica {
+  background: #ffe6cc; /* naranja pastel claro, alto contraste */
+  border: 2px solid #ffb366;
+}
+.seccion-actividad {
+  background: #e6f4ea; /* verde menta claro, accesible */
+  border: 2px solid #7ed6a7;
+}
+.seccion-digital {
+  background: #e6eaff; /* azul lavanda claro, accesible */
+  border: 2px solid #7a9cff;
+}
+.seccion-ubicacion {
+  background: #fff3e6; /* beige pastel, bien diferenciado */
+  border: 2px solid #ffd699;
+}
+
+body.modo-oscuro .seccion-basica {
+  background: #4a2e18;
+  border-color: #b37a3a;
+}
+body.modo-oscuro .seccion-actividad {
+  background: #183a2e;
+  border-color: #3a7a5a;
+}
+body.modo-oscuro .seccion-digital {
+  background: #23284a;
+  border-color: #3a4a7a;
+}
+body.modo-oscuro .seccion-ubicacion {
+  background: #4a3a23;
+  border-color: #b38a3a;
+}
+
+.seccion-basica, .seccion-actividad, .seccion-digital, .seccion-ubicacion {
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}

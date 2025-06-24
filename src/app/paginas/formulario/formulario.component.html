@@ -1,7 +1,7 @@
 <form [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" role="form" aria-labelledby="form-title" [attr.lang]="currentLang">
     <h1 id="form-title">{{ 'FORM.TITLE' | translate }}</h1>
     
-    <div class="evento-info-section" role="region" aria-labelledby="info-basica-titulo">
+    <div class="evento-info-section seccion-basica" role="region" aria-labelledby="info-basica-titulo">
         <h2 id="info-basica-titulo">{{ 'FORM.BASIC_INFO.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="info-basica-desc">
             {{ 'FORM.BASIC_INFO.DESCRIPTION' | translate }} <br>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="campo-form" formArrayName="ponentes">
-            <label>{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }} <span class="campo-requerido">*</span></label>
+            <label>{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }}</label>
             <p class="campo-descripcion">Añade los ponentes relacionados con el evento y su afiliación.</p>
             @for (ponente of listadoPonentes.controls; let i = $index; track trackByPonenteId(i, ponente)) {
               <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
@@ -72,11 +72,11 @@
             </p>
             <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
               <select formControlName="empresaOrganizadora" [attr.aria-label]="'Departamento Organizador'" style="flex: 1 1 auto;">
-                <option value="">Selecciona departamento</option>
+                <option value="">Selecciona una opción</option>
                 @for (opcion of getOpcionesDepartamento(); track opcion) {
-                  @if (opcion !== 'Otros' && opcion.toLowerCase() !== 'a') {
+                 
                     <option [value]="opcion">{{ opcion }}</option>
-                  }
+                  
                 }
               </select>
               <button type="button"
@@ -113,7 +113,7 @@
               </div>
             }
             @if (formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched) {
-                <p class="mensaje_error" id="empresa-error" role="alert">Este campo es obligatorio.</p>
+                <p class="mensaje_error" id="empresa-error" role="alert">El departamento organizador es obligatorio.</p>
             }
             <span id="empresa-error" class="visually-hidden"></span>
         </div>
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <div class="evento-info-section" role="region" aria-labelledby="actividad-servicios-titulo">
+    <div class="evento-info-section seccion-actividad" role="region" aria-labelledby="actividad-servicios-titulo">
         <h2 id="actividad-servicios-titulo">{{ 'FORM.ACTIVITY_SERVICES.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="actividad-servicios-desc">
             {{ 'FORM.ACTIVITY_SERVICES.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
@@ -344,7 +344,7 @@
 </div>
     </div>
 
-    <div class="evento-info-section" role="region" aria-labelledby="recursos-digitales-titulo">
+    <div class="evento-info-section seccion-digital" role="region" aria-labelledby="recursos-digitales-titulo">
         <h2 id="recursos-digitales-titulo">{{ 'FORM.DIGITAL_RESOURCES.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="recursos-digitales-desc">
             {{ 'FORM.DIGITAL_RESOURCES.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}
@@ -513,7 +513,7 @@
 </div>
     </div>
         
-    <div class="evento-info-section" role="region" aria-labelledby="ubicacion-horario-titulo">
+    <div class="evento-info-section seccion-ubicacion" role="region" aria-labelledby="ubicacion-horario-titulo">
         <h2 id="ubicacion-horario-titulo">{{ 'FORM.LOCATION_TIME.TITLE' | translate }}</h2>
         <p class="descripcion-campo" id="ubicacion-horario-desc">
             {{ 'FORM.LOCATION_TIME.DESCRIPTION' | translate }} <br> {{ 'FORM.BASIC_INFO.REQUIRED_FIELDS' | translate }}

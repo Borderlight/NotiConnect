@@ -212,9 +212,9 @@ export class FormularioComponent {
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
       ponente: ['', [Validators.required]],
-      empresaOrganizadora: ['', [Validators.required, BasicosValidator.soloLetrasYEspacios()]],
+      empresaOrganizadora: ['', [Validators.required]],
       tipoEvento: ['', Validators.required],
-      descripcion: ['', [Validators.required, BasicosValidator.descripcionMinima(20)]],
+      descripcion: ['', [Validators.required]],
       adjuntos: ['', [Validators.required, BasicosValidator.adjuntosRequeridos()]],
       servicios: this.fb.array([this.crearCampoServicio()]),
       enlaces: this.fb.array([this.crearEnlace()], [EnlacesValidator.requiereEnlaces()]),
@@ -645,8 +645,7 @@ export class FormularioComponent {
     'GIT',
     'Facultad',
     'Formación Permanente',
-    'Internacionales',
-    'Otros'
+    'Internacionales'
   ];
   departamentosPersonalizados: string[] = [];
   mostrarInputDepartamento = false;
