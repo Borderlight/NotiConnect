@@ -104,19 +104,22 @@ select:disabled, select option:disabled {
 .btn-agregar-inline {
   transition: background 0.2s, border-color 0.2s;
 }
-.btn-agregar-inline:not(:disabled):hover {
-  background: #003e99 !important;
-  border-color: #003e99 !important;
-}
-.btn-agregar-inline.cancelar:not(:disabled):hover {
-  background: #e53935 !important;
-  border-color: #e53935 !important;
-}
+.btn-agregar-inline:not(:disabled):hover,
 .btn-agregar-inline:not(.cancelar):hover {
+  background: var(--color-primario-hover) !important;
+  border-color: var(--color-primario-hover) !important;
+  color: #fff !important;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-agregar-inline.cancelar:not(.modo-cancelar):not(:disabled):hover {
   background: #003e8a !important;
   border-color: #003e8a !important;
   color: #fff !important;
-  transition: background 0.2s, border-color 0.2s;
+}
+.btn-agregar-inline.cancelar.modo-cancelar:not(:disabled):hover {
+  background: #b71c1c !important;
+  border-color: #b71c1c !important;
+  color: #fff !important;
 }
 
 .btn-guardar {
@@ -139,8 +142,8 @@ select:disabled, select option:disabled {
   transition: background 0.2s, border-color 0.2s;
 }
 .btn-agregar-actividad:not(:disabled):hover {
-  background: #003e99 !important;
-  border-color: #003e99 !important;
+  background: var(--color-primario-hover) !important;
+  border-color: var(--color-primario-hover) !important;
 }
 .btn-agregar-actividad.cancelar:not(:disabled):hover {
   background: #e53935 !important;
