@@ -68,7 +68,7 @@
         <div class="campo-form">
             <label for="empresaOrganizadora" id="empresa-label">Departamento Organizador <span class="campo-requerido">*</span></label>
             <p id="empresa-desc" class="campo-descripcion">
-                Indica el departamento organizador del evento.
+                Selecciona o añade el departamento organizador del evento.
             </p>
             <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
               <select formControlName="empresaOrganizadora" [attr.aria-label]="'Departamento Organizador'" style="flex: 1 1 auto;">
@@ -245,107 +245,103 @@
                 {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.DESC' | translate }}
             </p>
         @for (campo of listadoServicios.controls; track campo; let i = $index) {
-                <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
-                    <div class="servicio-header">
-                        <label [id]="'servicio-' + i + '-label'">
-                            Servicio número {{i + 1}}
-                            <span class="campo-requerido">*</span>
-                        </label>
-                        <button type="button" 
-                            (click)="eliminarServicio(i)"
-                            class="btn-eliminar"
-                            [attr.aria-label]="'Eliminar servicio ' + (i + 1)">
-                            <span class="icono-eliminar" aria-hidden="true">×</span>
-                            <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
-                        </button>
-                    </div>
-
+          <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
+            <label [id]="'servicio-' + i + '-label'">
+              Servicio número {{i + 1}}
+              <span class="campo-requerido">*</span>
+            </label>
+            <div class="select-container" style="display: flex; align-items: center; gap: 0.5rem;">
+              <select [id]="'servicio-' + i" 
+                      formControlName="servicios"
+                      [attr.aria-describedby]="'servicio-' + i + '-desc servicio-' + i + '-hint servicio-' + i + '-error'"
+                      aria-required="true"
+                      [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched"
+                      [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
+                      [attr.aria-labelledby]="'servicio-' + i + '-label'">
+                <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
+                <optgroup label="{{ 'FORM.FACULTIES_LABEL' | translate }}">
+                  @for (facultadObj of facultadesGrados; track facultadObj) {
+                    <option [value]="facultadObj.facultad">{{ 'FACULTADES.' + facultadObj.facultad | translate }}</option>
+                  }
+                </optgroup>
+                <optgroup label="{{ 'FORM.SERVICES_LABEL' | translate }}">
+                  @for (servicio of serviciosFijos; track servicio) {
+                    <option [value]="servicio">{{ servicio | translate }}</option>
+                  }
+                </optgroup>
+                <optgroup label="{{ 'FORM.VICERRECTORADOS_LABEL' | translate }}">
+                  @for (vic of vicerrectorados; track vic) {
+                    <option [value]="vic">{{ 'VICERRECTORADOS.' + vic | translate }}</option>
+                  }
+                </optgroup>
+              </select>
+              <button type="button" 
+                      (click)="eliminarServicio(i)"
+                      class="btn-eliminar"
+                      [attr.aria-label]="'Eliminar servicio ' + (i + 1)">
+                <span class="icono-eliminar" aria-hidden="true">×</span>
+                <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
+              </button>
+            </div>
+            <p [id]="'servicio-' + i + '-desc'" class="visually-hidden"></p>
+            <p [id]="'servicio-' + i + '-hint'" class="visually-hidden"></p>
+            @if (campo.get('servicios')?.invalid && campo.get('servicios')?.touched) {
+                <p class="mensaje_error" 
+                   [id]="'servicio-' + i + '-error'"
+                   role="alert"
+                   aria-live="assertive">
+                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ERROR' | translate }}
+                </p>
+            }
+            @if (!(campo.get('servicios')?.invalid && campo.get('servicios')?.touched)) {
+                <span [id]="'servicio-' + i + '-error'" class="visually-hidden"></span>
+            }
+            
+            @if (esFacultadSeleccionada(campo.get('servicios')?.value)) {
+                <div class="campo-grado">
+                    <label [for]="'grado-' + i" [id]="'grado-' + i + '-label'">
+                        Grado de la {{ campo.get('servicios')?.value }}
+                        <span class="campo-requerido">*</span>
+                    </label>
+                    <p [id]="'grado-' + i + '-desc'" class="campo-descripcion">
+                        Seleccione el grado específico de la facultad seleccionada
+                    </p>
                     <div class="select-container">
-                        <select [id]="'servicio-' + i" 
-                                formControlName="servicios"
-                                [attr.aria-describedby]="'servicio-' + i + '-desc servicio-' + i + '-hint servicio-' + i + '-error'"
+                        <select [id]="'grado-' + i" 
+                                formControlName="grado"
+                                [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'"
                                 aria-required="true"
-                                [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched"
-                                [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
-                                [attr.aria-labelledby]="'servicio-' + i + '-label'">
+                                [attr.aria-invalid]="campo.get('grado')?.invalid && campo.get('grado')?.touched">
                             <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
-                            <optgroup label="{{ 'FORM.FACULTIES_LABEL' | translate }}">
-                                @for (facultadObj of facultadesGrados; track facultadObj) {
-                                    <option [value]="facultadObj.facultad">{{ 'FACULTADES.' + facultadObj.facultad | translate }}</option>
-                                }
-                            </optgroup>
-                            <optgroup label="{{ 'FORM.SERVICES_LABEL' | translate }}">
-                                @for (servicio of serviciosFijos; track servicio) {
-                                    <option [value]="servicio">{{ servicio | translate }}</option>
-                                }
-                            </optgroup>
-                            <optgroup label="{{ 'FORM.VICERRECTORADOS_LABEL' | translate }}">
-                                @for (vic of vicerrectorados; track vic) {
-                                    <option [value]="vic">{{ 'VICERRECTORADOS.' + vic | translate }}</option>
-                                }
-                            </optgroup>
-                        </select>
+                        @for (grado of obtenerGrados(campo.get('servicios')?.value); track grado) {
+                            <option [value]="grado">{{ grado }}</option>
+                        }
+                    </select>
                     </div>
-
-                    <p [id]="'servicio-' + i + '-desc'" class="visually-hidden"></p>
-                    <p [id]="'servicio-' + i + '-hint'" class="visually-hidden"></p>
-                    @if (campo.get('servicios')?.invalid && campo.get('servicios')?.touched) {
+                    @if (mostrarErrorGrado && !campo.get('grado')?.value) {
                         <p class="mensaje_error" 
-                           [id]="'servicio-' + i + '-error'"
+                           [id]="'grado-' + i + '-error'"
                            role="alert"
                            aria-live="assertive">
-                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ERROR' | translate }}
+                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.GRADE.ERROR' | translate }}
                         </p>
                     }
-                    @if (!(campo.get('servicios')?.invalid && campo.get('servicios')?.touched)) {
-                        <span [id]="'servicio-' + i + '-error'" class="visually-hidden"></span>
-                    }
-                
-                    @if (esFacultadSeleccionada(campo.get('servicios')?.value)) {
-                        <div class="campo-grado">
-                            <label [for]="'grado-' + i" [id]="'grado-' + i + '-label'">
-                                Grado de la {{ campo.get('servicios')?.value }}
-                                <span class="campo-requerido">*</span>
-                            </label>
-                            <p [id]="'grado-' + i + '-desc'" class="campo-descripcion">
-                                Seleccione el grado específico de la facultad seleccionada
-                            </p>
-                            <div class="select-container">
-                                <select [id]="'grado-' + i" 
-                                        formControlName="grado"
-                                        [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'"
-                                        aria-required="true"
-                                        [attr.aria-invalid]="campo.get('grado')?.invalid && campo.get('grado')?.touched">
-                                    <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
-                                @for (grado of obtenerGrados(campo.get('servicios')?.value); track grado) {
-                                    <option [value]="grado">{{ grado }}</option>
-                                }
-                            </select>
-                            </div>
-                            @if (mostrarErrorGrado && !campo.get('grado')?.value) {
-                                <p class="mensaje_error" 
-                                   [id]="'grado-' + i + '-error'"
-                                   role="alert"
-                                   aria-live="assertive">
-                                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.GRADE.ERROR' | translate }}
-                                </p>
-                            }
-                        <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
-                        </div>
-                    }
-                    
+                <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
                 </div>
             }
-            <div class="boton-agregar-container">
-                <button type="button"
-                        (click)="anadirCampoServicio()"
-                        class="btn-agregar-inline"
-                        aria-label="Añadir nuevo servicio">
-                    <span class="icono-agregar" aria-hidden="true">+</span>
-                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ADD_BUTTON' | translate }}
-                </button>
-            </div>
+            
         </div>
+    }
+    <div class="boton-agregar-container">
+        <button type="button"
+                (click)="anadirCampoServicio()"
+                class="btn-agregar-inline"
+                aria-label="Añadir nuevo servicio">
+            <span class="icono-agregar" aria-hidden="true">+</span>
+            {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ADD_BUTTON' | translate }}
+        </button>
+    </div>
+</div>
     </div>
 
     <div class="evento-info-section" role="region" aria-labelledby="recursos-digitales-titulo">
