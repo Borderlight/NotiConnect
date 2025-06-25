@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Evento } from '../interfaces/evento.interface';
 
@@ -7,7 +7,7 @@ import { Evento } from '../interfaces/evento.interface';
   providedIn: 'root'
 })
 export class EventoService {
-  private apiUrl = '/api/eventos';
+  private apiUrl = 'http://localhost:3000/api/eventos';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,10 @@ export class EventoService {
   }
 
   agregarEvento(data: any): Observable<Evento> {
-    return this.http.post<Evento>(this.apiUrl, data);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<Evento>(this.apiUrl, data, { headers });
   }
 
   actualizarEvento(id: string, evento: Evento): Observable<Evento> {

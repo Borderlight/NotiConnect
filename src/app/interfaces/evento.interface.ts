@@ -4,20 +4,35 @@ export interface Evento {
   _id?: string;
   imagen: string; // Carátula del evento (url/base64)
   titulo: string;
-  ponente: string;
+  ponente?: string; // Mantener para retrocompatibilidad
+  ponentes?: Ponente[]; // Nuevo: array de ponentes
   empresaOrganizadora: string;
   tipoEvento: EventType;
   descripcion: string;
-  adjuntos: string[];
+  adjuntos: ArchivoAdjunto[]; // Cambiar a array de objetos
   servicios: Servicio[];
   enlaces: Enlace[];
-  actividad: string;
+  actividad?: string; // Opcional
   ubicaciones: Ubicacion[];
-  fecha: Date;
-  lugar: string;
+  // Campos antiguos para retrocompatibilidad
+  fecha?: Date;
+  lugar?: string;
   aula?: string;
-  horaInicio: string;
+  horaInicio?: string;
   horaFin?: string;
+}
+
+export interface Ponente {
+  id: number;
+  nombre: string;
+  afiliacion?: string;
+}
+
+export interface ArchivoAdjunto {
+  name: string;
+  type: string;
+  size: number;
+  data: string; // Base64 string
 }
 
 export interface Servicio {

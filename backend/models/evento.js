@@ -16,31 +16,34 @@ const enlaceSchema = new mongoose.Schema({
 }, { _id: false });
 
 const ubicacionSchema = new mongoose.Schema({
-    lugar: { type: String, required: true },
-    aula: String,
-    fecha: Date,
-    tipoHorario: { type: String, enum: ['hora', 'horario'] },
-    horaInicio: String,
-    horaFin: String
+    fecha: { type: Date, required: true }, // Fecha específica de esta ubicación
+    tipoHorario: { type: String, enum: ['hora', 'horario'], required: true },
+    horaInicio: { type: String, required: true },
+    horaFin: String, // Solo requerido si tipoHorario es 'horario'
+    lugar: { type: String, required: true }
 }, { _id: false });
 
 const eventoSchema = new mongoose.Schema({
     imagen: String,
     titulo: { type: String, required: true },
-    ponente: String,
-    empresaOrganizadora: String,
-    tipoEvento: String,
+    ponentes: [{ 
+        id: Number,
+        nombre: String, 
+        afiliacion: String 
+    }],
+    empresaOrganizadora: { type: String, required: true },
+    tipoEvento: { type: String, required: true },
     descripcion: { type: String, required: true },
-    adjuntos: [String],
+    adjuntos: [{
+        name: String,
+        type: String,
+        size: Number,
+        data: String // Base64 data
+    }],
     servicios: [servicioSchema],
     enlaces: [enlaceSchema],
-    actividad: { type: String, required: true },
-    ubicaciones: [ubicacionSchema],
-    fecha: { type: Date, required: true },
-    lugar: String,
-    aula: String,
-    horaInicio: String,
-    horaFin: String
+    actividad: String, // Actividad relacionada
+    ubicaciones: [ubicacionSchema] // Array de ubicaciones con fecha, hora y lugar cada una
 }, {
     timestamps: true
 });

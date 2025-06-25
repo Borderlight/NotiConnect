@@ -32,20 +32,10 @@
       <div class="evento-titulo-col">
         @if (!editMode) {
           <h2 class="evento-titulo">{{ evento.titulo }}</h2>
-          @if (evento.ponente) {
-            <p><strong>Ponente:</strong> {{ evento.ponente }}</p>
-          }
+          <p><strong>Ponente(s):</strong> {{ ponentesTexto || 'No especificado' }}</p>
           <p><strong>Fecha:</strong> {{ fechaFormateada }}</p>
-          <p><strong>Hora:</strong> {{ evento.horaInicio }}
-            @if (evento.horaFin) {
-              <span> - {{ evento.horaFin }}</span>
-            }
-          </p>
-          <p><strong>Lugar:</strong> {{ evento.lugar }}
-            @if (evento.aula) {
-              <span> - {{ evento.aula }}</span>
-            }
-          </p>
+          <p><strong>Hora:</strong> {{ horaTexto }}</p>
+          <p><strong>Lugar:</strong> {{ lugarTexto }}</p>
           @if (evento.actividad) {
             <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
           }

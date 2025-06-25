@@ -1,0 +1,374 @@
+{
+  "COMMON": {
+    "BUSCAR": "Rechercher",
+    "LIMPIAR": "Effacer",
+    "GUARDAR": "Enregistrer",
+    "CANCELAR": "Annuler",
+    "ELIMINAR": "Supprimer",
+    "CONFIRMAR": "Confirmer",
+    "VOLVER": "Retour",
+    "BACK": "Retour",
+    "GO_HOME": "Aller à la page d'accueil",
+    "UPSA_LOGO_ALT": "Logo de l'Université Pontificale de Salamanque",
+    "NOTICONNECT_LOGO_ALT": "Logo de NotiConnect",
+    "COPYRIGHT": "© 2025 NotiConnect - Tous droits réservés",
+    "SELECT_LANGUAGE": "Sélectionner la langue",
+    "SPANISH": "Espagnol",
+    "ENGLISH": "Anglais",
+    "FRENCH": "Français"
+  },
+  "EVENTOS": {
+    "TITULO": "Titre",
+    "DESCRIPCION": "Description",
+    "FECHA": "Date",
+    "HORA_INICIO": "Heure de début",
+    "HORA_FIN": "Heure de fin",
+    "LUGAR": "Lieu",
+    "ACTIVIDAD": "Activité liée",
+    "SERVICIOS": "Services liés",
+    "ENLACES": "Liens connexes"
+  },
+  "FILTROS": {
+    "TITULO": "Filtres de recherche",
+    "TIPO_EVENTO": "Type d'événement",
+    "PONENTE": "Intervenant",
+    "TODOS_TIPOS": "Tous les types",
+    "TODAS_ACTIVIDADES": "Toutes les activités",
+    "TODOS_SERVICIOS": "Tous les services",
+    "TODOS_LUGARES": "Tous les lieux",
+    "FECHA": "Date",
+    "SELECCIONA_FECHA": "Sélectionnez la date",
+    "HORA_INICIO": "Heure de Début",
+    "SELECCIONA_HORA_INICIO": "Sélectionnez l'heure de début",
+    "HORA_FIN": "Heure de Fin",
+    "SELECCIONA_HORA_FIN": "Sélectionnez l'heure de fin",
+    "LUGAR": "Lieu",
+    "SELECCIONA_LUGAR": "Sélectionnez le lieu",
+    "SELECCIONA_FECHA_RANGO": "Sélectionnez une plage de dates"
+  },
+  "SETTINGS": {
+    "TITLE": "Paramètres",
+    "APPEARANCE": "Apparence",
+    "DARK_MODE": "Mode Sombre",
+    "TOGGLE_DARK_MODE": "Activer le mode sombre",
+    "LANGUAGE": "Langue",
+    "SELECT_LANGUAGE": "Sélectionner la Langue"
+  },
+  "NAV": {
+    "MAIN": "Navigation principale",
+    "HOME_TITLE": "Page d'accueil NotiConnect",
+    "CREATE_EVENT": "Créer un événement",
+    "SEARCH": "Rechercher des événements",
+    "ROLES": "Consulter les rôles",
+    "SETTINGS": "Paramètres"
+  },
+  "SEARCH": {
+    "FILTERS_TITLE": "Filtres de Recherche",
+    "EVENT_TYPE": "Type d'Événement",
+    "SPEAKER": "Intervenant",
+    "SPEAKER_PLACEHOLDER": "Nom de l'intervenant",
+    "ACTIVITY": "Activité",
+    "SERVICE": "Service",
+    "ALL_TYPES": "Tous les types",
+    "ALL_ACTIVITIES": "Toutes les activités",
+    "ALL_SERVICES": "Tous les services",
+    "SEARCH_BUTTON": "Rechercher",
+    "CLEAR_BUTTON": "Effacer les filtres",
+    "RESULTS_TITLE": "Résultats de la recherche",
+    "EVENTS_FOUND": "événements trouvés",
+    "NO_RESULTS": "Aucun événement ne correspond aux critères de recherche.",
+    "DOWNLOAD": "Télécharger",
+    "DELETE": "Supprimer",
+    "SELECT_EVENT_TYPE": "Sélectionnez le type d'événement",
+    "ENTER_SPEAKER_NAME": "Entrez le nom de l'intervenant",
+    "SELECT_ACTIVITY": "Sélectionnez l'activité",
+    "SELECT_SERVICE": "Sélectionnez le service"
+  },
+  "EVENT_TYPES": {
+    "EVENT": "Événement",
+    "COURSE": "Cours",
+    "WORKSHOP": "Atelier",
+    "CONFERENCE_OR_CONGRESS": "Congrès/Conférence",
+    "BOOK_PRESENTATION": "Présentation de Livre",
+    "TALK": "Discussion",
+    "EXHIBITION": "Exposition",
+    "CONTEST_OR_COMPETITION": "Concours ou Compétition",
+    "VISIT": "Visite",
+    "INTERVIEW": "Entretien",
+    "RESEARCH_RESULTS": "Résultats de Recherche",
+    "SHOWS": "Spectacles",
+    "VISITS_OR_EXCURSIONS": "Visites ou Excursions"
+  },
+  "SERVICES": {
+    "GESTION_INVESTIGACION": "Gestion de la Recherche et du Transfert",
+    "UNIDAD_EMPLEABILIDAD": "Unité d'Employabilité et de Stages",
+    "MOVILIDAD_INTERNACIONAL": "Mobilité Internationale",
+    "CAPELLANIA": "Aumônerie",
+    "DEPORTES": "Sports",
+    "CORO": "Chorale",
+    "ASISTENCIA_PSICOLOGICA": "Service d'Assistance Psychologique",
+    "CULTURA_CIENTIFICA": "Unité de Culture Scientifique et d'Innovation",
+    "UNIDAD_IGUALDAD": "Unité d'Égalité",
+    "VOLUNTARIADO": "Bénévolat"
+  },
+  "EVENT_DETAILS": {
+    "EVENT_IMAGE": "Image de l'événement :",
+    "DESCRIPTION": "Description",
+    "DATE_LOCATION": "Date et Lieu",
+    "DATE": "Date",
+    "SCHEDULE": "Horaire",
+    "LOCATION": "Lieu",
+    "SPEAKER": "Intervenant",
+    "ORGANIZER": "Organisateur",
+    "SERVICES_FACULTIES": "Services et Facultés Associés",
+    "RELATED_LINKS": "Liens Connexes",
+    "ATTACHED_DOCUMENTS": "Documents Joints",
+    "RELATED_ACTIVITY": "Activité Associée",
+    "LOADING": "Chargement des détails de l'événement..."
+  },
+  "FORM": {
+    "TITLE": "Formulaire d'Inscription d'Événement",
+    "BASIC_INFO": {
+      "TITLE": "Informations de Base de l'Événement",
+      "DESCRIPTION": "Remplissez les informations de base de l'événement.",
+      "REQUIRED_FIELDS": "Les champs marqués d'un astérisque (*) sont obligatoires."
+    },
+    "EVENT": {
+      "TITLE": {
+        "LABEL": "Titre de l'Événement",
+        "DESC": "Saisissez le titre de l'événement.",
+        "ERROR": "Le titre est obligatoire"
+      },
+      "SPEAKER": {
+        "LABEL": "Intervenant",
+        "DESC": "Saisissez le nom complet de l'intervenant.",
+        "ERROR": "Le nom de l'intervenant est obligatoire"
+      },
+      "ORGANIZER": {
+        "LABEL": "Entreprise Organisatrice",
+        "DESC": "Saisissez le nom de l'entreprise ou de l'organisation qui organise l'événement.",
+        "ERROR": "L'entreprise organisatrice est obligatoire"
+      },
+      "TYPE": {
+        "LABEL": "Type d'Événement",
+        "DESC": "Sélectionnez le type d'événement.",
+        "ERROR": "Vous devez sélectionner un type d'événement"
+      },
+      "DESCRIPTION": {
+        "LABEL": "Description",
+        "DESC": "Décrivez brièvement l'événement.",
+        "ERROR": "La description est obligatoire"
+      }
+    },
+    "ACTIVITY_SERVICES": {
+      "TITLE": "Activité et Services Associés",
+      "DESCRIPTION": "Sélectionnez l'activité et les services associés à l'événement.",
+      "RELATED_ACTIVITY": {
+        "LABEL": "Activité Associée",
+        "DESC": "Sélectionnez ou ajoutez une activité liée à l'événement.",
+        "ERROR": "Vous devez sélectionner ou ajouter une activité associée"
+      },
+      "RELATED_SERVICES": {
+        "LABEL": "Services Associés",
+        "DESC": "Ajoutez les services liés à l'événement.",
+        "ERROR": "Vous devez ajouter au moins un service",
+        "ADD_BUTTON": "Ajouter un Service",
+        "GRADE": {
+          "ERROR": "Le niveau est obligatoire pour ce service"
+        }
+      }
+    },
+    "DIGITAL_RESOURCES": {
+      "TITLE": "Ressources Numériques",
+      "DESCRIPTION": "Joignez des fichiers et ajoutez des liens liés à l'événement.",
+      "ATTACHED_FILES": {
+        "LABEL": "Fichiers Joints",
+        "DESCRIPTION": "Joignez les fichiers liés à l'événement.",
+        "ACCEPTED_FORMATS": "Formats acceptés : JPG, JPEG, PNG, GIF, BMP, WEBP",
+        "FILE_SELECTOR_HELP": "Cliquez ici ou faites glisser des fichiers pour les joindre",
+        "ERROR": "Vous devez joindre au moins un fichier"
+      },
+      "RELATED_LINKS": {
+        "LABEL": "Liens Associés",
+        "DESCRIPTION": "Ajoutez des liens vers des ressources liées à l'événement.",
+        "ERROR": {
+          "REQUIRE_LINK": "Vous devez ajouter au moins un lien",
+          "SELECT_TYPE": "Vous devez sélectionner un type de lien",
+          "INVALID_URL_INSTAGRAM": "URL Instagram invalide",
+          "INVALID_URL_X": "URL X invalide",
+          "INVALID_URL_TIKTOK": "URL TikTok invalide",
+          "INVALID_URL_YOUTUBE": "URL YouTube invalide",
+          "INVALID_URL_LINKEDIN": "URL LinkedIn invalide",
+          "COMPLETE_LINK": "Vous devez compléter le lien"
+        },
+        "ADD_BUTTON": "Ajouter un Lien"
+      }
+    },
+    "LOCATION_TIME": {
+      "TITLE": "Lieu et Horaire",
+      "DESCRIPTION": "Indiquez où et quand l'événement aura lieu.",
+      "DATE_PLACE": "Date et Lieu",
+      "EVENT_DATE": {
+        "LABEL": "Date de l'Événement",
+        "DESCRIPTION": "Sélectionnez la date de l'événement.",
+        "ERROR": "La date est obligatoire"
+      },
+      "TIME_TYPE": {
+        "LABEL": "Type d'Horaire",
+        "DESCRIPTION": "Sélectionnez le type d'horaire de l'événement.",
+        "UNIQUE_TIME": "Heure Unique",
+        "FULL_SCHEDULE": "Horaire Complet",
+        "HINT": "Sélectionnez si l'événement a une heure unique ou un horaire de début et de fin",
+        "ERROR": "Vous devez sélectionner un type d'horaire"
+      },
+      "EVENT_TIME": {
+        "DESCRIPTION": "Sélectionnez l'heure de l'événement.",
+        "ERROR": "L'heure est obligatoire"
+      },
+      "START_TIME": {
+        "DESCRIPTION": "Sélectionnez l'heure de début.",
+        "ERROR": "L'heure de début est obligatoire"
+      },
+      "END_TIME": {
+        "DESCRIPTION": "Sélectionnez l'heure de fin.",
+        "ERROR": "L'heure de fin est obligatoire"
+      },
+      "EVENT_PLACE": {
+        "LABEL": "Lieu",
+        "DESCRIPTION": "Sélectionnez où l'événement aura lieu.",
+        "HINT": "Choisissez le bâtiment ou l'installation",
+        "ERROR": "Le lieu est obligatoire"
+      },
+      "CLASSROOM": {
+        "LABEL": "Salle",
+        "DESCRIPTION": "Indiquez la salle ou l'espace spécifique.",
+        "ERROR": "La salle est obligatoire"
+      },
+      "ADD_DATE_PLACE": "Ajouter Date et Lieu",
+      "START": {
+        "LABEL": "Heure de Début",
+        "DESCRIPTION": "Sélectionnez l'heure de début."
+      },
+      "END": {
+        "LABEL": "Heure de Fin",
+        "DESCRIPTION": "Sélectionnez l'heure de fin."
+      },
+      "TIME": {
+        "LABEL": "Heure",
+        "DESCRIPTION": "Sélectionnez l'heure de l'événement."
+      }
+    },
+    "SUBMIT_BUTTON": "Soumettre",
+    "DIALOG": {
+      "EVENT_CREATED": {
+        "TITLE": "Événement Créé !",
+        "MESSAGE": "L'événement a été créé avec succès."
+      },
+      "ACCEPT": "Accepter"
+    },
+    "FACULTIES_LABEL": "Facultés",
+    "SERVICES_LABEL": "Services",
+    "VICERRECTORADOS_LABEL": "Vice-rectorats"
+  },
+  "ROLES": {
+    "TITLE": "Gestion des Administrateurs",
+    "GO_BACK": "Retour",
+    "ADD_ADMIN": {
+      "TITLE": "Ajouter un Nouvel Administrateur",
+      "NAME": {
+        "LABEL": "Nom",
+        "PLACEHOLDER": "Nom de l'administrateur"
+      },
+      "EMAIL": {
+        "LABEL": "Email",
+        "PLACEHOLDER": "Email de l'administrateur"
+      },
+      "SUBMIT": "Ajouter l'Administrateur"
+    },
+    "ADMIN_LIST": {
+      "TITLE": "Administrateurs Actuels",
+      "SEARCH": {
+        "PLACEHOLDER": "Rechercher des administrateurs..."
+      },
+      "NO_RESULTS": "Aucun administrateur trouvé",
+      "ADDED_ON": "Ajouté le",
+      "DELETE": "Supprimer"
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Confirmer la Suppression",
+      "MESSAGE": "Êtes-vous sûr de vouloir supprimer l'administrateur {name} ?",
+      "CONFIRM": "Supprimer",
+      "CANCEL": "Annuler"
+    }
+  },
+  "DOWNLOAD_MODAL": {
+    "TITLE": "Options de Téléchargement",
+    "FORMAT_SECTION": {
+      "TITLE": "Format de Téléchargement"
+    },
+    "FIELDS_SECTION": {
+      "TITLE": "Champs à Inclure"
+    },
+    "FIELDS": {
+      "TITLE": "Titre",
+      "SPEAKER": "Intervenant",
+      "ORGANIZER": "Entreprise organisatrice",
+      "TYPE": "Type d'événement",
+      "DATE": "Date",
+      "START_TIME": "Heure de début",
+      "END_TIME": "Heure de fin",
+      "PLACE": "Lieu",
+      "CLASSROOM": "Salle",
+      "DESCRIPTION": "Description",
+      "ACTIVITY": "Activité associée",
+      "ATTACHMENTS": "Fichiers joints",
+      "LINKS": "Liens",
+      "SERVICES": "Services"
+    },
+    "BUTTONS": {
+      "DOWNLOAD": "Télécharger la sélection",
+      "CANCEL": "Annuler"
+    }
+  },
+  "VICERRECTORADOS": {
+    "InvestigacionTransferencia": "Recherche et Transfert",
+    "OrdenacionAcademica": "Organisation Académique",
+    "FormacionPermanente": "Formation Continue",
+    "ComunidadUniversitaria": "Communauté Universitaire",
+    "InternacionalesCooperacion": "International et Coopération"
+  },
+  "LOCATIONS": {
+    "FACULTY": "Faculté",
+    "AULA_MAGNA": "Salle principale",
+    "LIBRARY": "Bibliothèque",
+    "ONLINE": "En ligne",
+    "SELECT_OPTION": "Sélectionnez une option",
+    "PRESENTIAL_SPACES": "Espaces Présentiels",
+    "VIRTUAL_SPACES": "Espaces Virtuels",
+    "HUBdeInnovacion": "Hub d'Innovation",
+    "AuditorioJuanPablo": "Auditorium Jean-Paul II"
+  },
+  "EVENT_CARD": {
+    "SPEAKER": "Intervenant :",
+    "DATE": "Date :",
+    "TIME": "Heure :",
+    "LOCATION": "Lieu :",
+    "EVENT_IMAGE": "Image de l'événement :"
+  },
+  "FACULTES": {
+    "Facultad de Ciencias de la Salud": "Faculté des Sciences de la Santé",
+    "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa": "Faculté des Sciences de l'Assurance, Juridiques et Commerciales",
+    "Facultad de Ciencias Humanas y Sociales": "Faculté des Sciences Humaines et Sociales",
+    "Facultad de Comunicación": "Faculté de Communication",
+    "Facultad de Derecho Canónico": "Faculté de Droit Canonique",
+    "Facultad de Educación": "Faculté d'Éducation",
+    "Facultad de Enfermería y Fisioterapia Salus Infirmorum": "Faculté d'Infirmiers et de Physiothérapie Salus Infirmorum",
+    "Facultad de Informática": "Faculté d'Informatique",
+    "Facultad de Psicología": "Faculté de Psychologie",
+    "Facultad de Teología": "Faculté de Théologie",
+    "Facultad de Filosofía": "Faculté de Philosophie"
+  },
+  "FACULTIES_LABEL": "Facultés",
+  "SERVICES_LABEL": "Services",
+  "VICERRECTORADOS_LABEL": "Vice-rectorats"
+}

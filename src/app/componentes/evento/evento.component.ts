@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { Evento } from '../../interfaces/evento.interface';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
@@ -27,7 +26,6 @@ export class EventoComponent {
   mostrarDetalles = false;
 
   constructor(
-    private router: Router,
     private idiomaService: IdiomaService,
     private fb: FormBuilder
   ) {
@@ -36,11 +34,7 @@ export class EventoComponent {
     );
   }
 
-  verDetalles() {
-    if (!this.editMode) {
-      this.router.navigate(['/detalles_evento', this.evento._id]);
-    }
-  }
+  // Función eliminada - ya no navegamos a detalles, solo expandimos la card
 
   eliminarEvento(event: Event) {
     event.stopPropagation();
@@ -50,14 +44,18 @@ export class EventoComponent {
   editarEvento(event: Event) {
     event.stopPropagation();
     this.editMode = true;
+    // Usar los nuevos campos de ubicaciones y ponentes
+    const primerPonente = this.evento.ponentes?.[0]?.nombre || '';
+    const primeraUbicacion = this.evento.ubicaciones?.[0];
+    
     this.editForm = this.fb.group({
       titulo: [this.evento.titulo, Validators.required],
-      ponente: [this.evento.ponente, Validators.required],
-      fecha: [this.evento.fecha, Validators.required],
-      horaInicio: [this.evento.horaInicio, Validators.required],
-      horaFin: [this.evento.horaFin],
-      lugar: [this.evento.lugar, Validators.required],
-      aula: [this.evento.aula],
+      ponente: [primerPonente, Validators.required],
+      fecha: [primeraUbicacion?.fecha || this.evento.fecha, Validators.required],
+      horaInicio: [primeraUbicacion?.horaInicio || this.evento.horaInicio, Validators.required],
+      horaFin: [primeraUbicacion?.horaFin || this.evento.horaFin],
+      lugar: [primeraUbicacion?.lugar || this.evento.lugar, Validators.required],
+      aula: [this.evento.aula || ''],
       actividad: [this.evento.actividad],
       descripcion: [this.descripcionTexto],
       servicios: [this.serviciosTexto],
@@ -79,10 +77,14 @@ export class EventoComponent {
   }
 
   get adjuntosTexto(): string {
-    return this.evento?.adjuntos?.join(', ') || '';
+    return this.evento?.adjuntos?.map(a => a.name || a).join(', ') || '';
   }
   set adjuntosTexto(valor: string) {
-    this.evento.adjuntos = valor.split(',').map(a => a.trim()).filter(a => a);
+    // Convertir strings a objetos ArchivoAdjunto básicos
+    this.evento.adjuntos = valor.split(',').map(a => {
+      const nombre = a.trim();
+      return nombre ? { name: nombre, type: '', size: 0, data: '' } : null;
+    }).filter(a => a) as any[];
   }
 
   get enlacesTexto(): string {
@@ -99,13 +101,51 @@ export class EventoComponent {
     this.evento.descripcion = valor;
   }
 
+  get ponentesTexto(): string {
+    return this.evento?.ponentes?.map(p => p.nombre).filter(n => n).join(', ') || '';
+  }
+
+  get horaTexto(): string {
+    if (this.evento?.ubicaciones && this.evento.ubicaciones.length > 0) {
+      const ubicacion = this.evento.ubicaciones[0];
+      if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
+        return `${ubicacion.horaInicio} - ${ubicacion.horaFin}`;
+      }
+      return ubicacion.horaInicio || '';
+    }
+    // Retrocompatibilidad
+    if (this.evento?.horaFin) {
+      return `${this.evento.horaInicio} - ${this.evento.horaFin}`;
+    }
+    return this.evento?.horaInicio || '';
+  }
+
+  get lugarTexto(): string {
+    if (this.evento?.ubicaciones && this.evento.ubicaciones.length > 0) {
+      return this.evento.ubicaciones[0].lugar || '';
+    }
+    // Retrocompatibilidad
+    return this.evento?.lugar || '';
+  }
+
   get fechaFormateada(): string {
-    if (!this.evento?.fecha) return '';
-    const fecha = new Date(this.evento.fecha);
-    const opciones: Intl.DateTimeFormatOptions = {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-    };
-    return fecha.toLocaleDateString('es-ES', opciones);
+    // Buscar la fecha en las ubicaciones
+    if (this.evento?.ubicaciones && this.evento.ubicaciones.length > 0) {
+      const fecha = new Date(this.evento.ubicaciones[0].fecha);
+      const opciones: Intl.DateTimeFormatOptions = {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      };
+      return fecha.toLocaleDateString('es-ES', opciones);
+    }
+    // Retrocompatibilidad con el campo fecha antiguo
+    if (this.evento?.fecha) {
+      const fecha = new Date(this.evento.fecha);
+      const opciones: Intl.DateTimeFormatOptions = {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      };
+      return fecha.toLocaleDateString('es-ES', opciones);
+    }
+    return '';
   }
 
   // Al guardar, sincroniza los campos complejos

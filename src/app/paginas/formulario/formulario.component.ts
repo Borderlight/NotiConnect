@@ -211,19 +211,18 @@ export class FormularioComponent {
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
-      ponente: ['', [Validators.required]],
-      empresaOrganizadora: ['', [Validators.required]],
+      empresaOrganizadora: ['', [Validators.required]], // Departamento organizador
       tipoEvento: ['', Validators.required],
       descripcion: ['', [Validators.required]],
       adjuntos: [''], // Sin validadores
-      servicios: this.fb.array([this.crearCampoServicio()]),
+      servicios: this.fb.array([this.crearCampoServicio()]), // Sin required
       enlaces: this.fb.array([this.crearEnlace()]), // Sin validadores a nivel de array
-      actividad_relacionada: ['', Validators.required],
-      ubicaciones: this.fb.array([this.crearUbicacion()]),
+      actividad_relacionada: [''], // Sin required
+      ubicaciones: this.fb.array([this.crearUbicacion()]), // Requerido: fecha, tipo horario, lugar
       ponentes: this.fb.array([
         this.fb.group({
           id: [0],
-          nombre: ['', Validators.required],
+          nombre: [''], // Sin required
           afiliacion: ['']
         })
       ])
@@ -263,12 +262,7 @@ export class FormularioComponent {
   
 
   anadirCampoServicio() {
-    const serviciosActuales = this.listadoServicios.value as Servicio[];
-    if (serviciosActuales.some((s: Servicio) => !s.servicios)) { 
-      this.mostrarError = true;
-      return;
-    }
-    // Ya no se requiere grado para facultad, así que eliminamos la restricción
+    // Ya no validamos que los servicios estén llenos porque no son requeridos
     this.listadoServicios.push(this.crearCampoServicio());
     this.mostrarError = false;
     this.mostrarErrorGrado = false;
@@ -276,7 +270,7 @@ export class FormularioComponent {
 
   crearCampoServicio(): FormGroup {
     return this.fb.group({
-      servicios: ['', [Validators.required, ServiciosValidator.servicioSeleccionado()]],
+      servicios: [''], // Sin required - servicios no son obligatorios
       grado: [''] // Sin validadores
     });
   }
@@ -428,12 +422,24 @@ export class FormularioComponent {
     }
   }
 
+  // Método para convertir archivo a Base64
+  private convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
   closeDialog(): void {
     this.mostrarDialog = false;
     this.router.navigate(['/']);
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+    console.log('🚀 onSubmit ejecutado');
+    
     // Marcar todos los campos como tocados para mostrar errores
     Object.keys(this.formularioEvento.controls).forEach(key => {
       const control = this.formularioEvento.get(key);
@@ -454,88 +460,154 @@ export class FormularioComponent {
       }
     });
 
-    // Marcar específicamente horaInicio como tocado
-    this.listadoUbicaciones.controls.forEach(ubicacion => {
-      ubicacion.get('horaInicio')?.markAsTouched();
+    console.log('📋 Validez del formulario:', this.formularioEvento.valid);
+    console.log('📋 Valores actuales del formulario:', this.formularioEvento.value);
+
+    // Verificar campos requeridos específicos
+    const camposRequeridos = {
+      titulo: this.formularioEvento.get('titulo')?.value,
+      empresaOrganizadora: this.formularioEvento.get('empresaOrganizadora')?.value,
+      tipoEvento: this.formularioEvento.get('tipoEvento')?.value,
+      descripcion: this.formularioEvento.get('descripcion')?.value,
+    };
+
+    console.log('📋 Campos requeridos:', camposRequeridos);
+
+    // Verificar que todos los campos requeridos estén llenos
+    const camposRequeridosValidos = Object.values(camposRequeridos).every(valor => 
+      valor !== null && valor !== undefined && valor !== ''
+    );
+
+    console.log('✅ Campos requeridos válidos:', camposRequeridosValidos);
+
+    // Verificar ubicaciones
+    const ubicaciones = this.listadoUbicaciones.controls;
+    const ubicacionValida = ubicaciones.length > 0 && ubicaciones.every(ub => {
+      const fecha = ub.get('fecha')?.value;
+      const tipoHorario = ub.get('tipoHorario')?.value;
+      const horaInicio = ub.get('horaInicio')?.value;
+      const horaFin = ub.get('horaFin')?.value;
+      const lugar = ub.get('lugar')?.value;
+
+      console.log('� Validando ubicación:', { fecha, tipoHorario, horaInicio, horaFin, lugar });
+
+      // Verificar campos requeridos de ubicación
+      if (!fecha || !tipoHorario || !horaInicio || !lugar) {
+        return false;
+      }
+
+      // Si el tipo de horario es "horario", horaFin es requerida
+      if (tipoHorario === 'horario' && !horaFin) {
+        return false;
+      }
+
+      return true;
     });
 
-    if (!this.formularioEvento.valid) {
-      // Log detallado de errores
-      const errores: any = {};
-      Object.keys(this.formularioEvento.controls).forEach(key => {
-        const control = this.formularioEvento.get(key);
-        if (control instanceof FormArray) {
-          errores[key] = [];
-          control.controls.forEach((ctrl, idx) => {
-            if (ctrl instanceof FormGroup) {
-              const subErrores: any = {};
-              Object.entries(ctrl.controls).forEach(([subKey, c]) => {
-                if (c.errors) {
-                  subErrores[subKey] = c.errors;
-                }
-              });
-              if (Object.keys(subErrores).length > 0) {
-                errores[key][idx] = subErrores;
-              }
-            } else if (ctrl.errors) {
-              errores[key][idx] = ctrl.errors;
-            }
-          });
-        } else if (control?.errors) {
-          errores[key] = control.errors;
-        }
-      });
-      console.log('Errores de validación detallados:', errores);
+    console.log('📍 Ubicación válida:', ubicacionValida);
+
+    if (!camposRequeridosValidos || !ubicacionValida) {
+      console.log('❌ Formulario inválido - faltan campos requeridos');
       return;
     }
 
-    // Marcar específicamente horaInicio como tocado
-    this.listadoUbicaciones.controls.forEach(ubicacion => {
-      ubicacion.get('horaInicio')?.markAsTouched();
-    });
+    console.log('✅ Formulario válido, continuando...');
 
     if (this.formularioEvento.valid) {
+      console.log('🔗 Validando enlaces...');
       const enlaces = this.formularioEvento.get('enlaces') as FormArray;
       let enlacesValidos = true;
 
       enlaces.controls.forEach((enlace, index) => {
         const tipo = enlace.get('tipo')?.value;
         const url = enlace.get('url')?.value;
-        if (tipo && this.socialMediaValidators[tipo] && !this.validateSocialMediaUrl(tipo, url)) {
-          enlacesValidos = false;
-          this.mostrarErrorUrl = true;
+        console.log(`🔍 Validando enlace ${index}: tipo="${tipo}", url="${url}"`);
+        
+        // Solo validar si ambos campos tienen valores
+        if (tipo && url) {
+          if (this.socialMediaValidators[tipo] && !this.validateSocialMediaUrl(tipo, url)) {
+            enlacesValidos = false;
+            this.mostrarErrorUrl = true;
+            console.log(`❌ Enlace ${index} inválido`);
+          }
         }
       });
+
+      console.log('🔗 Enlaces válidos:', enlacesValidos);
+
+      // Si los enlaces no son válidos, salir de la función
+      if (!enlacesValidos) {
+        console.log('🛑 Saliendo por enlaces inválidos');
+        return;
+      }
 
       // --- NUEVO: Asignar la carátula seleccionada como imagen principal ---
       let imagenCaratula = '';
       if (this.caratulaSeleccionada !== null && this.selectedAdjuntos[this.caratulaSeleccionada]) {
         imagenCaratula = this.selectedAdjuntos[this.caratulaSeleccionada];
       }
-      // Aquí puedes adaptar el envío según si usas FormData o JSON
-      // Si usas FormData:
-      const formData = new FormData();
+      
+      console.log('📦 Preparando datos como JSON...');
+      
+      // Crear objeto de datos del evento
+      const eventoData: any = {};
       Object.keys(this.formularioEvento.controls).forEach(key => {
-        if (key !== 'adjuntos') {
-          const value = this.formularioEvento.get(key)?.value;
-          formData.append(key, value);
+        if (key !== 'adjuntos' && key !== 'actividad_relacionada') {
+          eventoData[key] = this.formularioEvento.get(key)?.value;
         }
       });
-      // Adjuntar archivos
+      
+      // Enviar el campo actividad correctamente
+      const actividad = this.formularioEvento.get('actividad_relacionada')?.value;
+      if (actividad) {
+        eventoData.actividad = actividad;
+      }
+      
+      // Convertir archivos a Base64
       const files: FileList | null = this.adjuntosInput.nativeElement.files;
+      console.log('📁 Archivos encontrados:', files ? files.length : 0);
+      
+      eventoData.adjuntos = [];
       if (files) {
+        console.log('🔄 Convirtiendo archivos a Base64...');
+        const filePromises: Promise<any>[] = [];
+        
         for (let i = 0; i < files.length; i++) {
-          formData.append('adjuntos', files[i], files[i].name);
+          const file = files[i];
+          const promise = this.convertFileToBase64(file).then(base64 => ({
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: base64
+          }));
+          filePromises.push(promise);
+        }
+        
+        try {
+          eventoData.adjuntos = await Promise.all(filePromises);
+          console.log('✅ Archivos convertidos a Base64:', eventoData.adjuntos.length);
+        } catch (error) {
+          console.error('❌ Error al convertir archivos:', error);
+          alert('Error al procesar los archivos adjuntos.');
+          return;
         }
       }
+      
       // Adjuntar la carátula como campo extra
       if (imagenCaratula) {
-        formData.append('imagen', imagenCaratula);
+        eventoData.imagen = imagenCaratula;
+        console.log('🖼️ Carátula adjuntada');
       }
-      // Submit as multipart/form-data
-      this.eventoService.agregarEvento(formData).subscribe({
-        next: () => {
+      
+      // Submit como JSON puro
+      console.log('🚀 Enviando formulario al servidor como JSON...');
+      this.eventoService.agregarEvento(eventoData).subscribe({
+        next: (response) => {
+          console.log('✅ Evento creado exitosamente:', response);
+          console.log('📱 Mostrando diálogo de confirmación...');
+          console.log('📱 Estado actual de mostrarDialog:', this.mostrarDialog);
           this.mostrarDialog = true;
+          console.log('📱 Estado después de asignar true:', this.mostrarDialog);
           this.formularioEvento.reset();
           // CORRECCIÓN: Solo se puede asignar una cadena vacía al input file
           if (this.adjuntosInput && this.adjuntosInput.nativeElement) {
@@ -546,7 +618,10 @@ export class FormularioComponent {
           this.caratulaSeleccionada = null;
         },
         error: (err) => {
-          console.error('Error al crear evento:', err);
+          console.error('❌ Error al crear evento:', err);
+          console.log('🚨 Mostrando alerta de error...');
+          // Opcional: mostrar un mensaje de error al usuario
+          alert('Error al crear el evento. Revisa la consola para más detalles.');
         }
       });
     } else {
@@ -579,14 +654,26 @@ export class FormularioComponent {
   }
 
   crearUbicacion(): FormGroup {
-    return this.fb.group({
-      fecha: ['', Validators.required],
-      tipoHorario: ['hora', Validators.required],
-      horaInicio: ['', Validators.required],
-      horaFin: ['', [UbicacionValidator.horaFinRequerida(), UbicacionValidator.horaFinPosterior()]],
-      lugar: ['', Validators.required],
-      // Eliminado campo aula
+    const ubicacionGroup = this.fb.group({
+      fecha: ['', Validators.required], // Requerido
+      tipoHorario: ['hora', Validators.required], // Requerido
+      horaInicio: ['', Validators.required], // Requerido
+      horaFin: [''], // Condicional: requerido solo si tipoHorario es "horario"
+      lugar: ['', Validators.required], // Requerido
     });
+
+    // Agregar validación condicional para horaFin
+    ubicacionGroup.get('tipoHorario')?.valueChanges.subscribe(tipo => {
+      const horaFin = ubicacionGroup.get('horaFin');
+      if (tipo === 'horario') {
+        horaFin?.setValidators([Validators.required]);
+      } else {
+        horaFin?.clearValidators();
+      }
+      horaFin?.updateValueAndValidity();
+    });
+
+    return ubicacionGroup;
   }
 
   agregarUbicacion() {

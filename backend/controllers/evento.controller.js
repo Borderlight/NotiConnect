@@ -28,7 +28,14 @@ const getEventos = async (req, res) => {
                 eventos = eventos.filter(ev => ev.tipoEvento === tipoEvento);
             }
             if (ponente && ponente !== '' && ponente !== 'Todos') {
-                eventos = eventos.filter(ev => ev.ponente && ev.ponente.toLowerCase().includes(ponente.toLowerCase()));
+                eventos = eventos.filter(ev => {
+                    // Buscar en el array de ponentes
+                    if (Array.isArray(ev.ponentes)) {
+                        return ev.ponentes.some(p => p.nombre && p.nombre.toLowerCase().includes(ponente.toLowerCase()));
+                    }
+                    // Retrocompatibilidad con campo ponente único
+                    return ev.ponente && ev.ponente.toLowerCase().includes(ponente.toLowerCase());
+                });
             }
             if (actividad && actividad !== '' && actividad !== 'Todos') {
                 eventos = eventos.filter(ev => ev.actividad === actividad);
@@ -118,8 +125,18 @@ const getEventoById = async (req, res) => {
 // Crear nuevo evento
 const createEvento = async (req, res) => {
     console.log('=== DEBUGGING createEvento ===');
+    console.log('req.method:', req.method);
+    console.log('req.headers:', req.headers);
+    console.log('req.body type:', typeof req.body);
     console.log('req.body:', req.body);
     console.log('req.files:', req.files);
+    console.log('req.body keys:', req.body ? Object.keys(req.body) : 'N/A');
+    
+    // Verificar si req.body existe
+    if (!req.body) {
+        console.error('❌ req.body is undefined');
+        return res.status(400).json({ message: 'No data received in request body' });
+    }
     
     fs.readFile(DATA_BASE_PATH, 'utf8', (err, data) => {
         let eventos = [];
@@ -136,7 +153,6 @@ const createEvento = async (req, res) => {
         const nuevoEvento = {
             _id,
             titulo: req.body.titulo || '',
-            ponente: req.body.ponente || '',
             empresaOrganizadora: req.body.empresaOrganizadora || '',
             tipoEvento: req.body.tipoEvento || '',
             descripcion: req.body.descripcion || '',
@@ -144,8 +160,9 @@ const createEvento = async (req, res) => {
             enlaces: [],
             adjuntos: [],
             imagen: '',
-            actividad_relacionada: req.body.actividad_relacionada || '',
-            ubicaciones: []
+            actividad: req.body.actividad || '', // Campo de actividad relacionada
+            ubicaciones: [], // Las fechas van dentro de cada ubicación
+            ponentes: [] // Array de ponentes con nombre y afiliación
         };
         
         console.log('nuevoEvento inicial:', nuevoEvento);
@@ -166,36 +183,31 @@ const createEvento = async (req, res) => {
                 nuevoEvento.ubicaciones = typeof req.body.ubicaciones === 'string' ? 
                     JSON.parse(req.body.ubicaciones) : req.body.ubicaciones;
             }
+
+            if (req.body.ponentes) {
+                nuevoEvento.ponentes = typeof req.body.ponentes === 'string' ? 
+                    JSON.parse(req.body.ponentes) : req.body.ponentes;
+            }
         } catch (e) {
             console.error('Error al parsear campos:', e);
         }
 
-        // --- NUEVO: Si viene imagen base64 en el body, usarla como carátula ---
+        // --- NUEVO: Manejo de archivos adjuntos en base64 desde JSON ---
+        if (req.body.adjuntos && Array.isArray(req.body.adjuntos)) {
+            // Los archivos vienen como array de objetos con { name, type, size, data }
+            nuevoEvento.adjuntos = req.body.adjuntos.map(archivo => ({
+                name: archivo.name,
+                type: archivo.type,
+                size: archivo.size,
+                data: archivo.data // Base64 string
+            }));
+            console.log('Archivos adjuntos procesados desde JSON:', nuevoEvento.adjuntos.length);
+        }
+
+        // --- Manejo de imagen de carátula en base64 ---
         if (req.body.imagen && req.body.imagen.startsWith('data:image/')) {
             nuevoEvento.imagen = req.body.imagen;
-        } else {
-            // Manejo de archivos adjuntos (retrocompatibilidad)
-            const archivosAdjuntos = Array.isArray(req.files?.archivos) ? 
-                req.files.archivos : (req.files?.archivos ? [req.files.archivos] : []);
-
-            if (archivosAdjuntos.length > 0) {
-                // El primer archivo será la imagen principal
-                const imagenPrincipal = archivosAdjuntos[0];
-                const nombreLimpio = imagenPrincipal.originalname
-                    .replace(/^.*[\\\/]/, '')
-                    .replace(/[^a-zA-Z0-9-_\.]/g, '_');
-                nuevoEvento.imagen = `/uploads/${nombreLimpio}`;
-                // Todos los archivos van a adjuntos con nombres limpios
-                nuevoEvento.adjuntos = archivosAdjuntos.map(file => {
-                    const nombre = file.originalname
-                        .replace(/^.*[\\\/]/, '')
-                        .replace(/[^a-zA-Z0-9-_\.]/g, '_');
-                    return `/uploads/${nombre}`;
-                });
-            } else {
-                nuevoEvento.imagen = '';
-                nuevoEvento.adjuntos = [];
-            }
+            console.log('Imagen de carátula procesada desde JSON');
         }
 
         eventos.push(nuevoEvento);
