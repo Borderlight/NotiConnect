@@ -666,7 +666,7 @@
                     <div class="campo-form lugar-section" role="group" [attr.aria-labelledby]="'lugar-' + i + '-label'">
                         <label [for]="'lugar-' + i" [id]="'lugar-' + i + '-label'">{{ 'FORM.LOCATION_TIME.EVENT_PLACE.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                         <p [id]="'lugar-' + i + '-desc'" class="campo-descripcion visually-hidden">
-                            {{ 'FORM.LOCATION_TIME.EVENT_PLACE.DESCRIPTION' | translate }}
+                            Selecciona o añade el lugar donde se realizará el evento.
                             <span class="campo-requerido">Campo obligatorio</span>
                         </p>
                         <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
@@ -677,24 +677,9 @@
                                     [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched"
                                     style="flex: 1 1 auto;">
                                 <option value="">{{ 'LOCATIONS.SELECT_OPTION' | translate }}</option>
-                                <optgroup label="Presencial">
-                                    <option value="FACULTY">Facultad</option>
-                                    <option value="AULA_MAGNA">Aula de grado</option>
-                                    <option value="HUBdeInnovacion">HUB de Innovación</option>
-                                    <option value="LIBRARY">Biblioteca</option>
-                                    <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
-                                    <option value="S-41">S-41</option>
-                                </optgroup>
-                                @if (lugaresPersonalizados[i] && lugaresPersonalizados[i].length) {
-                                  <optgroup label="Personalizados">
-                                    @for (lugar of lugaresPersonalizados[i]; track lugar) {
-                                      <option [value]="lugar">{{ lugar }}</option>
-                                    }
-                                  </optgroup>
+                                @for (lugar of getOpcionesLugarUnificado(i); track lugar) {
+                                  <option [value]="lugar">{{ getLabelLugar(lugar) }}</option>
                                 }
-                                <optgroup label="Virtual">
-                                    <option value="ONLINE">Online</option>
-                                </optgroup>
                             </select>
                             <button type="button"
                                     class="btn-agregar-inline cancelar"
@@ -704,31 +689,33 @@
                                 {{ mostrarInputLugar[i] ? 'Cancelar' : 'Añadir nuevo lugar' }}
                             </button>
                         </div>
+                        <!-- Input para añadir nuevo lugar personalizado -->
                         @if (mostrarInputLugar[i]) {
-                            <div class="nueva-afiliacion-box actividad-style" style="display: flex; flex-direction: column; align-items: stretch;">
-                                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                    <label [for]="'nuevoLugar-' + i" class="actividad-label" style="font-size: 1rem; font-weight: 400; font-family: inherit; margin-bottom: 0;">Añade aquí el lugar</label>
-                                    <input [id]="'nuevoLugar-' + i"
-                                           type="text"
-                                           class="input-nueva-afiliacion"
-                                           [value]="nuevoLugar[i]"
-                                           (input)="onNuevoLugarInput($event, i)"
-                                           [attr.aria-label]="'Añade aquí el lugar'">
-                                    <button type="button"
-                                            class="btn-guardar"
-                                            [ngStyle]="{ 'background': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd', 'color': '#fff', 'border-radius': '8px', 'font-weight': '600', 'padding': '0.35rem 1rem', 'border': '2px solid', 'border-color': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd' }"
-                                            [disabled]="!(nuevoLugar[i] && nuevoLugar[i].trim())"
-                                            (click)="agregarNuevoLugar(i)">
-                                        Confirmar
-                                    </button>
-                                </div>
-                                @if (mostrarErrorLugar[i]) {
-                                    <p class="mensaje_error" role="alert" style="margin-top: 0.5rem; margin-bottom: 0; border: 1.5px solid #b71c1c; background: #fff4f4; color: #b71c1c; padding: 0.5rem 1rem; border-radius: 8px; font-size: 1rem; font-weight: 500; width: 100%; display: flex; align-items: center; gap: 0.5rem;">
-                                        {{ mensajeErrorLugar[i] }}
-                                    </p>
-                                }
+                          <div class="nueva-afiliacion-box actividad-style" style="display: flex; flex-direction: column; align-items: stretch; margin-top: 0.5rem;">
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                              <label for="nuevoLugar-{{i}}" class="actividad-label" style="font-size: 1rem; font-weight: 400; font-family: inherit; margin-bottom: 0;">Añade aquí el lugar</label>
+                              <input id="nuevoLugar-{{i}}"
+                                     type="text"
+                                     class="input-nueva-afiliacion"
+                                     [value]="nuevoLugar[i]"
+                                     (input)="onNuevoLugarInput($event, i)"
+                                     [attr.aria-label]="'Añade aquí el lugar'">
+                              <button type="button"
+                                      class="btn-guardar"
+                                      [ngStyle]="{ 'background': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd', 'color': '#fff', 'border-radius': '8px', 'font-weight': '600', 'padding': '0.35rem 1rem', 'border': '2px solid', 'border-color': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd' }"
+                                      [disabled]="!(nuevoLugar[i] && nuevoLugar[i].trim())"
+                                      (click)="agregarNuevoLugar(i)">
+                                Confirmar
+                              </button>
                             </div>
+                            @if (mostrarErrorLugar[i]) {
+                              <p class="mensaje_error" role="alert" style="margin-top: 0.5rem; margin-bottom: 0; border: 1.5px solid #b71c1c; background: #fff4f4; color: #b71c1c; padding: 0.5rem 1rem; border-radius: 8px; font-size: 1rem; font-weight: 500; width: 100%; display: flex; align-items: center; gap: 0.5rem;">
+                                {{ mensajeErrorLugar[i] }}
+                              </p>
+                            }
+                          </div>
                         }
+                        <!-- Fin input nuevo lugar -->
                         @if (ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'lugar-' + i + '-error'" 
@@ -740,50 +727,24 @@
                         @if (!(ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched)) {
                             <span [id]="'lugar-' + i + '-error'" class="visually-hidden"></span>
                         }
-                        @if (ubicacion.get('lugar')?.value === 'FACULTY') {
-                            <div class="campo-aula">
-                                <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">{{ 'FORM.LOCATION_TIME.CLASSROOM.LABEL' | translate }} <span class="campo-requerido">*</span></label>
-                                <p [id]="'aula-' + i + '-desc'" class="campo-descripcion">
-                                    {{ 'FORM.LOCATION_TIME.CLASSROOM.DESCRIPTION' | translate }}
-                                    <span class="campo-requerido">Campo obligatorio</span>
-                                </p>
-                                <input type="text" 
-                                       [id]="'aula-' + i" 
-                                       formControlName="aula"
-                                       [attr.aria-describedby]="'aula-' + i + '-desc aula-' + i + '-error'"
-                                       aria-required="true"
-                                       [attr.aria-invalid]="ubicacion.get('aula')?.invalid && ubicacion.get('aula')?.touched">
-                            @if (ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched) {
-                                <p class="mensaje_error" 
-                                   [id]="'aula-' + i + '-error'" 
-                                   role="alert"
-                                   aria-live="assertive">
-                                    {{ 'FORM.LOCATION_TIME.CLASSROOM.ERROR' | translate }}
-                                </p>
-                            }
-                            @if (!(ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched)) {
-                                <span [id]="'aula-' + i + '-error'" class="visually-hidden"></span>
-                            }
-                        </div>
+                    </div>
+                    </div>
+                    @if (i < listadoUbicaciones.length - 1) {
+                        <hr>
                     }
-                    </div>           
-                </div>
-                @if (i < listadoUbicaciones.length - 1) {
-                    <hr>
                 }
-            }
 
-            <div class="boton-agregar-container">
-                <button type="button" 
-                        (click)="agregarUbicacion()"
-                        class="btn-agregar-inline"
-                        aria-label="Añadir nueva fecha y lugar">
-                    <span class="icono-agregar" aria-hidden="true">+</span>
-                    {{ 'FORM.LOCATION_TIME.ADD_DATE_PLACE' | translate }}
-                </button>
+                <div class="boton-agregar-container">
+                    <button type="button" 
+                            (click)="agregarUbicacion()"
+                            class="btn-agregar-inline"
+                            aria-label="Añadir nueva fecha y lugar">
+                        <span class="icono-agregar" aria-hidden="true">+</span>
+                        {{ 'FORM.LOCATION_TIME.ADD_DATE_PLACE' | translate }}
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
     <button type="submit"  class="btn-finalizar">{{ 'FORM.SUBMIT_BUTTON' | translate }}</button>
 </form>
