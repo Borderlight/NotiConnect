@@ -8,9 +8,10 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
   align-items: flex-start;
-  min-height: 200px; /* aumentar altura mínima para acomodar imagen más grande */
-  padding: 1rem; /* agregar padding interno */
+  min-height: 180px;
+  padding: 1rem;
   position: relative;
+  gap: 1.5rem;
 }
 
 .evento-card:hover {
@@ -29,42 +30,54 @@
 .evento-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .evento-header span.evento-tipo {
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .evento-header .acciones {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
+  display: none; /* ocultamos las acciones del header ya que están en topright */
 }
 
 .evento-imagen-col {
-  flex: 0 0 150px;
+  flex: 0 0 120px;
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
-  margin-right: 2rem;
-  background: #fff;
-  min-width: 150px;
-  min-height: 120px;
+  justify-content: center;
+  margin-right: 0;
+  background: transparent;
+  min-width: 120px;
+  max-width: 120px;
+  padding: 0;
+  align-self: flex-start;
 }
 
 .evento-imagen {
-  width: 150px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-  background: #f3f3f3;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  width: 120px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e9ecef;
+}
+
+.evento-main-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  min-height: 90px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .evento-contenido {
-  padding: 1.5rem;
+  padding: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -147,137 +160,19 @@
   padding: 1rem 1.2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-@media (max-width: 900px) {
-  .evento-card-flex {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .evento-card-columns {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .columna-derecha {
-    margin-top: 1rem;
-  }
-  .evento-imagen-col {
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-  }
-}
-
-/* Estilos para el grid: imagen a la izquierda, campos principales, detalles extra y botones alineados arriba a la derecha */
-.evento-card-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: 50px 2.2fr 1fr 70px;
-  width: 100%;
-  max-width: none;
-  gap: 1.2rem;
-  align-items: flex-start;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 1.5rem 1.5rem 1.5rem 1rem;
-}
-.evento-imagen-col {
-  grid-column: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 50px;
-  max-width: 50px;
-}
-.evento-imagen {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #f3f3f3;
-}
-.evento-main-col {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 2rem; /* más margen para separar de la imagen */
-  flex: 1; /* tomar el espacio restante disponible */
-  min-width: 0; /* permitir que se reduzca si es necesario */
-}
-.evento-detalles-col {
-  grid-column: 3;
-  background: none;
-  border-radius: 0;
-  padding: 0.8rem 0 0.8rem 0.5rem;
-  box-shadow: none;
-  min-width: 170px;
-  margin-left: 0.5rem;
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  align-self: flex-start;
-  margin-top: 0;
-}
-.evento-card-grid.mostrar-detalles .evento-detalles-col {
-  visibility: visible;
-  opacity: 1;
-}
-.evento-card-grid:not(.mostrar-detalles) .evento-detalles-col {
-  visibility: hidden;
-  opacity: 0;
-}
-.evento-botones-col {
-  grid-column: 4;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 0.2rem;
-}
+/* Botones en la esquina superior derecha */
 .evento-botones-topright {
   position: absolute;
-  top: 1.2rem;
-  right: 1.5rem;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   flex-direction: row;
   gap: 8px;
-  z-index: 2;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transition: none !important;
+  z-index: 10;
 }
+
 .acciones {
-  display: flex !important;
-}
-@media (max-width: 1100px) {
-  .evento-card-grid {
-    grid-template-columns: 90px 1fr 1fr 50px;
-    gap: 0.7rem;
-  }
-}
-@media (max-width: 900px) {
-  .evento-card-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto auto;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  .evento-imagen-col, .evento-main-col, .evento-detalles-col, .evento-botones-col {
-    grid-column: 1;
-  }
-  .evento-botones-col {
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  .acciones {
-    display: none;
-  }
-  .evento-detalles-col {
-    margin-left: 0;
-  }
+  display: none !important; /* ocultar acciones duplicadas */
 }
 
 /* Soporte para modo oscuro */
@@ -311,20 +206,28 @@
 /* Responsive */
 @media (max-width: 768px) {
   .evento-card {
-    flex-direction: column;
+    flex-direction: row; /* mantener horizontal pero más compacto */
+    min-height: 120px;
+    padding: 0.75rem;
+  }
+
+  .evento-imagen-col {
+    flex: 0 0 100px;
+    max-width: 100px;
+    margin-right: 1rem;
   }
 
   .evento-imagen {
-    width: 100%;
-    height: 200px;
+    width: 100px;
+    height: 80px;
   }
 
   .evento-contenido {
-    padding: 1rem;
+    padding: 0;
   }
 
   .evento-titulo {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -466,6 +369,20 @@
     flex-direction: column;
     gap: 1.2rem;
   }
+}
+
+/* Ajustes adicionales para la carátula */
+.caratula-label {
+  display: none; /* ocultar la etiqueta de carátula si existe */
+}
+
+/* Asegurar que no hay overflow en dispositivos pequeños */
+.evento-card {
+  overflow: visible;
+}
+
+.evento-imagen-col {
+  flex-shrink: 0; /* evitar que se reduzca */
 }
 
 .btn-guardar, .btn-cancelar {
