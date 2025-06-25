@@ -677,9 +677,24 @@
                                     [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched"
                                     style="flex: 1 1 auto;">
                                 <option value="">{{ 'LOCATIONS.SELECT_OPTION' | translate }}</option>
-                                @for (opcion of getOpcionesLugar(i); track opcion) {
-                                    <option [value]="opcion">{{ opcion }}</option>
+                                <optgroup label="Presencial">
+                                    <option value="FACULTY">Facultad</option>
+                                    <option value="AULA_MAGNA">Aula de grado</option>
+                                    <option value="HUBdeInnovacion">HUB de Innovación</option>
+                                    <option value="LIBRARY">Biblioteca</option>
+                                    <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
+                                    <option value="S-41">S-41</option>
+                                </optgroup>
+                                @if (lugaresPersonalizados[i] && lugaresPersonalizados[i].length) {
+                                  <optgroup label="Personalizados">
+                                    @for (lugar of lugaresPersonalizados[i]; track lugar) {
+                                      <option [value]="lugar">{{ lugar }}</option>
+                                    }
+                                  </optgroup>
                                 }
+                                <optgroup label="Virtual">
+                                    <option value="ONLINE">Online</option>
+                                </optgroup>
                             </select>
                             <button type="button"
                                     class="btn-agregar-inline cancelar"

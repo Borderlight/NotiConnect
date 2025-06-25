@@ -228,6 +228,12 @@ export class FormularioComponent {
         })
       ])
     });
+    // Inicializar arrays auxiliares para la primera ubicación
+    this.lugaresPersonalizados = [[]];
+    this.mostrarInputLugar = [false];
+    this.nuevoLugar = [''];
+    this.mostrarErrorLugar = [false];
+    this.mensajeErrorLugar = [''];
 
     // Suscribirse a cambios en lugar para actualizar validaciones del aula
     this.formularioEvento.get('lugar')?.valueChanges.subscribe(lugar => {
@@ -610,11 +616,21 @@ export class FormularioComponent {
 
   agregarUbicacion() {
     this.listadoUbicaciones.push(this.crearUbicacion());
+    this.lugaresPersonalizados.push([]);
+    this.mostrarInputLugar.push(false);
+    this.nuevoLugar.push('');
+    this.mostrarErrorLugar.push(false);
+    this.mensajeErrorLugar.push('');
   }
 
   eliminarUbicacion(index: number) {
     if (this.listadoUbicaciones.length > 1) {
       this.listadoUbicaciones.removeAt(index);
+      this.lugaresPersonalizados.splice(index, 1);
+      this.mostrarInputLugar.splice(index, 1);
+      this.nuevoLugar.splice(index, 1);
+      this.mostrarErrorLugar.splice(index, 1);
+      this.mensajeErrorLugar.splice(index, 1);
     }
   }
 
@@ -643,7 +659,9 @@ export class FormularioComponent {
     'AULA_MAGNA',
     'HUBdeInnovacion',
     'LIBRARY',
-    'AuditorioJuanPablo'
+    'AuditorioJuanPablo',
+    'S-41', // Nueva opción añadida
+    'S-42', // Puedes añadir más aquí si lo deseas
   ];
   lugaresVirtuales: string[] = [
     'ONLINE'
@@ -712,6 +730,13 @@ export class FormularioComponent {
 
   ngOnInit() {
     this.cargarDepartamentosPersonalizados();
+    // Asegurar que los arrays auxiliares están sincronizados con el número de ubicaciones
+    const numUbicaciones = this.listadoUbicaciones.length;
+    this.lugaresPersonalizados = Array(numUbicaciones).fill(null).map(() => []);
+    this.mostrarInputLugar = Array(numUbicaciones).fill(false);
+    this.nuevoLugar = Array(numUbicaciones).fill('');
+    this.mostrarErrorLugar = Array(numUbicaciones).fill(false);
+    this.mensajeErrorLugar = Array(numUbicaciones).fill('');
     this.translateService.onLangChange.subscribe(event => {
       const customActs = localStorage.getItem('actividadesPersonalizadas');
       const customActsArr = customActs ? JSON.parse(customActs) : [];
@@ -783,30 +808,24 @@ export class FormularioComponent {
     return 'Archivo ' + (index + 1);
   }
 
+  // --- LUGARES PERSONALIZADOS POR UBICACIÓN ---
   lugaresPersonalizados: string[][] = [];
   mostrarInputLugar: boolean[] = [];
   nuevoLugar: string[] = [];
   mostrarErrorLugar: boolean[] = [];
   mensajeErrorLugar: string[] = [];
 
-  getOpcionesLugar(i: number): string[] {
-    // Devuelve las opciones por defecto + personalizadas para la ubicación i
-    const base = [
-      ...this.lugaresPresenciales.map(l => this.translateService.instant('LOCATIONS.' + l)),
-      ...this.lugaresVirtuales.map(l => this.translateService.instant('LOCATIONS.' + l))
-    ];
-    return [...base, ...(this.lugaresPersonalizados[i] || [])];
-  }
-
+  // Al mostrar el input de nuevo lugar, inicializar el valor a ''
   toggleInputNuevoLugar(i: number) {
     this.mostrarInputLugar[i] = !this.mostrarInputLugar[i];
-    if (!this.mostrarInputLugar[i]) {
+    if (this.mostrarInputLugar[i]) {
       this.nuevoLugar[i] = '';
       this.mostrarErrorLugar[i] = false;
       this.mensajeErrorLugar[i] = '';
     }
   }
 
+  // Al escribir en el input de nuevo lugar
   onNuevoLugarInput(event: Event, i: number) {
     const value = (event.target as HTMLInputElement)?.value ?? '';
     this.nuevoLugar[i] = value;
@@ -814,6 +833,7 @@ export class FormularioComponent {
     this.mensajeErrorLugar[i] = '';
   }
 
+  // Añadir nuevo lugar personalizado
   agregarNuevoLugar(i: number) {
     const valor = this.nuevoLugar[i]?.trim();
     const existe = this.getOpcionesLugar(i).some(
@@ -824,14 +844,22 @@ export class FormularioComponent {
       this.mensajeErrorLugar[i] = 'Este lugar ya existe. Por favor, comprueba el listado.';
       return;
     }
-    if (valor) {
-      if (!this.lugaresPersonalizados[i]) this.lugaresPersonalizados[i] = [];
+    if (valor && !this.lugaresPersonalizados[i].includes(valor)) {
       this.lugaresPersonalizados[i].push(valor);
-      this.formularioEvento.get('ubicaciones')?.get('' + i)?.get('lugar')?.setValue(valor);
+      this.formularioEvento.get('ubicaciones')?.get(''+i)?.get('lugar')?.setValue(valor);
       this.mostrarInputLugar[i] = false;
       this.nuevoLugar[i] = '';
       this.mostrarErrorLugar[i] = false;
       this.mensajeErrorLugar[i] = '';
     }
+  }
+
+  // Devuelve las opciones de lugar para el selector, agrupadas
+  getOpcionesLugar(i: number): string[] {
+    return [
+      ...this.lugaresPresenciales,
+      ...(this.lugaresPersonalizados[i] || []),
+      ...this.lugaresVirtuales
+    ];
   }
 }
