@@ -215,9 +215,9 @@ export class FormularioComponent {
       empresaOrganizadora: ['', [Validators.required]],
       tipoEvento: ['', Validators.required],
       descripcion: ['', [Validators.required]],
-      adjuntos: ['', [Validators.required, BasicosValidator.adjuntosRequeridos()]],
+      adjuntos: [''], // Sin validadores
       servicios: this.fb.array([this.crearCampoServicio()]),
-      enlaces: this.fb.array([this.crearEnlace()], [EnlacesValidator.requiereEnlaces()]),
+      enlaces: this.fb.array([this.crearEnlace()]), // Sin validadores a nivel de array
       actividad_relacionada: ['', Validators.required],
       ubicaciones: this.fb.array([this.crearUbicacion()]),
       ponentes: this.fb.array([
@@ -331,12 +331,8 @@ export class FormularioComponent {
   // Crear un nuevo enlace con validaciones
   private crearEnlace(): FormGroup {
     return this.fb.group({
-      tipo: ['', Validators.required],
-      url: ['', [
-        Validators.required,
-        EnlacesValidator.urlValida(),
-        EnlacesValidator.socialMediaUrl()
-      ]]
+      tipo: [''], // Sin required
+      url: ['']  // Sin required ni validadores personalizados
     });
   }
 

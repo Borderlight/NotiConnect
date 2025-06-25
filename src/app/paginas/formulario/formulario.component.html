@@ -321,13 +321,12 @@
 
         <div class="campo-form adjuntos-section" role="group" aria-labelledby="adjuntos-label">
             <label for="adjuntos" id="adjuntos-label" class="form-label">
-                {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.LABEL' | translate }} <span class="campo-requerido">*</span>
+                {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.LABEL' | translate }}
             </label>
             
             <div class="campo-descripcion-container">
                 <p id="adjuntos-desc" class="campo-descripcion">
                     {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.DESCRIPTION' | translate }}
-                    <span class="campo-requerido">Campo obligatorio</span>
                 </p>
                 <p id="adjuntos-formato" class="campo-formato">
                     {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.ACCEPTED_FORMATS' | translate }}
@@ -367,13 +366,12 @@
 
         <div class="campo-form" formArrayName="enlaces">
             <label for="enlaces" id="enlaces-label" class="form-label">
-                {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.LABEL' | translate }} <span class="campo-requerido">*</span>
+                {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.LABEL' | translate }}
             </label>
             
             <div class="campo-descripcion-container">
                 <p id="enlaces-desc" class="campo-descripcion">
                     {{ 'FORM.DIGITAL_RESOURCES.RELATED_LINKS.DESCRIPTION' | translate }}
-                    <span class="campo-requerido">Campo obligatorio</span>
                 </p>
             </div>
 
@@ -425,13 +423,15 @@
                        aria-label="Introduce la URL del enlace relacionado">
               </div>
               <div class="eliminar-enlace-row">
-                <button type="button"
-                        (click)="eliminarEnlace(index2)"
-                        class="btn-eliminar btn-eliminar-enlace"
-                        [attr.aria-label]="'Eliminar enlace ' + (index2 + 1)">
-                  <span class="icono-eliminar" aria-hidden="true">×</span>
-                  <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
-                </button>
+                @if (listadoEnlaces.length > 1 && index2 > 0) {
+                  <button type="button"
+                          (click)="eliminarEnlace(index2)"
+                          class="btn-eliminar btn-eliminar-enlace"
+                          [attr.aria-label]="'Eliminar enlace ' + (index2 + 1)">
+                    <span class="icono-eliminar" aria-hidden="true">×</span>
+                    <span class="texto-eliminar">{{ 'FORM.DELETE_BUTTON' | translate }}</span>
+                  </button>
+                }
               </div>
             </div>
 
