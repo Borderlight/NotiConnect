@@ -9,17 +9,4 @@ export class ServiciosValidator {
       return null;
     };
   }
-
-  static gradoRequerido(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const servicio = control.parent?.get('servicios')?.value;
-      if (!servicio) return null;
-
-      const esFacultad = servicio.toLowerCase().includes('facultad');
-      if (esFacultad && (!control.value || control.value === '')) {
-        return { gradoRequerido: true };
-      }
-      return null;
-    };
-  }
-} 
+}

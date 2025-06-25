@@ -274,17 +274,7 @@ export class FormularioComponent {
       this.mostrarError = true;
       return;
     }
-
-    // Verificar si hay una facultad seleccionada sin grado
-    const facultadSinGrado = serviciosActuales.some((servicio: Servicio) => 
-      this.esFacultadSeleccionada(servicio.servicios) && !servicio.grado
-    );
-
-    if (facultadSinGrado) {
-      this.mostrarErrorGrado = true;
-      return;
-    }
-
+    // Ya no se requiere grado para facultad, así que eliminamos la restricción
     this.listadoServicios.push(this.crearCampoServicio());
     this.mostrarError = false;
     this.mostrarErrorGrado = false;
@@ -293,7 +283,7 @@ export class FormularioComponent {
   crearCampoServicio(): FormGroup {
     return this.fb.group({
       servicios: ['', [Validators.required, ServiciosValidator.servicioSeleccionado()]],
-      grado: ['', ServiciosValidator.gradoRequerido()]
+      grado: [''] // Sin validadores
     });
   }
 
