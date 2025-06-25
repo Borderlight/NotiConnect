@@ -344,13 +344,38 @@
                        (change)="onAdjuntosSelected($event)"
                        [attr.aria-invalid]="formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched"
                        aria-describedby="adjuntos-desc adjuntos-formato adjuntos-help" />
-                </div>
+                @if (nombresAdjuntos.length) {
+                    <span class="nombres-archivos-seleccionados" style="margin-left: 0.5rem; font-size: 0.95em; color: #333;">
+                        ({{ nombresAdjuntos.join(', ') }})
+                    </span>
+                }
+            </div>
 
             @if (selectedAdjuntos.length) {
-                <div class="adjuntos-preview">
-                    @for (img of selectedAdjuntos; track $index) {
-                        <div class="preview-item">
-                            <img [src]="img" [alt]="'Adjunto ' + ($index+1)" class="preview-img" style="max-width:100px; margin:0.5rem; border-radius:6px;" />
+                <div class="adjuntos-preview" style="display: flex; flex-direction: row; gap: 1.5rem; align-items: flex-start; overflow-x: auto;">
+                    @for (img of selectedAdjuntos; let i = $index; track $index) {
+                        <div class="preview-item" style="display: flex; flex-direction: column; align-items: center; min-width: 120px;">
+                            @if (esImagenAdjunta(img)) {
+                                <img [src]="img" [alt]="'Adjunto ' + (i+1)" class="preview-img" style="max-width:100px; margin:0.5rem; border-radius:6px; display:block;" />
+                                <button type="button"
+                                        class="btn-caratula"
+                                        style="margin-top: 0.5rem; width: 100%;"
+                                        [disabled]="caratulaSeleccionada === i"
+                                        (click)="marcarComoCaratula(i)"
+                                        [attr.aria-label]="'FORM.COVER.SET_AS_COVER' | translate">
+                                    @if (caratulaSeleccionada === i) {
+                                        <span>{{ 'FORM.COVER.IS_COVER' | translate }}</span>
+                                    }
+                                    @if (caratulaSeleccionada !== i) {
+                                        <span>{{ 'FORM.COVER.SET_AS_COVER' | translate }}</span>
+                                    }
+                                </button>
+                            } @else {
+                                <div class="archivo-no-imagen" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+                                    <span class="icono-archivo" aria-hidden="true" style="font-size:2em;">📄</span>
+                                    <span class="nombre-archivo" style="font-size:0.95em; margin-top:0.3em;">{{ obtenerNombreAdjunto(i) }}</span>
+                                </div>
+                            }
                         </div>
                     }
                 </div>

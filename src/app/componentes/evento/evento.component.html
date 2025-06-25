@@ -17,6 +17,9 @@
   </div>
   <div class="evento-imagen-col">
     <img [src]="evento.imagen" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
+    <div *ngIf="evento.imagen" class="caratula-label">
+      {{ 'FORM.COVER.LABEL' | translate }}
+    </div>
   </div>
   <div class="evento-main-col">
     <div class="evento-header">

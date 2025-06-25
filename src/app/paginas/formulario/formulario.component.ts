@@ -404,6 +404,9 @@ export class FormularioComponent {
 
   selectedAdjuntos: string[] = [];
 
+  // Lista de nombres de los archivos adjuntos (sincronizada con selectedAdjuntos)
+  nombresAdjuntos: string[] = [];
+
   trackByIndex(index: number, item: any): any {
     return index;
   }
@@ -412,13 +415,23 @@ export class FormularioComponent {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
     this.selectedAdjuntos = [];
+    this.nombresAdjuntos = []; // Reiniciar la lista de nombres
     Array.from(input.files).forEach(file => {
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (e: any) => this.selectedAdjuntos.push(e.target.result);
         reader.readAsDataURL(file);
       }
+      this.nombresAdjuntos.push(file.name); // Agregar el nombre del archivo
     });
+    // Si el usuario borra todos los archivos, limpiar el input correctamente
+    if (input.files.length === 0) {
+      this.selectedAdjuntos = [];
+      this.nombresAdjuntos = [];
+      if (this.adjuntosInput && this.adjuntosInput.nativeElement) {
+        this.adjuntosInput.nativeElement.value = '';
+      }
+    }
   }
 
   closeDialog(): void {
@@ -499,38 +512,43 @@ export class FormularioComponent {
         }
       });
 
-      if (!enlacesValidos) {
-        return;
+      // --- NUEVO: Asignar la carátula seleccionada como imagen principal ---
+      let imagenCaratula = '';
+      if (this.caratulaSeleccionada !== null && this.selectedAdjuntos[this.caratulaSeleccionada]) {
+        imagenCaratula = this.selectedAdjuntos[this.caratulaSeleccionada];
       }
-
+      // Aquí puedes adaptar el envío según si usas FormData o JSON
+      // Si usas FormData:
       const formData = new FormData();
-      // Append form fields except adjuntos
       Object.keys(this.formularioEvento.controls).forEach(key => {
         if (key !== 'adjuntos') {
           const value = this.formularioEvento.get(key)?.value;
           formData.append(key, value);
         }
       });
-      // Append files
+      // Adjuntar archivos
       const files: FileList | null = this.adjuntosInput.nativeElement.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append('adjuntos', files[i], files[i].name);
         }
       }
+      // Adjuntar la carátula como campo extra
+      if (imagenCaratula) {
+        formData.append('imagen', imagenCaratula);
+      }
       // Submit as multipart/form-data
       this.eventoService.agregarEvento(formData).subscribe({
         next: () => {
           this.mostrarDialog = true;
           this.formularioEvento.reset();
+          // CORRECCIÓN: Solo se puede asignar una cadena vacía al input file
           if (this.adjuntosInput && this.adjuntosInput.nativeElement) {
-            try {
-              this.adjuntosInput.nativeElement.value = '';
-            } catch (e) {
-              // Silenciar el error si ocurre
-            }
+            this.adjuntosInput.nativeElement.value = '';
           }
           this.selectedAdjuntos = [];
+          this.nombresAdjuntos = [];
+          this.caratulaSeleccionada = null;
         },
         error: (err) => {
           console.error('Error al crear evento:', err);
@@ -739,5 +757,29 @@ export class FormularioComponent {
 
   trackByPonenteId(index: number, ponente: AbstractControl) {
     return ponente.get('id')?.value;
+  }
+
+  // Índice de la imagen seleccionada como carátula
+  caratulaSeleccionada: number | null = null;
+
+  // Devuelve true si la cadena base64 es una imagen válida
+  esImagenAdjunta(dataUrl: string): boolean {
+    return /^data:image\/(jpeg|jpg|png|gif|bmp|webp)/.test(dataUrl);
+  }
+
+  // Marca una imagen como carátula
+  marcarComoCaratula(index: number): void {
+    this.caratulaSeleccionada = index;
+  }
+
+  // Devuelve el nombre del archivo adjunto a partir del índice
+  obtenerNombreAdjunto(index: number): string {
+    // Si tienes un array de archivos originales, usa ese array para obtener el nombre real
+    // Aquí se asume que tienes un array this.nombresAdjuntos[] sincronizado con selectedAdjuntos
+    if (this.nombresAdjuntos && this.nombresAdjuntos[index]) {
+      return this.nombresAdjuntos[index];
+    }
+    // Si no, intenta extraer el nombre del dataURL (no recomendado, pero fallback)
+    return 'Archivo ' + (index + 1);
   }
 }

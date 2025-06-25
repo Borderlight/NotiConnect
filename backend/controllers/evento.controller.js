@@ -170,29 +170,32 @@ const createEvento = async (req, res) => {
             console.error('Error al parsear campos:', e);
         }
 
-        // Manejo de archivos adjuntos
-        const archivosAdjuntos = Array.isArray(req.files?.archivos) ? 
-            req.files.archivos : (req.files?.archivos ? [req.files.archivos] : []);
+        // --- NUEVO: Si viene imagen base64 en el body, usarla como carátula ---
+        if (req.body.imagen && req.body.imagen.startsWith('data:image/')) {
+            nuevoEvento.imagen = req.body.imagen;
+        } else {
+            // Manejo de archivos adjuntos (retrocompatibilidad)
+            const archivosAdjuntos = Array.isArray(req.files?.archivos) ? 
+                req.files.archivos : (req.files?.archivos ? [req.files.archivos] : []);
 
-        if (archivosAdjuntos.length > 0) {
-            // El primer archivo será la imagen principal
-            const imagenPrincipal = archivosAdjuntos[0];
-            const nombreLimpio = imagenPrincipal.originalname
-                .replace(/^.*[\\\/]/, '') // Elimina C:\fakepath\
-                .replace(/[^a-zA-Z0-9-_\.]/g, '_'); // Sanitiza el nombre
-            
-            nuevoEvento.imagen = `/uploads/${nombreLimpio}`;
-            
-            // Todos los archivos van a adjuntos con nombres limpios
-            nuevoEvento.adjuntos = archivosAdjuntos.map(file => {
-                const nombre = file.originalname
+            if (archivosAdjuntos.length > 0) {
+                // El primer archivo será la imagen principal
+                const imagenPrincipal = archivosAdjuntos[0];
+                const nombreLimpio = imagenPrincipal.originalname
                     .replace(/^.*[\\\/]/, '')
                     .replace(/[^a-zA-Z0-9-_\.]/g, '_');
-                return `/uploads/${nombre}`;
-            });
-        } else {
-            nuevoEvento.imagen = '';
-            nuevoEvento.adjuntos = [];
+                nuevoEvento.imagen = `/uploads/${nombreLimpio}`;
+                // Todos los archivos van a adjuntos con nombres limpios
+                nuevoEvento.adjuntos = archivosAdjuntos.map(file => {
+                    const nombre = file.originalname
+                        .replace(/^.*[\\\/]/, '')
+                        .replace(/[^a-zA-Z0-9-_\.]/g, '_');
+                    return `/uploads/${nombre}`;
+                });
+            } else {
+                nuevoEvento.imagen = '';
+                nuevoEvento.adjuntos = [];
+            }
         }
 
         eventos.push(nuevoEvento);
@@ -218,17 +221,40 @@ const updateEvento = async (req, res) => {
         if (idx === -1) {
             return res.status(404).json({ message: 'Evento no encontrado' });
         }
+
+        // Actualizar campos básicos (excepto _id)
         eventos[idx] = { ...eventos[idx], ...req.body, _id: eventos[idx]._id };
 
-        // Manejo de imágenes
-        const adjuntos = req.files;
-        if (adjuntos && adjuntos.length > 0) {
-            const imagenPrincipal = adjuntos[0];
-            eventos[idx].imagen = `/uploads/${path.basename(imagenPrincipal.originalname)}`; // Usar el nombre original del archivo
+        // Parsear campos que pueden venir como string
+        try {
+            if (req.body.servicios) {
+                eventos[idx].servicios = typeof req.body.servicios === 'string' ? 
+                    JSON.parse(req.body.servicios) : req.body.servicios;
+            }
+            if (req.body.enlaces) {
+                eventos[idx].enlaces = typeof req.body.enlaces === 'string' ? 
+                    JSON.parse(req.body.enlaces) : req.body.enlaces;
+            }
+            if (req.body.ubicaciones) {
+                eventos[idx].ubicaciones = typeof req.body.ubicaciones === 'string' ? 
+                    JSON.parse(req.body.ubicaciones) : req.body.ubicaciones;
+            }
+        } catch (e) {
+            console.error('Error al parsear campos en updateEvento:', e);
+        }
 
-            eventos[idx].adjuntos = adjuntos.map(file => `/uploads/${path.basename(file.originalname)}`);
+        // --- NUEVO: Manejo de carátula en base64 ---
+        if (req.body.imagen && typeof req.body.imagen === 'string' && req.body.imagen.startsWith('data:image/')) {
+            eventos[idx].imagen = req.body.imagen;
+        } else if (req.files && req.files.length > 0) {
+            // Manejo de archivos adjuntos (retrocompatibilidad)
+            const archivosAdjuntos = Array.isArray(req.files) ? req.files : [req.files];
+            const imagenPrincipal = archivosAdjuntos[0];
+            eventos[idx].imagen = `/uploads/${path.basename(imagenPrincipal.originalname)}`;
+            eventos[idx].adjuntos = archivosAdjuntos.map(file => `/uploads/${path.basename(file.originalname)}`);
         } else {
-            eventos[idx].imagen = null;
+            // Si no se envía ni imagen ni adjuntos, limpiar ambos campos
+            eventos[idx].imagen = '';
             eventos[idx].adjuntos = [];
         }
 

@@ -2,7 +2,7 @@ import { EventType } from '../enums/event-type.enum';
 
 export interface Evento {
   _id?: string;
-  imagen: string;
+  imagen: string; // Carátula del evento (url/base64)
   titulo: string;
   ponente: string;
   empresaOrganizadora: string;

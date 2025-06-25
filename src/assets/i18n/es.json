@@ -276,7 +276,13 @@
     "ACTIVITY_HELP": "Añade aquí la actividad",
     "FACULTIES_LABEL": "Facultades",
     "SERVICES_LABEL": "Servicios",
-    "VICERRECTORADOS_LABEL": "Vicerrectorados"
+    "VICERRECTORADOS_LABEL": "Vicerrectorados",
+    "COVER": {
+      "LABEL": "Carátula del evento",
+      "HELP": "Marca una imagen como carátula para que se muestre como imagen principal del evento.",
+      "SET_AS_COVER": "Marcar como carátula",
+      "IS_COVER": "Carátula actual"
+    }
   },
   "ROLES": {
     "TITLE": "Gestión de Administradores",
