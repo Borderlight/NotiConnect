@@ -173,7 +173,7 @@
         </p>
 
         <div class="campo-form">
-            <label for="actividad_relacionada" id="actividad-label">{{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.LABEL' | translate }} <span class="campo-requerido">*</span></label>
+            <label for="actividad_relacionada" id="actividad-label">{{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.LABEL' | translate }}</label>
             <p id="actividad-desc" class="campo-descripcion">
                 {{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.DESC' | translate }}
             </p>
@@ -181,23 +181,13 @@
                 <div class="select-container">
                     <select id="actividad_relacionada" 
                             formControlName="actividad_relacionada" 
-                            aria-describedby="actividad-desc actividad-error"
-                            aria-required="true"
-                            [attr.aria-invalid]="formularioEvento.get('actividad_relacionada')?.invalid && formularioEvento.get('actividad_relacionada')?.touched"
+                            aria-describedby="actividad-desc"
                             [attr.aria-label]="'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.LABEL' | translate">
                         <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                         @for (actividad of actividadesRelacionadasTraducidas; track actividad) {
                             <option [value]="actividad">{{ actividad }}</option>
                         }
                     </select>
-                    @if (formularioEvento.get('actividad_relacionada')?.invalid && formularioEvento.get('actividad_relacionada')?.touched) {
-                        <p class="mensaje_error" 
-                           id="actividad-error" 
-                           role="alert"
-                           aria-live="assertive">
-                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_ACTIVITY.ERROR' | translate }}
-                        </p>
-                    }
                     <span id="actividad-error" class="visually-hidden"></span>
                 </div>
                 <button type="button" 
