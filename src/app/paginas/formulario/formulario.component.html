@@ -385,7 +385,7 @@
                 <div class="mensaje_error" role="alert" aria-live="polite">
                     {{ 'FORM.DIGITAL_RESOURCES.ATTACHED_FILES.ERROR' | translate }}
                 </div>
-        }
+            }
         </div>
 
         <div class="campo-form" formArrayName="enlaces">
@@ -669,26 +669,51 @@
                             {{ 'FORM.LOCATION_TIME.EVENT_PLACE.DESCRIPTION' | translate }}
                             <span class="campo-requerido">Campo obligatorio</span>
                         </p>
-                        <div class="select-container">
-                            <select [id]="'lugar-' + i" 
+                        <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <select [id]="'lugar-' + i"
                                     formControlName="lugar"
                                     [attr.aria-describedby]="'lugar-' + i + '-desc lugar-' + i + '-hint lugar-' + i + '-error'"
                                     aria-required="true"
-                                    [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched">
+                                    [attr.aria-invalid]="ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched"
+                                    style="flex: 1 1 auto;">
                                 <option value="">{{ 'LOCATIONS.SELECT_OPTION' | translate }}</option>
-                                <optgroup [label]="'LOCATIONS.PRESENTIAL_SPACES' | translate">
-                                    @for (lugarPresencial of lugaresPresenciales; track lugarPresencial) {
-                                        <option [value]="lugarPresencial">{{ 'LOCATIONS.' + lugarPresencial | translate }}</option>
-                                    }
-                                </optgroup>
-                                <optgroup [label]="'LOCATIONS.VIRTUAL_SPACES' | translate">
-                                    @for (lugarVirtual of lugaresVirtuales; track lugarVirtual) {
-                                        <option [value]="lugarVirtual">{{ 'LOCATIONS.' + lugarVirtual | translate }}</option>
-                                    }
-                                </optgroup>
+                                @for (opcion of getOpcionesLugar(i); track opcion) {
+                                    <option [value]="opcion">{{ opcion }}</option>
+                                }
                             </select>
+                            <button type="button"
+                                    class="btn-agregar-inline cancelar"
+                                    [class.modo-cancelar]="mostrarInputLugar[i]"
+                                    [ngStyle]="mostrarInputLugar[i] ? { 'background': '#d32f2f', 'color': '#fff', 'border': '2px solid #d32f2f' } : { 'background': '#005fcc', 'color': '#fff', 'border': '2px solid #005fcc' }"
+                                    (click)="toggleInputNuevoLugar(i)">
+                                {{ mostrarInputLugar[i] ? 'Cancelar' : 'Añadir nuevo lugar' }}
+                            </button>
                         </div>
-                       
+                        @if (mostrarInputLugar[i]) {
+                            <div class="nueva-afiliacion-box actividad-style" style="display: flex; flex-direction: column; align-items: stretch;">
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <label [for]="'nuevoLugar-' + i" class="actividad-label" style="font-size: 1rem; font-weight: 400; font-family: inherit; margin-bottom: 0;">Añade aquí el lugar</label>
+                                    <input [id]="'nuevoLugar-' + i"
+                                           type="text"
+                                           class="input-nueva-afiliacion"
+                                           [value]="nuevoLugar[i]"
+                                           (input)="onNuevoLugarInput($event, i)"
+                                           [attr.aria-label]="'Añade aquí el lugar'">
+                                    <button type="button"
+                                            class="btn-guardar"
+                                            [ngStyle]="{ 'background': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd', 'color': '#fff', 'border-radius': '8px', 'font-weight': '600', 'padding': '0.35rem 1rem', 'border': '2px solid', 'border-color': (nuevoLugar[i] && nuevoLugar[i].trim()) ? '#2e7d32' : '#bdbdbd' }"
+                                            [disabled]="!(nuevoLugar[i] && nuevoLugar[i].trim())"
+                                            (click)="agregarNuevoLugar(i)">
+                                        Confirmar
+                                    </button>
+                                </div>
+                                @if (mostrarErrorLugar[i]) {
+                                    <p class="mensaje_error" role="alert" style="margin-top: 0.5rem; margin-bottom: 0; border: 1.5px solid #b71c1c; background: #fff4f4; color: #b71c1c; padding: 0.5rem 1rem; border-radius: 8px; font-size: 1rem; font-weight: 500; width: 100%; display: flex; align-items: center; gap: 0.5rem;">
+                                        {{ mensajeErrorLugar[i] }}
+                                    </p>
+                                }
+                            </div>
+                        }
                         @if (ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched) {
                             <p class="mensaje_error" 
                                [id]="'lugar-' + i + '-error'" 
@@ -700,7 +725,6 @@
                         @if (!(ubicacion.get('lugar')?.invalid && ubicacion.get('lugar')?.touched)) {
                             <span [id]="'lugar-' + i + '-error'" class="visually-hidden"></span>
                         }
-
                         @if (ubicacion.get('lugar')?.value === 'FACULTY') {
                             <div class="campo-aula">
                                 <label [for]="'aula-' + i" [id]="'aula-' + i + '-label'">{{ 'FORM.LOCATION_TIME.CLASSROOM.LABEL' | translate }} <span class="campo-requerido">*</span></label>
@@ -714,20 +738,20 @@
                                        [attr.aria-describedby]="'aula-' + i + '-desc aula-' + i + '-error'"
                                        aria-required="true"
                                        [attr.aria-invalid]="ubicacion.get('aula')?.invalid && ubicacion.get('aula')?.touched">
-                                @if (ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched) {
-                                    <p class="mensaje_error" 
-                                       [id]="'aula-' + i + '-error'" 
-                                       role="alert"
-                                       aria-live="assertive">
-                                        {{ 'FORM.LOCATION_TIME.CLASSROOM.ERROR' | translate }}
-                                    </p>
-                                }
-                                @if (!(ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched)) {
-                                    <span [id]="'aula-' + i + '-error'" class="visually-hidden"></span>
-                                }
-                            </div>
-                        }
-                    </div>
+                            @if (ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched) {
+                                <p class="mensaje_error" 
+                                   [id]="'aula-' + i + '-error'" 
+                                   role="alert"
+                                   aria-live="assertive">
+                                    {{ 'FORM.LOCATION_TIME.CLASSROOM.ERROR' | translate }}
+                                </p>
+                            }
+                            @if (!(ubicacion.get('aula')?.hasError('required') && ubicacion.get('aula')?.touched)) {
+                                <span [id]="'aula-' + i + '-error'" class="visually-hidden"></span>
+                            }
+                        </div>
+                    }
+                    </div>           
                 </div>
                 @if (i < listadoUbicaciones.length - 1) {
                     <hr>

@@ -782,4 +782,56 @@ export class FormularioComponent {
     // Si no, intenta extraer el nombre del dataURL (no recomendado, pero fallback)
     return 'Archivo ' + (index + 1);
   }
+
+  lugaresPersonalizados: string[][] = [];
+  mostrarInputLugar: boolean[] = [];
+  nuevoLugar: string[] = [];
+  mostrarErrorLugar: boolean[] = [];
+  mensajeErrorLugar: string[] = [];
+
+  getOpcionesLugar(i: number): string[] {
+    // Devuelve las opciones por defecto + personalizadas para la ubicación i
+    const base = [
+      ...this.lugaresPresenciales.map(l => this.translateService.instant('LOCATIONS.' + l)),
+      ...this.lugaresVirtuales.map(l => this.translateService.instant('LOCATIONS.' + l))
+    ];
+    return [...base, ...(this.lugaresPersonalizados[i] || [])];
+  }
+
+  toggleInputNuevoLugar(i: number) {
+    this.mostrarInputLugar[i] = !this.mostrarInputLugar[i];
+    if (!this.mostrarInputLugar[i]) {
+      this.nuevoLugar[i] = '';
+      this.mostrarErrorLugar[i] = false;
+      this.mensajeErrorLugar[i] = '';
+    }
+  }
+
+  onNuevoLugarInput(event: Event, i: number) {
+    const value = (event.target as HTMLInputElement)?.value ?? '';
+    this.nuevoLugar[i] = value;
+    this.mostrarErrorLugar[i] = false;
+    this.mensajeErrorLugar[i] = '';
+  }
+
+  agregarNuevoLugar(i: number) {
+    const valor = this.nuevoLugar[i]?.trim();
+    const existe = this.getOpcionesLugar(i).some(
+      opcion => opcion.toLowerCase() === valor?.toLowerCase()
+    );
+    if (valor && existe) {
+      this.mostrarErrorLugar[i] = true;
+      this.mensajeErrorLugar[i] = 'Este lugar ya existe. Por favor, comprueba el listado.';
+      return;
+    }
+    if (valor) {
+      if (!this.lugaresPersonalizados[i]) this.lugaresPersonalizados[i] = [];
+      this.lugaresPersonalizados[i].push(valor);
+      this.formularioEvento.get('ubicaciones')?.get('' + i)?.get('lugar')?.setValue(valor);
+      this.mostrarInputLugar[i] = false;
+      this.nuevoLugar[i] = '';
+      this.mostrarErrorLugar[i] = false;
+      this.mensajeErrorLugar[i] = '';
+    }
+  }
 }
