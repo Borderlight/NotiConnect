@@ -402,17 +402,29 @@ export class BusquedaComponent implements OnInit {
   onConfirmarBorrado() {
     this.mostrarModalConfirmar = false;
     if (this.borradoPendiente === 'masivo') {
-      setTimeout(() => this.eliminarEventosFiltrados(), 0);
+      setTimeout(() => {
+        this.eliminarEventosFiltrados();
+        this.borradoPendiente = null;
+      }, 0);
     } else if (this.borradoPendiente === 'individual' && this.idEventoAEliminar) {
-      setTimeout(() => this.eliminarEventoDesdePadre(this.idEventoAEliminar!), 0);
+      const idAEliminar = this.idEventoAEliminar; // Guardar el ID antes de resetear
+      setTimeout(() => {
+        this.eliminarEventoDesdePadre(idAEliminar);
+        this.borradoPendiente = null;
+        this.idEventoAEliminar = null;
+      }, 0);
+    } else {
+      // Reset si no hay borrado pendiente
+      this.borradoPendiente = null;
+      this.idEventoAEliminar = null;
     }
-    this.borradoPendiente = null;
-    this.idEventoAEliminar = null;
   }
 
   eliminarEventoDesdePadre(id: string) {
+    console.log('ID recibido para eliminar:', id);
     this.eventoService.eliminarEvento(id).subscribe({
       next: () => {
+        console.log('Evento eliminado exitosamente');
         this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== id);
         this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== id);
         if (this.eventosFiltrados.length === 0) {
@@ -421,6 +433,7 @@ export class BusquedaComponent implements OnInit {
       },
       error: (error: Error) => {
         console.error('Error al eliminar el evento:', error);
+        console.error('URL de la petición:', `http://localhost:3000/api/eventos/${id}`);
       }
     });
   }

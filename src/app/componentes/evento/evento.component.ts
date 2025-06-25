@@ -38,6 +38,8 @@ export class EventoComponent {
 
   eliminarEvento(event: Event) {
     event.stopPropagation();
+    console.log('ID del evento a eliminar:', this.evento._id);
+    console.log('Evento completo:', this.evento);
     this.solicitarConfirmacionEliminar.emit(this.evento._id);
   }
 
