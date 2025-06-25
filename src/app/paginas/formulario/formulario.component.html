@@ -285,7 +285,8 @@
                     <div class="select-container">
                         <select [id]="'grado-' + i" 
                                 formControlName="grado"
-                                [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'">
+                                [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'"
+                                >
                             <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                         @for (grado of obtenerGrados(campo.get('servicios')?.value); track grado) {
                             <option [value]="grado">{{ grado }}</option>
