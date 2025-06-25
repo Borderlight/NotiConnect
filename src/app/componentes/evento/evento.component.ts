@@ -72,16 +72,30 @@ export class EventoComponent {
   }
 
   get serviciosTexto(): string {
-    return this.evento?.servicios?.map(s => s.servicios).join(', ') || '';
+    if (!this.evento?.servicios || !Array.isArray(this.evento.servicios)) {
+      return '';
+    }
+    return this.evento.servicios.map(s => s.servicios).join(', ') || '';
   }
   set serviciosTexto(valor: string) {
+    if (!valor || valor.trim() === '') {
+      this.evento.servicios = [];
+      return;
+    }
     this.evento.servicios = valor.split(',').map(s => ({ servicios: s.trim() })).filter(s => s.servicios);
   }
 
   get adjuntosTexto(): string {
-    return this.evento?.adjuntos?.map(a => a.name || a).join(', ') || '';
+    if (!this.evento?.adjuntos || !Array.isArray(this.evento.adjuntos)) {
+      return '';
+    }
+    return this.evento.adjuntos.map(a => a.name || a).join(', ') || '';
   }
   set adjuntosTexto(valor: string) {
+    if (!valor || valor.trim() === '') {
+      this.evento.adjuntos = [];
+      return;
+    }
     // Convertir strings a objetos ArchivoAdjunto básicos
     this.evento.adjuntos = valor.split(',').map(a => {
       const nombre = a.trim();
@@ -90,9 +104,16 @@ export class EventoComponent {
   }
 
   get enlacesTexto(): string {
-    return this.evento?.enlaces?.map(e => e.url).join(', ') || '';
+    if (!this.evento?.enlaces || !Array.isArray(this.evento.enlaces)) {
+      return '';
+    }
+    return this.evento.enlaces.map(e => e.url).join(', ') || '';
   }
   set enlacesTexto(valor: string) {
+    if (!valor || valor.trim() === '') {
+      this.evento.enlaces = [];
+      return;
+    }
     this.evento.enlaces = valor.split(',').map(url => ({ tipo: 'otro', url: url.trim() })).filter(e => e.url);
   }
 
@@ -154,19 +175,57 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     if (this.editForm.valid) {
+      // Sincronizar campos complejos usando los setters
       this.descripcionTexto = this.editForm.value.descripcion;
       this.serviciosTexto = this.editForm.value.servicios;
       this.adjuntosTexto = this.editForm.value.adjuntos;
       this.enlacesTexto = this.editForm.value.enlaces;
+      
+      // Actualizar ponentes (convertir de string individual a array)
+      const ponenteNombre = this.editForm.value.ponente;
+      if (ponenteNombre && ponenteNombre.trim()) {
+        this.evento.ponentes = [{ 
+          id: 1, 
+          nombre: ponenteNombre.trim() 
+        }];
+      }
+      
+      // Actualizar ubicaciones
+      if (!this.evento.ubicaciones || this.evento.ubicaciones.length === 0) {
+        this.evento.ubicaciones = [{
+          lugar: this.editForm.value.lugar || '',
+          fecha: new Date(this.editForm.value.fecha),
+          tipoHorario: 'horario' as const,
+          horaInicio: this.editForm.value.horaInicio || ''
+        }];
+      }
+      
+      // Actualizar la primera ubicación con los datos del formulario
+      const ubicacion = this.evento.ubicaciones[0];
+      ubicacion.fecha = new Date(this.editForm.value.fecha);
+      ubicacion.horaInicio = this.editForm.value.horaInicio;
+      ubicacion.horaFin = this.editForm.value.horaFin;
+      ubicacion.lugar = this.editForm.value.lugar;
+      ubicacion.aula = this.editForm.value.aula;
+      ubicacion.tipoHorario = this.editForm.value.horaFin ? 'horario' : 'hora';
+      
+      // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
-        ...this.editForm.value,
+        titulo: this.editForm.value.titulo,
+        ponentes: this.evento.ponentes,
+        ubicaciones: this.evento.ubicaciones,
+        actividad: this.editForm.value.actividad,
         descripcion: this.evento.descripcion,
         servicios: this.evento.servicios,
         adjuntos: this.evento.adjuntos,
         enlaces: this.evento.enlaces
       });
-      Object.assign(this.evento, this.editForm.value);
+      
+      // Actualizar campos directos en el evento local
+      this.evento.titulo = this.editForm.value.titulo;
+      this.evento.actividad = this.editForm.value.actividad;
+      
       this.editMode = false;
     } else {
       this.editForm.markAllAsTouched();

@@ -296,16 +296,13 @@
   },
   {
     "_id": "evt9",
-    "imagen": null,
+    "imagen": "",
     "titulo": "Curso intensivo de Python",
-    "ponente": "Carlos Ruiz",
+    "ponente": "esto es un ponente",
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "COURSE",
     "descripcion": "Aprende Python desde cero en solo una semana.",
-    "adjuntos": [
-      "temario.pdf",
-      "ejercicios.zip"
-    ],
+    "adjuntos": [],
     "servicios": [
       {
         "servicios": "Aula virtual"
@@ -316,11 +313,11 @@
     ],
     "enlaces": [
       {
-        "tipo": "Inscripción",
+        "tipo": "otro",
         "url": "https://upsa.es/python"
       },
       {
-        "tipo": "Material",
+        "tipo": "otro",
         "url": "https://upsa.es/python/material"
       }
     ],
@@ -339,7 +336,13 @@
     "horaInicio": "09:00",
     "horaFin": "13:00",
     "lugar": "Laboratorio 3",
-    "aula": "L3"
+    "aula": "L3",
+    "ponentes": [
+      {
+        "id": 1,
+        "nombre": "ponente 2"
+      }
+    ]
   },
   {
     "_id": "mccc2qm078shxc9r8",
@@ -349,21 +352,22 @@
     "descripcion": "Esto es una descripcion",
     "servicios": [
       {
-        "servicios": "SERVICES.DEPORTES",
-        "grado": ""
+        "servicios": "SERVICES.DEPORTES"
       },
       {
-        "servicios": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
-        "grado": ""
+        "servicios": "Facultad de Ciencias del Seguro"
+      },
+      {
+        "servicios": "Jurídicas y de la Empresa"
       }
     ],
     "enlaces": [
       {
-        "tipo": "Otros",
+        "tipo": "otro",
         "url": "http://localhost:4200/"
       },
       {
-        "tipo": "Instagram",
+        "tipo": "otro",
         "url": "https://www.instagram.com/ivanlazaroluque/saved/programaci-n/18088884598583946/"
       }
     ],
@@ -385,11 +389,17 @@
         "nombre": "Ponente primero",
         "afiliacion": "afiliacion primera "
       }
-    ]
+    ],
+    "ponente": "Ponente segundo ",
+    "fecha": "2025-02-12",
+    "horaInicio": "12:00",
+    "horaFin": "",
+    "lugar": "Nuevo lugar",
+    "aula": ""
   },
   {
     "_id": "mcccvv32wkqgihr6j",
-    "titulo": "Titulo evento 1",
+    "titulo": "Titulo evento 4",
     "empresaOrganizadora": "Nuevo departamento",
     "tipoEvento": "EVENT",
     "descripcion": "Esto es una segunda descripción de prueba para ver si todo funciona junto con la búsqueda",
@@ -470,7 +480,7 @@
         "afiliacion": "afiliacion ponente segundo"
       }
     ],
-    "ponente": "ponente primero ",
+    "ponente": "ponente segundo",
     "fecha": "2025-05-12",
     "horaInicio": "12:00",
     "horaFin": "",
