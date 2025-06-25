@@ -134,8 +134,8 @@ select:disabled, select option:disabled {
   transition: background 0.2s, border-color 0.2s;
 }
 .btn-confirmar:not(:disabled):hover {
-  background: #256025 !important;
-  border-color: #256025 !important;
+  background: #b71c1c !important;
+  border-color: #b71c1c !important;
 }
 
 .btn-agregar-actividad {

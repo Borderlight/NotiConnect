@@ -43,52 +43,6 @@
     "aula": "B202"
   },
   {
-    "_id": "mbob10q4i5alf5jy6",
-    "titulo": "titulo",
-    "ponente": "ponente",
-    "empresaOrganizadora": "empresa ",
-    "tipoEvento": "CONFERENCE_OR_CONGRESS",
-    "descripcion": "Esto es una prueba de descripción",
-    "adjuntos": [],
-    "servicios": [
-      {
-        "servicios": "SERVICES.MOVILIDAD_INTERNACIONAL",
-        "grado": ""
-      },
-      {
-        "servicios": "Facultad de Informática",
-        "grado": "Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos"
-      }
-    ],
-    "enlaces": [
-      {
-        "tipo": "Instagram",
-        "url": "https://www.instagram.com/ivanlazaroluque/saved/programaci-n/18088884598583946/"
-      },
-      {
-        "tipo": "Otros",
-        "url": "http://localhost:4200/"
-      }
-    ],
-    "actividad_relacionada": "Semana de la Ciencia",
-    "ubicaciones": [
-      {
-        "fecha": "2010-10-10",
-        "tipoHorario": "hora",
-        "horaInicio": "10:00",
-        "horaFin": "",
-        "lugar": "FACULTY",
-        "aula": "S-41"
-      }
-    ],
-    "fecha": "2010-10-10",
-    "horaInicio": "10:00",
-    "horaFin": "",
-    "lugar": "FACULTY",
-    "aula": "S-41",
-    "imagen": null
-  },
-  {
     "_id": "mbomj7ml5wywxgwu0",
     "titulo": "Titulo",
     "ponente": "ponente",
