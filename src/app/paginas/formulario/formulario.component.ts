@@ -523,7 +523,14 @@ export class FormularioComponent {
         next: () => {
           this.mostrarDialog = true;
           this.formularioEvento.reset();
-          this.adjuntosInput.nativeElement.value = '';
+          if (this.adjuntosInput && this.adjuntosInput.nativeElement) {
+            try {
+              this.adjuntosInput.nativeElement.value = '';
+            } catch (e) {
+              // Silenciar el error si ocurre
+            }
+          }
+          this.selectedAdjuntos = [];
         },
         error: (err) => {
           console.error('Error al crear evento:', err);
