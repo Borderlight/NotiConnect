@@ -430,6 +430,7 @@ export class FormularioComponent {
 
   closeDialog(): void {
     this.mostrarDialog = false;
+    this.router.navigate(['/']);
   }
 
   onSubmit(): void {
