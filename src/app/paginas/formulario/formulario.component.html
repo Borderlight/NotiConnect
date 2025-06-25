@@ -230,7 +230,7 @@
         </div>
 
         <div class="campo-form" formArrayName="servicios">
-            <label for="servicios-titulo" id="servicio-titulo">{{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.LABEL' | translate }} <span class="campo-requerido">*</span></label>
+            <label for="servicios-titulo" id="servicio-titulo">{{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.LABEL' | translate }}</label>
             <p class="descripcion-campo" id="servicios-desc">
                 {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.DESC' | translate }}
             </p>
@@ -238,14 +238,11 @@
           <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
             <label [id]="'servicio-' + i + '-label'">
               Servicio número {{i + 1}}
-              <span class="campo-requerido">*</span>
             </label>
             <div class="select-container" style="display: flex; align-items: center; gap: 0.5rem;">
               <select [id]="'servicio-' + i" 
                       formControlName="servicios"
                       [attr.aria-describedby]="'servicio-' + i + '-desc servicio-' + i + '-hint servicio-' + i + '-error'"
-                      aria-required="true"
-                      [attr.aria-invalid]="campo.get('servicios')?.invalid && campo.get('servicios')?.touched"
                       [attr.aria-label]="'Servicio o facultad número ' + (i + 1)"
                       [attr.aria-labelledby]="'servicio-' + i + '-label'">
                 <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
@@ -275,23 +272,12 @@
             </div>
             <p [id]="'servicio-' + i + '-desc'" class="visually-hidden"></p>
             <p [id]="'servicio-' + i + '-hint'" class="visually-hidden"></p>
-            @if (campo.get('servicios')?.invalid && campo.get('servicios')?.touched) {
-                <p class="mensaje_error" 
-                   [id]="'servicio-' + i + '-error'"
-                   role="alert"
-                   aria-live="assertive">
-                    {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.ERROR' | translate }}
-                </p>
-            }
-            @if (!(campo.get('servicios')?.invalid && campo.get('servicios')?.touched)) {
-                <span [id]="'servicio-' + i + '-error'" class="visually-hidden"></span>
-            }
+            <span [id]="'servicio-' + i + '-error'" class="visually-hidden"></span>
             
             @if (esFacultadSeleccionada(campo.get('servicios')?.value)) {
                 <div class="campo-grado">
                     <label [for]="'grado-' + i" [id]="'grado-' + i + '-label'">
                         Grado de la {{ campo.get('servicios')?.value }}
-                        <span class="campo-requerido">*</span>
                     </label>
                     <p [id]="'grado-' + i + '-desc'" class="campo-descripcion">
                         Seleccione el grado específico de la facultad seleccionada
@@ -299,24 +285,14 @@
                     <div class="select-container">
                         <select [id]="'grado-' + i" 
                                 formControlName="grado"
-                                [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'"
-                                aria-required="true"
-                                [attr.aria-invalid]="campo.get('grado')?.invalid && campo.get('grado')?.touched">
+                                [attr.aria-describedby]="'grado-' + i + '-desc grado-' + i + '-error'">
                             <option value="">{{ 'FORM.SELECT_OPTION' | translate }}</option>
                         @for (grado of obtenerGrados(campo.get('servicios')?.value); track grado) {
                             <option [value]="grado">{{ grado }}</option>
                         }
                     </select>
                     </div>
-                    @if (mostrarErrorGrado && !campo.get('grado')?.value) {
-                        <p class="mensaje_error" 
-                           [id]="'grado-' + i + '-error'"
-                           role="alert"
-                           aria-live="assertive">
-                            {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.GRADE.ERROR' | translate }}
-                        </p>
-                    }
-                <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
+                    <span [id]="'grado-' + i + '-error'" class="visually-hidden"></span>
                 </div>
             }
             
