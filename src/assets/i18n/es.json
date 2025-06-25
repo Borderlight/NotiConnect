@@ -256,7 +256,8 @@
       },
       "TIME": {
         "LABEL": "Hora",
-        "DESCRIPTION": "Seleccione la hora del evento."
+        "DESCRIPTION": "Seleccione la hora del evento.",
+        "ERROR": "La hora es obligatoria"
       }
     },
     "SUBMIT_BUTTON": "Finalizar",

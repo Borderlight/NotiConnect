@@ -608,6 +608,14 @@
                                        formControlName="horaInicio"
                                        [attr.aria-describedby]="'hora-inicio-' + i + '-desc hora-inicio-' + i + '-error'"
                                        aria-required="true">
+                                @if (ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched) {
+                                    <p class="mensaje_error" [id]="'hora-inicio-' + i + '-error'" role="alert" aria-live="assertive">
+                                        {{ 'FORM.LOCATION_TIME.TIME.ERROR' | translate }}
+                                    </p>
+                                }
+                                @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
+                                    <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
+                                }
                             </div>
                         }
 
@@ -620,9 +628,18 @@
                                     </p>
                                     <input type="time" 
                                            [id]="'horaInicio-' + i" 
-                                           formControlName="horaInicio">
+                                           formControlName="horaInicio"
+                                           [attr.aria-describedby]="'hora-inicio-' + i + '-desc hora-inicio-' + i + '-error'"
+                                           aria-required="true">
+                                    @if (ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched) {
+                                        <p class="mensaje_error" [id]="'hora-inicio-' + i + '-error'" role="alert" aria-live="assertive">
+                                            {{ 'FORM.LOCATION_TIME.START_TIME.ERROR' | translate }}
+                                        </p>
+                                    }
+                                    @if (!(ubicacion.get('horaInicio')?.invalid && ubicacion.get('horaInicio')?.touched)) {
+                                        <span [id]="'hora-inicio-' + i + '-error'" class="visually-hidden"></span>
+                                    }
                                 </div>
-
                                 <div class="campo-hora">
                                     <label [for]="'horaFin-' + i" [id]="'hora-fin-' + i + '-label'">{{ 'FORM.LOCATION_TIME.END.LABEL' | translate }} <span class="campo-requerido">*</span></label>
                                     <p [id]="'hora-fin-' + i + '-desc'" class="campo-descripcion">
@@ -631,7 +648,16 @@
                                     <input type="time" 
                                            [id]="'horaFin-' + i" 
                                            formControlName="horaFin"
-                                           [attr.aria-describedby]="'hora-fin-' + i + '-desc hora-fin-' + i + '-error'">
+                                           [attr.aria-describedby]="'hora-fin-' + i + '-desc hora-fin-' + i + '-error'"
+                                           aria-required="true">
+                                    @if (ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched) {
+                                        <p class="mensaje_error" [id]="'hora-fin-' + i + '-error'" role="alert" aria-live="assertive">
+                                            {{ 'FORM.LOCATION_TIME.END_TIME.ERROR' | translate }}
+                                        </p>
+                                    }
+                                    @if (!(ubicacion.get('horaFin')?.invalid && ubicacion.get('horaFin')?.touched)) {
+                                        <span [id]="'hora-fin-' + i + '-error'" class="visually-hidden"></span>
+                                    }
                                 </div>
                             </div>
                         }
