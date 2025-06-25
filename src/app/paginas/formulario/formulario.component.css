@@ -853,3 +853,30 @@ body.modo-oscuro .seccion-ubicacion {
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
+/* =========================
+   Adjuntos y enlaces
+   ========================= */
+.adjuntos-preview {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.preview-item {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-img {
+  max-width: 100px;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
