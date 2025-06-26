@@ -13,6 +13,11 @@ const upload = multer({
 
 // Rutas para eventos
 router.get('/', eventoController.getEventos);
+router.get('/ponentes', eventoController.getPonentes);
+router.get('/tipos', eventoController.getTiposEvento);
+router.get('/actividades', eventoController.getActividades);
+router.get('/servicios', eventoController.getServicios);
+router.get('/lugares', eventoController.getLugares);
 router.get('/:id', eventoController.getEventoById);
 router.post('/', upload.array('adjuntos'), eventoController.createEvento); // Usar multer para POST
 router.put('/:id', upload.array('adjuntos'), eventoController.updateEvento); // Usar multer para PUT

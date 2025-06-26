@@ -301,7 +301,7 @@
     "ponente": "esto es un ponente",
     "empresaOrganizadora": "UPSA",
     "tipoEvento": "COURSE",
-    "descripcion": "Aprende Python desde cero en solo una semana.",
+    "descripcion": "Vamos a aprender Python desde cero en solo una semana.",
     "adjuntos": [],
     "servicios": [
       {
@@ -486,5 +486,125 @@
     "horaFin": "",
     "lugar": "LIBRARY",
     "aula": ""
+  },
+  {
+    "_id": "mcd3e71o76b3vyiy9",
+    "titulo": "Titulo",
+    "empresaOrganizadora": "Formación Permanente",
+    "tipoEvento": "VISIT",
+    "descripcion": "Descripcion",
+    "servicios": [
+      {
+        "servicios": "SERVICES.MOVILIDAD_INTERNACIONAL"
+      }
+    ],
+    "enlaces": [
+      {
+        "tipo": "otro",
+        "url": "Esto es un enlace"
+      }
+    ],
+    "adjuntos": [],
+    "imagen": "",
+    "actividad": "Nueva actividad",
+    "ubicaciones": [
+      {
+        "fecha": "2025-05-12T00:00:00.000Z",
+        "tipoHorario": "hora",
+        "horaInicio": "15:00",
+        "horaFin": "",
+        "lugar": "ONLINE",
+        "aula": ""
+      }
+    ],
+    "ponentes": [
+      {
+        "id": 1,
+        "nombre": "ponente"
+      }
+    ]
+  },
+  {
+    "_id": "mcd3gplfn3ipioqmi",
+    "titulo": "a",
+    "empresaOrganizadora": "Facultad",
+    "tipoEvento": "EXHIBITION",
+    "descripcion": "aaa",
+    "servicios": [
+      {
+        "servicios": "",
+        "grado": ""
+      }
+    ],
+    "enlaces": [
+      {
+        "tipo": "",
+        "url": ""
+      }
+    ],
+    "adjuntos": [],
+    "imagen": "",
+    "actividad": "",
+    "ubicaciones": [
+      {
+        "fecha": "2025-06-11",
+        "tipoHorario": "hora",
+        "horaInicio": "14:05",
+        "horaFin": "",
+        "lugar": "S-41"
+      }
+    ],
+    "ponentes": [
+      {
+        "id": 0,
+        "nombre": "a",
+        "afiliacion": "a"
+      }
+    ]
+  },
+  {
+    "_id": "mcd48lxc5ihf2f96m",
+    "titulo": "a",
+    "empresaOrganizadora": "Facultad",
+    "tipoEvento": "WORKSHOP",
+    "descripcion": "descripcion aa",
+    "servicios": [
+      {
+        "servicios": "",
+        "grado": ""
+      }
+    ],
+    "enlaces": [
+      {
+        "tipo": "",
+        "url": ""
+      }
+    ],
+    "adjuntos": [
+      {
+        "name": "titulo.pdf",
+        "type": "application/pdf",
+        "size": 3668,
+        "data": "data:application/pdf;base64,JVBERi0xLjMKJbrfrOAKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyAyIDAgUgovTWVkaWFCb3ggWzAgMCA1OTUuMjc5OTk5OTk5OTk5OTcyNyA4NDEuODg5OTk5OTk5OTk5OTg2NF0KL0NvbnRlbnRzIDQgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8Ci9MZW5ndGggNjMzCj4+CnN0cmVhbQowLjU2NzAwMDAwMDAwMDAwMDEgdwowIEcKQlQKL0YyIDE2IFRmCjE4LjM5OTk5OTk5OTk5OTk5ODYgVEwKMCBnCjU2LjY5MjkxMzM4NTgyNjc3NzUgNzg1LjE5NzA4NjYxNDE3MzI1ODYgVGQKKHRpdHVsbykgVGoKRVQKMC43OCBHCjU2LjY5MjkxMzM4NTgyNjc3NzUgNzU2Ljg1MDYyOTkyMTI1OTgzNzggbQo1MzguNTg3MDg2NjE0MTczMTMxMiA3NTYuODUwNjI5OTIxMjU5ODM3OCBsClMKQlQKL0YyIDEyIFRmCjEzLjc5OTk5OTk5OTk5OTk5ODkgVEwKMCBnCjU2LjY5MjkxMzM4NTgyNjc3NzUgNzE0LjMzMDk0NDg4MTg4OTc2MzYgVGQKKFBvbmVudGU6KSBUagpFVApCVAovRjEgMTIgVGYKMTMuNzk5OTk5OTk5OTk5OTk4OSBUTAowIGcKNzAuODY2MTQxNzMyMjgzNDY2NiA3MDAuMTU3NzE2NTM1NDMzMTEgVGQKKHBvbmVudGUpIFRqCkVUCkJUCi9GMiAxMiBUZgoxMy43OTk5OTk5OTk5OTk5OTg5IFRMCjAgZwo1Ni42OTI5MTMzODU4MjY3Nzc1IDY2Ni4xNDE5Njg1MDM5MzY5MzY5IFRkCihFbXByZXNhIE9yZ2FuaXphZG9yYTopIFRqCkVUCkJUCi9GMSAxMiBUZgoxMy43OTk5OTk5OTk5OTk5OTg5IFRMCjAgZwo3MC44NjYxNDE3MzIyODM0NjY2IDY1MS45Njg3NDAxNTc0ODAyODM0IFRkCihlbXByZXNhICkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagoxIDAgb2JqCjw8L1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUiBdCi9Db3VudCAxCj4+CmVuZG9iago1IDAgb2JqCjw8Ci9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9TdWJ0eXBlIC9UeXBlMQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovRmlyc3RDaGFyIDMyCi9MYXN0Q2hhciAyNTUKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZAovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhLU9ibGlxdWUKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9GaXJzdENoYXIgMzIKL0xhc3RDaGFyIDI1NQo+PgplbmRvYmoKOCAwIG9iago8PAovVHlwZSAvRm9udAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkT2JsaXF1ZQovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iago5IDAgb2JqCjw8Ci9UeXBlIC9Gb250Ci9CYXNlRm9udCAvQ291cmllcgovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iagoxMCAwIG9iago8PAovVHlwZSAvRm9udAovQmFzZUZvbnQgL0NvdXJpZXItQm9sZAovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iagoxMSAwIG9iago8PAovVHlwZSAvRm9udAovQmFzZUZvbnQgL0NvdXJpZXItT2JsaXF1ZQovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iagoxMiAwIG9iago8PAovVHlwZSAvRm9udAovQmFzZUZvbnQgL0NvdXJpZXItQm9sZE9ibGlxdWUKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9GaXJzdENoYXIgMzIKL0xhc3RDaGFyIDI1NQo+PgplbmRvYmoKMTMgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL0Jhc2VGb250IC9UaW1lcy1Sb21hbgovU3VidHlwZSAvVHlwZTEKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL0ZpcnN0Q2hhciAzMgovTGFzdENoYXIgMjU1Cj4+CmVuZG9iagoxNCAwIG9iago8PAovVHlwZSAvRm9udAovQmFzZUZvbnQgL1RpbWVzLUJvbGQKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9GaXJzdENoYXIgMzIKL0xhc3RDaGFyIDI1NQo+PgplbmRvYmoKMTUgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL0Jhc2VGb250IC9UaW1lcy1JdGFsaWMKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9GaXJzdENoYXIgMzIKL0xhc3RDaGFyIDI1NQo+PgplbmRvYmoKMTYgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL0Jhc2VGb250IC9UaW1lcy1Cb2xkSXRhbGljCi9TdWJ0eXBlIC9UeXBlMQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovRmlyc3RDaGFyIDMyCi9MYXN0Q2hhciAyNTUKPj4KZW5kb2JqCjE3IDAgb2JqCjw8Ci9UeXBlIC9Gb250Ci9CYXNlRm9udCAvWmFwZkRpbmdiYXRzCi9TdWJ0eXBlIC9UeXBlMQovRmlyc3RDaGFyIDMyCi9MYXN0Q2hhciAyNTUKPj4KZW5kb2JqCjE4IDAgb2JqCjw8Ci9UeXBlIC9Gb250Ci9CYXNlRm9udCAvU3ltYm9sCi9TdWJ0eXBlIC9UeXBlMQovRmlyc3RDaGFyIDMyCi9MYXN0Q2hhciAyNTUKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1Byb2NTZXQgWy9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUldCi9Gb250IDw8Ci9GMSA1IDAgUgovRjIgNiAwIFIKL0YzIDcgMCBSCi9GNCA4IDAgUgovRjUgOSAwIFIKL0Y2IDEwIDAgUgovRjcgMTEgMCBSCi9GOCAxMiAwIFIKL0Y5IDEzIDAgUgovRjEwIDE0IDAgUgovRjExIDE1IDAgUgovRjEyIDE2IDAgUgovRjEzIDE3IDAgUgovRjE0IDE4IDAgUgo+PgovWE9iamVjdCA8PAo+Pgo+PgplbmRvYmoKMTkgMCBvYmoKPDwKL1Byb2R1Y2VyIChqc1BERiAzLjAuMSkKL0NyZWF0aW9uRGF0ZSAoRDoyMDI1MDYyNjAwMjMzNiswMicwMCcpCj4+CmVuZG9iagoyMCAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMSAwIFIKL09wZW5BY3Rpb24gWzMgMCBSIC9GaXRIIG51bGxdCi9QYWdlTGF5b3V0IC9PbmVDb2x1bW4KPj4KZW5kb2JqCnhyZWYKMCAyMQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDA4MzYgMDAwMDAgbiAKMDAwMDAwMjY1MyAwMDAwMCBuIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAxNTIgMDAwMDAgbiAKMDAwMDAwMDg5MyAwMDAwMCBuIAowMDAwMDAxMDE4IDAwMDAwIG4gCjAwMDAwMDExNDggMDAwMDAgbiAKMDAwMDAwMTI4MSAwMDAwMCBuIAowMDAwMDAxNDE4IDAwMDAwIG4gCjAwMDAwMDE1NDEgMDAwMDAgbiAKMDAwMDAwMTY3MCAwMDAwMCBuIAowMDAwMDAxODAyIDAwMDAwIG4gCjAwMDAwMDE5MzggMDAwMDAgbiAKMDAwMDAwMjA2NiAwMDAwMCBuIAowMDAwMDAyMTkzIDAwMDAwIG4gCjAwMDAwMDIzMjIgMDAwMDAgbiAKMDAwMDAwMjQ1NSAwMDAwMCBuIAowMDAwMDAyNTU3IDAwMDAwIG4gCjAwMDAwMDI5MDEgMDAwMDAgbiAKMDAwMDAwMjk4NyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDIxCi9Sb290IDIwIDAgUgovSW5mbyAxOSAwIFIKL0lEIFsgPEEwQzE1NEI2N0U1NURGRjI1RTk5Njg2QzA3MUM0Rjc5PiA8QTBDMTU0QjY3RTU1REZGMjVFOTk2ODZDMDcxQzRGNzk+IF0KPj4Kc3RhcnR4cmVmCjMwOTEKJSVFT0Y="
+      }
+    ],
+    "imagen": "",
+    "actividad": "",
+    "ubicaciones": [
+      {
+        "fecha": "2025-06-17",
+        "tipoHorario": "hora",
+        "horaInicio": "13:26",
+        "horaFin": "",
+        "lugar": "LIBRARY"
+      }
+    ],
+    "ponentes": [
+      {
+        "id": 0,
+        "nombre": "a",
+        "afiliacion": "a"
+      }
+    ]
   }
 ]

@@ -7,9 +7,18 @@ import { Evento } from '../interfaces/evento.interface';
   providedIn: 'root'
 })
 export class EventoService {
-  private apiUrl = 'http://localhost:3000/api/eventos';
+  private apiUrl = this.getApiUrl();
 
   constructor(private http: HttpClient) {}
+
+  private getApiUrl(): string {
+    // Si estamos en un entorno de desarrollo túnel, usar la URL del túnel del backend
+    if (window.location.hostname.includes('devtunnels.ms')) {
+      return 'https://zd51xrvm-3000.uks1.devtunnels.ms/api/eventos';
+    }
+    // Para desarrollo local
+    return 'http://localhost:3000/api/eventos';
+  }
 
   getEventos(): Observable<Evento[]> {
     return this.http.get<Evento[]>(this.apiUrl);

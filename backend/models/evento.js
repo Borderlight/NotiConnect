@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 
 const servicioSchema = new mongoose.Schema({
-    servicios: { type: String, required: true },
-    grado: String
-}, { _id: false });
-
-const archivoSchema = new mongoose.Schema({
-    nombre: String,
-    url: String
+    servicios: { type: String, required: true }
 }, { _id: false });
 
 const enlaceSchema = new mongoose.Schema({
@@ -16,34 +10,28 @@ const enlaceSchema = new mongoose.Schema({
 }, { _id: false });
 
 const ubicacionSchema = new mongoose.Schema({
-    fecha: { type: Date, required: true }, // Fecha específica de esta ubicación
-    tipoHorario: { type: String, enum: ['hora', 'horario'], required: true },
+    fecha: { type: String, required: true }, // Cambiado a String para mayor flexibilidad
     horaInicio: { type: String, required: true },
-    horaFin: String, // Solo requerido si tipoHorario es 'horario'
+    horaFin: { type: String, default: '23:59' },
     lugar: { type: String, required: true }
 }, { _id: false });
 
 const eventoSchema = new mongoose.Schema({
-    imagen: String,
+    imagen: { type: String, default: null },
     titulo: { type: String, required: true },
     ponentes: [{ 
         id: Number,
         nombre: String, 
         afiliacion: String 
     }],
-    empresaOrganizadora: { type: String, required: true },
-    tipoEvento: { type: String, required: true },
-    descripcion: { type: String, required: true },
-    adjuntos: [{
-        name: String,
-        type: String,
-        size: Number,
-        data: String // Base64 data
-    }],
+    empresaOrganizadora: { type: String, default: 'Sin especificar' },
+    tipoEvento: { type: String, default: 'otro' },
+    descripcion: { type: String, default: '' },
+    adjuntos: [String], // Simplificado a array de strings
     servicios: [servicioSchema],
     enlaces: [enlaceSchema],
-    actividad: String, // Actividad relacionada
-    ubicaciones: [ubicacionSchema] // Array de ubicaciones con fecha, hora y lugar cada una
+    actividad: { type: String, default: '' },
+    ubicaciones: [ubicacionSchema]
 }, {
     timestamps: true
 });
