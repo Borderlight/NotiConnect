@@ -129,6 +129,48 @@ export class EventoComponent {
     return this.evento?.ponentes?.map(p => p.nombre).filter(n => n).join(', ') || '';
   }
 
+  get ponentesDetallados(): any[] {
+    if (!this.evento?.ponentes || !Array.isArray(this.evento.ponentes)) {
+      return [];
+    }
+    return this.evento.ponentes.filter(p => p.nombre).map(p => ({
+      nombre: p.nombre,
+      afiliacion: p.afiliacion || null
+    }));
+  }
+
+  get serviciosDetallados(): any[] {
+    if (!this.evento?.servicios || !Array.isArray(this.evento.servicios)) {
+      return [];
+    }
+    return this.evento.servicios.filter(s => s.servicios).map(s => ({
+      servicio: s.servicios,
+      grado: s.grado || null
+    }));
+  }
+
+  get enlacesDetallados(): any[] {
+    if (!this.evento?.enlaces || !Array.isArray(this.evento.enlaces)) {
+      return [];
+    }
+    return this.evento.enlaces.filter(e => e.url).map(e => ({
+      tipo: e.tipo || 'Otro',
+      url: e.url
+    }));
+  }
+
+  get adjuntosDetallados(): any[] {
+    if (!this.evento?.adjuntos || !Array.isArray(this.evento.adjuntos)) {
+      return [];
+    }
+    return this.evento.adjuntos.filter(a => a).map(a => {
+      if (typeof a === 'string') {
+        return { name: a, type: '', size: 0 };
+      }
+      return a;
+    });
+  }
+
   get ubicacionesTexto(): string {
     if (!this.evento?.ubicaciones || this.evento.ubicaciones.length === 0) {
       // Retrocompatibilidad

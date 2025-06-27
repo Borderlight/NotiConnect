@@ -537,3 +537,68 @@
   margin-bottom: 0.3rem;
   font-weight: 600;
 }
+
+/* Estilos para la sección de detalles mejorada */
+.detalle-seccion {
+  margin-bottom: 1.5rem;
+}
+
+.detalle-seccion:last-child {
+  margin-bottom: 0;
+}
+
+.detalle-seccion strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-texto-primario, #333);
+}
+
+.detalle-item {
+  margin-bottom: 0.8rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-primario, #007bff);
+}
+
+.detalle-item:last-child {
+  margin-bottom: 0;
+}
+
+.detalle-principal {
+  font-weight: 500;
+  color: var(--color-texto-primario, #333);
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+}
+
+.detalle-secundario {
+  color: var(--color-texto-secundario, #666);
+  margin: 0.2rem 0 0.2rem 1rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.detalle-simple {
+  color: var(--color-texto-primario, #333);
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.detalle-vacio {
+  color: var(--color-texto-terciario, #999);
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.enlace-externo {
+  color: var(--color-primario, #007bff);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.enlace-externo:hover {
+  color: var(--color-primario-hover, #0056b3);
+  text-decoration: underline;
+}

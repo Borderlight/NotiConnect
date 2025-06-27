@@ -93,13 +93,83 @@
         <div class="evento-detalles-col-alineado">
           <div class="detalles-evento">
             @if (!editMode) {
-              <p><strong>Ponente(s):</strong> {{ ponentesTexto || 'No especificado' }}</p>
-              <p><strong>Servicios:</strong> {{ serviciosTexto || '-' }}</p>
-              <p><strong>Adjuntos:</strong> {{ adjuntosTexto || '-' }}</p>
-              <p><strong>Enlaces:</strong> {{ enlacesTexto || '-' }}</p>
+              <!-- Ponentes -->
+              <div class="detalle-seccion">
+                <strong>Ponente(s):</strong>
+                @if (ponentesDetallados.length > 0) {
+                  @for (ponente of ponentesDetallados; track ponente.nombre) {
+                    <div class="detalle-item">
+                      <p class="detalle-principal">{{ ponente.nombre }}</p>
+                      @if (ponente.afiliacion) {
+                        <p class="detalle-secundario">{{ ponente.afiliacion }}</p>
+                      }
+                    </div>
+                  }
+                } @else {
+                  <p class="detalle-vacio">No especificado</p>
+                }
+              </div>
+
+              <!-- Actividad -->
               @if (evento.actividad) {
-                <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
+                <div class="detalle-seccion">
+                  <strong>Actividad:</strong>
+                  <p class="detalle-simple">{{ evento.actividad }}</p>
+                </div>
               }
+
+              <!-- Servicios -->
+              <div class="detalle-seccion">
+                <strong>Servicios:</strong>
+                @if (serviciosDetallados.length > 0) {
+                  @for (servicio of serviciosDetallados; track servicio.servicio) {
+                    <div class="detalle-item">
+                      <p class="detalle-principal">{{ servicio.servicio }}</p>
+                      @if (servicio.grado) {
+                        <p class="detalle-secundario">{{ servicio.grado }}</p>
+                      }
+                    </div>
+                  }
+                } @else {
+                  <p class="detalle-vacio">-</p>
+                }
+              </div>
+
+              <!-- Enlaces -->
+              <div class="detalle-seccion">
+                <strong>Enlaces:</strong>
+                @if (enlacesDetallados.length > 0) {
+                  @for (enlace of enlacesDetallados; track enlace.url) {
+                    <div class="detalle-item">
+                      <p class="detalle-principal">{{ enlace.tipo }}</p>
+                      <p class="detalle-secundario">
+                        <a [href]="enlace.url" target="_blank" rel="noopener noreferrer" class="enlace-externo">
+                          {{ enlace.url }}
+                        </a>
+                      </p>
+                    </div>
+                  }
+                } @else {
+                  <p class="detalle-vacio">-</p>
+                }
+              </div>
+
+              <!-- Adjuntos -->
+              <div class="detalle-seccion">
+                <strong>Adjuntos:</strong>
+                @if (adjuntosDetallados.length > 0) {
+                  @for (adjunto of adjuntosDetallados; track adjunto.name) {
+                    <div class="detalle-item">
+                      <p class="detalle-principal">{{ adjunto.name }}</p>
+                      @if (adjunto.type) {
+                        <p class="detalle-secundario">{{ adjunto.type }}</p>
+                      }
+                    </div>
+                  }
+                } @else {
+                  <p class="detalle-vacio">-</p>
+                }
+              </div>
             } @else {
               <form [formGroup]="editForm">
                 <p><strong>Servicios:</strong> <input formControlName="servicios" class="input-edit" /></p>
