@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const servicioSchema = new mongoose.Schema({
-    servicios: { type: String, required: true }
+    servicios: { type: String, required: false }
 }, { _id: false });
 
 const enlaceSchema = new mongoose.Schema({
-    tipo: { type: String, required: true },
-    url: { type: String, required: true }
+    tipo: { type: String, required: false },
+    url: { type: String, required: false }
 }, { _id: false });
 
 const ubicacionSchema = new mongoose.Schema({
