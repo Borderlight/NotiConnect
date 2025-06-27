@@ -842,7 +842,7 @@ export class FormularioComponent {
   }
 
   trackByPonenteId(index: number, ponente: AbstractControl) {
-    return ponente.get('id')?.value;
+    return index; // Usar el índice como identificador único
   }
 
   // Índice de la imagen seleccionada como carátula
