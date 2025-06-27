@@ -32,13 +32,30 @@
       <div class="evento-titulo-col">
         @if (!editMode) {
           <h2 class="evento-titulo">{{ evento.titulo }}</h2>
-          <p><strong>Ponente(s):</strong> {{ ponentesTexto || 'No especificado' }}</p>
-          <p><strong>Fecha:</strong> {{ fechaFormateada }}</p>
-          <p><strong>Hora:</strong> {{ horaTexto }}</p>
-          <p><strong>Lugar:</strong> {{ lugarTexto }}</p>
-          @if (evento.actividad) {
-            <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
-          }
+          <p><strong>Departamento:</strong> {{ evento.departamento || 'No especificado' }}</p>
+          <p class="evento-descripcion"><strong>Descripción:</strong> {{ evento.descripcion || 'Sin descripción' }}</p>
+          <div class="ubicaciones-section">
+            <strong>Ubicaciones:</strong>
+            @if (evento.ubicaciones && evento.ubicaciones.length > 0) {
+              @for (ubicacion of evento.ubicaciones; track ubicacion.fecha) {
+                <div class="ubicacion-item">
+                  <p class="fecha-hora">{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }} | 
+                    @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
+                      {{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}
+                    } @else {
+                      {{ ubicacion.horaInicio }}
+                    }
+                  </p>
+                  <p class="lugar">{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</p>
+                </div>
+              }
+            } @else {
+              <div class="ubicacion-item">
+                <p class="fecha-hora">{{ fechaFormateada }} | {{ horaTexto }}</p>
+                <p class="lugar">{{ lugarTexto }}</p>
+              </div>
+            }
+          </div>
           <div class="btn-ver-mas-wrapper">
             <button class="btn-ver-mas" (click)="toggleDetalles($event)">
               {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
@@ -47,6 +64,8 @@
         } @else {
           <form [formGroup]="editForm">
             <h2 class="evento-titulo"><input formControlName="titulo" class="input-edit" /></h2>
+            <p><strong>Departamento:</strong> <input formControlName="departamento" class="input-edit" /></p>
+            <p><strong>Descripción:</strong> <textarea formControlName="descripcion" class="input-edit textarea-edit"></textarea></p>
             <p><strong>Ponente:</strong> <input formControlName="ponente" class="input-edit" /></p>
             <p><strong>Fecha:</strong> <input formControlName="fecha" class="input-edit" type="date" /></p>
             <p><strong>Hora:</strong> <input formControlName="horaInicio" class="input-edit" type="time" />
@@ -74,13 +93,15 @@
         <div class="evento-detalles-col-alineado">
           <div class="detalles-evento">
             @if (!editMode) {
-              <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+              <p><strong>Ponente(s):</strong> {{ ponentesTexto || 'No especificado' }}</p>
               <p><strong>Servicios:</strong> {{ serviciosTexto || '-' }}</p>
               <p><strong>Adjuntos:</strong> {{ adjuntosTexto || '-' }}</p>
               <p><strong>Enlaces:</strong> {{ enlacesTexto || '-' }}</p>
+              @if (evento.actividad) {
+                <p><strong>Actividad:</strong> {{ evento.actividad }}</p>
+              }
             } @else {
               <form [formGroup]="editForm">
-                <p><strong>Descripción:</strong> <input formControlName="descripcion" class="input-edit" /></p>
                 <p><strong>Servicios:</strong> <input formControlName="servicios" class="input-edit" /></p>
                 <p><strong>Adjuntos:</strong> <input formControlName="adjuntos" class="input-edit" /></p>
                 <p><strong>Enlaces:</strong> <input formControlName="enlaces" class="input-edit" /></p>

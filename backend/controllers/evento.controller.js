@@ -93,6 +93,12 @@ const createEvento = async (req, res) => {
         console.log('=== DEBUGGING createEvento ===');
         console.log('req.body:', req.body);
         
+        // Mapear empresaOrganizadora a departamento para compatibilidad
+        if (req.body.empresaOrganizadora && !req.body.departamento) {
+            req.body.departamento = req.body.empresaOrganizadora;
+            delete req.body.empresaOrganizadora;
+        }
+        
         const nuevoEvento = new Evento(req.body);
         const eventoGuardado = await nuevoEvento.save();
         res.status(201).json(eventoGuardado);
@@ -105,6 +111,12 @@ const createEvento = async (req, res) => {
 // Actualizar evento
 const updateEvento = async (req, res) => {
     try {
+        // Mapear empresaOrganizadora a departamento para compatibilidad
+        if (req.body.empresaOrganizadora && !req.body.departamento) {
+            req.body.departamento = req.body.empresaOrganizadora;
+            delete req.body.empresaOrganizadora;
+        }
+        
         const eventoActualizado = await Evento.findByIdAndUpdate(
             req.params.id,
             req.body,

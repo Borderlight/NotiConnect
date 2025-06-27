@@ -332,17 +332,17 @@
 }
 .evento-titulo-detalles-row-alineado {
   display: flex;
-  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
   align-items: flex-start;
-  gap: 2.5rem;
-  position: relative;
+  flex-direction: row;
 }
 
 .btn-ver-mas-wrapper {
   width: 100%;
   display: flex;
-  justify-content: center;
-  margin-top: 2.2rem;
+  justify-content: flex-start; /* Cambiar de center a flex-start */
+  margin-top: 1rem; /* Reducir el margen superior */
 }
 
 .evento-detalles-col-alineado {
@@ -419,7 +419,7 @@
 
 .btn-ver-mas {
   display: block;
-  margin: 1.2rem auto 0 auto;
+  margin: 0; /* Quitar el margin auto */
   padding: 0.5rem 1.2rem;
   font-size: 1.08rem;
   background: none;
@@ -441,4 +441,99 @@
   color: #fff;
   transform: scale(1.08);
   outline: none;
+}
+
+/* Estilos para la nueva sección de ubicaciones */
+.ubicaciones-section {
+  margin: 1rem 0;
+}
+
+.ubicacion-item {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-primario, #007bff);
+}
+
+.ubicacion-item:last-child {
+  margin-bottom: 0;
+}
+
+.fecha-hora {
+  font-weight: 500;
+  color: var(--color-texto-primario, #333);
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.lugar {
+  color: var(--color-texto-secundario, #666);
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+/* Estilos para textarea en modo edición */
+.textarea-edit {
+  min-height: 60px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.input-edit.textarea-edit {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Estilos para la sección del título y contenido principal */
+.evento-titulo-col {
+  flex: 1;
+  max-width: 100%;
+}
+
+.evento-titulo-col p {
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  max-width: 600px; /* Limitar el ancho de todos los párrafos */
+  text-align: left; /* Alineación izquierda por defecto */
+}
+
+.evento-titulo-col p strong {
+  display: inline-block;
+  margin-right: 0.5rem;
+  min-width: fit-content;
+}
+
+/* Layout del contenido principal ya definido arriba */
+
+@media (max-width: 900px) {
+  .evento-titulo-detalles-row-alineado {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .evento-titulo-col p {
+    max-width: 100%;
+  }
+}
+
+/* Estilo específico para la descripción del evento */
+.evento-descripcion {
+  max-width: 600px !important;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: justify;
+  hyphens: auto;
+  line-height: 1.6;
+  margin: 0.8rem 0 !important;
+}
+
+.evento-descripcion strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
 }

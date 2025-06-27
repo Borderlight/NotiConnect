@@ -19,11 +19,13 @@
   },
   "EVENTOS": {
     "TITULO": "Title",
+    "DEPARTAMENTO": "Department",
     "DESCRIPCION": "Description",
     "FECHA": "Date",
     "HORA_INICIO": "Start time",
     "HORA_FIN": "End time",
     "LUGAR": "Location",
+    "UBICACIONES": "Locations",
     "ACTIVIDAD": "Related activity",
     "SERVICIOS": "Related services",
     "ENLACES": "Related links"

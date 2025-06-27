@@ -4,6 +4,7 @@ export interface Evento {
   _id?: string;
   imagen: string; // Carátula del evento (url/base64)
   titulo: string;
+  departamento: string; // Nuevo campo para departamento
   ponente?: string; // Mantener para retrocompatibilidad
   ponentes?: Ponente[]; // Nuevo: array de ponentes
   empresaOrganizadora: string;

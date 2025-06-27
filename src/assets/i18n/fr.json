@@ -19,11 +19,13 @@
   },
   "EVENTOS": {
     "TITULO": "Titre",
+    "DEPARTAMENTO": "Département",
     "DESCRIPCION": "Description",
     "FECHA": "Date",
     "HORA_INICIO": "Heure de début",
     "HORA_FIN": "Heure de fin",
     "LUGAR": "Lieu",
+    "UBICACIONES": "Emplacements",
     "ACTIVIDAD": "Activité liée",
     "SERVICIOS": "Services liés",
     "ENLACES": "Liens connexes"

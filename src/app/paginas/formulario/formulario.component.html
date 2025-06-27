@@ -66,12 +66,12 @@
         </div>
 
         <div class="campo-form">
-            <label for="empresaOrganizadora" id="empresa-label">Departamento Organizador <span class="campo-requerido">*</span></label>
+            <label for="departamento" id="empresa-label">Departamento Organizador <span class="campo-requerido">*</span></label>
             <p id="empresa-desc" class="campo-descripcion">
                 Selecciona o añade el departamento organizador del evento.
             </p>
             <div style="display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <select formControlName="empresaOrganizadora" [attr.aria-label]="'Departamento Organizador'" style="flex: 1 1 auto;">
+              <select formControlName="departamento" [attr.aria-label]="'Departamento Organizador'" style="flex: 1 1 auto;">
                 <option value="">Selecciona una opción</option>
                 @for (opcion of getOpcionesDepartamento(); track opcion) {
                  

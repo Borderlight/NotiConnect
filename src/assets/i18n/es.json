@@ -19,11 +19,13 @@
   },
   "EVENTOS": {
     "TITULO": "Título",
+    "DEPARTAMENTO": "Departamento",
     "DESCRIPCION": "Descripción",
     "FECHA": "Fecha",
     "HORA_INICIO": "Hora de inicio",
     "HORA_FIN": "Hora de fin",
     "LUGAR": "Lugar",
+    "UBICACIONES": "Ubicaciones",
     "ACTIVIDAD": "Actividad relacionada",
     "SERVICIOS": "Servicios relacionados",
     "ENLACES": "Enlaces relacionados"

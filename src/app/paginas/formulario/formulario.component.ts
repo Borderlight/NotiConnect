@@ -211,7 +211,7 @@ export class FormularioComponent {
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
-      empresaOrganizadora: ['', [Validators.required]], // Departamento organizador
+      departamento: ['', [Validators.required]], // Departamento organizador
       tipoEvento: ['', Validators.required],
       descripcion: ['', [Validators.required]],
       adjuntos: [''], // Sin validadores
@@ -466,7 +466,7 @@ export class FormularioComponent {
     // Verificar campos requeridos específicos
     const camposRequeridos = {
       titulo: this.formularioEvento.get('titulo')?.value,
-      empresaOrganizadora: this.formularioEvento.get('empresaOrganizadora')?.value,
+      departamento: this.formularioEvento.get('departamento')?.value,
       tipoEvento: this.formularioEvento.get('tipoEvento')?.value,
       descripcion: this.formularioEvento.get('descripcion')?.value,
     };
@@ -776,7 +776,7 @@ export class FormularioComponent {
     if (valor && !this.opcionesDepartamento.includes(valor) && !this.departamentosPersonalizados.includes(valor)) {
       this.departamentosPersonalizados.push(valor);
       localStorage.setItem('departamentosPersonalizados', JSON.stringify(this.departamentosPersonalizados));
-      this.formularioEvento.get('empresaOrganizadora')?.setValue(valor);
+      this.formularioEvento.get('departamento')?.setValue(valor);
       this.mostrarInputDepartamento = false;
       this.nuevoDepartamento = '';
       this.mostrarErrorDepartamento = false;

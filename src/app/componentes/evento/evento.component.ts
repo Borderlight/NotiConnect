@@ -52,6 +52,7 @@ export class EventoComponent {
     
     this.editForm = this.fb.group({
       titulo: [this.evento.titulo, Validators.required],
+      departamento: [this.evento.departamento || '', Validators.required],
       ponente: [primerPonente, Validators.required],
       fecha: [primeraUbicacion?.fecha || this.evento.fecha, Validators.required],
       horaInicio: [primeraUbicacion?.horaInicio || this.evento.horaInicio, Validators.required],
@@ -126,6 +127,28 @@ export class EventoComponent {
 
   get ponentesTexto(): string {
     return this.evento?.ponentes?.map(p => p.nombre).filter(n => n).join(', ') || '';
+  }
+
+  get ubicacionesTexto(): string {
+    if (!this.evento?.ubicaciones || this.evento.ubicaciones.length === 0) {
+      // Retrocompatibilidad
+      const fecha = this.fechaFormateada;
+      const hora = this.horaTexto;
+      const lugar = this.lugarTexto;
+      return `${fecha} | ${hora} | ${lugar}`;
+    }
+
+    return this.evento.ubicaciones.map(ubicacion => {
+      const fecha = new Date(ubicacion.fecha).toLocaleDateString('es-ES', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+      const hora = ubicacion.tipoHorario === 'horario' && ubicacion.horaFin 
+        ? `${ubicacion.horaInicio} - ${ubicacion.horaFin}`
+        : ubicacion.horaInicio || ubicacion.hora || '';
+      const lugar = ubicacion.aula ? `${ubicacion.lugar} - ${ubicacion.aula}` : ubicacion.lugar;
+      
+      return `${fecha} | ${hora} | ${lugar}`;
+    }).join('\n');
   }
 
   get horaTexto(): string {
@@ -213,6 +236,7 @@ export class EventoComponent {
       this.actualizar.emit({
         _id: this.evento._id,
         titulo: this.editForm.value.titulo,
+        departamento: this.editForm.value.departamento,
         ponentes: this.evento.ponentes,
         ubicaciones: this.evento.ubicaciones,
         actividad: this.editForm.value.actividad,
@@ -224,6 +248,7 @@ export class EventoComponent {
       
       // Actualizar campos directos en el evento local
       this.evento.titulo = this.editForm.value.titulo;
+      this.evento.departamento = this.editForm.value.departamento;
       this.evento.actividad = this.editForm.value.actividad;
       
       this.editMode = false;
