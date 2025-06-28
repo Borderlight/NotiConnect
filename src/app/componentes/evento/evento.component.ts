@@ -275,9 +275,9 @@ export class EventoComponent {
       
       // Actualizar servicios
       this.evento.servicios = formValue.servicios
-        .filter((s: any) => s.servicio && s.servicio.trim())
+        .filter((s: any) => s.servicios && s.servicios.trim())
         .map((servicio: any) => ({
-          servicios: servicio.servicio.trim(),
+          servicios: servicio.servicios.trim(),
           grado: servicio.grado || undefined
         }));
       
@@ -565,7 +565,7 @@ export class EventoComponent {
     if (this.evento.servicios && this.evento.servicios.length > 0) {
       this.evento.servicios.forEach(servicio => {
         serviciosArray.push(this.fb.group({
-          servicio: [servicio.servicios || '', Validators.required],
+          servicios: [servicio.servicios || '', Validators.required],
           grado: [servicio.grado || '']
         }));
       });
@@ -611,7 +611,7 @@ export class EventoComponent {
   agregarServicio(): void {
     const serviciosArray = this.editForm.get('servicios') as FormArray;
     serviciosArray.push(this.fb.group({
-      servicio: [''],
+      servicios: [''],
       grado: ['']
     }));
   }
@@ -708,5 +708,20 @@ export class EventoComponent {
     if (!fecha) return '';
     const date = new Date(fecha);
     return date.toISOString().substring(0, 10);
+  }
+
+  // Método para traducir nombres de lugares
+  traducirLugar(lugar: string): string {
+    const traduccionesLugares: { [key: string]: string } = {
+      'FACULTY': 'Facultad',
+      'AULA_MAGNA': 'Aula de grados',
+      'HUBdeInnovacion': 'HUB de Innovación',
+      'LIBRARY': 'Biblioteca',
+      'AuditorioJuanPablo': 'Auditorio Juan Pablo II',
+      'S-41': 'S-41',
+      'ONLINE': 'Online'
+    };
+    
+    return traduccionesLugares[lugar] || lugar;
   }
 }

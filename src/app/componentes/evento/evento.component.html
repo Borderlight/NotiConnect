@@ -83,7 +83,7 @@
                   </div>
                   <div class="detalle-secundario">
                     <strong>Lugar:</strong>
-                    <span>{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</span>
+                    <span>{{ traducirLugar(ubicacion.lugar) }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</span>
                   </div>
                 </div>
               }
@@ -99,7 +99,7 @@
                 </div>
                 <div class="detalle-secundario">
                   <strong>Lugar:</strong>
-                  <span>{{ lugarTexto }}</span>
+                  <span>{{ traducirLugar(lugarTexto) }}</span>
                 </div>
               </div>
             }
@@ -167,7 +167,7 @@
                         <select formControlName="lugar" class="input-edit">
                           <option value="">Seleccionar lugar</option>
                           <option value="FACULTY">Facultad</option>
-                          <option value="AULA_MAGNA">Aula Magna</option>
+                          <option value="AULA_MAGNA">Aula de grados</option>
                           <option value="HUBdeInnovacion">HUB de Innovación</option>
                           <option value="LIBRARY">Biblioteca</option>
                           <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
@@ -334,16 +334,20 @@
                   @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
                     <div class="detalle-edit-item" [formGroupName]="i">
                       <button type="button" class="btn-eliminar-item" (click)="eliminarServicio(i)">🗑️</button>
-                      <select formControlName="servicio" class="input-edit">
+                      <select formControlName="servicios" class="input-edit">
                         <option value="">Seleccionar servicio</option>
                         <!-- Facultades -->
                         <optgroup label="Facultades">
-                          <option value="Facultad de Ciencias Experimentales">Facultad de Ciencias Experimentales</option>
                           <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
-                          <option value="Facultad de Ciencias Sociales y de la Comunicación">Facultad de Ciencias Sociales y de la Comunicación</option>
-                          <option value="Facultad de Empresa y Comunicación">Facultad de Empresa y Comunicación</option>
-                          <option value="Facultad de Humanidades y Ciencias de la Educación">Facultad de Humanidades y Ciencias de la Educación</option>
-                          <option value="Facultad de Ingeniería y Tecnología">Facultad de Ingeniería y Tecnología</option>
+                          <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
+                          <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
+                          <option value="Facultad de Comunicación">Facultad de Comunicación</option>
+                          <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
+                          <option value="Facultad de Educación">Facultad de Educación</option>
+                          <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
+                          <option value="Facultad de Informática">Facultad de Informática</option>
+                          <option value="Facultad de Psicología">Facultad de Psicología</option>
+                          <option value="Facultad de Teología">Facultad de Teología</option>
                         </optgroup>
                         <!-- Servicios -->
                         <optgroup label="Servicios">
