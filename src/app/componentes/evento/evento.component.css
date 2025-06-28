@@ -60,11 +60,12 @@
 .evento-imagen {
   width: 120px;
   height: 180px;
-  object-fit: cover; /* Cambiar de contain a cover para llenar todo el container */
+  object-fit: contain;
   border-radius: 8px;
   background: #f8f9fa;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #e9ecef;
+  object-position: center; /* Centra la imagen dentro del contenedor */
 }
 
 .evento-main-col {
@@ -624,30 +625,55 @@
 /* Estilos para botones de edición en modo edit */
 .btn-guardar, .btn-cancelar {
   background: none;
-  border: none;
+  border: 2px solid #1976d2;
+  color: #1976d2;
   padding: 8px 12px;
   margin: 0 0.2rem;
   cursor: pointer;
-  transition: transform 0.15s, color 0.15s;
+  transition: transform 0.15s, color 0.15s, background 0.15s;
   font-size: 1.2rem;
-  color: var(--color-texto-principal);
+  border-radius: 4px;
 }
 
 .btn-guardar:focus, .btn-cancelar:focus {
   outline: 2px solid #1976d2;
 }
 
-.btn-guardar:hover, .btn-cancelar:hover {
-  transform: scale(1.25);
-  color: #1976d2;
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: #1976d2;
+  color: white;
 }
 
 .btn-cancelar {
+  border-color: #d32f2f;
   color: #d32f2f; /* rojo fuerte, típico de cancelar o eliminar */
 }
 
 .btn-cancelar:hover {
-  color: #b71c1c; /* rojo más oscuro al pasar el cursor */
+  transform: scale(1.05);
+  background: #d32f2f;
+  color: white;
+}
+
+/* Selector de tipo de evento en el header */
+.evento-tipo-selector {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background-color: var(--color-fondo-seccion);
+  color: var(--color-texto-principal);
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
 }
 
 /* Estilos para las ubicaciones */
@@ -709,13 +735,37 @@
   border-radius: 4px;
   font-family: inherit;
   font-size: 0.9rem;
+  background-color: #fff;
+  color: #333;
 }
 
-.input-edit.textarea-edit {
-  width: 100%;
-  padding: 0.5rem;
+.input-edit select,
+select.input-edit {
+  background-color: #fff;
+  color: #333;
   border: 1px solid #ddd;
+  padding: 0.5rem;
   border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.input-edit select:focus,
+select.input-edit:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.evento-tipo-selector {
+  background-color: #fff !important;
+  color: #333 !important;
+  border: 1px solid #ddd;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 /* Estilos para la sección del título y contenido principal */
@@ -912,16 +962,4 @@
 .adjunto-edit-item .adjunto-nombre {
   font-size: 0.8rem;
   text-align: center;
-}
-
-/* Responsive para modo edición */
-@media (max-width: 768px) {
-  .ubicacion-edit-campos > div {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .adjuntos-edit-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
 }

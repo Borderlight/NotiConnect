@@ -32,6 +32,19 @@ export class EventoComponent {
     this.idiomaService.obtenerIdiomaActual().subscribe(
       lang => this.currentLang = lang
     );
+    
+    // Inicializar el formulario vacío para evitar errores
+    this.editForm = this.fb.group({
+      tipoEvento: [''],
+      titulo: [''],
+      departamento: [''],
+      descripcion: [''],
+      actividad: [''],
+      ubicaciones: this.fb.array([]),
+      ponentes: this.fb.array([]),
+      servicios: this.fb.array([]),
+      enlaces: this.fb.array([])
+    });
   }
 
   // Función eliminada - ya no navegamos a detalles, solo expandimos la card
@@ -47,8 +60,9 @@ export class EventoComponent {
     event.stopPropagation();
     this.editMode = true;
     
-    // Crear formulario con FormArrays
+    // Crear formulario con FormArrays vacíos inicialmente
     this.editForm = this.fb.group({
+      tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
       departamento: [this.evento.departamento || '', Validators.required],
       descripcion: [this.evento.descripcion || ''],
@@ -59,16 +73,10 @@ export class EventoComponent {
       enlaces: this.fb.array([])
     });
 
-    // Llenar ubicaciones
+    // Llenar FormArrays con datos existentes
     this.initUbicaciones();
-    
-    // Llenar ponentes
     this.initPonentes();
-    
-    // Llenar servicios
     this.initServicios();
-    
-    // Llenar enlaces
     this.initEnlaces();
   }
 
@@ -244,6 +252,10 @@ export class EventoComponent {
   // Al guardar, sincroniza los campos complejos
   guardarEdicion(event: Event) {
     event.stopPropagation();
+    console.log('Guardando edición...', this.editForm.value);
+    console.log('Formulario válido:', this.editForm.valid);
+    console.log('Errores del formulario:', this.editForm.errors);
+    
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
       
@@ -282,9 +294,17 @@ export class EventoComponent {
           url: enlace.url.trim()
         }));
       
+      console.log('Datos actualizados:', {
+        ubicaciones: this.evento.ubicaciones,
+        ponentes: this.evento.ponentes,
+        servicios: this.evento.servicios,
+        enlaces: this.evento.enlaces
+      });
+      
       // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
+        tipoEvento: formValue.tipoEvento,
         titulo: formValue.titulo,
         departamento: formValue.departamento,
         descripcion: formValue.descripcion,
@@ -296,6 +316,7 @@ export class EventoComponent {
       });
       
       // Actualizar campos directos en el evento local
+      this.evento.tipoEvento = formValue.tipoEvento;
       this.evento.titulo = formValue.titulo;
       this.evento.departamento = formValue.departamento;
       this.evento.descripcion = formValue.descripcion;
@@ -303,7 +324,16 @@ export class EventoComponent {
       
       this.editMode = false;
     } else {
+      console.log('Formulario inválido, marcando campos tocados...');
       this.editForm.markAllAsTouched();
+      
+      // Mostrar errores específicos
+      Object.keys(this.editForm.controls).forEach(key => {
+        const controlErrors = this.editForm.get(key)?.errors;
+        if (controlErrors) {
+          console.log(`Error en ${key}:`, controlErrors);
+        }
+      });
     }
   }
 
@@ -517,14 +547,20 @@ export class EventoComponent {
         }));
       });
     } else {
-      // Crear una ubicación por defecto con datos legacy
+      // Crear una ubicación por defecto con datos legacy si existen
+      const fechaDefault = this.evento.fecha ? this.formatDateForInput(this.evento.fecha) : '';
+      const horaDefault = this.evento.horaInicio || '';
+      const horaFinDefault = this.evento.horaFin || '';
+      const lugarDefault = this.evento.lugar || '';
+      const aulaDefault = this.evento.aula || '';
+      
       ubicacionesArray.push(this.fb.group({
-        fecha: [this.formatDateForInput(this.evento.fecha), Validators.required],
-        tipoHorario: [this.evento.horaFin ? 'horario' : 'hora'],
-        horaInicio: [this.evento.horaInicio || '', Validators.required],
-        horaFin: [this.evento.horaFin || ''],
-        lugar: [this.evento.lugar || '', Validators.required],
-        aula: [this.evento.aula || '']
+        fecha: [fechaDefault, Validators.required],
+        tipoHorario: [horaFinDefault ? 'horario' : 'hora'],
+        horaInicio: [horaDefault, Validators.required],
+        horaFin: [horaFinDefault],
+        lugar: [lugarDefault, Validators.required],
+        aula: [aulaDefault]
       }));
     }
   }
@@ -539,13 +575,8 @@ export class EventoComponent {
           afiliacion: [ponente.afiliacion || '']
         }));
       });
-    } else {
-      // Crear un ponente por defecto
-      ponentesArray.push(this.fb.group({
-        nombre: ['', Validators.required],
-        afiliacion: ['']
-      }));
     }
+    // Si no hay ponentes, el usuario puede agregar con el botón +
   }
 
   private initServicios(): void {
@@ -558,13 +589,8 @@ export class EventoComponent {
           grado: [servicio.grado || '']
         }));
       });
-    } else {
-      // Crear un servicio por defecto
-      serviciosArray.push(this.fb.group({
-        servicio: [''],
-        grado: ['']
-      }));
     }
+    // Si no hay servicios, el usuario puede agregar con el botón +
   }
 
   private initEnlaces(): void {
@@ -577,13 +603,8 @@ export class EventoComponent {
           url: [enlace.url || '', Validators.required]
         }));
       });
-    } else {
-      // Crear un enlace por defecto
-      enlacesArray.push(this.fb.group({
-        tipo: [''],
-        url: ['']
-      }));
     }
+    // Si no hay enlaces, el usuario puede agregar con el botón +
   }
 
   // Métodos para agregar elementos

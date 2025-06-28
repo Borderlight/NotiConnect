@@ -17,13 +17,35 @@
   </div>
   <div class="evento-imagen-col">
     <img [src]="evento.imagen" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
-    <div *ngIf="evento.imagen" class="caratula-label">
-      {{ 'FORM.COVER.LABEL' | translate }}
-    </div>
+    @if (evento.imagen) {
+      <div class="caratula-label">
+        {{ 'FORM.COVER.LABEL' | translate }}
+      </div>
+    }
   </div>
   <div class="evento-main-col">
     <div class="evento-header">
-      <span class="evento-tipo">{{ 'EVENT_TYPES.' + evento.tipoEvento | translate }}</span>
+      @if (!editMode) {
+        <span class="evento-tipo">{{ 'EVENT_TYPES.' + evento.tipoEvento | translate }}</span>
+      } @else {
+        <div [formGroup]="editForm">
+          <select formControlName="tipoEvento" class="evento-tipo-selector">
+            <option value="EVENT">{{ 'EVENT_TYPES.EVENT' | translate }}</option>
+            <option value="COURSE">{{ 'EVENT_TYPES.COURSE' | translate }}</option>
+            <option value="WORKSHOP">{{ 'EVENT_TYPES.WORKSHOP' | translate }}</option>
+            <option value="CONFERENCE_OR_CONGRESS">{{ 'EVENT_TYPES.CONFERENCE_OR_CONGRESS' | translate }}</option>
+            <option value="BOOK_PRESENTATION">{{ 'EVENT_TYPES.BOOK_PRESENTATION' | translate }}</option>
+            <option value="TALK">{{ 'EVENT_TYPES.TALK' | translate }}</option>
+            <option value="EXHIBITION">{{ 'EVENT_TYPES.EXHIBITION' | translate }}</option>
+            <option value="CONTEST_OR_COMPETITION">{{ 'EVENT_TYPES.CONTEST_OR_COMPETITION' | translate }}</option>
+            <option value="VISIT">{{ 'EVENT_TYPES.VISIT' | translate }}</option>
+            <option value="INTERVIEW">{{ 'EVENT_TYPES.INTERVIEW' | translate }}</option>
+            <option value="RESEARCH_RESULTS">{{ 'EVENT_TYPES.RESEARCH_RESULTS' | translate }}</option>
+            <option value="SHOWS">{{ 'EVENT_TYPES.SHOWS' | translate }}</option>
+            <option value="VISITS_OR_EXCURSIONS">{{ 'EVENT_TYPES.VISITS_OR_EXCURSIONS' | translate }}</option>
+          </select>
+        </div>
+      }
       <span class="acciones">
         <!-- Los botones aquí quedan ocultos por CSS -->
       </span>
@@ -70,7 +92,7 @@
           </div>
         } @else {
           <!-- MODO EDICIÓN CON ORDEN CORRECTO -->
-          <form [formGroup]="editForm">
+          <div [formGroup]="editForm">
             <!-- Título -->
             <h2 class="evento-titulo">
               <input formControlName="titulo" class="input-edit" placeholder="Título del evento" />
@@ -80,10 +102,12 @@
             <p><strong>Departamento:</strong> 
               <select formControlName="departamento" class="input-edit">
                 <option value="">Seleccionar departamento</option>
+                <option value="Biblioteca">Biblioteca</option>
                 <option value="UCI">UCI</option>
-                <option value="Ingeniería">Ingeniería</option>
-                <option value="Ciencias">Ciencias</option>
-                <option value="Administración">Administración</option>
+                <option value="GIT">GIT</option>
+                <option value="Facultad">Facultad</option>
+                <option value="Formación Permanente">Formación Permanente</option>
+                <option value="Internacionales">Internacionales</option>
               </select>
             </p>
             
@@ -123,11 +147,13 @@
                         <strong>Lugar:</strong>
                         <select formControlName="lugar" class="input-edit">
                           <option value="">Seleccionar lugar</option>
-                          <option value="Auditorio">Auditorio</option>
-                          <option value="Laboratorio">Laboratorio</option>
-                          <option value="Aula Magna">Aula Magna</option>
-                          <option value="ONLINE">ONLINE</option>
-                          <option value="LIBRARY">LIBRARY</option>
+                          <option value="FACULTY">Facultad</option>
+                          <option value="AULA_MAGNA">Aula Magna</option>
+                          <option value="HUBdeInnovacion">HUB de Innovación</option>
+                          <option value="LIBRARY">Biblioteca</option>
+                          <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
+                          <option value="S-41">S-41</option>
+                          <option value="ONLINE">Online</option>
                         </select>
                         <input formControlName="aula" class="input-edit" placeholder="Aula (opcional)" />
                       </div>
@@ -142,7 +168,7 @@
                 {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
               </button>
             </div>
-          </form>
+          </div>
         }
       </div>
       @if (mostrarDetalles) {
@@ -247,34 +273,35 @@
               </div>
             } @else {
               <!-- EDICIÓN DE DETALLES - Continuación del mismo formulario -->
-              <!-- Ponentes -->
-              <div class="detalle-seccion">
-                <div class="section-header">
-                  <strong>Ponente(s):</strong>
-                  <button type="button" class="btn-agregar" (click)="agregarPonente()">+ Agregar</button>
+              <div [formGroup]="editForm">
+                <!-- Ponentes -->
+                <div class="detalle-seccion">
+                  <div class="section-header">
+                    <strong>Ponente(s):</strong>
+                    <button type="button" class="btn-agregar" (click)="agregarPonente()">+ Agregar</button>
+                  </div>
+                  <div formArrayName="ponentes">
+                    @if (ponentesFormArray.length === 0) {
+                      <p class="detalle-vacio">No hay ponentes. Haz clic en "+ Agregar" para añadir uno.</p>
+                    }
+                    @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
+                      <div class="detalle-edit-item" [formGroupName]="i">
+                        <button type="button" class="btn-eliminar-item" (click)="eliminarPonente(i)">🗑️</button>
+                        <input formControlName="nombre" class="input-edit" placeholder="Nombre del ponente" />
+                        <input formControlName="afiliacion" class="input-edit" placeholder="Afiliación (opcional)" />
+                      </div>
+                    }
+                  </div>
                 </div>
-                <div formArrayName="ponentes">
-                  @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
-                    <div class="detalle-edit-item" [formGroupName]="i">
-                      <button type="button" class="btn-eliminar-item" (click)="eliminarPonente(i)">🗑️</button>
-                      <input formControlName="nombre" class="input-edit" placeholder="Nombre del ponente" />
-                      <input formControlName="afiliacion" class="input-edit" placeholder="Afiliación (opcional)" />
-                    </div>
-                  }
-                </div>
-              </div>
 
-              <!-- Actividad -->
-              <div class="detalle-seccion">
-                <strong>Actividad:</strong>
-                <select formControlName="actividad" class="input-edit">
-                  <option value="">Seleccionar actividad</option>
-                  <option value="Conferencia">Conferencia</option>
-                  <option value="Taller">Taller</option>
-                  <option value="Seminario">Seminario</option>
-                  <option value="Mesa redonda">Mesa redonda</option>
-                </select>
-              </div>
+                <!-- Actividad -->
+                <div class="detalle-seccion">
+                  <strong>Actividad:</strong>
+                  <select formControlName="actividad" class="input-edit">
+                    <option value="">Seleccionar actividad</option>
+                    <option value="Semana de la Ciencia">Semana de la Ciencia</option>
+                  </select>
+                </div>
 
               <!-- Servicios -->
               <div class="detalle-seccion">
@@ -283,10 +310,45 @@
                   <button type="button" class="btn-agregar" (click)="agregarServicio()">+ Agregar</button>
                 </div>
                 <div formArrayName="servicios">
+                  @if (serviciosFormArray.length === 0) {
+                    <p class="detalle-vacio">No hay servicios. Haz clic en "+ Agregar" para añadir uno.</p>
+                  }
                   @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
                     <div class="detalle-edit-item" [formGroupName]="i">
                       <button type="button" class="btn-eliminar-item" (click)="eliminarServicio(i)">🗑️</button>
-                      <input formControlName="servicio" class="input-edit" placeholder="Nombre del servicio" />
+                      <select formControlName="servicio" class="input-edit">
+                        <option value="">Seleccionar servicio</option>
+                        <!-- Facultades -->
+                        <optgroup label="Facultades">
+                          <option value="Facultad de Ciencias Experimentales">Facultad de Ciencias Experimentales</option>
+                          <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
+                          <option value="Facultad de Ciencias Sociales y de la Comunicación">Facultad de Ciencias Sociales y de la Comunicación</option>
+                          <option value="Facultad de Empresa y Comunicación">Facultad de Empresa y Comunicación</option>
+                          <option value="Facultad de Humanidades y Ciencias de la Educación">Facultad de Humanidades y Ciencias de la Educación</option>
+                          <option value="Facultad de Ingeniería y Tecnología">Facultad de Ingeniería y Tecnología</option>
+                        </optgroup>
+                        <!-- Servicios -->
+                        <optgroup label="Servicios">
+                          <option value="Gestión de la Investigación">Gestión de la Investigación</option>
+                          <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
+                          <option value="Movilidad Internacional">Movilidad Internacional</option>
+                          <option value="Capellanía">Capellanía</option>
+                          <option value="Deportes">Deportes</option>
+                          <option value="Coro">Coro</option>
+                          <option value="Asistencia Psicológica">Asistencia Psicológica</option>
+                          <option value="Cultura Científica">Cultura Científica</option>
+                          <option value="Unidad de Igualdad">Unidad de Igualdad</option>
+                          <option value="Voluntariado">Voluntariado</option>
+                        </optgroup>
+                        <!-- Vicerrectorados -->
+                        <optgroup label="Vicerrectorados">
+                          <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
+                          <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
+                          <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
+                          <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
+                          <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
+                        </optgroup>
+                      </select>
                       <input formControlName="grado" class="input-edit" placeholder="Grado/Nivel (opcional)" />
                     </div>
                   }
@@ -300,6 +362,9 @@
                   <button type="button" class="btn-agregar" (click)="agregarEnlace()">+ Agregar</button>
                 </div>
                 <div formArrayName="enlaces">
+                  @if (enlacesFormArray.length === 0) {
+                    <p class="detalle-vacio">No hay enlaces. Haz clic en "+ Agregar" para añadir uno.</p>
+                  }
                   @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
                     <div class="detalle-edit-item" [formGroupName]="i">
                       <button type="button" class="btn-eliminar-item" (click)="eliminarEnlace(i)">🗑️</button>
@@ -350,6 +415,7 @@
                   <p class="detalle-vacio">No hay adjuntos</p>
                 }
                 <input type="file" #fileInput multiple style="display: none" (change)="onFileSelected($event)" />
+              </div>
               </div>
             }
             <div style="height: 1.7em;"></div>
