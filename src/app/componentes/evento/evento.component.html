@@ -110,16 +110,16 @@
             </button>
           </div>
         } @else {
-          <!-- MODO EDICIÓN CON ORDEN CORRECTO -->
+          <!-- MODO EDICIÓN SIMPLIFICADO -->
           <div [formGroup]="editForm">
             <!-- Título -->
             <h2 class="evento-titulo">
-              <input formControlName="titulo" class="input-edit" placeholder="Título del evento" />
+              <input formControlName="titulo" class="input-edit titulo-edit" placeholder="Título del evento" />
             </h2>
             
             <!-- Departamento -->
             <p><strong>Departamento:</strong> 
-              <select formControlName="departamento" class="input-edit">
+              <select formControlName="departamento" class="input-edit departamento-edit">
                 <option value="">Seleccionar departamento</option>
                 <option value="Biblioteca">Biblioteca</option>
                 <option value="UCI">UCI</option>
@@ -131,27 +131,29 @@
             </p>
             
             <!-- Descripción -->
-            <p class="evento-descripcion"><strong>Descripción:</strong></p>
-            <div class="descripcion-edit">
-              <textarea formControlName="descripcion" class="input-edit textarea-edit" placeholder="Descripción del evento"></textarea>
+            <div class="detalle-seccion">
+              <strong>Descripción:</strong>
+              <textarea formControlName="descripcion" class="input-edit descripcion-edit" placeholder="Descripción del evento"></textarea>
             </div>
             
             <!-- Ubicaciones -->
-            <div class="ubicaciones-section">
-              <div class="section-header">
+            <div class="detalle-seccion">
+              <div class="section-header-simple">
                 <strong>Ubicaciones:</strong>
-                <button type="button" class="btn-agregar" (click)="agregarUbicacion()">+ Agregar</button>
+                <button type="button" class="btn-agregar-simple" (click)="agregarUbicacion()">+ Agregar</button>
               </div>
               <div formArrayName="ubicaciones">
                 @for (ubicacion of ubicacionesFormArray.controls; track $index; let i = $index) {
-                  <div class="ubicacion-edit-item" [formGroupName]="i">
-                    <button type="button" class="btn-eliminar-item" (click)="eliminarUbicacion(i)">🗑️</button>
-                    <div class="ubicacion-edit-campos">
-                      <div class="ubicacion-fecha">
+                  <div class="ubicacion-edit-simple" [formGroupName]="i">
+                    @if (ubicacionesFormArray.length > 1) {
+                      <button type="button" class="btn-eliminar-simple" (click)="eliminarUbicacion(i)">×</button>
+                    }
+                    <div class="ubicacion-campos-grid">
+                      <div>
                         <strong>Fecha:</strong>
-                        <input formControlName="fecha" type="date" class="input-edit" />
+                        <input formControlName="fecha" type="date" class="input-edit fecha-edit" />
                       </div>
-                      <div class="ubicacion-hora">
+                      <div>
                         <strong>Tipo:</strong>
                         <select formControlName="tipoHorario" class="input-edit">
                           <option value="hora">Hora específica</option>
@@ -162,7 +164,7 @@
                           <input formControlName="horaFin" type="time" class="input-edit" />
                         }
                       </div>
-                      <div class="ubicacion-lugar">
+                      <div>
                         <strong>Lugar:</strong>
                         <select formControlName="lugar" class="input-edit">
                           <option value="">Seleccionar lugar</option>
@@ -290,21 +292,23 @@
                 }
               </div>
             } @else {
-              <!-- EDICIÓN DE DETALLES - Continuación del mismo formulario -->
+              <!-- EDICIÓN DE DETALLES SIMPLIFICADA -->
               <div [formGroup]="editForm">
                 <!-- Ponentes -->
                 <div class="detalle-seccion">
-                  <div class="section-header">
+                  <div class="section-header-simple">
                     <strong>Ponente(s):</strong>
-                    <button type="button" class="btn-agregar" (click)="agregarPonente()">+ Agregar</button>
+                    <button type="button" class="btn-agregar-simple" (click)="agregarPonente()">+ Agregar</button>
                   </div>
                   <div formArrayName="ponentes">
                     @if (ponentesFormArray.length === 0) {
-                      <p class="detalle-vacio">No hay ponentes. Haz clic en "+ Agregar" para añadir uno.</p>
+                      <p class="detalle-vacio">No hay ponentes.</p>
                     }
                     @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
-                      <div class="detalle-edit-item" [formGroupName]="i">
-                        <button type="button" class="btn-eliminar-item" (click)="eliminarPonente(i)">🗑️</button>
+                      <div class="detalle-item-edit" [formGroupName]="i">
+                        @if (ponentesFormArray.length > 1) {
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
+                        }
                         <input formControlName="nombre" class="input-edit" placeholder="Nombre del ponente" />
                         <input formControlName="afiliacion" class="input-edit" placeholder="Afiliación (opcional)" />
                       </div>
@@ -321,122 +325,126 @@
                   </select>
                 </div>
 
-              <!-- Servicios -->
-              <div class="detalle-seccion">
-                <div class="section-header">
-                  <strong>Servicios:</strong>
-                  <button type="button" class="btn-agregar" (click)="agregarServicio()">+ Agregar</button>
-                </div>
-                <div formArrayName="servicios">
-                  @if (serviciosFormArray.length === 0) {
-                    <p class="detalle-vacio">No hay servicios. Haz clic en "+ Agregar" para añadir uno.</p>
-                  }
-                  @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
-                    <div class="detalle-edit-item" [formGroupName]="i">
-                      <button type="button" class="btn-eliminar-item" (click)="eliminarServicio(i)">🗑️</button>
-                      <select formControlName="servicios" class="input-edit">
-                        <option value="">Seleccionar servicio</option>
-                        <!-- Facultades -->
-                        <optgroup label="Facultades">
-                          <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
-                          <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
-                          <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
-                          <option value="Facultad de Comunicación">Facultad de Comunicación</option>
-                          <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
-                          <option value="Facultad de Educación">Facultad de Educación</option>
-                          <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
-                          <option value="Facultad de Informática">Facultad de Informática</option>
-                          <option value="Facultad de Psicología">Facultad de Psicología</option>
-                          <option value="Facultad de Teología">Facultad de Teología</option>
-                        </optgroup>
-                        <!-- Servicios -->
-                        <optgroup label="Servicios">
-                          <option value="Gestión de la Investigación">Gestión de la Investigación</option>
-                          <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
-                          <option value="Movilidad Internacional">Movilidad Internacional</option>
-                          <option value="Capellanía">Capellanía</option>
-                          <option value="Deportes">Deportes</option>
-                          <option value="Coro">Coro</option>
-                          <option value="Asistencia Psicológica">Asistencia Psicológica</option>
-                          <option value="Cultura Científica">Cultura Científica</option>
-                          <option value="Unidad de Igualdad">Unidad de Igualdad</option>
-                          <option value="Voluntariado">Voluntariado</option>
-                        </optgroup>
-                        <!-- Vicerrectorados -->
-                        <optgroup label="Vicerrectorados">
-                          <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
-                          <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
-                          <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
-                          <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
-                          <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
-                        </optgroup>
-                      </select>
-                      <input formControlName="grado" class="input-edit" placeholder="Grado/Nivel (opcional)" />
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <!-- Enlaces -->
-              <div class="detalle-seccion">
-                <div class="section-header">
-                  <strong>Enlaces:</strong>
-                  <button type="button" class="btn-agregar" (click)="agregarEnlace()">+ Agregar</button>
-                </div>
-                <div formArrayName="enlaces">
-                  @if (enlacesFormArray.length === 0) {
-                    <p class="detalle-vacio">No hay enlaces. Haz clic en "+ Agregar" para añadir uno.</p>
-                  }
-                  @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
-                    <div class="detalle-edit-item" [formGroupName]="i">
-                      <button type="button" class="btn-eliminar-item" (click)="eliminarEnlace(i)">🗑️</button>
-                      <select formControlName="tipo" class="input-edit">
-                        <option value="">Tipo de enlace</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="YouTube">YouTube</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Otros">Otros</option>
-                      </select>
-                      <input formControlName="url" class="input-edit" placeholder="URL del enlace" />
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <!-- Adjuntos -->
-              <div class="detalle-seccion">
-                <div class="section-header">
-                  <strong>Adjuntos:</strong>
-                  <button type="button" class="btn-agregar" (click)="agregarAdjunto()">+ Agregar</button>
-                </div>
-                @if (evento.adjuntos && evento.adjuntos.length > 0) {
-                  <div class="adjuntos-grid">
-                    @for (adjunto of evento.adjuntos; track $index) {
-                      <div class="adjunto-item">
-                        <button type="button" class="btn-eliminar-adjunto" (click)="eliminarAdjunto($index)">🗑️</button>
-                        @if (esImagen(adjunto)) {
-                          <div class="adjunto-imagen-preview">
-                            <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
-                            <div class="checkbox-caratula" 
-                                 (click)="seleccionarCaratula(adjunto, $event)"
-                                 [class.selected]="esCaratulaSeleccionada(adjunto)">
-                            </div>
-                          </div>
-                        } @else {
-                          <div class="adjunto-archivo-preview">
-                            <div class="icono-archivo">{{ obtenerIconoAdjunto(adjunto) }}</div>
-                          </div>
+                <!-- Servicios -->
+                <div class="detalle-seccion">
+                  <div class="section-header-simple">
+                    <strong>Servicios:</strong>
+                    <button type="button" class="btn-agregar-simple" (click)="agregarServicio()">+ Agregar</button>
+                  </div>
+                  <div formArrayName="servicios">
+                    @if (serviciosFormArray.length === 0) {
+                      <p class="detalle-vacio">No hay servicios.</p>
+                    }
+                    @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
+                      <div class="detalle-item-edit" [formGroupName]="i">
+                        @if (serviciosFormArray.length > 1) {
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
                         }
-                        <div class="adjunto-nombre">{{ obtenerNombreAdjunto(adjunto, $index) }}</div>
+                        <select formControlName="servicios" class="input-edit">
+                          <option value="">Seleccionar servicio</option>
+                          <!-- Facultades -->
+                          <optgroup label="Facultades">
+                            <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
+                            <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
+                            <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
+                            <option value="Facultad de Comunicación">Facultad de Comunicación</option>
+                            <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
+                            <option value="Facultad de Educación">Facultad de Educación</option>
+                            <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
+                            <option value="Facultad de Informática">Facultad de Informática</option>
+                            <option value="Facultad de Psicología">Facultad de Psicología</option>
+                            <option value="Facultad de Teología">Facultad de Teología</option>
+                          </optgroup>
+                          <!-- Servicios -->
+                          <optgroup label="Servicios">
+                            <option value="Gestión de la Investigación">Gestión de la Investigación</option>
+                            <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
+                            <option value="Movilidad Internacional">Movilidad Internacional</option>
+                            <option value="Capellanía">Capellanía</option>
+                            <option value="Deportes">Deportes</option>
+                            <option value="Coro">Coro</option>
+                            <option value="Asistencia Psicológica">Asistencia Psicológica</option>
+                            <option value="Cultura Científica">Cultura Científica</option>
+                            <option value="Unidad de Igualdad">Unidad de Igualdad</option>
+                            <option value="Voluntariado">Voluntariado</option>
+                          </optgroup>
+                          <!-- Vicerrectorados -->
+                          <optgroup label="Vicerrectorados">
+                            <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
+                            <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
+                            <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
+                            <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
+                            <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
+                          </optgroup>
+                        </select>
+                        <input formControlName="grado" class="input-edit" placeholder="Grado/Nivel (opcional)" />
                       </div>
                     }
                   </div>
-                } @else {
-                  <p class="detalle-vacio">No hay adjuntos</p>
-                }
-                <input type="file" #fileInput multiple style="display: none" (change)="onFileSelected($event)" />
-              </div>
+                </div>
+
+                <!-- Enlaces -->
+                <div class="detalle-seccion">
+                  <div class="section-header-simple">
+                    <strong>Enlaces:</strong>
+                    <button type="button" class="btn-agregar-simple" (click)="agregarEnlace()">+ Agregar</button>
+                  </div>
+                  <div formArrayName="enlaces">
+                    @if (enlacesFormArray.length === 0) {
+                      <p class="detalle-vacio">No hay enlaces.</p>
+                    }
+                    @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
+                      <div class="detalle-item-edit" [formGroupName]="i">
+                        @if (enlacesFormArray.length > 1) {
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
+                        }
+                        <select formControlName="tipo" class="input-edit">
+                          <option value="">Tipo de enlace</option>
+                          <option value="Instagram">Instagram</option>
+                          <option value="YouTube">YouTube</option>
+                          <option value="LinkedIn">LinkedIn</option>
+                          <option value="TikTok">TikTok</option>
+                          <option value="Otros">Otros</option>
+                        </select>
+                        <input formControlName="url" class="input-edit" placeholder="URL del enlace" />
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Adjuntos -->
+                <div class="detalle-seccion">
+                  <div class="section-header-simple">
+                    <strong>Adjuntos:</strong>
+                    <button type="button" class="btn-agregar-simple" (click)="agregarAdjunto()">+ Agregar</button>
+                  </div>
+                  @if (evento.adjuntos && evento.adjuntos.length > 0) {
+                    <div class="adjuntos-grid">
+                      @for (adjunto of evento.adjuntos; track $index) {
+                        <div class="adjunto-item">
+                          <button type="button" class="btn-eliminar-adjunto-simple" (click)="eliminarAdjunto($index)">×</button>
+                          @if (esImagen(adjunto)) {
+                            <div class="adjunto-imagen-preview">
+                              <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
+                              <div class="checkbox-caratula" 
+                                   (click)="seleccionarCaratula(adjunto, $event)"
+                                   [class.selected]="esCaratulaSeleccionada(adjunto)">
+                              </div>
+                            </div>
+                          } @else {
+                            <div class="adjunto-archivo-preview">
+                              <div class="icono-archivo">{{ obtenerIconoAdjunto(adjunto) }}</div>
+                            </div>
+                          }
+                          <div class="adjunto-nombre">{{ obtenerNombreAdjunto(adjunto, $index) }}</div>
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <p class="detalle-vacio">No hay adjuntos</p>
+                  }
+                  <input type="file" #fileInput multiple style="display: none" (change)="onFileSelected($event)" />
+                </div>
               </div>
             }
             <div style="height: 1.7em;"></div>

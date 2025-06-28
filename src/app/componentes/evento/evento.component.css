@@ -693,168 +693,272 @@
   padding-right: 2.5rem;
 }
 
-/* Estilos específicos para selectores en modo edición */
+/* ================================
+   ESTILOS SIMPLIFICADOS PARA MODO EDICIÓN
+   ================================ */
+
+/* Estilos base para campos de entrada - más simples */
+.input-edit {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background-color: #ffffff;
+  color: #333333;
+  transition: border-color 0.2s ease;
+}
+
+.input-edit:focus {
+  outline: none;
+  border-color: var(--color-primario, #007bff);
+}
+
+/* Estilos específicos para campos especiales */
+.titulo-edit {
+  font-size: 1.3rem;
+  font-weight: 600;
+  border: none;
+  border-bottom: 2px solid #ddd;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.25rem 0;
+}
+
+.titulo-edit:focus {
+  border-bottom-color: var(--color-primario, #007bff);
+}
+
+.departamento-edit {
+  display: inline-block;
+  width: auto;
+  min-width: 200px;
+  margin-left: 0.5rem;
+}
+
+.descripcion-edit {
+  min-height: 60px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+/* Header simplificado para secciones - más limpio */
+.section-header-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.section-header-simple strong {
+  margin: 0;
+  color: var(--color-texto-principal);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Botón agregar simple - más discreto */
+.btn-agregar-simple {
+  background: none;
+  color: var(--color-primario, #007bff);
+  border: 1px solid var(--color-primario, #007bff);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-agregar-simple:hover {
+  background: var(--color-primario, #007bff);
+  color: white;
+}
+
+/* Items de edición simples - sin fondos */
+.detalle-item-edit {
+  margin-bottom: 0.75rem;
+  padding: 0.4rem;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: transparent;
+  position: relative;
+}
+
+.ubicacion-edit-simple {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: transparent;
+  position: relative;
+}
+
+/* Grid para campos de ubicación */
+.ubicacion-campos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.ubicacion-campos-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ubicacion-campos-grid > div strong {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+/* Responsive para ubicaciones */
+@media (min-width: 768px) {
+  .ubicacion-campos-grid {
+    grid-template-columns: 1fr 2fr 2fr;
+  }
+}
+
+/* Botón eliminar simple - más pequeño */
+.btn-eliminar-simple, 
+.btn-eliminar-adjunto-simple {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background-color 0.2s ease;
+}
+
+.btn-eliminar-simple:hover, 
+.btn-eliminar-adjunto-simple:hover {
+  background: #c82333;
+}
+
+/* Ajustes para campos múltiples en una línea */
+.detalle-item-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.detalle-item-edit .input-edit {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Mantener estilos existentes del modo vista sin cambios */
+.detalle-seccion {
+  margin-bottom: 1.5rem;
+}
+
+/* Ajustes específicos para que se mantenga la apariencia del modo vista */
+.evento-titulo-col .detalle-seccion {
+  margin-left: 0;
+  padding-left: 0;
+  max-width: 450px;
+}
+
+/* Simplificar los selectores de edición */
 select.input-edit,
-.input-edit select,
-.detalle-edit-item select,
-.ubicacion-edit-campos select,
-div[formGroup] select {
+.input-edit select {
   background-color: #ffffff !important;
   color: #333333 !important;
   border: 1px solid #ddd !important;
   padding: 0.5rem !important;
   border-radius: 4px !important;
-  font-family: inherit !important;
-  font-size: 0.9rem !important;
   cursor: pointer !important;
   appearance: auto !important;
-  -webkit-appearance: menulist !important;
-  -moz-appearance: menulist !important;
 }
 
-/* Opciones de los selectores */
 select.input-edit option,
-.input-edit select option,
-.detalle-edit-item select option,
-.ubicacion-edit-campos select option {
+.input-edit select option {
   background-color: #ffffff !important;
   color: #333333 !important;
-  padding: 0.5rem !important;
 }
 
-/* Selector de tipo de evento específico */
+/* Selector de tipo de evento simplificado */
 .evento-tipo-selector {
-  background-color: #ffffff !important;
-  color: #333333 !important;
+  background-color: var(--color-fondo-seccion) !important;
+  color: var(--color-texto-principal) !important;
   border: 1px solid #ddd !important;
-  padding: 0.3rem 0.8rem !important;
+  padding: 0.4rem 1rem !important;
   border-radius: 20px !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  appearance: auto !important;
-  -webkit-appearance: menulist !important;
-  -moz-appearance: menulist !important;
-}
-
-.evento-tipo-selector option {
-  background-color: #ffffff !important;
-  color: #333333 !important;
-}
-
-/* Estilos para focus en selectores */
-select.input-edit:focus,
-.input-edit select:focus,
-.detalle-edit-item select:focus,
-.ubicacion-edit-campos select:focus,
-.evento-tipo-selector:focus {
-  outline: none !important;
-  border-color: #007bff !important;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
-  background-color: #ffffff !important;
-  color: #333333 !important;
-}
-
-/* Estilos para el checkbox de carátula */
-.checkbox-caratula {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  background: #28a745; /* Verde */
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 3;
-}
-
-.checkbox-caratula:hover {
-  background: #218838; /* Verde más oscuro al hover */
-  transform: scale(1.1);
-}
-
-.checkbox-caratula.selected {
-  background: #28a745;
-}
-
-.checkbox-caratula.selected::after {
-  content: '✓';
-  color: white;
-  font-weight: bold;
-}
-
-/* Estilos para botones de eliminar */
-.btn-eliminar-item {
-  background: #dc3545 !important; /* Rojo para eliminar */
-  color: white !important;
-  border: none;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background 0.2s ease;
-}
-
-.btn-eliminar-item:hover {
-  background: #c82333 !important; /* Rojo más oscuro al hover */
-}
-
-/* Estilos para botón eliminar adjunto */
-.btn-eliminar-adjunto {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  background: #dc3545 !important; /* Rojo */
-  color: white !important;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 12px;
-  z-index: 4;
-  transition: background 0.2s ease;
-}
-
-.btn-eliminar-adjunto:hover {
-  background: #c82333 !important; /* Rojo más oscuro al hover */
-}
-
-/* Estilos específicos para ubicaciones */
-.detalle-principal,
-.detalle-secundario {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.detalle-principal strong,
-.detalle-secundario strong {
-  font-weight: 600; /* Peso consistente para todas las etiquetas */
-  color: var(--color-texto-principal);
-  min-width: 70px; /* Ancho mínimo para alineación */
-  flex-shrink: 0; /* No reducir el ancho */
-}
-
-.detalle-principal,
-.detalle-secundario {
-  font-weight: 400; /* Peso normal para el texto de contenido */
-  color: var(--color-texto-principal); /* Mismo color que las etiquetas */
-  margin: 0;
-}
-
-/* Sobrescribir estilos anteriores de detalle-secundario */
-.detalle-secundario {
   font-size: 0.9rem !important;
-  color: var(--color-texto-principal) !important; /* Mismo color, no secundario */
-  font-style: normal !important; /* Quitar cursiva */
+  font-weight: 500 !important;
+}
+
+/* Estilos específicos para campos de edición organizados */
+.campo-edicion {
+  margin-bottom: 1rem;
+}
+
+.campo-edicion label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.campos-ponente, 
+.campos-servicio, 
+.campos-enlace {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .campos-ponente {
+    grid-template-columns: 2fr 1fr;
+  }
+  
+  .campos-servicio {
+    grid-template-columns: 2fr 1fr;
+  }
+  
+  .campos-enlace {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* Contenedor principal del modo edición */
+.modo-edicion {
+  width: 100%;
+}
+
+.detalles-edicion {
+  width: 100%;
+}
+
+/* Mejoras específicas para la ubicación de horas */
+.ubicacion-hora {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.ubicacion-hora > * {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .ubicacion-hora {
+    grid-template-columns: auto 1fr 1fr;
+  }
 }
