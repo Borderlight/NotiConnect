@@ -8,6 +8,8 @@ import { EnlacesValidator } from '../../validadores/enlaces.validator';
 import { ServiciosValidator } from '../../validadores/servicios.validator';
 import { UbicacionValidator } from '../../validadores/ubicacion.validator';
 import { EventoService } from '../../servicios/evento.service';
+import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
+import { CompresionService } from '../../servicios/compresion.service';
 import { Router } from '@angular/router';
 import { EventType } from '../../enums/event-type.enum';
 
@@ -18,7 +20,7 @@ interface Servicio {
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, TranslateModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, TranslateModule, ProgresoSubidaComponent],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
   standalone: true
@@ -26,6 +28,15 @@ interface Servicio {
 export class FormularioComponent {
   currentLang: string;
   private translateService = inject(TranslateService);
+
+  // Propiedades para progreso de subida
+  mostrarProgreso = false;
+  progresoSubida = 0;
+  tituloProgreso = 'Procesando archivos...';
+  mensajeProgreso = 'Comprimiendo y procesando archivos adjuntos...';
+  
+  // NUEVO: Opción para deshabilitar compresión (para archivos pequeños o conexión rápida)
+  deshabilitarCompresion = false;
 
   mostrarError: boolean = false
   opcionSeleccionada: string = '0'
@@ -207,6 +218,7 @@ export class FormularioComponent {
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
+    private compresionService: CompresionService,
     private router: Router
   ){
     this.formularioEvento = this.fb.group({
@@ -563,32 +575,63 @@ export class FormularioComponent {
         eventoData.actividad = actividad;
       }
       
-      // Convertir archivos a Base64
+      // Convertir archivos a Base64 con compresión
       const files: FileList | null = this.adjuntosInput.nativeElement.files;
       console.log('📁 Archivos encontrados:', files ? files.length : 0);
       
       eventoData.adjuntos = [];
-      if (files) {
-        console.log('🔄 Convirtiendo archivos a Base64...');
-        const filePromises: Promise<any>[] = [];
-        
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const promise = this.convertFileToBase64(file).then(base64 => ({
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            data: base64
-          }));
-          filePromises.push(promise);
-        }
-        
+      if (files && files.length > 0) {
         try {
-          eventoData.adjuntos = await Promise.all(filePromises);
-          console.log('✅ Archivos convertidos a Base64:', eventoData.adjuntos.length);
+          // Mostrar progreso
+          this.mostrarProgreso = true;
+          this.progresoSubida = 0;
+
+          // OPTIMIZACIÓN: Evaluar si necesitamos compresión
+          const tamanoTotal = Array.from(files).reduce((total, file) => total + file.size, 0);
+          const necesitaCompresion = tamanoTotal > 10 * 1024 * 1024 || // > 10MB total
+                                   Array.from(files).some(file => file.size > 2 * 1024 * 1024); // algún archivo > 2MB
+
+          if (necesitaCompresion && !this.deshabilitarCompresion) {
+            this.tituloProgreso = 'Optimizando archivos...';
+            this.mensajeProgreso = 'Comprimiendo archivos grandes para mejorar la subida...';
+            
+            console.log('🔄 Iniciando compresión de archivos...');
+            
+            // Comprimir archivos con callback de progreso
+            const archivosComprimidos = await this.compresionService.comprimirArchivos(
+              files, 
+              (progreso) => {
+                this.progresoSubida = progreso;
+                this.mensajeProgreso = `Procesando archivo ${Math.ceil(progreso * files.length / 100)} de ${files.length}...`;
+              }
+            );
+
+            // Extraer solo las strings base64 para el modelo de MongoDB
+            eventoData.adjuntos = archivosComprimidos.map((archivo: any) => archivo.data || archivo);
+          } else {
+            // Procesamiento rápido sin compresión
+            this.tituloProgreso = 'Procesando archivos...';
+            this.mensajeProgreso = 'Convirtiendo archivos...';
+            
+            console.log('⚡ Procesamiento rápido sin compresión');
+            
+            const filePromises: Promise<string>[] = [];
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+              const promise = this.convertFileToBase64(file);
+              filePromises.push(promise);
+            }
+            
+            eventoData.adjuntos = await Promise.all(filePromises);
+          }
+
+          this.progresoSubida = 100;
+          this.mensajeProgreso = 'Archivos procesados. Enviando al servidor...';
+          
         } catch (error) {
-          console.error('❌ Error al convertir archivos:', error);
-          alert('Error al procesar los archivos adjuntos.');
+          this.mostrarProgreso = false;
+          console.error('❌ Error al procesar archivos:', error);
+          alert('Error al procesar los archivos adjuntos. Por favor, intenta con archivos más pequeños.');
           return;
         }
       }
@@ -601,8 +644,12 @@ export class FormularioComponent {
       
       // Submit como JSON puro
       console.log('🚀 Enviando formulario al servidor como JSON...');
+      this.tituloProgreso = 'Enviando evento...';
+      this.mensajeProgreso = 'Guardando el evento en el servidor...';
+      
       this.eventoService.agregarEvento(eventoData).subscribe({
         next: (response) => {
+          this.mostrarProgreso = false; // Ocultar progreso
           console.log('✅ Evento creado exitosamente:', response);
           console.log('📱 Mostrando diálogo de confirmación...');
           console.log('📱 Estado actual de mostrarDialog:', this.mostrarDialog);
@@ -618,10 +665,24 @@ export class FormularioComponent {
           this.caratulaSeleccionada = null;
         },
         error: (err) => {
+          this.mostrarProgreso = false; // Ocultar progreso
           console.error('❌ Error al crear evento:', err);
-          console.log('🚨 Mostrando alerta de error...');
-          // Opcional: mostrar un mensaje de error al usuario
-          alert('Error al crear el evento. Revisa la consola para más detalles.');
+          console.log('🚨 Código de estado HTTP:', err.status);
+          console.log('🚨 Mensaje de error:', err.message);
+          
+          let mensajeError = 'Error al crear el evento.';
+          
+          if (err.status === 413) {
+            mensajeError = 'El evento es demasiado grande. Intenta con menos archivos adjuntos o imágenes más pequeñas.';
+          } else if (err.status === 0) {
+            mensajeError = 'Error de conexión. Verifica tu conexión a internet y vuelve a intentarlo.';
+          } else if (err.userMessage) {
+            mensajeError = err.userMessage;
+          } else if (err.error && err.error.message) {
+            mensajeError = err.error.message;
+          }
+          
+          alert(mensajeError);
         }
       });
     } else {
@@ -839,10 +900,6 @@ export class FormularioComponent {
   // Devuelve solo los nombres de las facultades para el selector
   get nombresFacultades(): string[] {
     return this.facultadesGrados.map(f => f.facultad);
-  }
-
-  trackByPonenteId(index: number, ponente: AbstractControl) {
-    return index; // Usar el índice como identificador único
   }
 
   // Índice de la imagen seleccionada como carátula

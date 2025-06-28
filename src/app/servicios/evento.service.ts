@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, timeout } from 'rxjs';
 import { Evento } from '../interfaces/evento.interface';
 
 @Injectable({
@@ -32,7 +32,9 @@ export class EventoService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<Evento>(this.apiUrl, data, { headers });
+    // Aplicar timeout de 5 minutos para archivos grandes
+    return this.http.post<Evento>(this.apiUrl, data, { headers })
+      .pipe(timeout(300000)); // 5 minutos
   }
 
   actualizarEvento(id: string, evento: Evento): Observable<Evento> {

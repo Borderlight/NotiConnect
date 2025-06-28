@@ -6,6 +6,13 @@ require('dotenv').config();
 
 const app = express();
 
+// Configurar timeout para operaciones con archivos grandes
+app.use((req, res, next) => {
+    req.setTimeout(300000); // 5 minutos
+    res.setTimeout(300000);
+    next();
+});
+
 // Middleware
 app.use(cors({
     origin: [
@@ -15,8 +22,17 @@ app.use(cors({
     ],
     credentials: true
 }));
-app.use(express.json({ limit: '50mb' })); // Aumentar límite para archivos base64
-app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Para form data si es necesario
+// Configurar límites para archivos base64 grandes
+app.use(express.json({ 
+    limit: '500mb',  // Aumentamos aún más el límite
+    parameterLimit: 100000,
+    extended: true
+}));
+app.use(express.urlencoded({ 
+    extended: true, 
+    limit: '500mb',  // Aumentamos aún más el límite
+    parameterLimit: 100000
+}));
 
 // Servir archivos estáticos de Angular desde la carpeta dist
 app.use(express.static(path.join(__dirname, '../dist/noti-connect/browser')));
@@ -42,6 +58,18 @@ app.get('/health', (req, res) => {
 
 // Usar rutas de API
 app.use('/api/eventos', eventoRoutes);
+
+// Middleware para manejar errores específicos del tamaño del payload
+app.use((error, req, res, next) => {
+    if (error.type === 'entity.too.large') {
+        return res.status(413).json({
+            error: 'Payload too large',
+            message: 'El archivo es demasiado grande. El límite es de 100MB.',
+            details: `Tamaño recibido: ${error.length || 'desconocido'} bytes`
+        });
+    }
+    next(error);
+});
 
 // Manejar todas las demás rutas y devolver index.html (para el routing de Angular)
 // IMPORTANTE: Esta ruta debe ir al final para no interferir con las rutas de API

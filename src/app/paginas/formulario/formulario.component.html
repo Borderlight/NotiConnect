@@ -1,4 +1,12 @@
 <form [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" role="form" aria-labelledby="form-title" [attr.lang]="currentLang">
+    <!-- Componente de progreso -->
+    <app-progreso-subida 
+        [mostrar]="mostrarProgreso"
+        [progreso]="progresoSubida" 
+        [titulo]="tituloProgreso"
+        [mensaje]="mensajeProgreso">
+    </app-progreso-subida>
+    
     <h1 id="form-title">{{ 'FORM.TITLE' | translate }}</h1>
     
     <div class="evento-info-section seccion-basica" role="region" aria-labelledby="info-basica-titulo">
@@ -112,7 +120,7 @@
                 }
               </div>
             }
-            @if (formularioEvento.get('empresaOrganizadora')?.invalid && formularioEvento.get('empresaOrganizadora')?.touched) {
+            @if (formularioEvento.get('departamento')?.invalid && formularioEvento.get('departamento')?.touched) {
                 <p class="mensaje_error" id="empresa-error" role="alert">El departamento organizador es obligatorio.</p>
             }
             <span id="empresa-error" class="visually-hidden"></span>
