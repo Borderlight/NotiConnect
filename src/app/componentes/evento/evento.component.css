@@ -349,8 +349,8 @@
   flex: 0 0 350px; /* Ancho fijo más pequeño */
   max-width: 350px;
   min-width: 300px;
-  padding-left: 1rem;
-  margin-left: 0.5rem;
+  padding-left: 0.5rem; /* Reducir padding izquierdo */
+  margin-left: 0; /* Eliminar margen izquierdo */
 }
 
 /* Estilos para truncado de texto */
@@ -380,7 +380,7 @@
 .evento-titulo-detalles-row-alineado {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 1.5rem; /* Reducir gap */
   width: 100%;
 }
 
@@ -464,6 +464,9 @@
   border: 1px solid #e0e0e0;
   min-width: 120px;
   max-width: 150px;
+  background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .adjunto-item:hover {
@@ -474,6 +477,7 @@
 .adjunto-imagen-preview {
   position: relative;
   background: #f8f9fa;
+  flex: 1;
 }
 
 .imagen-miniatura {
@@ -485,14 +489,14 @@
 
 .adjunto-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
 }
 
 .adjunto-archivo-preview {
@@ -503,6 +507,7 @@
   background: #f8f9fa;
   min-height: 80px;
   justify-content: center;
+  flex: 1;
 }
 
 .icono-archivo {
@@ -529,20 +534,46 @@
   font-style: italic;
 }
 
+/* Nombre del archivo debajo de la previsualización */
+.adjunto-nombre {
+  padding: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  background: #fafafa;
+  font-size: 0.75rem;
+  color: #555;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Responsive para adjuntos */
 @media (max-width: 768px) {
   .adjuntos-grid {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
   }
   
   .adjunto-item {
-    min-width: 80px;
-    max-width: 100px;
+    min-width: 100px;
+    max-width: 120px;
   }
   
   .imagen-miniatura {
     height: 60px;
+  }
+  
+  .adjunto-archivo-preview {
+    min-height: 60px;
+    padding: 0.75rem;
+  }
+  
+  .adjunto-nombre {
+    font-size: 0.7rem;
+    padding: 0.4rem;
   }
 }
 

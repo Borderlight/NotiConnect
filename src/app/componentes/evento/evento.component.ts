@@ -362,8 +362,12 @@ export class EventoComponent {
       return 'Imagen';
     } else if (data.startsWith('data:application/pdf')) {
       return 'PDF';
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument')) {
-      return 'Documento Office';
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+      return 'Word';
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+      return 'Excel';
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
+      return 'PowerPoint';
     } else if (data.startsWith('data:text/')) {
       return 'Texto';
     } else {
@@ -371,9 +375,54 @@ export class EventoComponent {
     }
   }
 
+  obtenerIconoAdjunto(adjunto: string | ArchivoAdjunto): string {
+    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    if (data.startsWith('data:application/pdf')) {
+      return '📄'; // PDF
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+      return '📝'; // Word
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+      return '📊'; // Excel
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
+      return '📽️'; // PowerPoint
+    } else if (data.startsWith('data:text/')) {
+      return '📄'; // Texto
+    } else {
+      return '📎'; // Archivo genérico
+    }
+  }
+
+  obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
+    if (typeof adjunto === 'string') {
+      // Para adjuntos tipo string, intentar determinar la extensión del tipo MIME
+      const mimeMatch = adjunto.match(/data:([^;]+);/);
+      if (mimeMatch) {
+        const mimeType = mimeMatch[1];
+        let extension = '';
+        switch (mimeType) {
+          case 'image/jpeg': extension = '.jpg'; break;
+          case 'image/png': extension = '.png'; break;
+          case 'image/gif': extension = '.gif'; break;
+          case 'image/webp': extension = '.webp'; break;
+          case 'application/pdf': extension = '.pdf'; break;
+          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': extension = '.docx'; break;
+          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': extension = '.xlsx'; break;
+          case 'application/vnd.openxmlformats-officedocument.presentationml.presentation': extension = '.pptx'; break;
+          case 'text/plain': extension = '.txt'; break;
+          default: extension = '.file'; break;
+        }
+        return `adjunto_${index + 1}${extension}`;
+      }
+      return `adjunto_${index + 1}`;
+    } else {
+      // Para adjuntos tipo ArchivoAdjunto, usar el nombre original
+      return adjunto.name || `adjunto_${index + 1}`;
+    }
+  }
+
   abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
     const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    const nombre = typeof adjunto === 'string' ? `adjunto_${index + 1}` : adjunto.name;
+    const nombre = this.obtenerNombreAdjunto(adjunto, index);
     
     // Crear un blob a partir del data URL
     const byteCharacters = atob(data.split(',')[1]);

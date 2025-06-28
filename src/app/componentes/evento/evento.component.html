@@ -39,14 +39,19 @@
             @if (evento.ubicaciones && evento.ubicaciones.length > 0) {
               @for (ubicacion of evento.ubicaciones; track ubicacion.fecha) {
                 <div class="ubicacion-item">
-                  <p class="fecha-hora texto-truncado">{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }} | 
-                    @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
-                      {{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}
-                    } @else {
-                      {{ ubicacion.horaInicio }}
+                  <p class="fecha-hora texto-truncado">
+                    {{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }}
+                    @if (ubicacion.horaInicio) {
+                      | @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
+                        {{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}
+                      } @else {
+                        {{ ubicacion.horaInicio }}
+                      }
                     }
                   </p>
-                  <p class="lugar texto-truncado">{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</p>
+                  <p class="lugar texto-truncado">
+                    {{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }
+                  </p>
                 </div>
               }
             } @else {
@@ -164,19 +169,19 @@
                         @if (esImagen(adjunto)) {
                           <div class="adjunto-imagen-preview">
                             <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
-                            <div class="adjunto-overlay">
-                              <span class="adjunto-tipo">📷 Imagen</span>
-                            </div>
+                            <div class="adjunto-overlay">📷</div>
                           </div>
                         } @else {
                           <div class="adjunto-archivo-preview">
-                            <div class="icono-archivo">📄</div>
+                            <div class="icono-archivo">{{ obtenerIconoAdjunto(adjunto) }}</div>
                             <div class="adjunto-info">
                               <span class="adjunto-tipo">{{ obtenerTipoAdjunto(adjunto) }}</span>
-                              <span class="adjunto-accion">Clic para abrir</span>
                             </div>
                           </div>
                         }
+                        <div class="adjunto-nombre">
+                          {{ obtenerNombreAdjunto(adjunto, $index) }}
+                        </div>
                       </div>
                     }
                   </div>
