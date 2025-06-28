@@ -884,6 +884,7 @@
   line-height: 1;
   transition: background-color 0.2s ease;
   font-weight: bold;
+  z-index: 10; /* Asegurar que esté por encima */
 }
 
 .btn-eliminar-simple:hover, 

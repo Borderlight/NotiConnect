@@ -342,7 +342,8 @@ export class EventoComponent {
       
       // Mejorar la lógica de detección de horario
       let hora = '';
-      if (ubicacion.tipoHorario === 'horario' || (ubicacion.horaFin && ubicacion.horaFin.trim() !== '')) {
+      if (ubicacion.tipoHorario === 'horario' || 
+          (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== '00:00' && ubicacion.horaFin !== '23:59')) {
         hora = `${ubicacion.horaInicio} - ${ubicacion.horaFin}`;
       } else {
         hora = ubicacion.horaInicio || ubicacion.hora || '';
@@ -400,17 +401,6 @@ export class EventoComponent {
   // Al guardar, sincroniza los campos complejos
   guardarEdicion(event: Event) {
     event.stopPropagation();
-    
-    // Debug temporal para entender el problema
-    console.log('Formulario válido:', this.editForm.valid);
-    if (!this.editForm.valid) {
-      console.log('Errores en ubicaciones:', this.ubicacionesFormArray.errors);
-      this.ubicacionesFormArray.controls.forEach((control, index) => {
-        if (control.invalid) {
-          console.log(`Ubicación ${index} inválida:`, control.errors);
-        }
-      });
-    }
     
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
@@ -1002,38 +992,11 @@ export class EventoComponent {
       { key: 'ONLINE', value: 'Online' }
     ];
 
-    // Recopilar todos los lugares personalizados únicos
-    const lugaresPersonalizadosUnicos = new Set<string>();
-    
-    // Buscar en localStorage global (si existe)
-    const lugaresCustomGlobal = localStorage.getItem('lugaresPersonalizados');
-    if (lugaresCustomGlobal) {
-      try {
-        const lugares = JSON.parse(lugaresCustomGlobal);
-        if (Array.isArray(lugares)) {
-          lugares.forEach(lugar => {
-            if (typeof lugar === 'string' && lugar.trim()) {
-              lugaresPersonalizadosUnicos.add(lugar.trim());
-            }
-          });
-        }
-      } catch (e) {
-        console.warn('Error al parsear lugares personalizados globales:', e);
+    // Agregar lugares del servicio sincronizado
+    this.lugaresDisponibles.forEach(lugar => {
+      if (!opcionesBase.some(opcion => opcion.key === lugar)) {
+        opcionesBase.push({ key: lugar, value: lugar });
       }
-    }
-    
-    // También revisar si hay lugares personalizados en el evento actual
-    if (this.evento?.ubicaciones) {
-      this.evento.ubicaciones.forEach(ubicacion => {
-        if (ubicacion.lugar && !opcionesBase.some(opcion => opcion.key === ubicacion.lugar)) {
-          lugaresPersonalizadosUnicos.add(ubicacion.lugar);
-        }
-      });
-    }
-    
-    // Agregar lugares únicos a las opciones
-    lugaresPersonalizadosUnicos.forEach(lugar => {
-      opcionesBase.push({ key: lugar, value: lugar });
     });
 
     return opcionesBase;

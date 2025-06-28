@@ -43,9 +43,10 @@ export class OpcionesSincronizadasService {
     const actividades = actividadesCustom ? JSON.parse(actividadesCustom) : [];
     this.actividadesSubject.next([...this.actividadesBase, ...actividades]);
 
-    // Los lugares personalizados se manejan por ubicación en el formulario
-    // Aquí solo mantenemos los base para los filtros
-    this.lugaresSubject.next([...this.lugaresBase]);
+    // Cargar lugares personalizados
+    const lugaresCustom = localStorage.getItem('lugaresPersonalizados');
+    const lugares = lugaresCustom ? JSON.parse(lugaresCustom) : [];
+    this.lugaresSubject.next([...this.lugaresBase, ...lugares]);
   }
 
   // Observables para que los componentes se suscriban
@@ -91,6 +92,10 @@ export class OpcionesSincronizadasService {
     if (!lugaresActuales.includes(lugar)) {
       const nuevosLugares = [...lugaresActuales, lugar];
       this.lugaresSubject.next(nuevosLugares);
+      
+      // Guardar en localStorage solo los lugares personalizados
+      const customLugares = nuevosLugares.filter(l => !this.lugaresBase.includes(l));
+      localStorage.setItem('lugaresPersonalizados', JSON.stringify(customLugares));
     }
   }
 
