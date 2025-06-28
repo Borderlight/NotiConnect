@@ -69,30 +69,37 @@
               @for (ubicacion of evento.ubicaciones; track ubicacion.fecha) {
                 <div class="detalle-item">
                   <div class="detalle-principal">
-                    <strong>Fecha:</strong> {{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }}
+                    <strong>Fecha:</strong>
+                    <span>{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }}</span>
                   </div>
                   <div class="detalle-secundario">
                     @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaInicio && ubicacion.horaFin) {
-                      <strong>Horario:</strong> {{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}
+                      <strong>Horario:</strong>
+                      <span>{{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}</span>
                     } @else {
-                      <strong>Hora:</strong> {{ ubicacion.horaInicio }}
+                      <strong>Hora:</strong>
+                      <span>{{ ubicacion.horaInicio }}</span>
                     }
                   </div>
                   <div class="detalle-secundario">
-                    <strong>Lugar:</strong> {{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }
+                    <strong>Lugar:</strong>
+                    <span>{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</span>
                   </div>
                 </div>
               }
             } @else {
               <div class="detalle-item">
                 <div class="detalle-principal">
-                  <strong>Fecha:</strong> {{ fechaFormateada }}
+                  <strong>Fecha:</strong>
+                  <span>{{ fechaFormateada }}</span>
                 </div>
                 <div class="detalle-secundario">
-                  <strong>Hora:</strong> {{ horaTexto }}
+                  <strong>Hora:</strong>
+                  <span>{{ horaTexto }}</span>
                 </div>
                 <div class="detalle-secundario">
-                  <strong>Lugar:</strong> {{ lugarTexto }}
+                  <strong>Lugar:</strong>
+                  <span>{{ lugarTexto }}</span>
                 </div>
               </div>
             }
@@ -261,8 +268,7 @@
                             <div class="adjunto-overlay">📷</div>
                             <div class="checkbox-caratula" 
                                  (click)="seleccionarCaratula(adjunto, $event)"
-                                 [class.seleccionado]="esCaratulaSeleccionada(adjunto)">
-                              <div class="checkbox-icon">{{ esCaratulaSeleccionada(adjunto) ? '✓' : '📷' }}</div>
+                                 [class.selected]="esCaratulaSeleccionada(adjunto)">
                             </div>
                           </div>
                         } @else {
@@ -401,17 +407,16 @@
                   <button type="button" class="btn-agregar" (click)="agregarAdjunto()">+ Agregar</button>
                 </div>
                 @if (evento.adjuntos && evento.adjuntos.length > 0) {
-                  <div class="adjuntos-edit-grid">
+                  <div class="adjuntos-grid">
                     @for (adjunto of evento.adjuntos; track $index) {
-                      <div class="adjunto-edit-item">
+                      <div class="adjunto-item">
                         <button type="button" class="btn-eliminar-adjunto" (click)="eliminarAdjunto($index)">🗑️</button>
                         @if (esImagen(adjunto)) {
                           <div class="adjunto-imagen-preview">
                             <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
                             <div class="checkbox-caratula" 
                                  (click)="seleccionarCaratula(adjunto, $event)"
-                                 [class.seleccionado]="esCaratulaSeleccionada(adjunto)">
-                              <div class="checkbox-icon">{{ esCaratulaSeleccionada(adjunto) ? '✓' : '📷' }}</div>
+                                 [class.selected]="esCaratulaSeleccionada(adjunto)">
                             </div>
                           </div>
                         } @else {

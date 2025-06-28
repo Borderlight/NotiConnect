@@ -347,11 +347,12 @@
 }
 
 .evento-detalles-col-alineado {
-  flex: 0 0 350px; /* Aumentar ancho */
+  flex: 0 0 350px; /* Ancho fijo para consistencia */
   max-width: 350px;
-  min-width: 320px;
-  padding-left: 1.5rem; /* Aumentar padding para más separación */
-  margin-left: 0.5rem; /* Añadir pequeño margen */
+  min-width: 350px; /* Forzar ancho mínimo igual al máximo */
+  padding-left: 2rem; /* Padding fijo para posición consistente */
+  margin-left: 0; /* Sin margen variable */
+  position: relative; /* Para control de posición */
 }
 
 /* Estilos para truncado de texto */
@@ -393,6 +394,23 @@
 /* Estilos para las secciones de detalles */
 .detalle-seccion {
   margin-bottom: 1.5rem;
+}
+
+/* Ajuste específico para descripción y ubicaciones en la columna izquierda */
+.evento-titulo-col .detalle-seccion {
+  margin-left: 0;
+  padding-left: 0;
+  max-width: 450px; /* Limitar ancho máximo */
+}
+
+.evento-titulo-col .detalle-item {
+  margin-left: 0;
+  padding-left: 0.5rem;
+  max-width: 100%; /* Asegurar que no se desborde */
+}
+
+.evento-titulo-col .detalle-simple {
+  max-width: 100%; /* Limitar ancho de descripción */
 }
 
 .detalle-seccion strong {
@@ -466,6 +484,7 @@
   background: white;
   display: flex;
   flex-direction: column;
+  position: relative; /* Para posicionar botones absolutos */
 }
 
 .adjunto-item:hover {
@@ -733,4 +752,109 @@ select.input-edit:focus,
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
   background-color: #ffffff !important;
   color: #333333 !important;
+}
+
+/* Estilos para el checkbox de carátula */
+.checkbox-caratula {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: #28a745; /* Verde */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 3;
+}
+
+.checkbox-caratula:hover {
+  background: #218838; /* Verde más oscuro al hover */
+  transform: scale(1.1);
+}
+
+.checkbox-caratula.selected {
+  background: #28a745;
+}
+
+.checkbox-caratula.selected::after {
+  content: '✓';
+  color: white;
+  font-weight: bold;
+}
+
+/* Estilos para botones de eliminar */
+.btn-eliminar-item {
+  background: #dc3545 !important; /* Rojo para eliminar */
+  color: white !important;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s ease;
+}
+
+.btn-eliminar-item:hover {
+  background: #c82333 !important; /* Rojo más oscuro al hover */
+}
+
+/* Estilos para botón eliminar adjunto */
+.btn-eliminar-adjunto {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: #dc3545 !important; /* Rojo */
+  color: white !important;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  z-index: 4;
+  transition: background 0.2s ease;
+}
+
+.btn-eliminar-adjunto:hover {
+  background: #c82333 !important; /* Rojo más oscuro al hover */
+}
+
+/* Estilos específicos para ubicaciones */
+.detalle-principal,
+.detalle-secundario {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.detalle-principal strong,
+.detalle-secundario strong {
+  font-weight: 600; /* Peso consistente para todas las etiquetas */
+  color: var(--color-texto-principal);
+  min-width: 70px; /* Ancho mínimo para alineación */
+  flex-shrink: 0; /* No reducir el ancho */
+}
+
+.detalle-principal,
+.detalle-secundario {
+  font-weight: 400; /* Peso normal para el texto de contenido */
+  color: var(--color-texto-principal); /* Mismo color que las etiquetas */
+  margin: 0;
+}
+
+/* Sobrescribir estilos anteriores de detalle-secundario */
+.detalle-secundario {
+  font-size: 0.9rem !important;
+  color: var(--color-texto-principal) !important; /* Mismo color, no secundario */
+  font-style: normal !important; /* Quitar cursiva */
 }
