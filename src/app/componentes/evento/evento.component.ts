@@ -900,7 +900,21 @@ export class EventoComponent {
       'Asistencia Psicológica': 'SERVICES.ASISTENCIA_PSICOLOGICA',
       'Cultura Científica': 'SERVICES.CULTURA_CIENTIFICA',
       'Unidad de Igualdad': 'SERVICES.UNIDAD_IGUALDAD',
-      'Voluntariado': 'SERVICES.VOLUNTARIADO'
+      'Voluntariado': 'SERVICES.VOLUNTARIADO',
+      
+      // Mapeo para vicerrectorados
+      'VICERRECTORADOS.InvestigacionTransferencia': 'VICERRECTORADOS.InvestigacionTransferencia',
+      'VICERRECTORADOS.OrdenacionAcademica': 'VICERRECTORADOS.OrdenacionAcademica',
+      'VICERRECTORADOS.FormacionPermanente': 'VICERRECTORADOS.FormacionPermanente',
+      'VICERRECTORADOS.ComunidadUniversitaria': 'VICERRECTORADOS.ComunidadUniversitaria',
+      'VICERRECTORADOS.InternacionalesCooperacion': 'VICERRECTORADOS.InternacionalesCooperacion',
+      
+      // Mapeo para vicerrectorados que podrían estar guardados en texto plano
+      'Vicerrectorado de Investigación y Transferencia': 'VICERRECTORADOS.InvestigacionTransferencia',
+      'Vicerrectorado de Ordenación Académica': 'VICERRECTORADOS.OrdenacionAcademica',
+      'Vicerrectorado de Formación Permanente': 'VICERRECTORADOS.FormacionPermanente',
+      'Vicerrectorado de Comunidad Universitaria': 'VICERRECTORADOS.ComunidadUniversitaria',
+      'Vicerrectorado de Internacionales y Cooperación': 'VICERRECTORADOS.InternacionalesCooperacion'
     };
     
     return serviciosMap[servicio] || servicio;
@@ -923,6 +937,17 @@ export class EventoComponent {
     // Limpiar el grado si no es una facultad
     if (!this.esFacultad(servicioSeleccionado)) {
       servicioControl.get('grado')?.setValue('');
+    }
+  }
+
+  // Método para manejar cambio de tipo de horario
+  onTipoHorarioChange(ubicacionIndex: number, event: any): void {
+    const tipoHorario = event.target.value;
+    const ubicacionControl = this.ubicacionesFormArray.at(ubicacionIndex);
+    
+    // Si se cambia a "hora específica", limpiar la hora fin
+    if (tipoHorario === 'hora') {
+      ubicacionControl.get('horaFin')?.setValue('');
     }
   }
 

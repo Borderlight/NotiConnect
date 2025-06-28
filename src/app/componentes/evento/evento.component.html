@@ -153,7 +153,7 @@
                       
                       <div class="ubicacion-campo-grupo">
                         <strong>Tipo de horario:</strong>
-                        <select formControlName="tipoHorario" class="input-edit">
+                        <select formControlName="tipoHorario" class="input-edit" (change)="onTipoHorarioChange(i, $event)">
                           <option value="hora">Hora específica</option>
                           <option value="horario">Horario (inicio-fin)</option>
                         </select>
@@ -271,10 +271,6 @@
                           <div class="adjunto-imagen-preview">
                             <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
                             <div class="adjunto-overlay">📷</div>
-                            <div class="checkbox-caratula" 
-                                 (click)="seleccionarCaratula(adjunto, $event)"
-                                 [class.selected]="esCaratulaSeleccionada(adjunto)">
-                            </div>
                           </div>
                         } @else {
                           <div class="adjunto-archivo-preview">
@@ -382,11 +378,11 @@
                               </optgroup>
                               <!-- Vicerrectorados -->
                               <optgroup label="Vicerrectorados">
-                                <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
-                                <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
-                                <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
-                                <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
-                                <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
+                                <option value="VICERRECTORADOS.InvestigacionTransferencia">Vicerrectorado de Investigación y Transferencia</option>
+                                <option value="VICERRECTORADOS.OrdenacionAcademica">Vicerrectorado de Ordenación Académica</option>
+                                <option value="VICERRECTORADOS.FormacionPermanente">Vicerrectorado de Formación Permanente</option>
+                                <option value="VICERRECTORADOS.ComunidadUniversitaria">Vicerrectorado de Comunidad Universitaria</option>
+                                <option value="VICERRECTORADOS.InternacionalesCooperacion">Vicerrectorado de Internacionales y Cooperación</option>
                               </optgroup>
                             </select>
                           </div>
