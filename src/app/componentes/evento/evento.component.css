@@ -349,8 +349,8 @@
   flex: 0 0 350px; /* Ancho fijo más pequeño */
   max-width: 350px;
   min-width: 300px;
-  padding-left: 0.5rem; /* Reducir padding izquierdo */
-  margin-left: 0; /* Eliminar margen izquierdo */
+  padding-left: 1rem; /* Volver al padding original */
+  margin-left: 0.5rem; /* Volver al margen original */
 }
 
 /* Estilos para truncado de texto */
@@ -380,7 +380,7 @@
 .evento-titulo-detalles-row-alineado {
   display: flex;
   flex-direction: row;
-  gap: 1.5rem; /* Reducir gap */
+  gap: 2rem; /* Volver al gap original */
   width: 100%;
 }
 
@@ -656,8 +656,10 @@
 }
 
 .ubicacion-item {
-  margin-bottom: 0.5rem;
-  padding-left: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(0, 123, 255, 0.05);
+  border-radius: 6px;
   border-left: 3px solid var(--color-primario, #007bff);
 }
 
@@ -665,17 +667,31 @@
   margin-bottom: 0;
 }
 
-.fecha-hora {
-  font-weight: 500;
-  color: var(--color-texto-primario, #333);
+.ubicacion-fecha,
+.ubicacion-hora,
+.ubicacion-lugar {
   margin: 0.25rem 0;
   font-size: 0.95rem;
 }
 
-.lugar {
+.ubicacion-fecha strong,
+.ubicacion-hora strong,
+.ubicacion-lugar strong {
+  color: var(--color-texto-primario, #333);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.ubicacion-fecha {
+  color: var(--color-texto-primario, #333);
+}
+
+.ubicacion-hora {
+  color: var(--color-texto-primario, #333);
+}
+
+.ubicacion-lugar {
   color: var(--color-texto-secundario, #666);
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
 }
 
 /* Estilos para textarea en modo edición */
@@ -717,4 +733,17 @@
 .evento-titulo-col strong {
   color: var(--color-texto-principal);
   font-weight: 600;
+}
+
+/* Estilos para la descripción como párrafo */
+.descripcion-contenido {
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+  padding: 0.75rem;
+  background: rgba(0, 123, 255, 0.03);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-primario, #007bff);
+  word-wrap: break-word;
+  word-break: break-word;
 }

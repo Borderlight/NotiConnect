@@ -394,7 +394,7 @@ export class EventoComponent {
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
     if (typeof adjunto === 'string') {
-      // Para adjuntos tipo string, intentar determinar la extensión del tipo MIME
+      // Para adjuntos tipo string (formato antiguo), intentar determinar la extensión del tipo MIME
       const mimeMatch = adjunto.match(/data:([^;]+);/);
       if (mimeMatch) {
         const mimeType = mimeMatch[1];
@@ -415,7 +415,7 @@ export class EventoComponent {
       }
       return `adjunto_${index + 1}`;
     } else {
-      // Para adjuntos tipo ArchivoAdjunto, usar el nombre original
+      // Para adjuntos tipo ArchivoAdjunto (formato nuevo), usar siempre el nombre original del archivo
       return adjunto.name || `adjunto_${index + 1}`;
     }
   }
