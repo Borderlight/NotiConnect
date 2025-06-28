@@ -347,11 +347,11 @@
 }
 
 .evento-detalles-col-alineado {
-  flex: 0 0 320px; /* Reducir ancho */
-  max-width: 320px;
-  min-width: 280px;
-  padding-left: 0.5rem; /* Reducir padding */
-  margin-left: 0; /* Eliminar margen */
+  flex: 0 0 350px; /* Aumentar ancho */
+  max-width: 350px;
+  min-width: 320px;
+  padding-left: 1.5rem; /* Aumentar padding para más separación */
+  margin-left: 0.5rem; /* Añadir pequeño margen */
 }
 
 /* Estilos para truncado de texto */
@@ -368,20 +368,18 @@
   word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  line-height: 1.4;
-  max-height: 4.2em; /* 3 líneas aproximadamente */
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
+  line-height: 1.5;
+  margin: 0;
+  text-align: justify;
+  max-width: 100%;
+  white-space: normal;
 }
 
 /* Ajustes para la segunda columna - detalles expandidos */
 .evento-titulo-detalles-row-alineado {
   display: flex;
   flex-direction: row;
-  gap: 1rem; /* Reducir gap significativamente */
+  gap: 2.5rem; /* Aumentar gap para más separación entre columnas */
   width: 100%;
 }
 
