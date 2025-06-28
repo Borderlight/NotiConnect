@@ -688,23 +688,25 @@
    ESTILOS UNIFICADOS PARA AMBOS MODOS
    ================================ */
 
-/* Estilos base para campos de entrada */
+/* Estilos base para campos de entrada - tamaño compacto */
 .input-edit {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.4rem; /* Padding más compacto */
   border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  border-radius: 4px;
+  font-size: 0.9rem; /* Tamaño de fuente más pequeño */
   font-family: inherit;
   background-color: #ffffff !important;
   color: #333333 !important;
   transition: border-color 0.2s ease;
+  height: auto; /* Altura automática */
+  min-height: 32px; /* Altura mínima fija */
 }
 
 .input-edit:focus {
   outline: none;
   border-color: var(--color-primario, #007bff);
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.1); /* Sombra más sutil */
 }
 
 /* Estilos específicos para campos especiales */
@@ -731,24 +733,25 @@
 }
 
 .descripcion-edit {
-  min-height: 80px;
+  min-height: 60px; /* Altura más compacta */
   resize: vertical;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* Secciones organizadas - aplicar a ambos modos */
+/* Secciones organizadas - mantener mismo tamaño en ambos modos */
 .detalle-seccion {
   background: rgba(0, 123, 255, 0.02);
   border: 1px solid rgba(0, 123, 255, 0.1);
   border-radius: 8px;
-  padding: 1.2rem;
+  padding: 1rem; /* Reducir padding para mantener tamaño consistente */
   margin-bottom: 1.5rem;
   position: relative;
+  min-height: auto; /* Permitir altura natural */
 }
 
 .detalle-seccion strong {
   display: block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem; /* Reducir margen */
   color: var(--color-texto-principal);
   font-weight: 600;
   font-size: 1rem;
@@ -756,14 +759,15 @@
   padding-bottom: 0.25rem;
 }
 
-/* Header para secciones con botón agregar */
+/* Header para secciones con botón agregar - mismo tamaño */
 .section-header-simple {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem; /* Mismo margen que modo visual */
   border-bottom: 2px solid var(--color-primario, #007bff);
   padding-bottom: 0.25rem;
+  min-height: 28px; /* Altura fija para consistencia */
 }
 
 .section-header-simple strong {
@@ -775,59 +779,63 @@
   padding: 0;
 }
 
-/* Botón agregar organizado */
+/* Botón agregar compacto */
 .btn-agregar-simple {
   background: var(--color-primario, #007bff);
   color: white;
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem; /* Padding más compacto */
+  border-radius: 4px;
+  font-size: 0.75rem; /* Tamaño más pequeño */
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-weight: 500;
+  height: 24px; /* Altura fija */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-agregar-simple:hover {
   background: #0056b3;
 }
 
-/* Items organizados para modo edición */
+/* Items compactos para modo edición - mismo tamaño que modo visual */
 .detalle-item-edit {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
+  background: rgba(0, 123, 255, 0.05);
+  border: 1px solid rgba(0, 123, 255, 0.1);
   border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 0.5rem; /* Mismo padding que detalle-item */
+  margin-bottom: 0.8rem; /* Mismo margen que detalle-item */
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-left: 3px solid var(--color-primario, #007bff); /* Mismo borde izquierdo */
 }
 
 .ubicacion-edit-simple {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
+  background: rgba(0, 123, 255, 0.05);
+  border: 1px solid rgba(0, 123, 255, 0.1);
   border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 0.8rem;
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-left: 3px solid var(--color-primario, #007bff);
 }
 
-/* Ubicaciones en vertical - igual que modo visual */
+/* Ubicaciones en vertical compactas - igual que modo visual */
 .ubicacion-campos-vertical {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem; /* Gap más compacto */
 }
 
 .ubicacion-campo-grupo {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem; /* Gap muy pequeño */
 }
 
 .ubicacion-campo-grupo strong {
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Tamaño más pequeño */
   font-weight: 600;
   color: var(--color-texto-principal);
   margin: 0;
@@ -836,7 +844,7 @@
 }
 
 .ubicacion-campo-grupo .input-edit {
-  margin-top: 0.25rem;
+  margin-top: 0.1rem; /* Margen mínimo */
 }
 
 /* Campos de hora en línea cuando es horario */
@@ -855,19 +863,19 @@
   color: var(--color-texto-secundario);
 }
 
-/* Botón eliminar organizado */
+/* Botón eliminar compacto */
 .btn-eliminar-simple, 
 .btn-eliminar-adjunto-simple {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.3rem;
+  right: 0.3rem;
   background: #dc3545;
   color: white;
   border: none;
-  border-radius: 4px;
-  width: 24px;
-  height: 24px;
-  font-size: 0.8rem;
+  border-radius: 3px;
+  width: 18px; /* Más pequeño */
+  height: 18px; /* Más pequeño */
+  font-size: 0.7rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -882,9 +890,9 @@
   background: #c82333;
 }
 
-/* Campos múltiples organizados */
+/* Campos múltiples compactos */
 .detalle-item-edit {
-  display: block;
+  display: block; /* Mantener como bloque */
 }
 
 .campos-ponente, 
@@ -892,18 +900,18 @@
 .campos-enlace {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem; /* Gap más compacto */
   width: 100%;
 }
 
 .campo-grupo {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem; /* Gap muy pequeño */
 }
 
 .campo-grupo label {
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Tamaño más pequeño */
   font-weight: 600;
   color: var(--color-texto-principal);
   margin: 0;
