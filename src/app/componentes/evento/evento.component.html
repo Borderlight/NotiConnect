@@ -121,12 +121,9 @@
             <p><strong>Departamento:</strong> 
               <select formControlName="departamento" class="input-edit departamento-edit">
                 <option value="">Seleccionar departamento</option>
-                <option value="Biblioteca">Biblioteca</option>
-                <option value="UCI">UCI</option>
-                <option value="GIT">GIT</option>
-                <option value="Facultad">Facultad</option>
-                <option value="Formación Permanente">Formación Permanente</option>
-                <option value="Internacionales">Internacionales</option>
+                @for (departamento of departamentosDisponibles; track departamento) {
+                  <option [value]="departamento">{{ departamento }}</option>
+                }
               </select>
             </p>
             
@@ -179,19 +176,10 @@
                         <strong>Lugar:</strong>
                         <select formControlName="lugar" class="input-edit">
                           <option value="">Seleccionar lugar</option>
-                          <option value="FACULTY">Facultad</option>
-                          <option value="AULA_MAGNA">Aula de grados</option>
-                          <option value="HUBdeInnovacion">HUB de Innovación</option>
-                          <option value="LIBRARY">Biblioteca</option>
-                          <option value="AuditorioJuanPablo">Auditorio Juan Pablo II</option>
-                          <option value="S-41">S-41</option>
-                          <option value="ONLINE">Online</option>
+                          @for (lugar of obtenerOpcionesLugar(); track lugar.key) {
+                            <option [value]="lugar.key">{{ lugar.value }}</option>
+                          }
                         </select>
-                      </div>
-                      
-                      <div class="ubicacion-campo-grupo">
-                        <strong>Aula (opcional):</strong>
-                        <input formControlName="aula" class="input-edit" placeholder="Ej: Aula 101" />
                       </div>
                     </div>
                   </div>
@@ -344,7 +332,9 @@
                   <strong>Actividad:</strong>
                   <select formControlName="actividad" class="input-edit">
                     <option value="">Seleccionar actividad</option>
-                    <option value="Semana de la Ciencia">Semana de la Ciencia</option>
+                    @for (actividad of actividadesDisponibles; track actividad) {
+                      <option [value]="actividad">{{ actividad }}</option>
+                    }
                   </select>
                 </div>
 
@@ -366,7 +356,7 @@
                         <div class="campos-servicio">
                           <div class="campo-grupo">
                             <label>Servicio:</label>
-                            <select formControlName="servicios" class="input-edit">
+                            <select formControlName="servicios" class="input-edit" (change)="onServicioChange($index, $event)">
                               <option value="">Seleccionar servicio</option>
                               <!-- Facultades -->
                               <optgroup label="Facultades">
@@ -404,10 +394,17 @@
                               </optgroup>
                             </select>
                           </div>
-                          <div class="campo-grupo">
-                            <label>Grado/Nivel:</label>
-                            <input formControlName="grado" class="input-edit" placeholder="Ej: Grado en Informática" />
-                          </div>
+                          @if (esFacultad(servicio.get('servicios')?.value)) {
+                            <div class="campo-grupo">
+                              <label>Grado (opcional):</label>
+                              <select formControlName="grado" class="input-edit">
+                                <option value="">Seleccionar grado</option>
+                                @for (grado of obtenerGrados(servicio.get('servicios')?.value); track grado) {
+                                  <option [value]="grado">{{ grado }}</option>
+                                }
+                              </select>
+                            </div>
+                          }
                         </div>
                       </div>
                     }

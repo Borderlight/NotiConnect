@@ -335,24 +335,24 @@
 .evento-titulo-detalles-row-alineado {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 1.5rem; /* Gap consistente */
   width: 100%;
 }
 
 .btn-ver-mas-wrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* Cambiar de center a flex-start */
-  margin-top: 1rem; /* Reducir el margen superior */
+  justify-content: flex-start;
+  margin-top: 1rem;
 }
 
 .evento-detalles-col-alineado {
-  flex: 0 0 350px; /* Ancho fijo para consistencia */
-  max-width: 350px;
-  min-width: 350px; /* Forzar ancho mínimo igual al máximo */
-  padding-left: 2rem; /* Padding fijo para posición consistente */
-  margin-left: 0; /* Sin margen variable */
-  position: relative; /* Para control de posición */
+  flex: 1; /* Hacer la columna flexible */
+  max-width: none; /* Quitar límite máximo */
+  min-width: 320px; /* Ancho mínimo amplio */
+  padding-left: 1rem; /* Padding más compacto */
+  margin-left: 0;
+  position: relative;
 }
 
 /* Estilos para truncado de texto */
@@ -380,14 +380,15 @@
 .evento-titulo-detalles-row-alineado {
   display: flex;
   flex-direction: row;
-  gap: 2.5rem; /* Aumentar gap para más separación entre columnas */
+  gap: 1.5rem; /* Reducir gap para dar más espacio a las columnas */
   width: 100%;
 }
 
 .evento-detalles-col {
-  flex: 0 0 350px;
-  max-width: 350px;
-  min-width: 300px;
+  flex: 1; /* Hacer la columna flexible para que use más espacio */
+  max-width: none; /* Quitar límite máximo */
+  min-width: 320px; /* Ancho mínimo más amplio */
+  padding-left: 1rem;
   padding-left: 1rem;
 }
 
@@ -926,12 +927,7 @@
     align-items: start;
   }
   
-  .campos-servicio {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1rem;
-    align-items: start;
-  }
+  /* Los servicios ya tienen su propio grid definido arriba */
   
   .campos-enlace {
     display: grid;
@@ -979,18 +975,54 @@ select.input-edit option,
 }
 
 /* Mantener la estructura y posición de elementos */
+.evento-titulo-col {
+  flex: 0 0 auto; /* Ancho automático basado en contenido */
+  min-width: 280px; /* Ancho mínimo para el título y descripción */
+  max-width: 450px; /* Límite máximo */
+  margin-right: 1rem; /* Separación de la segunda columna */
+}
+
 .evento-titulo-col .detalle-seccion {
   margin-left: 0;
   padding-left: 0;
-  max-width: 450px; /* Limitar ancho máximo */
+  max-width: 100%; /* Usar todo el ancho disponible */
 }
 
 .evento-titulo-col .detalle-item {
   margin-left: 0;
   padding-left: 0.5rem;
-  max-width: 100%; /* Asegurar que no se desborde */
+  max-width: 100%;
 }
 
 .evento-titulo-col .detalle-simple {
-  max-width: 100%; /* Limitar ancho de descripción */
+  max-width: 100%;
+}
+
+/* Estilos específicos para campos de servicios con grados */
+.campos-servicio {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  gap: 1rem;
+  align-items: start;
+  width: 100%;
+}
+
+.campos-servicio .campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0; /* Permitir que se encoja si es necesario */
+}
+
+.campos-servicio .campo-grupo select {
+  width: 100%;
+  min-width: 140px; /* Ancho mínimo para que se vean bien las opciones */
+}
+
+/* En pantallas más pequeñas, cambiar a columna única */
+@media (max-width: 768px) {
+  .campos-servicio {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 }

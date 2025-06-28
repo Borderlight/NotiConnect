@@ -12,6 +12,7 @@ import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progr
 import { CompresionService } from '../../servicios/compresion.service';
 import { Router } from '@angular/router';
 import { EventType } from '../../enums/event-type.enum';
+import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
 
 interface Servicio {
   servicios: string;
@@ -85,6 +86,10 @@ export class FormularioComponent {
       const customActsArr = customActs ? JSON.parse(customActs) : [];
       customActsArr.push(actividadTrimmed);
       localStorage.setItem('actividadesPersonalizadas', JSON.stringify(customActsArr));
+      
+      // Notificar al servicio de sincronización
+      this.opcionesSincronizadasService.agregarActividad(actividadTrimmed);
+      
       this.formularioEvento.patchValue({
         actividad_relacionada: actividadTrimmed
       });
@@ -219,7 +224,8 @@ export class FormularioComponent {
     private fb: FormBuilder,
     private eventoService: EventoService,
     private compresionService: CompresionService,
-    private router: Router
+    private router: Router,
+    private opcionesSincronizadasService: OpcionesSincronizadasService
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
@@ -837,6 +843,10 @@ export class FormularioComponent {
     if (valor && !this.opcionesDepartamento.includes(valor) && !this.departamentosPersonalizados.includes(valor)) {
       this.departamentosPersonalizados.push(valor);
       localStorage.setItem('departamentosPersonalizados', JSON.stringify(this.departamentosPersonalizados));
+      
+      // Notificar al servicio de sincronización
+      this.opcionesSincronizadasService.agregarDepartamento(valor);
+      
       this.formularioEvento.get('departamento')?.setValue(valor);
       this.mostrarInputDepartamento = false;
       this.nuevoDepartamento = '';
@@ -1024,6 +1034,10 @@ export class FormularioComponent {
     }
     // Añadir el nuevo lugar personalizado y seleccionarlo automáticamente
     this.lugaresPersonalizados[i].push(valor);
+    
+    // Notificar al servicio de sincronización
+    this.opcionesSincronizadasService.agregarLugar(valor);
+    
     this.formularioEvento.get('ubicaciones')?.get(''+i)?.get('lugar')?.setValue(valor);
     this.mostrarInputLugar[i] = false;
     this.nuevoLugar[i] = '';

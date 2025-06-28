@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
 
 @Component({
   selector: 'app-evento',
@@ -25,12 +26,142 @@ export class EventoComponent {
   editForm!: FormGroup;
   mostrarDetalles = false;
 
+  // Datos de facultades y grados
+  facultadesGrados = [
+    {
+      "facultad": "Facultad de Ciencias de la Salud",
+      "grados": [
+        "Grado en Logopedia",
+        "Grado en Enfermería",
+        "Grado en Fisioterapia",
+        "Grado en Nutrición Humana y Dietética"
+      ]
+    },
+    {
+      "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
+      "grados": [
+        "Grado en Administración y Dirección de Empresas",
+        "Grado en Relaciones Internacionales",
+        "Grado en Derecho"
+      ]
+    },
+    {
+      "facultad": "Facultad de Ciencias Humanas y Sociales",
+      "grados": [
+        "Máster de Formación Permanente en Gobernanza Ética",
+        "Grado en Filosofía"
+      ]
+    },
+    {
+      "facultad": "Facultad de Comunicación",
+      "grados": [
+        "Grado en Periodismo",
+        "Grado en Comunicación Audiovisual"
+      ]
+    },
+    {
+      "facultad": "Facultad de Derecho Canónico",
+      "grados": [
+        "Doctorado Eclesiástico en Derecho Canónico",
+        "Licenciatura en Derecho Canónico"
+      ]
+    },
+    {
+      "facultad": "Facultad de Educación",
+      "grados": [
+        "Grado en Ciencias de la Actividad Física y del Deporte",
+        "Grado en Maestro en Educación Infantil",
+        "Grado en Maestro en Educación Primaria",
+        "Curso de Formación Pedagógica y Didáctica",
+        "Máster en Formación Permanente en Musicoterapia",
+        "Máster en Formación Permanente en Entrenamiento y Rendimiento en Fútbol",
+        "Máster Universitario en Formación del Profesorado de ESO y Bachillerato, FP y Enseñanza de Idiomas",
+        "Doble Grado en Maestro en Educación Primaria y Maestro en Educación Infantil",
+        "Máster Universitario en Psicopedagogía",
+        "Máster de Formación Permanente en Gestión en Situaciones de Crisis"
+      ]
+    },
+    {
+      "facultad": "Facultad de Enfermería y Fisioterapia Salus Infirmorum",
+      "grados": [
+        "Grado en Fisioterapia (Madrid)",
+        "Grado en Enfermería (Madrid)"
+      ]
+    },
+    {
+      "facultad": "Facultad de Informática",
+      "grados": [
+        "Doble Grado en ADE Tecnológico e Ingeniería Informática",
+        "Grado en Administración y Dirección de Empresas Tecnológicas",
+        "Doble Grado en Ingeniería Informática y ADET",
+        "Grado en Ingeniería Informática",
+        "Diploma de Especialista en Inteligencia Artificial & Big Data Analytics",
+        "Máster Universitario en Informática Móvil",
+        "Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos"
+      ]
+    },
+    {
+      "facultad": "Facultad de Psicología",
+      "grados": [
+        "Grado en Psicología",
+        "Máster Universitario en Psicología General Sanitaria",
+        "Diploma de Experto en Invtervención Psicosocial"
+      ]
+    },
+    {
+      "facultad": "Facultad de Teología",
+      "grados": [
+        "Bachiller en Teología",
+        "Licenciatura en Teología Bíblica",
+        "Licenciatura en Teología Dogmática",
+        "Licenciatura en Teología Práctica",
+        "Licenciatura en Teología Pastoral",
+        "Doctorado Eclesiástico en Teología Bíblica",
+        "Doctorado Eclesiástico en Teología Dogmática",
+        "Doctorado Eclesiástico en Teología Práctica",
+        "Doctorado Eclesiástico en Teología Pastoral",
+        "Doctorado Eclesiástico en Teología de la Vida Consagrada",
+        "Máster Universitario en Doctrina Social de la Iglesia"
+      ]
+    }
+  ];
+
+  // Propiedades para opciones sincronizadas
+  departamentosDisponibles: string[] = [];
+  actividadesDisponibles: string[] = [];
+  lugaresDisponibles: string[] = [];
+
+  // Mapeo de lugares
+  lugaresMap: { [key: string]: string } = {
+    'FACULTY': 'Facultad',
+    'AULA_MAGNA': 'Aula de grado',
+    'HUBdeInnovacion': 'HUB de Innovación',
+    'LIBRARY': 'Biblioteca',
+    'AuditorioJuanPablo': 'Auditorio Juan Pablo II',
+    'S-41': 'S-41',
+    'ONLINE': 'Online'
+  };
+
   constructor(
     private idiomaService: IdiomaService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private opcionesSincronizadasService: OpcionesSincronizadasService
   ) {
     this.idiomaService.obtenerIdiomaActual().subscribe(
       lang => this.currentLang = lang
+    );
+    
+    // Suscribirse a los cambios en las opciones sincronizadas
+    this.opcionesSincronizadasService.getDepartamentos().subscribe(
+      departamentos => this.departamentosDisponibles = departamentos
+    );
+    
+    this.opcionesSincronizadasService.getActividades().subscribe(
+      actividades => this.actividadesDisponibles = actividades
+    );
+    
+    this.opcionesSincronizadasService.getLugares().subscribe(
+      lugares => this.lugaresDisponibles = lugares
     );
     
     // Inicializar el formulario vacío para evitar errores
@@ -62,7 +193,7 @@ export class EventoComponent {
     this.editForm = this.fb.group({
       tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
-      departamento: [this.evento.departamento || '', Validators.required],
+      departamento: [this.obtenerDepartamentoValido(this.evento.departamento || ''), Validators.required],
       descripcion: [this.evento.descripcion || ''],
       actividad: [this.evento.actividad || ''],
       ubicaciones: this.fb.array([]),
@@ -260,8 +391,7 @@ export class EventoComponent {
         tipoHorario: ubicacion.tipoHorario,
         horaInicio: ubicacion.horaInicio,
         horaFin: ubicacion.horaFin || undefined,
-        lugar: ubicacion.lugar,
-        aula: ubicacion.aula || undefined
+        lugar: ubicacion.lugar
       }));
       
       // Actualizar ponentes
@@ -522,8 +652,7 @@ export class EventoComponent {
           tipoHorario: [ubicacion.tipoHorario || 'hora'],
           horaInicio: [ubicacion.horaInicio || '', Validators.required],
           horaFin: [ubicacion.horaFin || ''],
-          lugar: [ubicacion.lugar || '', Validators.required],
-          aula: [ubicacion.aula || '']
+          lugar: [ubicacion.lugar || '', Validators.required]
         }));
       });
     } else {
@@ -714,7 +843,7 @@ export class EventoComponent {
   traducirLugar(lugar: string): string {
     const traduccionesLugares: { [key: string]: string } = {
       'FACULTY': 'Facultad',
-      'AULA_MAGNA': 'Aula de grados',
+      'AULA_MAGNA': 'Aula de grado',
       'HUBdeInnovacion': 'HUB de Innovación',
       'LIBRARY': 'Biblioteca',
       'AuditorioJuanPablo': 'Auditorio Juan Pablo II',
@@ -723,5 +852,67 @@ export class EventoComponent {
     };
     
     return traduccionesLugares[lugar] || lugar;
+  }
+
+  // Métodos para manejar facultades y grados
+  esFacultad(servicio: string): boolean {
+    return this.facultadesGrados.some(f => f.facultad === servicio);
+  }
+
+  obtenerGrados(facultad: string): string[] {
+    const facultadEncontrada = this.facultadesGrados.find(f => f.facultad === facultad);
+    return facultadEncontrada ? facultadEncontrada.grados : [];
+  }
+
+  onServicioChange(index: number, event: any): void {
+    const servicioSeleccionado = event.target.value;
+    const servicioControl = this.serviciosFormArray.at(index);
+    
+    // Limpiar el grado si no es una facultad
+    if (!this.esFacultad(servicioSeleccionado)) {
+      servicioControl.get('grado')?.setValue('');
+    }
+  }
+
+  // Método para obtener opciones de lugar con lugares personalizados
+  obtenerOpcionesLugar(): Array<{key: string, value: string}> {
+    const opcionesBase = [
+      { key: 'FACULTY', value: 'Facultad' },
+      { key: 'AULA_MAGNA', value: 'Aula de grado' },
+      { key: 'HUBdeInnovacion', value: 'HUB de Innovación' },
+      { key: 'LIBRARY', value: 'Biblioteca' },
+      { key: 'AuditorioJuanPablo', value: 'Auditorio Juan Pablo II' },
+      { key: 'S-41', value: 'S-41' },
+      { key: 'ONLINE', value: 'Online' }
+    ];
+
+    // Agregar lugares personalizados de localStorage si existen
+    const lugaresCustom = localStorage.getItem('lugaresPersonalizados');
+    if (lugaresCustom) {
+      try {
+        const lugares = JSON.parse(lugaresCustom);
+        if (Array.isArray(lugares)) {
+          lugares.forEach(lugar => {
+            if (typeof lugar === 'string' && lugar.trim()) {
+              opcionesBase.push({ key: lugar, value: lugar });
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Error al parsear lugares personalizados:', e);
+      }
+    }
+
+    return opcionesBase;
+  }
+
+  // Método para verificar si un departamento está en las opciones disponibles
+  departamentoExiste(departamento: string): boolean {
+    return this.departamentosDisponibles.includes(departamento);
+  }
+
+  // Método para obtener el departamento válido o vacío si no existe
+  obtenerDepartamentoValido(departamento: string): string {
+    return this.departamentoExiste(departamento) ? departamento : '';
   }
 }
