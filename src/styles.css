@@ -11,8 +11,9 @@
   --color-fondo-seccion: #f8f9fa;
   --color-sombra: rgba(0, 0, 0, 0.1);
   --color-error: #8d0512;
-  --color-fondo-input: #fff;
-  --color-texto-input: #111;
+  --color-fondo-input: #ffffff;
+  --color-texto-input: #333333;
+  --color-borde-input: #dddddd;
 }
 
 /* Modo oscuro */
@@ -25,6 +26,9 @@
   --color-primario-hover: #45a049;
   --color-fondo-seccion: #2d2d2d;
   --color-sombra: rgba(0, 0, 0, 0.3);
+  --color-fondo-input: #2a2a2a;
+  --color-texto-input: #ffffff;
+  --color-borde-input: #555555;
 }
 
 /* Estilos base */
@@ -46,42 +50,50 @@ button:hover {
   background-color: var(--color-primario-hover);
 }
 
-/* Global select/input/textarea color fix for all app (overrides) */
-select, .tipo-enlace, .select-container select, .campo-form select, .campo-form .select-container select, input, textarea {
+/* Estilos globales para formularios - mantiene visibilidad en todos los modos */
+select, 
+input, 
+textarea,
+.tipo-enlace,
+.select-container select,
+.campo-form select,
+.campo-form .select-container select {
   background-color: var(--color-fondo-input) !important;
   color: var(--color-texto-input) !important;
-  border: 1.5px solid var(--color-borde);
+  border: 1.5px solid var(--color-borde-input) !important;
+  border-radius: 4px;
+  padding: 8px 12px;
 }
 
-select option, .tipo-enlace option, .select-container select option {
+select option,
+.tipo-enlace option,
+.select-container select option {
   background-color: var(--color-fondo-input) !important;
   color: var(--color-texto-input) !important;
 }
 
-select:disabled, select option:disabled {
+/* Estados especiales */
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primario) !important;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+select:disabled,
+input:disabled,
+textarea:disabled {
+  background-color: #f5f5f5 !important;
   color: #888 !important;
-  background-color: #222 !important;
+  cursor: not-allowed;
 }
 
-@media (prefers-color-scheme: dark) {
-  select,
-  .tipo-enlace,
-  .select-container select {
-    background-color: #232323 !important;
-    color: #f5f5f5 !important;
-    border-color: #555 !important;
-  }
-  select option,
-  .tipo-enlace option,
-  .select-container select option {
-    background-color: #232323 !important;
-    color: #f5f5f5 !important;
-  }
-  select:disabled,
-  select option:disabled {
-    color: #888 !important;
-    background-color: #222 !important;
-  }
+.dark-mode select:disabled,
+.dark-mode input:disabled,
+.dark-mode textarea:disabled {
+  background-color: #1a1a1a !important;
+  color: #666 !important;
 }
 
 /* Transiciones suaves para cambios de tema */

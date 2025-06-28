@@ -51,8 +51,6 @@ export class EventoComponent {
 
   eliminarEvento(event: Event) {
     event.stopPropagation();
-    console.log('ID del evento a eliminar:', this.evento._id);
-    console.log('Evento completo:', this.evento);
     this.solicitarConfirmacionEliminar.emit(this.evento._id);
   }
 
@@ -252,9 +250,6 @@ export class EventoComponent {
   // Al guardar, sincroniza los campos complejos
   guardarEdicion(event: Event) {
     event.stopPropagation();
-    console.log('Guardando edición...', this.editForm.value);
-    console.log('Formulario válido:', this.editForm.valid);
-    console.log('Errores del formulario:', this.editForm.errors);
     
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
@@ -294,13 +289,6 @@ export class EventoComponent {
           url: enlace.url.trim()
         }));
       
-      console.log('Datos actualizados:', {
-        ubicaciones: this.evento.ubicaciones,
-        ponentes: this.evento.ponentes,
-        servicios: this.evento.servicios,
-        enlaces: this.evento.enlaces
-      });
-      
       // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
@@ -324,16 +312,8 @@ export class EventoComponent {
       
       this.editMode = false;
     } else {
-      console.log('Formulario inválido, marcando campos tocados...');
+      // Marcar campos como tocados para mostrar errores
       this.editForm.markAllAsTouched();
-      
-      // Mostrar errores específicos
-      Object.keys(this.editForm.controls).forEach(key => {
-        const controlErrors = this.editForm.get(key)?.errors;
-        if (controlErrors) {
-          console.log(`Error en ${key}:`, controlErrors);
-        }
-      });
     }
   }
 
