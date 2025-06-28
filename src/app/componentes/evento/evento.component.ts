@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Evento, ArchivoAdjunto } from '../../interfaces/evento.interface';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -46,25 +46,30 @@ export class EventoComponent {
   editarEvento(event: Event) {
     event.stopPropagation();
     this.editMode = true;
-    // Usar los nuevos campos de ubicaciones y ponentes
-    const primerPonente = this.evento.ponentes?.[0]?.nombre || '';
-    const primeraUbicacion = this.evento.ubicaciones?.[0];
     
+    // Crear formulario con FormArrays
     this.editForm = this.fb.group({
       titulo: [this.evento.titulo, Validators.required],
       departamento: [this.evento.departamento || '', Validators.required],
-      ponente: [primerPonente, Validators.required],
-      fecha: [primeraUbicacion?.fecha || this.evento.fecha, Validators.required],
-      horaInicio: [primeraUbicacion?.horaInicio || this.evento.horaInicio, Validators.required],
-      horaFin: [primeraUbicacion?.horaFin || this.evento.horaFin],
-      lugar: [primeraUbicacion?.lugar || this.evento.lugar, Validators.required],
-      aula: [this.evento.aula || ''],
-      actividad: [this.evento.actividad],
-      descripcion: [this.descripcionTexto],
-      servicios: [this.serviciosTexto],
-      adjuntos: [this.adjuntosTexto],
-      enlaces: [this.enlacesTexto]
+      descripcion: [this.evento.descripcion || ''],
+      actividad: [this.evento.actividad || ''],
+      ubicaciones: this.fb.array([]),
+      ponentes: this.fb.array([]),
+      servicios: this.fb.array([]),
+      enlaces: this.fb.array([])
     });
+
+    // Llenar ubicaciones
+    this.initUbicaciones();
+    
+    // Llenar ponentes
+    this.initPonentes();
+    
+    // Llenar servicios
+    this.initServicios();
+    
+    // Llenar enlaces
+    this.initEnlaces();
   }
 
   cancelarEdicion(event: Event) {
@@ -240,58 +245,61 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     if (this.editForm.valid) {
-      // Sincronizar campos complejos usando los setters
-      this.descripcionTexto = this.editForm.value.descripcion;
-      this.serviciosTexto = this.editForm.value.servicios;
-      this.adjuntosTexto = this.editForm.value.adjuntos;
-      this.enlacesTexto = this.editForm.value.enlaces;
-      
-      // Actualizar ponentes (convertir de string individual a array)
-      const ponenteNombre = this.editForm.value.ponente;
-      if (ponenteNombre && ponenteNombre.trim()) {
-        this.evento.ponentes = [{ 
-          id: 1, 
-          nombre: ponenteNombre.trim() 
-        }];
-      }
+      const formValue = this.editForm.value;
       
       // Actualizar ubicaciones
-      if (!this.evento.ubicaciones || this.evento.ubicaciones.length === 0) {
-        this.evento.ubicaciones = [{
-          lugar: this.editForm.value.lugar || '',
-          fecha: new Date(this.editForm.value.fecha),
-          tipoHorario: 'horario' as const,
-          horaInicio: this.editForm.value.horaInicio || ''
-        }];
-      }
+      this.evento.ubicaciones = formValue.ubicaciones.map((ubicacion: any) => ({
+        fecha: new Date(ubicacion.fecha),
+        tipoHorario: ubicacion.tipoHorario,
+        horaInicio: ubicacion.horaInicio,
+        horaFin: ubicacion.horaFin || undefined,
+        lugar: ubicacion.lugar,
+        aula: ubicacion.aula || undefined
+      }));
       
-      // Actualizar la primera ubicación con los datos del formulario
-      const ubicacion = this.evento.ubicaciones[0];
-      ubicacion.fecha = new Date(this.editForm.value.fecha);
-      ubicacion.horaInicio = this.editForm.value.horaInicio;
-      ubicacion.horaFin = this.editForm.value.horaFin;
-      ubicacion.lugar = this.editForm.value.lugar;
-      ubicacion.aula = this.editForm.value.aula;
-      ubicacion.tipoHorario = this.editForm.value.horaFin ? 'horario' : 'hora';
+      // Actualizar ponentes
+      this.evento.ponentes = formValue.ponentes
+        .filter((p: any) => p.nombre && p.nombre.trim())
+        .map((ponente: any, index: number) => ({
+          id: index + 1,
+          nombre: ponente.nombre.trim(),
+          afiliacion: ponente.afiliacion || undefined
+        }));
+      
+      // Actualizar servicios
+      this.evento.servicios = formValue.servicios
+        .filter((s: any) => s.servicio && s.servicio.trim())
+        .map((servicio: any) => ({
+          servicios: servicio.servicio.trim(),
+          grado: servicio.grado || undefined
+        }));
+      
+      // Actualizar enlaces
+      this.evento.enlaces = formValue.enlaces
+        .filter((e: any) => e.url && e.url.trim())
+        .map((enlace: any) => ({
+          tipo: enlace.tipo,
+          url: enlace.url.trim()
+        }));
       
       // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
-        titulo: this.editForm.value.titulo,
-        departamento: this.editForm.value.departamento,
+        titulo: formValue.titulo,
+        departamento: formValue.departamento,
+        descripcion: formValue.descripcion,
+        actividad: formValue.actividad,
         ponentes: this.evento.ponentes,
         ubicaciones: this.evento.ubicaciones,
-        actividad: this.editForm.value.actividad,
-        descripcion: this.evento.descripcion,
         servicios: this.evento.servicios,
-        adjuntos: this.evento.adjuntos,
         enlaces: this.evento.enlaces
       });
       
       // Actualizar campos directos en el evento local
-      this.evento.titulo = this.editForm.value.titulo;
-      this.evento.departamento = this.editForm.value.departamento;
-      this.evento.actividad = this.editForm.value.actividad;
+      this.evento.titulo = formValue.titulo;
+      this.evento.departamento = formValue.departamento;
+      this.evento.descripcion = formValue.descripcion;
+      this.evento.actividad = formValue.actividad;
       
       this.editMode = false;
     } else {
@@ -474,5 +482,230 @@ export class EventoComponent {
   esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
     const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
     return this.evento.imagen === adjuntoData;
+  }
+
+  // Getters para FormArrays
+  get ubicacionesFormArray(): FormArray {
+    return this.editForm.get('ubicaciones') as FormArray;
+  }
+
+  get ponentesFormArray(): FormArray {
+    return this.editForm.get('ponentes') as FormArray;
+  }
+
+  get serviciosFormArray(): FormArray {
+    return this.editForm.get('servicios') as FormArray;
+  }
+
+  get enlacesFormArray(): FormArray {
+    return this.editForm.get('enlaces') as FormArray;
+  }
+
+  // Métodos de inicialización para FormArrays
+  private initUbicaciones(): void {
+    const ubicacionesArray = this.editForm.get('ubicaciones') as FormArray;
+    
+    if (this.evento.ubicaciones && this.evento.ubicaciones.length > 0) {
+      this.evento.ubicaciones.forEach(ubicacion => {
+        ubicacionesArray.push(this.fb.group({
+          fecha: [this.formatDateForInput(ubicacion.fecha), Validators.required],
+          tipoHorario: [ubicacion.tipoHorario || 'hora'],
+          horaInicio: [ubicacion.horaInicio || '', Validators.required],
+          horaFin: [ubicacion.horaFin || ''],
+          lugar: [ubicacion.lugar || '', Validators.required],
+          aula: [ubicacion.aula || '']
+        }));
+      });
+    } else {
+      // Crear una ubicación por defecto con datos legacy
+      ubicacionesArray.push(this.fb.group({
+        fecha: [this.formatDateForInput(this.evento.fecha), Validators.required],
+        tipoHorario: [this.evento.horaFin ? 'horario' : 'hora'],
+        horaInicio: [this.evento.horaInicio || '', Validators.required],
+        horaFin: [this.evento.horaFin || ''],
+        lugar: [this.evento.lugar || '', Validators.required],
+        aula: [this.evento.aula || '']
+      }));
+    }
+  }
+
+  private initPonentes(): void {
+    const ponentesArray = this.editForm.get('ponentes') as FormArray;
+    
+    if (this.evento.ponentes && this.evento.ponentes.length > 0) {
+      this.evento.ponentes.forEach(ponente => {
+        ponentesArray.push(this.fb.group({
+          nombre: [ponente.nombre || '', Validators.required],
+          afiliacion: [ponente.afiliacion || '']
+        }));
+      });
+    } else {
+      // Crear un ponente por defecto
+      ponentesArray.push(this.fb.group({
+        nombre: ['', Validators.required],
+        afiliacion: ['']
+      }));
+    }
+  }
+
+  private initServicios(): void {
+    const serviciosArray = this.editForm.get('servicios') as FormArray;
+    
+    if (this.evento.servicios && this.evento.servicios.length > 0) {
+      this.evento.servicios.forEach(servicio => {
+        serviciosArray.push(this.fb.group({
+          servicio: [servicio.servicios || '', Validators.required],
+          grado: [servicio.grado || '']
+        }));
+      });
+    } else {
+      // Crear un servicio por defecto
+      serviciosArray.push(this.fb.group({
+        servicio: [''],
+        grado: ['']
+      }));
+    }
+  }
+
+  private initEnlaces(): void {
+    const enlacesArray = this.editForm.get('enlaces') as FormArray;
+    
+    if (this.evento.enlaces && this.evento.enlaces.length > 0) {
+      this.evento.enlaces.forEach(enlace => {
+        enlacesArray.push(this.fb.group({
+          tipo: [enlace.tipo || '', Validators.required],
+          url: [enlace.url || '', Validators.required]
+        }));
+      });
+    } else {
+      // Crear un enlace por defecto
+      enlacesArray.push(this.fb.group({
+        tipo: [''],
+        url: ['']
+      }));
+    }
+  }
+
+  // Métodos para agregar elementos
+  agregarUbicacion(): void {
+    const ubicacionesArray = this.editForm.get('ubicaciones') as FormArray;
+    ubicacionesArray.push(this.fb.group({
+      fecha: ['', Validators.required],
+      tipoHorario: ['hora'],
+      horaInicio: ['', Validators.required],
+      horaFin: [''],
+      lugar: ['', Validators.required],
+      aula: ['']
+    }));
+  }
+
+  agregarPonente(): void {
+    const ponentesArray = this.editForm.get('ponentes') as FormArray;
+    ponentesArray.push(this.fb.group({
+      nombre: ['', Validators.required],
+      afiliacion: ['']
+    }));
+  }
+
+  agregarServicio(): void {
+    const serviciosArray = this.editForm.get('servicios') as FormArray;
+    serviciosArray.push(this.fb.group({
+      servicio: [''],
+      grado: ['']
+    }));
+  }
+
+  agregarEnlace(): void {
+    const enlacesArray = this.editForm.get('enlaces') as FormArray;
+    enlacesArray.push(this.fb.group({
+      tipo: ['', Validators.required],
+      url: ['', Validators.required]
+    }));
+  }
+
+  // Métodos para eliminar elementos
+  eliminarUbicacion(index: number): void {
+    const ubicacionesArray = this.editForm.get('ubicaciones') as FormArray;
+    if (ubicacionesArray.length > 1) {
+      ubicacionesArray.removeAt(index);
+    }
+  }
+
+  eliminarPonente(index: number): void {
+    const ponentesArray = this.editForm.get('ponentes') as FormArray;
+    if (ponentesArray.length > 1) {
+      ponentesArray.removeAt(index);
+    }
+  }
+
+  eliminarServicio(index: number): void {
+    const serviciosArray = this.editForm.get('servicios') as FormArray;
+    serviciosArray.removeAt(index);
+  }
+
+  eliminarEnlace(index: number): void {
+    const enlacesArray = this.editForm.get('enlaces') as FormArray;
+    enlacesArray.removeAt(index);
+  }
+
+  // Métodos para adjuntos
+  agregarAdjunto(): void {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i] as File;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const resultado = e.target?.result as string;
+          if (resultado) {
+            const nuevoAdjunto: ArchivoAdjunto = {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              data: resultado
+            };
+            
+            if (!this.evento.adjuntos) {
+              this.evento.adjuntos = [];
+            }
+            this.evento.adjuntos.push(nuevoAdjunto);
+            
+            // Emitir cambio
+            this.actualizar.emit({
+              _id: this.evento._id,
+              adjuntos: this.evento.adjuntos
+            });
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    // Limpiar el input
+    event.target.value = '';
+  }
+
+  eliminarAdjunto(index: number): void {
+    if (this.evento.adjuntos && index >= 0 && index < this.evento.adjuntos.length) {
+      this.evento.adjuntos.splice(index, 1);
+      // Emitir cambio
+      this.actualizar.emit({
+        _id: this.evento._id,
+        adjuntos: this.evento.adjuntos
+      });
+    }
+  }
+
+  // Utilidad para formatear fecha para input
+  private formatDateForInput(fecha: any): string {
+    if (!fecha) return '';
+    const date = new Date(fecha);
+    return date.toISOString().substring(0, 10);
   }
 }

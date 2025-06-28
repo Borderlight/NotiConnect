@@ -69,25 +69,74 @@
             </button>
           </div>
         } @else {
+          <!-- MODO EDICIÓN CON ORDEN CORRECTO -->
           <form [formGroup]="editForm">
-            <h2 class="evento-titulo"><input formControlName="titulo" class="input-edit" /></h2>
-            <p><strong>Departamento:</strong> <input formControlName="departamento" class="input-edit" /></p>
-            <p><strong>Descripción:</strong> <textarea formControlName="descripcion" class="input-edit textarea-edit"></textarea></p>
-            <p><strong>Ponente:</strong> <input formControlName="ponente" class="input-edit" /></p>
-            <p><strong>Fecha:</strong> <input formControlName="fecha" class="input-edit" type="date" /></p>
-            <p><strong>Hora:</strong> <input formControlName="horaInicio" class="input-edit" type="time" />
-              @if (evento.horaFin) {
-                <span> - <input formControlName="horaFin" class="input-edit" type="time" /></span>
-              }
+            <!-- Título -->
+            <h2 class="evento-titulo">
+              <input formControlName="titulo" class="input-edit" placeholder="Título del evento" />
+            </h2>
+            
+            <!-- Departamento -->
+            <p><strong>Departamento:</strong> 
+              <select formControlName="departamento" class="input-edit">
+                <option value="">Seleccionar departamento</option>
+                <option value="UCI">UCI</option>
+                <option value="Ingeniería">Ingeniería</option>
+                <option value="Ciencias">Ciencias</option>
+                <option value="Administración">Administración</option>
+              </select>
             </p>
-            <p><strong>Lugar:</strong> <input formControlName="lugar" class="input-edit" />
-              @if (evento.aula) {
-                <span> - <input formControlName="aula" class="input-edit" /></span>
-              }
-            </p>
-            @if (evento.actividad) {
-              <p><strong>Actividad:</strong> <input formControlName="actividad" class="input-edit" /></p>
-            }
+            
+            <!-- Descripción -->
+            <p class="evento-descripcion"><strong>Descripción:</strong></p>
+            <div class="descripcion-edit">
+              <textarea formControlName="descripcion" class="input-edit textarea-edit" placeholder="Descripción del evento"></textarea>
+            </div>
+            
+            <!-- Ubicaciones -->
+            <div class="ubicaciones-section">
+              <div class="section-header">
+                <strong>Ubicaciones:</strong>
+                <button type="button" class="btn-agregar" (click)="agregarUbicacion()">+ Agregar</button>
+              </div>
+              <div formArrayName="ubicaciones">
+                @for (ubicacion of ubicacionesFormArray.controls; track $index; let i = $index) {
+                  <div class="ubicacion-edit-item" [formGroupName]="i">
+                    <button type="button" class="btn-eliminar-item" (click)="eliminarUbicacion(i)">🗑️</button>
+                    <div class="ubicacion-edit-campos">
+                      <div class="ubicacion-fecha">
+                        <strong>Fecha:</strong>
+                        <input formControlName="fecha" type="date" class="input-edit" />
+                      </div>
+                      <div class="ubicacion-hora">
+                        <strong>Tipo:</strong>
+                        <select formControlName="tipoHorario" class="input-edit">
+                          <option value="hora">Hora específica</option>
+                          <option value="horario">Horario (inicio-fin)</option>
+                        </select>
+                        <input formControlName="horaInicio" type="time" class="input-edit" />
+                        @if (ubicacion.get('tipoHorario')?.value === 'horario') {
+                          <input formControlName="horaFin" type="time" class="input-edit" />
+                        }
+                      </div>
+                      <div class="ubicacion-lugar">
+                        <strong>Lugar:</strong>
+                        <select formControlName="lugar" class="input-edit">
+                          <option value="">Seleccionar lugar</option>
+                          <option value="Auditorio">Auditorio</option>
+                          <option value="Laboratorio">Laboratorio</option>
+                          <option value="Aula Magna">Aula Magna</option>
+                          <option value="ONLINE">ONLINE</option>
+                          <option value="LIBRARY">LIBRARY</option>
+                        </select>
+                        <input formControlName="aula" class="input-edit" placeholder="Aula (opcional)" />
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            
             <div class="btn-ver-mas-wrapper">
               <button class="btn-ver-mas" (click)="toggleDetalles($event)">
                 {{ mostrarDetalles ? 'Ocultar detalles' : 'Ver más detalles' }}
@@ -197,11 +246,111 @@
                 }
               </div>
             } @else {
-              <form [formGroup]="editForm">
-                <p><strong>Servicios:</strong> <input formControlName="servicios" class="input-edit" /></p>
-                <p><strong>Adjuntos:</strong> <input formControlName="adjuntos" class="input-edit" /></p>
-                <p><strong>Enlaces:</strong> <input formControlName="enlaces" class="input-edit" /></p>
-              </form>
+              <!-- EDICIÓN DE DETALLES - Continuación del mismo formulario -->
+              <!-- Ponentes -->
+              <div class="detalle-seccion">
+                <div class="section-header">
+                  <strong>Ponente(s):</strong>
+                  <button type="button" class="btn-agregar" (click)="agregarPonente()">+ Agregar</button>
+                </div>
+                <div formArrayName="ponentes">
+                  @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
+                    <div class="detalle-edit-item" [formGroupName]="i">
+                      <button type="button" class="btn-eliminar-item" (click)="eliminarPonente(i)">🗑️</button>
+                      <input formControlName="nombre" class="input-edit" placeholder="Nombre del ponente" />
+                      <input formControlName="afiliacion" class="input-edit" placeholder="Afiliación (opcional)" />
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Actividad -->
+              <div class="detalle-seccion">
+                <strong>Actividad:</strong>
+                <select formControlName="actividad" class="input-edit">
+                  <option value="">Seleccionar actividad</option>
+                  <option value="Conferencia">Conferencia</option>
+                  <option value="Taller">Taller</option>
+                  <option value="Seminario">Seminario</option>
+                  <option value="Mesa redonda">Mesa redonda</option>
+                </select>
+              </div>
+
+              <!-- Servicios -->
+              <div class="detalle-seccion">
+                <div class="section-header">
+                  <strong>Servicios:</strong>
+                  <button type="button" class="btn-agregar" (click)="agregarServicio()">+ Agregar</button>
+                </div>
+                <div formArrayName="servicios">
+                  @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
+                    <div class="detalle-edit-item" [formGroupName]="i">
+                      <button type="button" class="btn-eliminar-item" (click)="eliminarServicio(i)">🗑️</button>
+                      <input formControlName="servicio" class="input-edit" placeholder="Nombre del servicio" />
+                      <input formControlName="grado" class="input-edit" placeholder="Grado/Nivel (opcional)" />
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Enlaces -->
+              <div class="detalle-seccion">
+                <div class="section-header">
+                  <strong>Enlaces:</strong>
+                  <button type="button" class="btn-agregar" (click)="agregarEnlace()">+ Agregar</button>
+                </div>
+                <div formArrayName="enlaces">
+                  @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
+                    <div class="detalle-edit-item" [formGroupName]="i">
+                      <button type="button" class="btn-eliminar-item" (click)="eliminarEnlace(i)">🗑️</button>
+                      <select formControlName="tipo" class="input-edit">
+                        <option value="">Tipo de enlace</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Otros">Otros</option>
+                      </select>
+                      <input formControlName="url" class="input-edit" placeholder="URL del enlace" />
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Adjuntos -->
+              <div class="detalle-seccion">
+                <div class="section-header">
+                  <strong>Adjuntos:</strong>
+                  <button type="button" class="btn-agregar" (click)="agregarAdjunto()">+ Agregar</button>
+                </div>
+                @if (evento.adjuntos && evento.adjuntos.length > 0) {
+                  <div class="adjuntos-edit-grid">
+                    @for (adjunto of evento.adjuntos; track $index) {
+                      <div class="adjunto-edit-item">
+                        <button type="button" class="btn-eliminar-adjunto" (click)="eliminarAdjunto($index)">🗑️</button>
+                        @if (esImagen(adjunto)) {
+                          <div class="adjunto-imagen-preview">
+                            <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
+                            <div class="checkbox-caratula" 
+                                 (click)="seleccionarCaratula(adjunto, $event)"
+                                 [class.seleccionado]="esCaratulaSeleccionada(adjunto)">
+                              <div class="checkbox-icon">{{ esCaratulaSeleccionada(adjunto) ? '✓' : '📷' }}</div>
+                            </div>
+                          </div>
+                        } @else {
+                          <div class="adjunto-archivo-preview">
+                            <div class="icono-archivo">{{ obtenerIconoAdjunto(adjunto) }}</div>
+                          </div>
+                        }
+                        <div class="adjunto-nombre">{{ obtenerNombreAdjunto(adjunto, $index) }}</div>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="detalle-vacio">No hay adjuntos</p>
+                }
+                <input type="file" #fileInput multiple style="display: none" (change)="onFileSelected($event)" />
+              </div>
             }
             <div style="height: 1.7em;"></div>
           </div>
