@@ -32,21 +32,21 @@
       <div class="evento-titulo-col">
         @if (!editMode) {
           <h2 class="evento-titulo">{{ evento.titulo }}</h2>
-          <p><strong>Departamento:</strong> {{ evento.departamento || 'No especificado' }}</p>
-          <p class="evento-descripcion"><strong>Descripción:</strong> {{ evento.descripcion || 'Sin descripción' }}</p>
+          <p><strong>Departamento:</strong> <span class="texto-truncado">{{ evento.departamento || 'No especificado' }}</span></p>
+          <p class="evento-descripcion"><strong>Descripción:</strong> <span class="texto-truncado descripcion-texto">{{ evento.descripcion || 'Sin descripción' }}</span></p>
           <div class="ubicaciones-section">
             <strong>Ubicaciones:</strong>
             @if (evento.ubicaciones && evento.ubicaciones.length > 0) {
               @for (ubicacion of evento.ubicaciones; track ubicacion.fecha) {
                 <div class="ubicacion-item">
-                  <p class="fecha-hora">{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }} | 
+                  <p class="fecha-hora texto-truncado">{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }} | 
                     @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
                       {{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}
                     } @else {
                       {{ ubicacion.horaInicio }}
                     }
                   </p>
-                  <p class="lugar">{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</p>
+                  <p class="lugar texto-truncado">{{ ubicacion.lugar }}@if (ubicacion.aula) { - {{ ubicacion.aula }} }</p>
                 </div>
               }
             } @else {
@@ -157,15 +157,29 @@
               <!-- Adjuntos -->
               <div class="detalle-seccion">
                 <strong>Adjuntos:</strong>
-                @if (adjuntosDetallados.length > 0) {
-                  @for (adjunto of adjuntosDetallados; track adjunto.name) {
-                    <div class="detalle-item">
-                      <p class="detalle-principal">{{ adjunto.name }}</p>
-                      @if (adjunto.type) {
-                        <p class="detalle-secundario">{{ adjunto.type }}</p>
-                      }
-                    </div>
-                  }
+                @if (evento.adjuntos && evento.adjuntos.length > 0) {
+                  <div class="adjuntos-grid">
+                    @for (adjunto of evento.adjuntos; track $index) {
+                      <div class="adjunto-item" (click)="abrirAdjunto(adjunto, $index)">
+                        @if (esImagen(adjunto)) {
+                          <div class="adjunto-imagen-preview">
+                            <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
+                            <div class="adjunto-overlay">
+                              <span class="adjunto-tipo">📷 Imagen</span>
+                            </div>
+                          </div>
+                        } @else {
+                          <div class="adjunto-archivo-preview">
+                            <div class="icono-archivo">📄</div>
+                            <div class="adjunto-info">
+                              <span class="adjunto-tipo">{{ obtenerTipoAdjunto(adjunto) }}</span>
+                              <span class="adjunto-accion">Clic para abrir</span>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
                 } @else {
                   <p class="detalle-vacio">-</p>
                 }

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Evento } from '../../interfaces/evento.interface';
+import { Evento, ArchivoAdjunto } from '../../interfaces/evento.interface';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -348,5 +348,61 @@ export class EventoComponent {
       });
       doc.save(`evento_${evento._id}.pdf`);
     }
+  }
+
+  // Métodos para manejo de adjuntos
+  esImagen(adjunto: string | ArchivoAdjunto): boolean {
+    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    return data.startsWith('data:image/');
+  }
+
+  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
+    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    if (data.startsWith('data:image/')) {
+      return 'Imagen';
+    } else if (data.startsWith('data:application/pdf')) {
+      return 'PDF';
+    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument')) {
+      return 'Documento Office';
+    } else if (data.startsWith('data:text/')) {
+      return 'Texto';
+    } else {
+      return 'Archivo';
+    }
+  }
+
+  abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
+    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    const nombre = typeof adjunto === 'string' ? `adjunto_${index + 1}` : adjunto.name;
+    
+    // Crear un blob a partir del data URL
+    const byteCharacters = atob(data.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    
+    // Determinar el tipo MIME
+    const mimeMatch = data.match(/data:([^;]+);/);
+    const mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+    
+    const blob = new Blob([byteArray], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    
+    // Abrir en nueva ventana
+    const nuevaVentana = window.open(url, '_blank');
+    if (!nuevaVentana) {
+      // Si no se puede abrir en nueva ventana, descargar el archivo
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = nombre;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
+    // Limpiar el URL después de un tiempo
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
 }
