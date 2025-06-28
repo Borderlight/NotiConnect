@@ -382,8 +382,12 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     
+    console.log('Iniciando guardado. Form válido:', this.editForm.valid);
+    console.log('Errores del formulario:', this.editForm.errors);
+    
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
+      console.log('Valor del formulario:', formValue);
       
       // Actualizar ubicaciones
       this.evento.ubicaciones = formValue.ubicaciones.map((ubicacion: any) => ({
@@ -430,7 +434,8 @@ export class EventoComponent {
         ponentes: this.evento.ponentes,
         ubicaciones: this.evento.ubicaciones,
         servicios: this.evento.servicios,
-        enlaces: this.evento.enlaces
+        enlaces: this.evento.enlaces,
+        imagen: this.evento.imagen // Incluir la carátula seleccionada
       });
       
       // Actualizar campos directos en el evento local
@@ -443,7 +448,16 @@ export class EventoComponent {
       this.editMode = false;
     } else {
       // Marcar campos como tocados para mostrar errores
+      console.log('Formulario inválido, marcando campos como tocados');
       this.editForm.markAllAsTouched();
+      
+      // Mostrar errores específicos de cada campo
+      Object.keys(this.editForm.controls).forEach(key => {
+        const control = this.editForm.get(key);
+        if (control && control.errors) {
+          console.log(`Error en campo ${key}:`, control.errors);
+        }
+      });
     }
   }
 
@@ -609,14 +623,17 @@ export class EventoComponent {
     
     const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
     
-    // Actualizar la imagen del evento
+    // Actualizar la imagen del evento localmente
     this.evento.imagen = adjuntoData;
     
-    // Emitir el cambio para actualizar en el backend
-    this.actualizar.emit({ 
-      _id: this.evento._id, 
-      imagen: adjuntoData 
-    });
+    // Si no estamos en modo edición, emitir inmediatamente
+    if (!this.editMode) {
+      this.actualizar.emit({ 
+        _id: this.evento._id, 
+        imagen: adjuntoData 
+      });
+    }
+    // Si estamos en modo edición, los cambios se emitirán al guardar
   }
 
   esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
@@ -647,9 +664,17 @@ export class EventoComponent {
     
     if (this.evento.ubicaciones && this.evento.ubicaciones.length > 0) {
       this.evento.ubicaciones.forEach(ubicacion => {
+        // Determinar el tipo de horario correctamente
+        let tipoHorario = 'hora';
+        if (ubicacion.tipoHorario) {
+          tipoHorario = ubicacion.tipoHorario;
+        } else if (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== null && ubicacion.horaFin !== undefined) {
+          tipoHorario = 'horario';
+        }
+        
         ubicacionesArray.push(this.fb.group({
           fecha: [this.formatDateForInput(ubicacion.fecha), Validators.required],
-          tipoHorario: [ubicacion.tipoHorario || 'hora'],
+          tipoHorario: [tipoHorario],
           horaInicio: [ubicacion.horaInicio || '', Validators.required],
           horaFin: [ubicacion.horaFin || ''],
           lugar: [ubicacion.lugar || '', Validators.required]
@@ -661,15 +686,13 @@ export class EventoComponent {
       const horaDefault = this.evento.horaInicio || '';
       const horaFinDefault = this.evento.horaFin || '';
       const lugarDefault = this.evento.lugar || '';
-      const aulaDefault = this.evento.aula || '';
       
       ubicacionesArray.push(this.fb.group({
         fecha: [fechaDefault, Validators.required],
-        tipoHorario: [horaFinDefault ? 'horario' : 'hora'],
+        tipoHorario: [horaFinDefault && horaFinDefault.trim() !== '' ? 'horario' : 'hora'],
         horaInicio: [horaDefault, Validators.required],
         horaFin: [horaFinDefault],
-        lugar: [lugarDefault, Validators.required],
-        aula: [aulaDefault]
+        lugar: [lugarDefault, Validators.required]
       }));
     }
   }
@@ -763,9 +786,7 @@ export class EventoComponent {
 
   eliminarPonente(index: number): void {
     const ponentesArray = this.editForm.get('ponentes') as FormArray;
-    if (ponentesArray.length > 1) {
-      ponentesArray.removeAt(index);
-    }
+    ponentesArray.removeAt(index);
   }
 
   eliminarServicio(index: number): void {
@@ -854,6 +875,37 @@ export class EventoComponent {
     return traduccionesLugares[lugar] || lugar;
   }
 
+  // Método para traducir servicios
+  traducirServicio(servicio: string): string {
+    // Mapeo directo de servicios a claves de traducción
+    const serviciosMap: { [key: string]: string } = {
+      'SERVICES.DEPORTES': 'SERVICES.DEPORTES',
+      'SERVICES.CORO': 'SERVICES.CORO',
+      'SERVICES.GESTION_INVESTIGACION': 'SERVICES.GESTION_INVESTIGACION',
+      'SERVICES.UNIDAD_EMPLEABILIDAD': 'SERVICES.UNIDAD_EMPLEABILIDAD',
+      'SERVICES.MOVILIDAD_INTERNACIONAL': 'SERVICES.MOVILIDAD_INTERNACIONAL',
+      'SERVICES.CAPELLANIA': 'SERVICES.CAPELLANIA',
+      'SERVICES.ASISTENCIA_PSICOLOGICA': 'SERVICES.ASISTENCIA_PSICOLOGICA',
+      'SERVICES.CULTURA_CIENTIFICA': 'SERVICES.CULTURA_CIENTIFICA',
+      'SERVICES.UNIDAD_IGUALDAD': 'SERVICES.UNIDAD_IGUALDAD',
+      'SERVICES.VOLUNTARIADO': 'SERVICES.VOLUNTARIADO',
+      
+      // Mapeo para servicios que podrían estar guardados en texto plano
+      'Deportes': 'SERVICES.DEPORTES',
+      'Coro': 'SERVICES.CORO',
+      'Gestión de la Investigación y Transferencia': 'SERVICES.GESTION_INVESTIGACION',
+      'Unidad de Empleabilidad y Prácticas': 'SERVICES.UNIDAD_EMPLEABILIDAD',
+      'Movilidad Internacional': 'SERVICES.MOVILIDAD_INTERNACIONAL',
+      'Capellanía': 'SERVICES.CAPELLANIA',
+      'Asistencia Psicológica': 'SERVICES.ASISTENCIA_PSICOLOGICA',
+      'Cultura Científica': 'SERVICES.CULTURA_CIENTIFICA',
+      'Unidad de Igualdad': 'SERVICES.UNIDAD_IGUALDAD',
+      'Voluntariado': 'SERVICES.VOLUNTARIADO'
+    };
+    
+    return serviciosMap[servicio] || servicio;
+  }
+
   // Métodos para manejar facultades y grados
   esFacultad(servicio: string): boolean {
     return this.facultadesGrados.some(f => f.facultad === servicio);
@@ -886,22 +938,39 @@ export class EventoComponent {
       { key: 'ONLINE', value: 'Online' }
     ];
 
-    // Agregar lugares personalizados de localStorage si existen
-    const lugaresCustom = localStorage.getItem('lugaresPersonalizados');
-    if (lugaresCustom) {
+    // Recopilar todos los lugares personalizados únicos
+    const lugaresPersonalizadosUnicos = new Set<string>();
+    
+    // Buscar en localStorage global (si existe)
+    const lugaresCustomGlobal = localStorage.getItem('lugaresPersonalizados');
+    if (lugaresCustomGlobal) {
       try {
-        const lugares = JSON.parse(lugaresCustom);
+        const lugares = JSON.parse(lugaresCustomGlobal);
         if (Array.isArray(lugares)) {
           lugares.forEach(lugar => {
             if (typeof lugar === 'string' && lugar.trim()) {
-              opcionesBase.push({ key: lugar, value: lugar });
+              lugaresPersonalizadosUnicos.add(lugar.trim());
             }
           });
         }
       } catch (e) {
-        console.warn('Error al parsear lugares personalizados:', e);
+        console.warn('Error al parsear lugares personalizados globales:', e);
       }
     }
+    
+    // También revisar si hay lugares personalizados en el evento actual
+    if (this.evento?.ubicaciones) {
+      this.evento.ubicaciones.forEach(ubicacion => {
+        if (ubicacion.lugar && !opcionesBase.some(opcion => opcion.key === ubicacion.lugar)) {
+          lugaresPersonalizadosUnicos.add(ubicacion.lugar);
+        }
+      });
+    }
+    
+    // Agregar lugares únicos a las opciones
+    lugaresPersonalizadosUnicos.forEach(lugar => {
+      opcionesBase.push({ key: lugar, value: lugar });
+    });
 
     return opcionesBase;
   }

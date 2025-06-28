@@ -1038,6 +1038,17 @@ export class FormularioComponent {
     // Notificar al servicio de sincronización
     this.opcionesSincronizadasService.agregarLugar(valor);
     
+    // También guardarlo en localStorage global para sincronización
+    const lugaresGlobales = localStorage.getItem('lugaresPersonalizados');
+    let lugaresArray = lugaresGlobales ? JSON.parse(lugaresGlobales) : [];
+    if (!Array.isArray(lugaresArray)) {
+      lugaresArray = [];
+    }
+    if (!lugaresArray.includes(valor)) {
+      lugaresArray.push(valor);
+      localStorage.setItem('lugaresPersonalizados', JSON.stringify(lugaresArray));
+    }
+    
     this.formularioEvento.get('ubicaciones')?.get(''+i)?.get('lugar')?.setValue(valor);
     this.mostrarInputLugar[i] = false;
     this.nuevoLugar[i] = '';

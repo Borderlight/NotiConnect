@@ -230,7 +230,7 @@
                 @if (serviciosDetallados.length > 0) {
                   @for (servicio of serviciosDetallados; track servicio.servicio) {
                     <div class="detalle-item">
-                      <p class="detalle-principal">{{ servicio.servicio }}</p>
+                      <p class="detalle-principal">{{ traducirServicio(servicio.servicio) | translate }}</p>
                       @if (servicio.grado) {
                         <p class="detalle-secundario">{{ servicio.grado }}</p>
                       }
@@ -309,17 +309,15 @@
                     }
                     @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
-                        @if (ponentesFormArray.length > 1) {
-                          <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
-                        }
+                        <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
                         <div class="campos-ponente">
                           <div class="campo-grupo">
                             <label>Nombre del ponente:</label>
-                            <input formControlName="nombre" class="input-edit" placeholder="Ej: Dr. Juan Pérez" />
+                            <input formControlName="nombre" class="input-edit" />
                           </div>
                           <div class="campo-grupo">
                             <label>Afiliación:</label>
-                            <input formControlName="afiliacion" class="input-edit" placeholder="Ej: Universidad" />
+                            <input formControlName="afiliacion" class="input-edit" />
                           </div>
                         </div>
                       </div>
@@ -350,9 +348,7 @@
                     }
                     @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
-                        @if (serviciosFormArray.length > 1) {
-                          <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
-                        }
+                        <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
                         <div class="campos-servicio">
                           <div class="campo-grupo">
                             <label>Servicio:</label>
@@ -373,16 +369,16 @@
                               </optgroup>
                               <!-- Servicios -->
                               <optgroup label="Servicios">
-                                <option value="Gestión de la Investigación">Gestión de la Investigación</option>
-                                <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
-                                <option value="Movilidad Internacional">Movilidad Internacional</option>
-                                <option value="Capellanía">Capellanía</option>
-                                <option value="Deportes">Deportes</option>
-                                <option value="Coro">Coro</option>
-                                <option value="Asistencia Psicológica">Asistencia Psicológica</option>
-                                <option value="Cultura Científica">Cultura Científica</option>
-                                <option value="Unidad de Igualdad">Unidad de Igualdad</option>
-                                <option value="Voluntariado">Voluntariado</option>
+                                <option value="SERVICES.GESTION_INVESTIGACION">Gestión de la Investigación y Transferencia</option>
+                                <option value="SERVICES.UNIDAD_EMPLEABILIDAD">Unidad de Empleabilidad y Prácticas</option>
+                                <option value="SERVICES.MOVILIDAD_INTERNACIONAL">Movilidad Internacional</option>
+                                <option value="SERVICES.CAPELLANIA">Capellanía</option>
+                                <option value="SERVICES.DEPORTES">Deportes</option>
+                                <option value="SERVICES.CORO">Coro</option>
+                                <option value="SERVICES.ASISTENCIA_PSICOLOGICA">Servicio de Asistencia Psicológica Sanitaria</option>
+                                <option value="SERVICES.CULTURA_CIENTIFICA">Unidad de Cultura Científica y de la Innovación</option>
+                                <option value="SERVICES.UNIDAD_IGUALDAD">Unidad de Igualdad</option>
+                                <option value="SERVICES.VOLUNTARIADO">Voluntariado</option>
                               </optgroup>
                               <!-- Vicerrectorados -->
                               <optgroup label="Vicerrectorados">
@@ -423,9 +419,7 @@
                     }
                     @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
-                        @if (enlacesFormArray.length > 1) {
-                          <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
-                        }
+                        <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
                         <div class="campos-enlace">
                           <div class="campo-grupo">
                             <label>Tipo de enlace:</label>
