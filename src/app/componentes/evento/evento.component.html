@@ -172,6 +172,11 @@
                           <div class="adjunto-imagen-preview">
                             <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
                             <div class="adjunto-overlay">📷</div>
+                            <div class="checkbox-caratula" 
+                                 (click)="seleccionarCaratula(adjunto, $event)"
+                                 [class.seleccionado]="esCaratulaSeleccionada(adjunto)">
+                              <div class="checkbox-icon">{{ esCaratulaSeleccionada(adjunto) ? '✓' : '📷' }}</div>
+                            </div>
                           </div>
                         } @else {
                           <div class="adjunto-archivo-preview">

@@ -454,4 +454,25 @@ export class EventoComponent {
     // Limpiar el URL después de un tiempo
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
+
+  // Sistema de selección de carátula
+  seleccionarCaratula(adjunto: string | ArchivoAdjunto, event: Event): void {
+    event.stopPropagation(); // Evitar que se abra el adjunto
+    
+    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    
+    // Actualizar la imagen del evento
+    this.evento.imagen = adjuntoData;
+    
+    // Emitir el cambio para actualizar en el backend
+    this.actualizar.emit({ 
+      _id: this.evento._id, 
+      imagen: adjuntoData 
+    });
+  }
+
+  esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
+    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    return this.evento.imagen === adjuntoData;
+  }
 }
