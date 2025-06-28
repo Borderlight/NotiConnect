@@ -401,21 +401,36 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     
-    console.log('Iniciando guardado. Form válido:', this.editForm.valid);
-    console.log('Errores del formulario:', this.editForm.errors);
+    // Debug temporal para entender el problema
+    console.log('Formulario válido:', this.editForm.valid);
+    if (!this.editForm.valid) {
+      console.log('Errores en ubicaciones:', this.ubicacionesFormArray.errors);
+      this.ubicacionesFormArray.controls.forEach((control, index) => {
+        if (control.invalid) {
+          console.log(`Ubicación ${index} inválida:`, control.errors);
+        }
+      });
+    }
     
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
-      console.log('Valor del formulario:', formValue);
       
       // Actualizar ubicaciones
-      this.evento.ubicaciones = formValue.ubicaciones.map((ubicacion: any) => ({
-        fecha: new Date(ubicacion.fecha),
-        tipoHorario: ubicacion.tipoHorario,
-        horaInicio: ubicacion.horaInicio,
-        horaFin: ubicacion.horaFin || undefined,
-        lugar: ubicacion.lugar
-      }));
+      this.evento.ubicaciones = formValue.ubicaciones.map((ubicacion: any) => {
+        const ubicacionData: any = {
+          fecha: new Date(ubicacion.fecha),
+          tipoHorario: ubicacion.tipoHorario,
+          horaInicio: ubicacion.horaInicio,
+          lugar: ubicacion.lugar
+        };
+        
+        // Solo incluir horaFin si es horario y tiene valor
+        if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin && ubicacion.horaFin.trim() !== '') {
+          ubicacionData.horaFin = ubicacion.horaFin;
+        }
+        
+        return ubicacionData;
+      });
       
       // Actualizar ponentes
       this.evento.ponentes = formValue.ponentes
@@ -772,8 +787,7 @@ export class EventoComponent {
       tipoHorario: ['hora'],
       horaInicio: ['', Validators.required],
       horaFin: [''],
-      lugar: ['', Validators.required],
-      aula: ['']
+      lugar: ['', Validators.required]
     }));
   }
 
