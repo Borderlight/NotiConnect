@@ -76,7 +76,7 @@
                     @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaInicio && ubicacion.horaFin) {
                       <strong>Horario:</strong>
                       <span>{{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}</span>
-                    } @else {
+                    } @else if (ubicacion.horaInicio) {
                       <strong>Hora:</strong>
                       <span>{{ ubicacion.horaInicio }}</span>
                     }
@@ -301,22 +301,23 @@
                   </div>
                   <div formArrayName="ponentes">
                     @if (ponentesFormArray.length === 0) {
-                      <p class="detalle-vacio">No hay ponentes.</p>
-                    }
-                    @for (ponente of ponentesFormArray.controls; track ponente; let i = $index) {
-                      <div class="detalle-item-edit" [formGroupName]="i">
-                        <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
-                        <div class="campos-ponente">
-                          <div class="campo-grupo">
-                            <label>Nombre del ponente:</label>
-                            <input formControlName="nombre" class="input-edit" />
-                          </div>
-                          <div class="campo-grupo">
-                            <label>Afiliación:</label>
-                            <input formControlName="afiliacion" class="input-edit" />
+                      <p class="detalle-vacio">No hay ponentes. Haz clic en "+ Agregar" para añadir uno.</p>
+                    } @else {
+                      @for (ponente of ponentesFormArray.controls; track ponente; let i = $index) {
+                        <div class="detalle-item-edit" [formGroupName]="i">
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
+                          <div class="campos-ponente">
+                            <div class="campo-grupo">
+                              <label>Nombre del ponente:</label>
+                              <input formControlName="nombre" class="input-edit" placeholder="Nombre completo" />
+                            </div>
+                            <div class="campo-grupo">
+                              <label>Afiliación:</label>
+                              <input formControlName="afiliacion" class="input-edit" placeholder="Universidad, empresa, etc." />
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     }
                   </div>
                 </div>
@@ -340,65 +341,66 @@
                   </div>
                   <div formArrayName="servicios">
                     @if (serviciosFormArray.length === 0) {
-                      <p class="detalle-vacio">No hay servicios.</p>
-                    }
-                    @for (servicio of serviciosFormArray.controls; track servicio; let i = $index) {
-                      <div class="detalle-item-edit" [formGroupName]="i">
-                        <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
-                        <div class="campos-servicio">
-                          <div class="campo-grupo">
-                            <label>Servicio:</label>
-                            <select formControlName="servicios" class="input-edit" (change)="onServicioChange($index, $event)">
-                              <option value="">Seleccionar servicio</option>
-                              <!-- Facultades -->
-                              <optgroup label="Facultades">
-                                <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
-                                <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
-                                <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
-                                <option value="Facultad de Comunicación">Facultad de Comunicación</option>
-                                <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
-                                <option value="Facultad de Educación">Facultad de Educación</option>
-                                <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
-                                <option value="Facultad de Informática">Facultad de Informática</option>
-                                <option value="Facultad de Psicología">Facultad de Psicología</option>
-                                <option value="Facultad de Teología">Facultad de Teología</option>
-                              </optgroup>
-                              <!-- Servicios -->
-                              <optgroup label="Servicios">
-                                <option value="SERVICES.GESTION_INVESTIGACION">Gestión de la Investigación y Transferencia</option>
-                                <option value="SERVICES.UNIDAD_EMPLEABILIDAD">Unidad de Empleabilidad y Prácticas</option>
-                                <option value="SERVICES.MOVILIDAD_INTERNACIONAL">Movilidad Internacional</option>
-                                <option value="SERVICES.CAPELLANIA">Capellanía</option>
-                                <option value="SERVICES.DEPORTES">Deportes</option>
-                                <option value="SERVICES.CORO">Coro</option>
-                                <option value="SERVICES.ASISTENCIA_PSICOLOGICA">Servicio de Asistencia Psicológica Sanitaria</option>
-                                <option value="SERVICES.CULTURA_CIENTIFICA">Unidad de Cultura Científica y de la Innovación</option>
-                                <option value="SERVICES.UNIDAD_IGUALDAD">Unidad de Igualdad</option>
-                                <option value="SERVICES.VOLUNTARIADO">Voluntariado</option>
-                              </optgroup>
-                              <!-- Vicerrectorados -->
-                              <optgroup label="Vicerrectorados">
-                                <option value="VICERRECTORADOS.InvestigacionTransferencia">Vicerrectorado de Investigación y Transferencia</option>
-                                <option value="VICERRECTORADOS.OrdenacionAcademica">Vicerrectorado de Ordenación Académica</option>
-                                <option value="VICERRECTORADOS.FormacionPermanente">Vicerrectorado de Formación Permanente</option>
-                                <option value="VICERRECTORADOS.ComunidadUniversitaria">Vicerrectorado de Comunidad Universitaria</option>
-                                <option value="VICERRECTORADOS.InternacionalesCooperacion">Vicerrectorado de Internacionales y Cooperación</option>
-                              </optgroup>
-                            </select>
-                          </div>
-                          @if (esFacultad(servicio.get('servicios')?.value)) {
+                      <p class="detalle-vacio">No hay servicios. Haz clic en "+ Agregar" para añadir uno.</p>
+                    } @else {
+                      @for (servicio of serviciosFormArray.controls; track servicio; let i = $index) {
+                        <div class="detalle-item-edit" [formGroupName]="i">
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
+                          <div class="campos-servicio">
                             <div class="campo-grupo">
-                              <label>Grado (opcional):</label>
-                              <select formControlName="grado" class="input-edit">
-                                <option value="">Seleccionar grado</option>
-                                @for (grado of obtenerGrados(servicio.get('servicios')?.value); track grado) {
-                                  <option [value]="grado">{{ grado }}</option>
-                                }
+                              <label>Servicio:</label>
+                              <select formControlName="servicios" class="input-edit" (change)="onServicioChange($index, $event)">
+                                <option value="">Seleccionar servicio</option>
+                                <!-- Facultades -->
+                                <optgroup label="Facultades">
+                                  <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
+                                  <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
+                                  <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
+                                  <option value="Facultad de Comunicación">Facultad de Comunicación</option>
+                                  <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
+                                  <option value="Facultad de Educación">Facultad de Educación</option>
+                                  <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
+                                  <option value="Facultad de Informática">Facultad de Informática</option>
+                                  <option value="Facultad de Psicología">Facultad de Psicología</option>
+                                  <option value="Facultad de Teología">Facultad de Teología</option>
+                                </optgroup>
+                                <!-- Servicios -->
+                                <optgroup label="Servicios">
+                                  <option value="SERVICES.GESTION_INVESTIGACION">{{ 'SERVICES.GESTION_INVESTIGACION' | translate }}</option>
+                                  <option value="SERVICES.UNIDAD_EMPLEABILIDAD">{{ 'SERVICES.UNIDAD_EMPLEABILIDAD' | translate }}</option>
+                                  <option value="SERVICES.MOVILIDAD_INTERNACIONAL">{{ 'SERVICES.MOVILIDAD_INTERNACIONAL' | translate }}</option>
+                                  <option value="SERVICES.CAPELLANIA">{{ 'SERVICES.CAPELLANIA' | translate }}</option>
+                                  <option value="SERVICES.DEPORTES">{{ 'SERVICES.DEPORTES' | translate }}</option>
+                                  <option value="SERVICES.CORO">{{ 'SERVICES.CORO' | translate }}</option>
+                                  <option value="SERVICES.ASISTENCIA_PSICOLOGICA">{{ 'SERVICES.ASISTENCIA_PSICOLOGICA' | translate }}</option>
+                                  <option value="SERVICES.CULTURA_CIENTIFICA">{{ 'SERVICES.CULTURA_CIENTIFICA' | translate }}</option>
+                                  <option value="SERVICES.UNIDAD_IGUALDAD">{{ 'SERVICES.UNIDAD_IGUALDAD' | translate }}</option>
+                                  <option value="SERVICES.VOLUNTARIADO">{{ 'SERVICES.VOLUNTARIADO' | translate }}</option>
+                                </optgroup>
+                                <!-- Vicerrectorados -->
+                                <optgroup label="Vicerrectorados">
+                                  <option value="VICERRECTORADOS.InvestigacionTransferencia">{{ 'VICERRECTORADOS.InvestigacionTransferencia' | translate }}</option>
+                                  <option value="VICERRECTORADOS.OrdenacionAcademica">{{ 'VICERRECTORADOS.OrdenacionAcademica' | translate }}</option>
+                                  <option value="VICERRECTORADOS.FormacionPermanente">{{ 'VICERRECTORADOS.FormacionPermanente' | translate }}</option>
+                                  <option value="VICERRECTORADOS.ComunidadUniversitaria">{{ 'VICERRECTORADOS.ComunidadUniversitaria' | translate }}</option>
+                                  <option value="VICERRECTORADOS.InternacionalesCooperacion">{{ 'VICERRECTORADOS.InternacionalesCooperacion' | translate }}</option>
+                                </optgroup>
                               </select>
                             </div>
-                          }
+                            @if (esFacultad(servicio.get('servicios')?.value)) {
+                              <div class="campo-grupo">
+                                <label>Grado (opcional):</label>
+                                <select formControlName="grado" class="input-edit">
+                                  <option value="">Seleccionar grado</option>
+                                  @for (grado of obtenerGrados(servicio.get('servicios')?.value); track grado) {
+                                    <option [value]="grado">{{ grado }}</option>
+                                  }
+                                </select>
+                              </div>
+                            }
+                          </div>
                         </div>
-                      </div>
+                      }
                     }
                   </div>
                 </div>
@@ -411,29 +413,30 @@
                   </div>
                   <div formArrayName="enlaces">
                     @if (enlacesFormArray.length === 0) {
-                      <p class="detalle-vacio">No hay enlaces.</p>
-                    }
-                    @for (enlace of enlacesFormArray.controls; track enlace; let i = $index) {
-                      <div class="detalle-item-edit" [formGroupName]="i">
-                        <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
-                        <div class="campos-enlace">
-                          <div class="campo-grupo">
-                            <label>Tipo de enlace:</label>
-                            <select formControlName="tipo" class="input-edit">
-                              <option value="">Seleccionar tipo</option>
-                              <option value="Instagram">Instagram</option>
-                              <option value="YouTube">YouTube</option>
-                              <option value="LinkedIn">LinkedIn</option>
-                              <option value="TikTok">TikTok</option>
-                              <option value="Otros">Otros</option>
-                            </select>
-                          </div>
-                          <div class="campo-grupo">
-                            <label>URL del enlace:</label>
-                            <input formControlName="url" class="input-edit" placeholder="https://ejemplo.com" />
+                      <p class="detalle-vacio">No hay enlaces. Haz clic en "+ Agregar" para añadir uno.</p>
+                    } @else {
+                      @for (enlace of enlacesFormArray.controls; track enlace; let i = $index) {
+                        <div class="detalle-item-edit" [formGroupName]="i">
+                          <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
+                          <div class="campos-enlace">
+                            <div class="campo-grupo">
+                              <label>Tipo de enlace:</label>
+                              <select formControlName="tipo" class="input-edit">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="YouTube">YouTube</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="TikTok">TikTok</option>
+                                <option value="Otros">Otros</option>
+                              </select>
+                            </div>
+                            <div class="campo-grupo">
+                              <label>URL del enlace:</label>
+                              <input formControlName="url" class="input-edit" placeholder="https://ejemplo.com" />
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     }
                   </div>
                 </div>

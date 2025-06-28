@@ -26,8 +26,9 @@ export class EventoComponent {
   editForm!: FormGroup;
   mostrarDetalles = false;
 
-  // Variable para guardar la carátula original
+  // Variable para guardar la carátula original y adjuntos originales
   private caratulaOriginal: string | undefined;
+  private adjuntosOriginales: ArchivoAdjunto[] = [];
 
   // Datos de facultades y grados
   facultadesGrados = [
@@ -191,8 +192,9 @@ export class EventoComponent {
   editarEvento(event: Event) {
     event.stopPropagation();
     
-    // Guardar la carátula original para poder restaurarla si se cancela
+    // Guardar la carátula original y adjuntos originales para poder restaurarlos si se cancela
     this.caratulaOriginal = this.evento.imagen;
+    this.adjuntosOriginales = this.evento.adjuntos ? [...this.evento.adjuntos] : [];
     
     this.editMode = true;
     
@@ -219,9 +221,12 @@ export class EventoComponent {
   cancelarEdicion(event: Event) {
     event.stopPropagation();
     
-    // Restaurar la carátula original
+    // Restaurar la carátula original y adjuntos originales
     if (this.caratulaOriginal !== undefined) {
       this.evento.imagen = this.caratulaOriginal;
+    }
+    if (this.adjuntosOriginales.length > 0 || this.evento.adjuntos?.length !== this.adjuntosOriginales.length) {
+      this.evento.adjuntos = [...this.adjuntosOriginales];
     }
     
     this.editMode = false;
@@ -459,7 +464,8 @@ export class EventoComponent {
         ubicaciones: this.evento.ubicaciones,
         servicios: this.evento.servicios,
         enlaces: this.evento.enlaces,
-        imagen: this.evento.imagen // Incluir la carátula seleccionada
+        imagen: this.evento.imagen, // Incluir la carátula seleccionada
+        adjuntos: this.evento.adjuntos // Incluir los adjuntos modificados
       });
       
       // Actualizar campos directos en el evento local
@@ -542,133 +548,47 @@ export class EventoComponent {
     }
   }
 
-  // Métodos para manejo de adjuntos
+  // Funciones auxiliares para adjuntos
   esImagen(adjunto: string | ArchivoAdjunto): boolean {
-    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    return data.startsWith('data:image/');
+    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
+    return tipo ? tipo.startsWith('image/') : false;
   }
 
-  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
-    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    if (data.startsWith('data:image/')) {
-      return 'Imagen';
-    } else if (data.startsWith('data:application/pdf')) {
-      return 'PDF';
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-      return 'Word';
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-      return 'Excel';
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
-      return 'PowerPoint';
-    } else if (data.startsWith('data:text/')) {
-      return 'Texto';
-    } else {
-      return 'Archivo';
+  abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
+    const url = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    if (url) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.click();
     }
   }
 
   obtenerIconoAdjunto(adjunto: string | ArchivoAdjunto): string {
-    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    if (data.startsWith('data:application/pdf')) {
-      return '📄'; // PDF
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-      return '📝'; // Word
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-      return '📊'; // Excel
-    } else if (data.startsWith('data:application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
-      return '📽️'; // PowerPoint
-    } else if (data.startsWith('data:text/')) {
-      return '📄'; // Texto
-    } else {
-      return '📎'; // Archivo genérico
-    }
+    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
+    if (tipo.includes('pdf')) return '📄';
+    if (tipo.includes('word')) return '📝';
+    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return '📊';
+    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return '📈';
+    if (tipo.includes('text')) return '📄';
+    return '📎';
+  }
+
+  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
+    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
+    if (tipo.includes('pdf')) return 'PDF';
+    if (tipo.includes('word')) return 'Word';
+    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return 'Excel';
+    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return 'PowerPoint';
+    if (tipo.includes('text')) return 'Texto';
+    return 'Archivo';
   }
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
     if (typeof adjunto === 'string') {
-      // Para adjuntos tipo string (formato antiguo), intentar determinar la extensión del tipo MIME
-      const mimeMatch = adjunto.match(/data:([^;]+);/);
-      if (mimeMatch) {
-        const mimeType = mimeMatch[1];
-        let extension = '';
-        switch (mimeType) {
-          case 'image/jpeg': extension = '.jpg'; break;
-          case 'image/png': extension = '.png'; break;
-          case 'image/gif': extension = '.gif'; break;
-          case 'image/webp': extension = '.webp'; break;
-          case 'application/pdf': extension = '.pdf'; break;
-          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': extension = '.docx'; break;
-          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': extension = '.xlsx'; break;
-          case 'application/vnd.openxmlformats-officedocument.presentationml.presentation': extension = '.pptx'; break;
-          case 'text/plain': extension = '.txt'; break;
-          default: extension = '.file'; break;
-        }
-        return `adjunto_${index + 1}${extension}`;
-      }
-      return `adjunto_${index + 1}`;
-    } else {
-      // Para adjuntos tipo ArchivoAdjunto (formato nuevo), usar siempre el nombre original del archivo
-      return adjunto.name || `adjunto_${index + 1}`;
+      return `Adjunto ${index + 1}`;
     }
-  }
-
-  abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
-    const data = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    const nombre = this.obtenerNombreAdjunto(adjunto, index);
-    
-    // Crear un blob a partir del data URL
-    const byteCharacters = atob(data.split(',')[1]);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    
-    // Determinar el tipo MIME
-    const mimeMatch = data.match(/data:([^;]+);/);
-    const mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
-    
-    const blob = new Blob([byteArray], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    
-    // Abrir en nueva ventana
-    const nuevaVentana = window.open(url, '_blank');
-    if (!nuevaVentana) {
-      // Si no se puede abrir en nueva ventana, descargar el archivo
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = nombre;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    
-    // Limpiar el URL después de un tiempo
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-  }
-
-  // Sistema de selección de carátula
-  seleccionarCaratula(adjunto: string | ArchivoAdjunto, event: Event): void {
-    event.stopPropagation(); // Evitar que se abra el adjunto
-    
-    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    
-    // Actualizar la imagen del evento localmente
-    this.evento.imagen = adjuntoData;
-    
-    // Si no estamos en modo edición, emitir inmediatamente
-    if (!this.editMode) {
-      this.actualizar.emit({ 
-        _id: this.evento._id, 
-        imagen: adjuntoData 
-      });
-    }
-    // Si estamos en modo edición, los cambios se emitirán al guardar
-  }
-
-  esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
-    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    return this.evento.imagen === adjuntoData;
+    return adjunto.name || `Adjunto ${index + 1}`;
   }
 
   // Getters para FormArrays
@@ -857,11 +777,14 @@ export class EventoComponent {
             }
             this.evento.adjuntos.push(nuevoAdjunto);
             
-            // Emitir cambio
-            this.actualizar.emit({
-              _id: this.evento._id,
-              adjuntos: this.evento.adjuntos
-            });
+            // En modo edición, los cambios se emitirán al guardar
+            // Si no estamos en modo edición, emitir inmediatamente
+            if (!this.editMode) {
+              this.actualizar.emit({
+                _id: this.evento._id,
+                adjuntos: this.evento.adjuntos
+              });
+            }
           }
         };
         reader.readAsDataURL(file);
@@ -874,11 +797,15 @@ export class EventoComponent {
   eliminarAdjunto(index: number): void {
     if (this.evento.adjuntos && index >= 0 && index < this.evento.adjuntos.length) {
       this.evento.adjuntos.splice(index, 1);
-      // Emitir cambio
-      this.actualizar.emit({
-        _id: this.evento._id,
-        adjuntos: this.evento.adjuntos
-      });
+      
+      // En modo edición, los cambios se emitirán al guardar
+      // Si no estamos en modo edición, emitir inmediatamente
+      if (!this.editMode) {
+        this.actualizar.emit({
+          _id: this.evento._id,
+          adjuntos: this.evento.adjuntos
+        });
+      }
     }
   }
 
@@ -946,6 +873,11 @@ export class EventoComponent {
       'Vicerrectorado de Internacionales y Cooperación': 'VICERRECTORADOS.InternacionalesCooperacion'
     };
     
+    // Si es una facultad, devolverla tal como está (sin traducir)
+    if (this.esFacultad(servicio)) {
+      return servicio;
+    }
+    
     return serviciosMap[servicio] || servicio;
   }
 
@@ -1010,5 +942,29 @@ export class EventoComponent {
   // Método para obtener el departamento válido o vacío si no existe
   obtenerDepartamentoValido(departamento: string): string {
     return this.departamentoExiste(departamento) ? departamento : '';
+  }
+
+  // Sistema de selección de carátula
+  seleccionarCaratula(adjunto: string | ArchivoAdjunto, event: Event): void {
+    event.stopPropagation(); // Evitar que se abra el adjunto
+    
+    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    
+    // Actualizar la imagen del evento localmente
+    this.evento.imagen = adjuntoData;
+    
+    // En modo edición, los cambios se emitirán al guardar
+    // Si no estamos en modo edición, emitir inmediatamente (para casos especiales)
+    if (!this.editMode) {
+      this.actualizar.emit({ 
+        _id: this.evento._id, 
+        imagen: adjuntoData 
+      });
+    }
+  }
+
+  esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
+    const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    return this.evento.imagen === adjuntoData;
   }
 }
