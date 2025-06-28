@@ -148,23 +148,34 @@
                     @if (ubicacionesFormArray.length > 1) {
                       <button type="button" class="btn-eliminar-simple" (click)="eliminarUbicacion(i)">×</button>
                     }
-                    <div class="ubicacion-campos-grid">
-                      <div>
+                    <div class="ubicacion-campos-vertical">
+                      <div class="ubicacion-campo-grupo">
                         <strong>Fecha:</strong>
                         <input formControlName="fecha" type="date" class="input-edit fecha-edit" />
                       </div>
-                      <div>
-                        <strong>Tipo:</strong>
+                      
+                      <div class="ubicacion-campo-grupo">
+                        <strong>Tipo de horario:</strong>
                         <select formControlName="tipoHorario" class="input-edit">
                           <option value="hora">Hora específica</option>
                           <option value="horario">Horario (inicio-fin)</option>
                         </select>
-                        <input formControlName="horaInicio" type="time" class="input-edit" />
+                      </div>
+                      
+                      <div class="ubicacion-campo-grupo">
+                        <strong>Hora:</strong>
                         @if (ubicacion.get('tipoHorario')?.value === 'horario') {
-                          <input formControlName="horaFin" type="time" class="input-edit" />
+                          <div class="hora-campos">
+                            <input formControlName="horaInicio" type="time" class="input-edit" placeholder="Inicio" />
+                            <span class="hora-separador">-</span>
+                            <input formControlName="horaFin" type="time" class="input-edit" placeholder="Fin" />
+                          </div>
+                        } @else {
+                          <input formControlName="horaInicio" type="time" class="input-edit" />
                         }
                       </div>
-                      <div>
+                      
+                      <div class="ubicacion-campo-grupo">
                         <strong>Lugar:</strong>
                         <select formControlName="lugar" class="input-edit">
                           <option value="">Seleccionar lugar</option>
@@ -176,7 +187,11 @@
                           <option value="S-41">S-41</option>
                           <option value="ONLINE">Online</option>
                         </select>
-                        <input formControlName="aula" class="input-edit" placeholder="Aula (opcional)" />
+                      </div>
+                      
+                      <div class="ubicacion-campo-grupo">
+                        <strong>Aula (opcional):</strong>
+                        <input formControlName="aula" class="input-edit" placeholder="Ej: Aula 101" />
                       </div>
                     </div>
                   </div>
@@ -309,8 +324,16 @@
                         @if (ponentesFormArray.length > 1) {
                           <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
                         }
-                        <input formControlName="nombre" class="input-edit" placeholder="Nombre del ponente" />
-                        <input formControlName="afiliacion" class="input-edit" placeholder="Afiliación (opcional)" />
+                        <div class="campos-ponente">
+                          <div class="campo-grupo">
+                            <label>Nombre del ponente:</label>
+                            <input formControlName="nombre" class="input-edit" placeholder="Ej: Dr. Juan Pérez" />
+                          </div>
+                          <div class="campo-grupo">
+                            <label>Afiliación:</label>
+                            <input formControlName="afiliacion" class="input-edit" placeholder="Ej: Universidad" />
+                          </div>
+                        </div>
                       </div>
                     }
                   </div>
@@ -340,44 +363,52 @@
                         @if (serviciosFormArray.length > 1) {
                           <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
                         }
-                        <select formControlName="servicios" class="input-edit">
-                          <option value="">Seleccionar servicio</option>
-                          <!-- Facultades -->
-                          <optgroup label="Facultades">
-                            <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
-                            <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
-                            <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
-                            <option value="Facultad de Comunicación">Facultad de Comunicación</option>
-                            <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
-                            <option value="Facultad de Educación">Facultad de Educación</option>
-                            <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
-                            <option value="Facultad de Informática">Facultad de Informática</option>
-                            <option value="Facultad de Psicología">Facultad de Psicología</option>
-                            <option value="Facultad de Teología">Facultad de Teología</option>
-                          </optgroup>
-                          <!-- Servicios -->
-                          <optgroup label="Servicios">
-                            <option value="Gestión de la Investigación">Gestión de la Investigación</option>
-                            <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
-                            <option value="Movilidad Internacional">Movilidad Internacional</option>
-                            <option value="Capellanía">Capellanía</option>
-                            <option value="Deportes">Deportes</option>
-                            <option value="Coro">Coro</option>
-                            <option value="Asistencia Psicológica">Asistencia Psicológica</option>
-                            <option value="Cultura Científica">Cultura Científica</option>
-                            <option value="Unidad de Igualdad">Unidad de Igualdad</option>
-                            <option value="Voluntariado">Voluntariado</option>
-                          </optgroup>
-                          <!-- Vicerrectorados -->
-                          <optgroup label="Vicerrectorados">
-                            <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
-                            <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
-                            <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
-                            <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
-                            <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
-                          </optgroup>
-                        </select>
-                        <input formControlName="grado" class="input-edit" placeholder="Grado/Nivel (opcional)" />
+                        <div class="campos-servicio">
+                          <div class="campo-grupo">
+                            <label>Servicio:</label>
+                            <select formControlName="servicios" class="input-edit">
+                              <option value="">Seleccionar servicio</option>
+                              <!-- Facultades -->
+                              <optgroup label="Facultades">
+                                <option value="Facultad de Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
+                                <option value="Facultad de Ciencias del Seguro, Jurídicas y de la Empresa">Facultad de Ciencias del Seguro, Jurídicas y de la Empresa</option>
+                                <option value="Facultad de Ciencias Humanas y Sociales">Facultad de Ciencias Humanas y Sociales</option>
+                                <option value="Facultad de Comunicación">Facultad de Comunicación</option>
+                                <option value="Facultad de Derecho Canónico">Facultad de Derecho Canónico</option>
+                                <option value="Facultad de Educación">Facultad de Educación</option>
+                                <option value="Facultad de Enfermería y Fisioterapia Salus Infirmorum">Facultad de Enfermería y Fisioterapia Salus Infirmorum</option>
+                                <option value="Facultad de Informática">Facultad de Informática</option>
+                                <option value="Facultad de Psicología">Facultad de Psicología</option>
+                                <option value="Facultad de Teología">Facultad de Teología</option>
+                              </optgroup>
+                              <!-- Servicios -->
+                              <optgroup label="Servicios">
+                                <option value="Gestión de la Investigación">Gestión de la Investigación</option>
+                                <option value="Unidad de Empleabilidad">Unidad de Empleabilidad</option>
+                                <option value="Movilidad Internacional">Movilidad Internacional</option>
+                                <option value="Capellanía">Capellanía</option>
+                                <option value="Deportes">Deportes</option>
+                                <option value="Coro">Coro</option>
+                                <option value="Asistencia Psicológica">Asistencia Psicológica</option>
+                                <option value="Cultura Científica">Cultura Científica</option>
+                                <option value="Unidad de Igualdad">Unidad de Igualdad</option>
+                                <option value="Voluntariado">Voluntariado</option>
+                              </optgroup>
+                              <!-- Vicerrectorados -->
+                              <optgroup label="Vicerrectorados">
+                                <option value="Vicerrectorado de Investigación y Transferencia">Vicerrectorado de Investigación y Transferencia</option>
+                                <option value="Vicerrectorado de Ordenación Académica">Vicerrectorado de Ordenación Académica</option>
+                                <option value="Vicerrectorado de Formación Permanente">Vicerrectorado de Formación Permanente</option>
+                                <option value="Vicerrectorado de Comunidad Universitaria">Vicerrectorado de Comunidad Universitaria</option>
+                                <option value="Vicerrectorado de Internacionales y Cooperación">Vicerrectorado de Internacionales y Cooperación</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <div class="campo-grupo">
+                            <label>Grado/Nivel:</label>
+                            <input formControlName="grado" class="input-edit" placeholder="Ej: Grado en Informática" />
+                          </div>
+                        </div>
                       </div>
                     }
                   </div>
@@ -398,15 +429,23 @@
                         @if (enlacesFormArray.length > 1) {
                           <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
                         }
-                        <select formControlName="tipo" class="input-edit">
-                          <option value="">Tipo de enlace</option>
-                          <option value="Instagram">Instagram</option>
-                          <option value="YouTube">YouTube</option>
-                          <option value="LinkedIn">LinkedIn</option>
-                          <option value="TikTok">TikTok</option>
-                          <option value="Otros">Otros</option>
-                        </select>
-                        <input formControlName="url" class="input-edit" placeholder="URL del enlace" />
+                        <div class="campos-enlace">
+                          <div class="campo-grupo">
+                            <label>Tipo de enlace:</label>
+                            <select formControlName="tipo" class="input-edit">
+                              <option value="">Seleccionar tipo</option>
+                              <option value="Instagram">Instagram</option>
+                              <option value="YouTube">YouTube</option>
+                              <option value="LinkedIn">LinkedIn</option>
+                              <option value="TikTok">TikTok</option>
+                              <option value="Otros">Otros</option>
+                            </select>
+                          </div>
+                          <div class="campo-grupo">
+                            <label>URL del enlace:</label>
+                            <input formControlName="url" class="input-edit" placeholder="https://ejemplo.com" />
+                          </div>
+                        </div>
                       </div>
                     }
                   </div>

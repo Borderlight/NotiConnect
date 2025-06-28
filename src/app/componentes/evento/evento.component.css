@@ -391,33 +391,24 @@
   padding-left: 1rem;
 }
 
-/* Estilos para las secciones de detalles */
+/* Estilos para las secciones de detalles - aplicar a ambos modos */
 .detalle-seccion {
+  background: rgba(0, 123, 255, 0.02);
+  border: 1px solid rgba(0, 123, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.2rem;
   margin-bottom: 1.5rem;
-}
-
-/* Ajuste específico para descripción y ubicaciones en la columna izquierda */
-.evento-titulo-col .detalle-seccion {
-  margin-left: 0;
-  padding-left: 0;
-  max-width: 450px; /* Limitar ancho máximo */
-}
-
-.evento-titulo-col .detalle-item {
-  margin-left: 0;
-  padding-left: 0.5rem;
-  max-width: 100%; /* Asegurar que no se desborde */
-}
-
-.evento-titulo-col .detalle-simple {
-  max-width: 100%; /* Limitar ancho de descripción */
+  position: relative;
 }
 
 .detalle-seccion strong {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: var(--color-texto-principal);
   font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 2px solid var(--color-primario, #007bff);
+  padding-bottom: 0.25rem;
 }
 
 .detalle-item {
@@ -694,36 +685,38 @@
 }
 
 /* ================================
-   ESTILOS SIMPLIFICADOS PARA MODO EDICIÓN
+   ESTILOS UNIFICADOS PARA AMBOS MODOS
    ================================ */
 
-/* Estilos base para campos de entrada - más simples */
+/* Estilos base para campos de entrada */
 .input-edit {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   font-family: inherit;
-  background-color: #ffffff;
-  color: #333333;
+  background-color: #ffffff !important;
+  color: #333333 !important;
   transition: border-color 0.2s ease;
 }
 
 .input-edit:focus {
   outline: none;
   border-color: var(--color-primario, #007bff);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
 /* Estilos específicos para campos especiales */
 .titulo-edit {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
   border: none;
   border-bottom: 2px solid #ddd;
   border-radius: 0;
   background: transparent;
   padding: 0.25rem 0;
+  margin-bottom: 1rem;
 }
 
 .titulo-edit:focus {
@@ -738,17 +731,39 @@
 }
 
 .descripcion-edit {
-  min-height: 60px;
+  min-height: 80px;
   resize: vertical;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-/* Header simplificado para secciones - más limpio */
+/* Secciones organizadas - aplicar a ambos modos */
+.detalle-seccion {
+  background: rgba(0, 123, 255, 0.02);
+  border: 1px solid rgba(0, 123, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.detalle-seccion strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--color-texto-principal);
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 2px solid var(--color-primario, #007bff);
+  padding-bottom: 0.25rem;
+}
+
+/* Header para secciones con botón agregar */
 .section-header-simple {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-primario, #007bff);
+  padding-bottom: 0.25rem;
 }
 
 .section-header-simple strong {
@@ -756,89 +771,110 @@
   color: var(--color-texto-principal);
   font-weight: 600;
   font-size: 1rem;
+  border: none;
+  padding: 0;
 }
 
-/* Botón agregar simple - más discreto */
+/* Botón agregar organizado */
 .btn-agregar-simple {
-  background: none;
-  color: var(--color-primario, #007bff);
-  border: 1px solid var(--color-primario, #007bff);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
+  background: var(--color-primario, #007bff);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
 }
 
 .btn-agregar-simple:hover {
-  background: var(--color-primario, #007bff);
-  color: white;
+  background: #0056b3;
 }
 
-/* Items de edición simples - sin fondos */
+/* Items organizados para modo edición */
 .detalle-item-edit {
-  margin-bottom: 0.75rem;
-  padding: 0.4rem;
+  background: #ffffff;
   border: 1px solid #e9ecef;
-  border-radius: 4px;
-  background: transparent;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
   position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .ubicacion-edit-simple {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+  background: #ffffff;
   border: 1px solid #e9ecef;
-  border-radius: 4px;
-  background: transparent;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
   position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* Grid para campos de ubicación */
-.ubicacion-campos-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+/* Ubicaciones en vertical - igual que modo visual */
+.ubicacion-campos-vertical {
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
-.ubicacion-campos-grid > div {
+.ubicacion-campo-grupo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
-.ubicacion-campos-grid > div strong {
-  font-size: 0.85rem;
+.ubicacion-campo-grupo strong {
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-texto-principal);
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
-/* Responsive para ubicaciones */
-@media (min-width: 768px) {
-  .ubicacion-campos-grid {
-    grid-template-columns: 1fr 2fr 2fr;
-  }
+.ubicacion-campo-grupo .input-edit {
+  margin-top: 0.25rem;
 }
 
-/* Botón eliminar simple - más pequeño */
+/* Campos de hora en línea cuando es horario */
+.hora-campos {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hora-campos .input-edit {
+  flex: 1;
+}
+
+.hora-separador {
+  font-weight: bold;
+  color: var(--color-texto-secundario);
+}
+
+/* Botón eliminar organizado */
 .btn-eliminar-simple, 
 .btn-eliminar-adjunto-simple {
   position: absolute;
-  top: 0.2rem;
-  right: 0.2rem;
+  top: 0.5rem;
+  right: 0.5rem;
   background: #dc3545;
   color: white;
   border: none;
-  border-radius: 3px;
-  width: 18px;
-  height: 18px;
-  font-size: 0.7rem;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   transition: background-color 0.2s ease;
+  font-weight: bold;
 }
 
 .btn-eliminar-simple:hover, 
@@ -846,39 +882,65 @@
   background: #c82333;
 }
 
-/* Ajustes para campos múltiples en una línea */
+/* Campos múltiples organizados */
 .detalle-item-edit {
+  display: block;
+}
+
+.campos-ponente, 
+.campos-servicio, 
+.campos-enlace {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
 }
 
-.detalle-item-edit .input-edit {
-  flex: 1;
-  min-width: 150px;
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-/* Mantener estilos existentes del modo vista sin cambios */
-.detalle-seccion {
-  margin-bottom: 1.5rem;
+.campo-grupo label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  margin: 0;
 }
 
-/* Ajustes específicos para que se mantenga la apariencia del modo vista */
-.evento-titulo-col .detalle-seccion {
-  margin-left: 0;
-  padding-left: 0;
-  max-width: 450px;
+/* Para campos en línea cuando sea necesario */
+@media (min-width: 768px) {
+  .campos-ponente {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  
+  .campos-servicio {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  
+  .campos-enlace {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    align-items: start;
+  }
 }
 
-/* Simplificar los selectores de edición */
+/* Simplificar los selectores */
 select.input-edit,
 .input-edit select {
   background-color: #ffffff !important;
   color: #333333 !important;
   border: 1px solid #ddd !important;
   padding: 0.5rem !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   cursor: pointer !important;
   appearance: auto !important;
 }
@@ -889,7 +951,7 @@ select.input-edit option,
   color: #333333 !important;
 }
 
-/* Selector de tipo de evento simplificado */
+/* Selector de tipo de evento */
 .evento-tipo-selector {
   background-color: var(--color-fondo-seccion) !important;
   color: var(--color-texto-principal) !important;
@@ -898,67 +960,29 @@ select.input-edit option,
   border-radius: 20px !important;
   font-size: 0.9rem !important;
   font-weight: 500 !important;
+  cursor: pointer !important;
+  outline: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 0.5rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1.5em 1.5em !important;
+  padding-right: 2.5rem !important;
 }
 
-/* Estilos específicos para campos de edición organizados */
-.campo-edicion {
-  margin-bottom: 1rem;
+/* Mantener la estructura y posición de elementos */
+.evento-titulo-col .detalle-seccion {
+  margin-left: 0;
+  padding-left: 0;
+  max-width: 450px; /* Limitar ancho máximo */
 }
 
-.campo-edicion label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-texto-principal);
+.evento-titulo-col .detalle-item {
+  margin-left: 0;
+  padding-left: 0.5rem;
+  max-width: 100%; /* Asegurar que no se desborde */
 }
 
-.campos-ponente, 
-.campos-servicio, 
-.campos-enlace {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .campos-ponente {
-    grid-template-columns: 2fr 1fr;
-  }
-  
-  .campos-servicio {
-    grid-template-columns: 2fr 1fr;
-  }
-  
-  .campos-enlace {
-    grid-template-columns: 1fr 2fr;
-  }
-}
-
-/* Contenedor principal del modo edición */
-.modo-edicion {
-  width: 100%;
-}
-
-.detalles-edicion {
-  width: 100%;
-}
-
-/* Mejoras específicas para la ubicación de horas */
-.ubicacion-hora {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.5rem;
-  align-items: end;
-}
-
-.ubicacion-hora > * {
-  margin-bottom: 0;
-}
-
-@media (min-width: 768px) {
-  .ubicacion-hora {
-    grid-template-columns: auto 1fr 1fr;
-  }
+.evento-titulo-col .detalle-simple {
+  max-width: 100%; /* Limitar ancho de descripción */
 }
