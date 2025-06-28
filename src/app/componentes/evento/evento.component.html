@@ -140,7 +140,7 @@
                 <button type="button" class="btn-agregar-simple" (click)="agregarUbicacion()">+ Agregar</button>
               </div>
               <div formArrayName="ubicaciones">
-                @for (ubicacion of ubicacionesFormArray.controls; track $index; let i = $index) {
+                @for (ubicacion of ubicacionesFormArray.controls; track ubicacion; let i = $index) {
                   <div class="ubicacion-edit-simple" [formGroupName]="i">
                     @if (ubicacionesFormArray.length > 1) {
                       <button type="button" class="btn-eliminar-simple" (click)="eliminarUbicacion(i)">×</button>
@@ -303,7 +303,7 @@
                     @if (ponentesFormArray.length === 0) {
                       <p class="detalle-vacio">No hay ponentes.</p>
                     }
-                    @for (ponente of ponentesFormArray.controls; track $index; let i = $index) {
+                    @for (ponente of ponentesFormArray.controls; track ponente; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
                         <button type="button" class="btn-eliminar-simple" (click)="eliminarPonente(i)">×</button>
                         <div class="campos-ponente">
@@ -342,7 +342,7 @@
                     @if (serviciosFormArray.length === 0) {
                       <p class="detalle-vacio">No hay servicios.</p>
                     }
-                    @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
+                    @for (servicio of serviciosFormArray.controls; track servicio; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
                         <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
                         <div class="campos-servicio">
@@ -413,7 +413,7 @@
                     @if (enlacesFormArray.length === 0) {
                       <p class="detalle-vacio">No hay enlaces.</p>
                     }
-                    @for (enlace of enlacesFormArray.controls; track $index; let i = $index) {
+                    @for (enlace of enlacesFormArray.controls; track enlace; let i = $index) {
                       <div class="detalle-item-edit" [formGroupName]="i">
                         <button type="button" class="btn-eliminar-simple" (click)="eliminarEnlace(i)">×</button>
                         <div class="campos-enlace">

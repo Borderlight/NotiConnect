@@ -26,6 +26,9 @@ export class EventoComponent {
   editForm!: FormGroup;
   mostrarDetalles = false;
 
+  // Variable para guardar la carátula original
+  private caratulaOriginal: string | undefined;
+
   // Datos de facultades y grados
   facultadesGrados = [
     {
@@ -187,6 +190,10 @@ export class EventoComponent {
 
   editarEvento(event: Event) {
     event.stopPropagation();
+    
+    // Guardar la carátula original para poder restaurarla si se cancela
+    this.caratulaOriginal = this.evento.imagen;
+    
     this.editMode = true;
     
     // Crear formulario con FormArrays vacíos inicialmente
@@ -211,6 +218,12 @@ export class EventoComponent {
 
   cancelarEdicion(event: Event) {
     event.stopPropagation();
+    
+    // Restaurar la carátula original
+    if (this.caratulaOriginal !== undefined) {
+      this.evento.imagen = this.caratulaOriginal;
+    }
+    
     this.editMode = false;
   }
 
@@ -326,9 +339,15 @@ export class EventoComponent {
       const fecha = new Date(ubicacion.fecha).toLocaleDateString('es-ES', {
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
       });
-      const hora = ubicacion.tipoHorario === 'horario' && ubicacion.horaFin 
-        ? `${ubicacion.horaInicio} - ${ubicacion.horaFin}`
-        : ubicacion.horaInicio || ubicacion.hora || '';
+      
+      // Mejorar la lógica de detección de horario
+      let hora = '';
+      if (ubicacion.tipoHorario === 'horario' || (ubicacion.horaFin && ubicacion.horaFin.trim() !== '')) {
+        hora = `${ubicacion.horaInicio} - ${ubicacion.horaFin}`;
+      } else {
+        hora = ubicacion.horaInicio || ubicacion.hora || '';
+      }
+      
       const lugar = ubicacion.aula ? `${ubicacion.lugar} - ${ubicacion.aula}` : ubicacion.lugar;
       
       return `${fecha} | ${hora} | ${lugar}`;
@@ -468,6 +487,12 @@ export class EventoComponent {
 
   toggleDetalles(event: Event) {
     event.stopPropagation();
+    
+    // Si se está ocultando los detalles y se está en modo edición, cancelar la edición
+    if (this.mostrarDetalles && this.editMode) {
+      this.cancelarEdicion(event);
+    }
+    
     this.mostrarDetalles = !this.mostrarDetalles;
   }
 
@@ -668,7 +693,7 @@ export class EventoComponent {
         let tipoHorario = 'hora';
         if (ubicacion.tipoHorario) {
           tipoHorario = ubicacion.tipoHorario;
-        } else if (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== null && ubicacion.horaFin !== undefined) {
+        } else if (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== '00:00' && ubicacion.horaFin !== '23:59') {
           tipoHorario = 'horario';
         }
         
@@ -676,7 +701,7 @@ export class EventoComponent {
           fecha: [this.formatDateForInput(ubicacion.fecha), Validators.required],
           tipoHorario: [tipoHorario],
           horaInicio: [ubicacion.horaInicio || '', Validators.required],
-          horaFin: [ubicacion.horaFin || ''],
+          horaFin: [tipoHorario === 'horario' ? (ubicacion.horaFin || '') : ''],
           lugar: [ubicacion.lugar || '', Validators.required]
         }));
       });
