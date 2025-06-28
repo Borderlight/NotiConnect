@@ -10,7 +10,6 @@ import { EventoService } from '../../servicios/evento.service';
 import { NavigationService } from '../../servicios/navigation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DescargaService } from '../../servicios/descarga.service';
-import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -135,10 +134,6 @@ export class BusquedaComponent implements OnInit {
   ];
   lugares: { key: string, value: string }[] = [];
 
-  // Propiedades para opciones sincronizadas
-  actividadesDisponibles: string[] = [];
-  lugaresDisponibles: string[] = [];
-
   eventoDescargaIndividual: Evento | null = null;
 
   constructor(
@@ -146,8 +141,7 @@ export class BusquedaComponent implements OnInit {
     private eventoService: EventoService,
     private navigationService: NavigationService,
     private translate: TranslateService,
-    private descargaService: DescargaService,
-    private opcionesSincronizadasService: OpcionesSincronizadasService
+    private descargaService: DescargaService
   ) {
     this.formularioBusqueda = this.fb.group({
       tipoEvento: [''],
@@ -166,52 +160,21 @@ export class BusquedaComponent implements OnInit {
     this.eventoService.getEventos().subscribe(eventos => {
       this.eventosDisponibles = eventos;
     });
-    
-    // Suscribirse a las opciones sincronizadas
-    this.opcionesSincronizadasService.getActividades().subscribe(
-      actividades => this.actividadesDisponibles = actividades
-    );
-    
-    this.opcionesSincronizadasService.getLugares().subscribe(
-      lugares => {
-        // Actualizar la lista de lugares disponibles
-        this.lugaresDisponibles = lugares;
-        this.updateLugares();
-      }
-    );
 
     // Prepare translation keys for lugares
-    this.updateLugares();
-    this.translate.onLangChange.subscribe(() => this.updateLugares());
-  }
-  
-  private updateLugares() {
-    this.lugares = [
-      { key: 'FACULTY', value: 'Facultad' },
-      { key: 'AULA_MAGNA', value: 'Aula de grado' },
-      { key: 'LIBRARY', value: 'Biblioteca' },
-      { key: 'HUBdeInnovacion', value: 'HUB de Innovación' },
-      { key: 'AuditorioJuanPablo', value: 'Auditorio Juan Pablo II' },
-      { key: 'S-41', value: 'S-41' },
-      { key: 'ONLINE', value: 'Online' }
-    ];
-    
-    // Agregar lugares personalizados
-    const lugaresCustom = localStorage.getItem('lugaresPersonalizados');
-    if (lugaresCustom) {
-      try {
-        const lugares = JSON.parse(lugaresCustom);
-        if (Array.isArray(lugares)) {
-          lugares.forEach(lugar => {
-            if (typeof lugar === 'string' && lugar.trim()) {
-              this.lugares.push({ key: lugar, value: lugar });
-            }
-          });
-        }
-      } catch (e) {
-        console.warn('Error al parsear lugares personalizados:', e);
-      }
-    }
+    const updateLugares = () => {
+      this.lugares = [
+        { key: 'LOCATIONS.FACULTY', value: 'Facultad' },
+        { key: 'LOCATIONS.AULA_MAGNA', value: 'Aula Magna' },
+        { key: 'LOCATIONS.LIBRARY', value: 'Biblioteca' },
+        { key: 'LOCATIONS.HUBdeInnovacion', value: 'Hub de Innovación' },
+        { key: 'LOCATIONS.AuditorioJuanPablo', value: 'Auditorio Juan Pablo' },
+        { key: 'LOCATIONS.ONLINE', value: 'Online' }
+      ];
+    };
+
+    updateLugares();
+    this.translate.onLangChange.subscribe(() => updateLugares());
   }
 
   buscarEventos() {

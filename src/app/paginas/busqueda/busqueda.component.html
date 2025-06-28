@@ -40,7 +40,7 @@
                   aria-labelledby="actividad-label"
                   class="filtro-select">
             <option value="">{{ 'FILTROS.TODAS_ACTIVIDADES' | translate }}</option>
-            @for (actividad of actividadesDisponibles; track actividad) {
+            @for (actividad of actividadesRelacionadas; track actividad) {
               <option [value]="actividad">{{ actividad }}</option>
             }
           </select>
@@ -128,8 +128,8 @@
                   aria-labelledby="lugar-label"
                   class="filtro-select">
             <option value="">{{ 'FILTROS.TODOS_LUGARES' | translate }}</option>
-            @for (lugar of lugares; track lugar.key) {
-              <option [value]="lugar.key">{{ lugar.value }}</option>
+            @for (lugar of lugares; track lugar) {
+              <option [value]="lugar.value">{{ lugar.key | translate }}</option>
             }
           </select>
         </div>

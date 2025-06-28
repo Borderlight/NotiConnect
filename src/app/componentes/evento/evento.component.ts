@@ -498,12 +498,6 @@ export class EventoComponent {
 
   toggleDetalles(event: Event) {
     event.stopPropagation();
-    
-    // Si se está ocultando los detalles y se está en modo edición, cancelar la edición
-    if (this.mostrarDetalles && this.editMode) {
-      this.cancelarEdicion(event);
-    }
-    
     this.mostrarDetalles = !this.mostrarDetalles;
   }
 

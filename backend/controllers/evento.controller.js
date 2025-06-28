@@ -91,19 +91,10 @@ const getEventoById = async (req, res) => {
 const createEvento = async (req, res) => {
     try {
         console.log('=== DEBUGGING createEvento ===');
-        console.log('Tamaño del payload recibido:', JSON.stringify(req.body).length, 'bytes');
-        console.log('Content-Length header:', req.headers['content-length']);
-        console.log('Número de adjuntos:', req.body.adjuntos ? req.body.adjuntos.length : 0);
-        
-        // Mapear empresaOrganizadora a departamento para compatibilidad
-        if (req.body.empresaOrganizadora && !req.body.departamento) {
-            req.body.departamento = req.body.empresaOrganizadora;
-            delete req.body.empresaOrganizadora;
-        }
+        console.log('req.body:', req.body);
         
         const nuevoEvento = new Evento(req.body);
         const eventoGuardado = await nuevoEvento.save();
-        console.log('Evento guardado exitosamente con ID:', eventoGuardado._id);
         res.status(201).json(eventoGuardado);
     } catch (error) {
         console.error('Error al crear evento:', error);
@@ -114,12 +105,6 @@ const createEvento = async (req, res) => {
 // Actualizar evento
 const updateEvento = async (req, res) => {
     try {
-        // Mapear empresaOrganizadora a departamento para compatibilidad
-        if (req.body.empresaOrganizadora && !req.body.departamento) {
-            req.body.departamento = req.body.empresaOrganizadora;
-            delete req.body.empresaOrganizadora;
-        }
-        
         const eventoActualizado = await Evento.findByIdAndUpdate(
             req.params.id,
             req.body,
