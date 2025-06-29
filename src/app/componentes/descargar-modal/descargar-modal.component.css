@@ -16,7 +16,7 @@
   padding: 2rem;
   border-radius: 8px;
   width: 90%;
-  max-width: 500px;
+  max-width: 700px;
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -42,10 +42,62 @@ h3 {
   flex-wrap: wrap;
 }
 
-.checkbox-group.campos {
+.campos-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.columna-izquierda, .columna-derecha {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+}
+
+.grupo-ubicaciones {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.label-grupo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-expandir {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--color-primario);
+  transition: transform 0.2s ease;
+}
+
+.btn-expandir.expandido {
+  transform: rotate(0deg);
+}
+
+.subcampos {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.label-subcampo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
 }
 
 label {
@@ -93,4 +145,17 @@ input[type="checkbox"] {
 .btn-descargar:hover:not(:disabled), .btn-cancelar:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .campos-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 } 

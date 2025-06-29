@@ -22,13 +22,61 @@
 
     <div class="seccion">
       <h3>{{ 'DOWNLOAD_MODAL.FIELDS_SECTION.TITLE' | translate }}</h3>
-      <div class="checkbox-group campos">
-        @for (field of availableFields; track field) {
-          <label>
-            <input type="checkbox" [(ngModel)]="options.fields[field.value]">
-            {{ field.label | translate }}
-          </label>
-        }
+      <div class="campos-container">
+        
+        <!-- Columna Izquierda -->
+        <div class="columna-izquierda">
+          @for (field of leftColumnFields; track field.value) {
+            @if (!field.isGroup) {
+              <label>
+                <input type="checkbox" [(ngModel)]="options.fields[field.value]">
+                {{ field.label | translate }}
+              </label>
+            } @else {
+              <!-- Checkbox agrupador de Ubicaciones -->
+              <div class="grupo-ubicaciones">
+                <label class="label-grupo">
+                  <input type="checkbox" 
+                         #ubicacionesCheckbox
+                         [(ngModel)]="options.fields[field.value]"
+                         (change)="onUbicacionesChange(ubicacionesCheckbox.checked)">
+                  {{ field.label | translate }}
+                  <button type="button" 
+                          class="btn-expandir" 
+                          (click)="toggleSubcamposUbicaciones()"
+                          [class.expandido]="mostrarSubcamposUbicaciones">
+                    {{ mostrarSubcamposUbicaciones ? '▼' : '▶' }}
+                  </button>
+                </label>
+                
+                <!-- Subcampos de ubicaciones -->
+                @if (mostrarSubcamposUbicaciones) {
+                  <div class="subcampos">
+                    @for (subField of field.subFields; track subField.value) {
+                      <label class="label-subcampo">
+                        <input type="checkbox" 
+                               [(ngModel)]="options.fields[subField.value]"
+                               (change)="onSubcampoUbicacionChange()">
+                        {{ subField.label | translate }}
+                      </label>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="columna-derecha">
+          @for (field of rightColumnFields; track field.value) {
+            <label>
+              <input type="checkbox" [(ngModel)]="options.fields[field.value]">
+              {{ field.label | translate }}
+            </label>
+          }
+        </div>
+        
       </div>
     </div>
 

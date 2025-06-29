@@ -331,7 +331,11 @@ export class BusquedaComponent implements OnInit {
       const eventoFiltrado: any = {};
       Object.keys(options.fields).forEach(field => {
         if (options.fields[field]) {
-          eventoFiltrado[field] = evento[field as keyof Evento];
+          // Usar el método obtenerValorCampo para obtener el valor correcto
+          const valor = this.obtenerValorCampo(evento, field);
+          if (valor !== null) {
+            eventoFiltrado[field] = valor;
+          }
         }
       });
       return eventoFiltrado;
@@ -360,18 +364,19 @@ export class BusquedaComponent implements OnInit {
   private obtenerEtiquetaCampo(campo: string): string {
     const etiquetas: { [key: string]: string } = {
       titulo: 'Título',
-      ponente: 'Ponente',
-      empresaOrganizadora: 'Empresa Organizadora',
       tipoEvento: 'Tipo de Evento',
+      departamento: 'Departamento',
+      descripcion: 'Descripción',
+      ubicaciones: 'Ubicaciones',
       fecha: 'Fecha',
       horaInicio: 'Hora de Inicio',
       horaFin: 'Hora de Fin',
       lugar: 'Lugar',
-      descripcion: 'Descripción',
+      ponente: 'Ponente',
       actividad: 'Actividad',
-      adjuntos: 'Adjuntos',
+      servicios: 'Servicios',
       enlaces: 'Enlaces',
-      servicios: 'Servicios'
+      adjuntos: 'Adjuntos'
     };
     return etiquetas[campo] || campo;
   }
@@ -380,12 +385,12 @@ export class BusquedaComponent implements OnInit {
     switch (campo) {
       case 'titulo':
         return evento.titulo || null;
-      case 'ponente':
-        return evento.ponente || null;
-      case 'empresaOrganizadora':
+      case 'departamento':
         return evento.departamento || evento.empresaOrganizadora || null;
       case 'tipoEvento':
         return evento.tipoEvento || null;
+      case 'descripcion':
+        return evento.descripcion || null;
       case 'fecha':
         return evento.fecha ? new Date(evento.fecha).toLocaleDateString() : null;
       case 'horaInicio':
@@ -394,16 +399,20 @@ export class BusquedaComponent implements OnInit {
         return evento.horaFin ? new Date(evento.horaFin).toLocaleTimeString() : null;
       case 'lugar':
         return evento.lugar || null;
-      case 'descripcion':
-        return evento.descripcion || null;
+      case 'ubicaciones':
+        return evento.ubicaciones ? evento.ubicaciones.map(u => 
+          `${new Date(u.fecha).toLocaleDateString()} - ${u.lugar} (${u.horaInicio}${u.horaFin ? '-' + u.horaFin : ''})`
+        ).join('; ') : null;
+      case 'ponente':
+        return evento.ponente || (evento.ponentes ? evento.ponentes.map(p => p.nombre).join(', ') : null);
       case 'actividad':
         return evento.actividad || null;
-      case 'adjuntos':
-        return evento.adjuntos ? evento.adjuntos.join(', ') : null;
       case 'enlaces':
-        return evento.enlaces ? evento.enlaces.join(', ') : null;
+        return evento.enlaces ? evento.enlaces.map(e => `${e.tipo}: ${e.url}`).join('; ') : null;
       case 'servicios':
-        return evento.servicios ? evento.servicios.map(s => s.servicios).join(', ') : null;
+        return evento.servicios ? evento.servicios.map(s => s.servicios + (s.grado ? ` (${s.grado})` : '')).join(', ') : null;
+      case 'adjuntos':
+        return evento.adjuntos ? evento.adjuntos.map(a => a.name || 'Archivo adjunto').join(', ') : null;
       default:
         return null;
     }

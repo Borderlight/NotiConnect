@@ -28,22 +28,35 @@ export class DescargarModalComponent {
   @Output() cerrar = new EventEmitter<void>();
   @Output() descargar = new EventEmitter<DownloadOptions>();
 
-  availableFields = [
+  // Campos organizados en dos columnas
+  leftColumnFields = [
     { value: 'titulo', label: 'DOWNLOAD_MODAL.FIELDS.TITLE' },
-    { value: 'ponente', label: 'DOWNLOAD_MODAL.FIELDS.SPEAKER' },
-    { value: 'empresaOrganizadora', label: 'DOWNLOAD_MODAL.FIELDS.ORGANIZER' },
     { value: 'tipoEvento', label: 'DOWNLOAD_MODAL.FIELDS.TYPE' },
-    { value: 'fecha', label: 'DOWNLOAD_MODAL.FIELDS.DATE' },
-    { value: 'horaInicio', label: 'DOWNLOAD_MODAL.FIELDS.START_TIME' },
-    { value: 'horaFin', label: 'DOWNLOAD_MODAL.FIELDS.END_TIME' },
-    { value: 'lugar', label: 'DOWNLOAD_MODAL.FIELDS.PLACE' },
-    { value: 'aula', label: 'DOWNLOAD_MODAL.FIELDS.CLASSROOM' },
+    { value: 'departamento', label: 'DOWNLOAD_MODAL.FIELDS.DEPARTMENT' },
     { value: 'descripcion', label: 'DOWNLOAD_MODAL.FIELDS.DESCRIPTION' },
-    { value: 'actividad', label: 'DOWNLOAD_MODAL.FIELDS.ACTIVITY' },
-    { value: 'adjuntos', label: 'DOWNLOAD_MODAL.FIELDS.ATTACHMENTS' },
-    { value: 'enlaces', label: 'DOWNLOAD_MODAL.FIELDS.LINKS' },
-    { value: 'servicios', label: 'DOWNLOAD_MODAL.FIELDS.SERVICES' }
+    { 
+      value: 'ubicaciones', 
+      label: 'DOWNLOAD_MODAL.FIELDS.LOCATIONS',
+      isGroup: true,
+      subFields: [
+        { value: 'fecha', label: 'DOWNLOAD_MODAL.FIELDS.DATE' },
+        { value: 'horaInicio', label: 'DOWNLOAD_MODAL.FIELDS.START_TIME' },
+        { value: 'horaFin', label: 'DOWNLOAD_MODAL.FIELDS.END_TIME' },
+        { value: 'lugar', label: 'DOWNLOAD_MODAL.FIELDS.PLACE' }
+      ]
+    }
   ];
+
+  rightColumnFields = [
+    { value: 'ponente', label: 'DOWNLOAD_MODAL.FIELDS.SPEAKER' },
+    { value: 'actividad', label: 'DOWNLOAD_MODAL.FIELDS.ACTIVITY' },
+    { value: 'servicios', label: 'DOWNLOAD_MODAL.FIELDS.SERVICES' },
+    { value: 'enlaces', label: 'DOWNLOAD_MODAL.FIELDS.LINKS' },
+    { value: 'adjuntos', label: 'DOWNLOAD_MODAL.FIELDS.ATTACHMENTS' }
+  ];
+
+  // Control para mostrar/ocultar subfields de ubicaciones
+  mostrarSubcamposUbicaciones = false;
 
   options: DownloadOptions = {
     formats: {
@@ -54,23 +67,73 @@ export class DescargarModalComponent {
     },
     fields: {
       titulo: false,
-      ponente: false,
-      empresaOrganizadora: false,
       tipoEvento: false,
+      departamento: false,
+      descripcion: false,
+      ubicaciones: false,
       fecha: false,
       horaInicio: false,
       horaFin: false,
       lugar: false,
-      aula: false,
-      descripcion: false,
+      ponente: false,
       actividad: false,
-      adjuntos: false,
+      servicios: false,
       enlaces: false,
-      servicios: false
+      adjuntos: false
     }
   };
 
   constructor(private translateService: TranslateService) {}
+
+  // Método para manejar el checkbox agrupador de ubicaciones
+  onUbicacionesChange(value: boolean) {
+    this.options.fields['ubicaciones'] = value;
+    
+    // Si se marca el grupo, marcar todos los subcampos
+    if (value) {
+      this.options.fields['fecha'] = true;
+      this.options.fields['horaInicio'] = true;
+      this.options.fields['horaFin'] = true;
+      this.options.fields['lugar'] = true;
+    } else {
+      // Si se desmarca el grupo, desmarcar todos los subcampos
+      this.options.fields['fecha'] = false;
+      this.options.fields['horaInicio'] = false;
+      this.options.fields['horaFin'] = false;
+      this.options.fields['lugar'] = false;
+    }
+  }
+
+  // Método para manejar cambios en subcampos de ubicaciones
+  onSubcampoUbicacionChange() {
+    const subcampos = ['fecha', 'horaInicio', 'horaFin', 'lugar'];
+    const todosMarcados = subcampos.every(campo => this.options.fields[campo]);
+    const algunoMarcado = subcampos.some(campo => this.options.fields[campo]);
+    
+    // Si todos están marcados, marcar el grupo
+    if (todosMarcados) {
+      this.options.fields['ubicaciones'] = true;
+    } else if (!algunoMarcado) {
+      // Si ninguno está marcado, desmarcar el grupo
+      this.options.fields['ubicaciones'] = false;
+    } else {
+      // Si algunos están marcados pero no todos, desmarcar el grupo
+      this.options.fields['ubicaciones'] = false;
+    }
+  }
+
+  // Método para alternar la visibilidad de subcampos
+  toggleSubcamposUbicaciones() {
+    this.mostrarSubcamposUbicaciones = !this.mostrarSubcamposUbicaciones;
+  }
+
+  // Getter para verificar si hay algún subcampo de ubicación marcado
+  get tieneSubcamposMarcados(): boolean {
+    return this.options.fields['fecha'] || 
+           this.options.fields['horaInicio'] || 
+           this.options.fields['horaFin'] || 
+           this.options.fields['lugar'];
+  }
 
   isValidSelection(): boolean {
     const hasFormat = Object.values(this.options.formats).some(v => v);
