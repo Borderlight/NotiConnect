@@ -8,11 +8,9 @@ import { EnlacesValidator } from '../../validadores/enlaces.validator';
 import { ServiciosValidator } from '../../validadores/servicios.validator';
 import { UbicacionValidator } from '../../validadores/ubicacion.validator';
 import { EventoService } from '../../servicios/evento.service';
-import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
-import { CompresionService } from '../../servicios/compresion.service';
 import { Router } from '@angular/router';
 import { EventType } from '../../enums/event-type.enum';
-import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
+import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
 
 interface Servicio {
   servicios: string;
@@ -30,15 +28,6 @@ export class FormularioComponent {
   currentLang: string;
   private translateService = inject(TranslateService);
 
-  // Propiedades para progreso de subida
-  mostrarProgreso = false;
-  progresoSubida = 0;
-  tituloProgreso = 'Procesando archivos...';
-  mensajeProgreso = 'Comprimiendo y procesando archivos adjuntos...';
-  
-  // NUEVO: Opción para deshabilitar compresión (para archivos pequeños o conexión rápida)
-  deshabilitarCompresion = false;
-
   mostrarError: boolean = false
   opcionSeleccionada: string = '0'
   seleccionado : string = ''
@@ -53,6 +42,12 @@ export class FormularioComponent {
   mensajeErrorActividad = '';
   mostrarErrorGrado = false;
   mostrarHorarioCompleto: boolean = false;
+  
+  // Variables para el componente de progreso
+  mostrarProgreso: boolean = false;
+  progresoSubida: number = 0;
+  tituloProgreso: string = 'Procesando evento...';
+  mensajeProgreso: string = 'Por favor, espera mientras se procesa la información.';
   
   // Array de actividades disponibles
   actividadesRelacionadas: string[] = [];
@@ -86,10 +81,6 @@ export class FormularioComponent {
       const customActsArr = customActs ? JSON.parse(customActs) : [];
       customActsArr.push(actividadTrimmed);
       localStorage.setItem('actividadesPersonalizadas', JSON.stringify(customActsArr));
-      
-      // Notificar al servicio de sincronización
-      this.opcionesSincronizadasService.agregarActividad(actividadTrimmed);
-      
       this.formularioEvento.patchValue({
         actividad_relacionada: actividadTrimmed
       });
@@ -223,13 +214,11 @@ export class FormularioComponent {
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
-    private compresionService: CompresionService,
-    private router: Router,
-    private opcionesSincronizadasService: OpcionesSincronizadasService
+    private router: Router
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
-      departamento: ['', [Validators.required]], // Departamento organizador
+      departamento: ['', [Validators.required]], // Departamento organizador (antes empresaOrganizadora)
       tipoEvento: ['', Validators.required],
       descripcion: ['', [Validators.required]],
       adjuntos: [''], // Sin validadores
@@ -422,14 +411,24 @@ export class FormularioComponent {
     if (!input.files) return;
     this.selectedAdjuntos = [];
     this.nombresAdjuntos = []; // Reiniciar la lista de nombres
-    Array.from(input.files).forEach(file => {
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => this.selectedAdjuntos.push(e.target.result);
-        reader.readAsDataURL(file);
-      }
+    
+    const files = Array.from(input.files);
+    files.forEach((file, index) => {
       this.nombresAdjuntos.push(file.name); // Agregar el nombre del archivo
+      
+      if (file.type.startsWith('image/')) {
+        // Para imágenes, leer como dataURL
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedAdjuntos[index] = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Para archivos no-imagen, agregar un placeholder que mantenga la sincronización
+        this.selectedAdjuntos[index] = `file://${file.name}`;
+      }
     });
+    
     // Si el usuario borra todos los archivos, limpiar el input correctamente
     if (input.files.length === 0) {
       this.selectedAdjuntos = [];
@@ -526,6 +525,11 @@ export class FormularioComponent {
 
     if (!camposRequeridosValidos || !ubicacionValida) {
       console.log('❌ Formulario inválido - faltan campos requeridos');
+      
+      // Ocultar progreso si estaba visible
+      this.mostrarProgreso = false;
+      this.progresoSubida = 0;
+      
       return;
     }
 
@@ -556,6 +560,11 @@ export class FormularioComponent {
       // Si los enlaces no son válidos, salir de la función
       if (!enlacesValidos) {
         console.log('🛑 Saliendo por enlaces inválidos');
+        
+        // Ocultar progreso si estaba visible
+        this.mostrarProgreso = false;
+        this.progresoSubida = 0;
+        
         return;
       }
 
@@ -564,6 +573,12 @@ export class FormularioComponent {
       if (this.caratulaSeleccionada !== null && this.selectedAdjuntos[this.caratulaSeleccionada]) {
         imagenCaratula = this.selectedAdjuntos[this.caratulaSeleccionada];
       }
+      
+      // Mostrar progreso
+      this.mostrarProgreso = true;
+      this.progresoSubida = 10;
+      this.tituloProgreso = 'Procesando evento...';
+      this.mensajeProgreso = 'Preparando datos del evento...';
       
       console.log('📦 Preparando datos como JSON...');
       
@@ -581,63 +596,40 @@ export class FormularioComponent {
         eventoData.actividad = actividad;
       }
       
-      // Convertir archivos a Base64 con compresión
+      // Actualizar progreso
+      this.progresoSubida = 25;
+      this.mensajeProgreso = 'Procesando archivos adjuntos...';
+      
+      // Convertir archivos a Base64
       const files: FileList | null = this.adjuntosInput.nativeElement.files;
       console.log('📁 Archivos encontrados:', files ? files.length : 0);
       
       eventoData.adjuntos = [];
-      if (files && files.length > 0) {
+      if (files) {
+        console.log('🔄 Convirtiendo archivos a Base64...');
+        const filePromises: Promise<any>[] = [];
+        
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const promise = this.convertFileToBase64(file).then(base64 => ({
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: base64
+          }));
+          filePromises.push(promise);
+        }
+        
         try {
-          // Mostrar progreso
-          this.mostrarProgreso = true;
-          this.progresoSubida = 0;
-
-          // OPTIMIZACIÓN: Evaluar si necesitamos compresión
-          const tamanoTotal = Array.from(files).reduce((total, file) => total + file.size, 0);
-          const necesitaCompresion = tamanoTotal > 10 * 1024 * 1024 || // > 10MB total
-                                   Array.from(files).some(file => file.size > 2 * 1024 * 1024); // algún archivo > 2MB
-
-          if (necesitaCompresion && !this.deshabilitarCompresion) {
-            this.tituloProgreso = 'Optimizando archivos...';
-            this.mensajeProgreso = 'Comprimiendo archivos grandes para mejorar la subida...';
-            
-            console.log('🔄 Iniciando compresión de archivos...');
-            
-            // Comprimir archivos con callback de progreso
-            const archivosComprimidos = await this.compresionService.comprimirArchivos(
-              files, 
-              (progreso) => {
-                this.progresoSubida = progreso;
-                this.mensajeProgreso = `Procesando archivo ${Math.ceil(progreso * files.length / 100)} de ${files.length}...`;
-              }
-            );
-
-            // Extraer solo las strings base64 para el modelo de MongoDB
-            eventoData.adjuntos = archivosComprimidos.map((archivo: any) => archivo.data || archivo);
-          } else {
-            // Procesamiento rápido sin compresión
-            this.tituloProgreso = 'Procesando archivos...';
-            this.mensajeProgreso = 'Convirtiendo archivos...';
-            
-            console.log('⚡ Procesamiento rápido sin compresión');
-            
-            const filePromises: Promise<string>[] = [];
-            for (let i = 0; i < files.length; i++) {
-              const file = files[i];
-              const promise = this.convertFileToBase64(file);
-              filePromises.push(promise);
-            }
-            
-            eventoData.adjuntos = await Promise.all(filePromises);
-          }
-
-          this.progresoSubida = 100;
-          this.mensajeProgreso = 'Archivos procesados. Enviando al servidor...';
-          
+          eventoData.adjuntos = await Promise.all(filePromises);
+          console.log('✅ Archivos convertidos a Base64:', eventoData.adjuntos.length);
+          // Actualizar progreso
+          this.progresoSubida = 60;
+          this.mensajeProgreso = 'Archivos procesados correctamente...';
         } catch (error) {
-          this.mostrarProgreso = false;
-          console.error('❌ Error al procesar archivos:', error);
-          alert('Error al procesar los archivos adjuntos. Por favor, intenta con archivos más pequeños.');
+          console.error('❌ Error al convertir archivos:', error);
+          this.mostrarProgreso = false; // Ocultar progreso en caso de error
+          alert('Error al procesar los archivos adjuntos.');
           return;
         }
       }
@@ -648,15 +640,26 @@ export class FormularioComponent {
         console.log('🖼️ Carátula adjuntada');
       }
       
+      // Actualizar progreso antes del envío
+      this.progresoSubida = 75;
+      this.mensajeProgreso = 'Enviando evento al servidor...';
+      
       // Submit como JSON puro
       console.log('🚀 Enviando formulario al servidor como JSON...');
-      this.tituloProgreso = 'Enviando evento...';
-      this.mensajeProgreso = 'Guardando el evento en el servidor...';
-      
       this.eventoService.agregarEvento(eventoData).subscribe({
         next: (response) => {
-          this.mostrarProgreso = false; // Ocultar progreso
           console.log('✅ Evento creado exitosamente:', response);
+          
+          // Completar progreso
+          this.progresoSubida = 100;
+          this.mensajeProgreso = '¡Evento creado exitosamente!';
+          
+          // Ocultar progreso después de un momento
+          setTimeout(() => {
+            this.mostrarProgreso = false;
+            this.progresoSubida = 0;
+          }, 1500);
+          
           console.log('📱 Mostrando diálogo de confirmación...');
           console.log('📱 Estado actual de mostrarDialog:', this.mostrarDialog);
           this.mostrarDialog = true;
@@ -671,28 +674,24 @@ export class FormularioComponent {
           this.caratulaSeleccionada = null;
         },
         error: (err) => {
-          this.mostrarProgreso = false; // Ocultar progreso
           console.error('❌ Error al crear evento:', err);
-          console.log('🚨 Código de estado HTTP:', err.status);
-          console.log('🚨 Mensaje de error:', err.message);
+          console.log('🚨 Mostrando alerta de error...');
           
-          let mensajeError = 'Error al crear el evento.';
+          // Ocultar progreso en caso de error
+          this.mostrarProgreso = false;
+          this.progresoSubida = 0;
           
-          if (err.status === 413) {
-            mensajeError = 'El evento es demasiado grande. Intenta con menos archivos adjuntos o imágenes más pequeñas.';
-          } else if (err.status === 0) {
-            mensajeError = 'Error de conexión. Verifica tu conexión a internet y vuelve a intentarlo.';
-          } else if (err.userMessage) {
-            mensajeError = err.userMessage;
-          } else if (err.error && err.error.message) {
-            mensajeError = err.error.message;
-          }
-          
-          alert(mensajeError);
+          // Opcional: mostrar un mensaje de error al usuario
+          alert('Error al crear el evento. Revisa la consola para más detalles.');
         }
       });
     } else {
       console.log('Formulario inválido');
+      
+      // Ocultar progreso si estaba visible
+      this.mostrarProgreso = false;
+      this.progresoSubida = 0;
+      
       // Mostrar los errores específicos
       Object.keys(this.formularioEvento.controls).forEach(key => {
         const control = this.formularioEvento.get(key);
@@ -843,10 +842,6 @@ export class FormularioComponent {
     if (valor && !this.opcionesDepartamento.includes(valor) && !this.departamentosPersonalizados.includes(valor)) {
       this.departamentosPersonalizados.push(valor);
       localStorage.setItem('departamentosPersonalizados', JSON.stringify(this.departamentosPersonalizados));
-      
-      // Notificar al servicio de sincronización
-      this.opcionesSincronizadasService.agregarDepartamento(valor);
-      
       this.formularioEvento.get('departamento')?.setValue(valor);
       this.mostrarInputDepartamento = false;
       this.nuevoDepartamento = '';
@@ -910,6 +905,10 @@ export class FormularioComponent {
   // Devuelve solo los nombres de las facultades para el selector
   get nombresFacultades(): string[] {
     return this.facultadesGrados.map(f => f.facultad);
+  }
+
+  trackByPonenteId(index: number, ponente: AbstractControl) {
+    return ponente.get('id')?.value;
   }
 
   // Índice de la imagen seleccionada como carátula
@@ -1034,25 +1033,58 @@ export class FormularioComponent {
     }
     // Añadir el nuevo lugar personalizado y seleccionarlo automáticamente
     this.lugaresPersonalizados[i].push(valor);
-    
-    // Notificar al servicio de sincronización
-    this.opcionesSincronizadasService.agregarLugar(valor);
-    
-    // También guardarlo en localStorage global para sincronización
-    const lugaresGlobales = localStorage.getItem('lugaresPersonalizados');
-    let lugaresArray = lugaresGlobales ? JSON.parse(lugaresGlobales) : [];
-    if (!Array.isArray(lugaresArray)) {
-      lugaresArray = [];
-    }
-    if (!lugaresArray.includes(valor)) {
-      lugaresArray.push(valor);
-      localStorage.setItem('lugaresPersonalizados', JSON.stringify(lugaresArray));
-    }
-    
     this.formularioEvento.get('ubicaciones')?.get(''+i)?.get('lugar')?.setValue(valor);
     this.mostrarInputLugar[i] = false;
     this.nuevoLugar[i] = '';
     this.mostrarErrorLugar[i] = false;
     this.mensajeErrorLugar[i] = '';
+  }
+
+  // Eliminar un adjunto específico por índice
+  eliminarAdjunto(index: number): void {
+    this.selectedAdjuntos.splice(index, 1);
+    this.nombresAdjuntos.splice(index, 1);
+    
+    // Ajustar el índice de carátula si es necesario
+    if (this.caratulaSeleccionada !== null) {
+      if (this.caratulaSeleccionada === index) {
+        this.caratulaSeleccionada = null; // La carátula eliminada
+      } else if (this.caratulaSeleccionada > index) {
+        this.caratulaSeleccionada--; // Ajustar índice porque se removió un elemento anterior
+      }
+    }
+    
+    // Actualizar el input de archivos
+    if (this.adjuntosInput && this.adjuntosInput.nativeElement) {
+      if (this.selectedAdjuntos.length === 0) {
+        this.adjuntosInput.nativeElement.value = '';
+      }
+    }
+  }
+
+  // Obtener icono según el tipo de archivo
+  obtenerIconoArchivo(nombreArchivo: string): string {
+    const extension = nombreArchivo.toLowerCase().split('.').pop();
+    switch (extension) {
+      case 'pdf':
+        return '📄';
+      case 'doc':
+      case 'docx':
+      case 'odt':
+        return '📝';
+      case 'txt':
+        return '📃';
+      case 'xls':
+      case 'xlsx':
+        return '📊';
+      case 'ppt':
+      case 'pptx':
+        return '📊';
+      case 'zip':
+      case 'rar':
+        return '🗜️';
+      default:
+        return '📄';
+    }
   }
 }

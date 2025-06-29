@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const servicioSchema = new mongoose.Schema({
-    servicios: { type: String, required: false },
-    grado: { type: String, required: false }
+    servicios: { type: String, required: false }
 }, { _id: false });
 
 const enlaceSchema = new mongoose.Schema({
@@ -20,12 +19,12 @@ const ubicacionSchema = new mongoose.Schema({
 const eventoSchema = new mongoose.Schema({
     imagen: { type: String, default: null },
     titulo: { type: String, required: true },
-    departamento: { type: String, default: 'Sin especificar' },
     ponentes: [{ 
         id: Number,
         nombre: String, 
         afiliacion: String 
     }],
+    empresaOrganizadora: { type: String, default: 'Sin especificar' },
     tipoEvento: { type: String, default: 'otro' },
     descripcion: { type: String, default: '' },
     adjuntos: [String], // Simplificado a array de strings

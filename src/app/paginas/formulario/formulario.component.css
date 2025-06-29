@@ -872,6 +872,8 @@ body.modo-oscuro .seccion-ubicacion {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  flex-direction: column;
 }
 
 .preview-img {
@@ -879,4 +881,70 @@ body.modo-oscuro .seccion-ubicacion {
   margin: 0.5rem 0;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Botón eliminar adjunto individual */
+.btn-eliminar-adjunto-simple {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #dc3545;
+  color: white;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  line-height: 1;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-eliminar-adjunto-simple:hover {
+  background: #c82333;
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.btn-eliminar-adjunto-simple:active {
+  transform: scale(0.95);
+}
+
+/* Contenedor de archivos no-imagen */
+.archivo-no-imagen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  margin: 0.5rem;
+  background-color: var(--color-fondo-seccion);
+  transition: border-color 0.2s ease;
+}
+
+.archivo-no-imagen:hover {
+  border-color: #007bff;
+}
+
+.archivo-no-imagen .icono-archivo {
+  font-size: 2.5em;
+  margin-bottom: 0.2em;
+}
+
+.archivo-no-imagen .nombre-archivo {
+  font-size: 0.8em;
+  text-align: center;
+  word-break: break-word;
+  max-width: 90px;
+  line-height: 1.2;
+  color: var(--color-texto-secundario);
 }
