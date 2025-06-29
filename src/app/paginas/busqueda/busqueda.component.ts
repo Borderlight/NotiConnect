@@ -435,7 +435,15 @@ export class BusquedaComponent implements OnInit {
         return evento.ubicaciones.map((u, index) => {
           const fecha = u.fecha ? new Date(u.fecha).toLocaleDateString() : '';
           const horaInicio = u.horaInicio || '';
-          const horaFin = u.horaFin || '';
+          // Solo incluir horaFin si realmente existe y no es un valor por defecto
+          let horaFin = '';
+          if (u.horaFin && 
+              u.horaFin.trim() !== '' && 
+              u.horaFin !== '23:59' && 
+              u.horaFin !== '00:00' && 
+              u.horaFin !== horaInicio) {
+            horaFin = u.horaFin;
+          }
           const lugar = u.lugar || '';
           
           return `Ubicación ${index + 1} (fecha: ${fecha}, hora inicio: ${horaInicio}, hora fin: ${horaFin}, lugar: ${lugar})`;
