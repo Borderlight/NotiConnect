@@ -459,10 +459,12 @@
 
 /* Grid para adjuntos */
 .adjuntos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  display: flex;
+  flex-direction: row;
   gap: 1rem;
   margin-top: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
 }
 
 .adjunto-item {
@@ -470,54 +472,63 @@
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #e0e0e0;
+  border: 2px solid #e0e0e0;
   min-width: 120px;
-  max-width: 150px;
+  max-width: 140px;
   background: white;
   display: flex;
   flex-direction: column;
-  position: relative; /* Para posicionar botones absolutos */
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .adjunto-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
 }
 
 .adjunto-imagen-preview {
   position: relative;
   background: #f8f9fa;
-  flex: 1;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .imagen-miniatura {
   width: 100%;
-  height: 80px;
+  height: 100px;
   object-fit: cover;
   display: block;
-}
-
-.adjunto-overlay {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 500;
 }
 
 .adjunto-archivo-preview {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  min-height: 80px;
   justify-content: center;
-  flex: 1;
+  height: 100px;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  margin: 0.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.adjunto-archivo-preview:hover {
+  border-color: #007bff;
+}
+
+.icono-archivo-grande {
+  font-size: 2.5rem;
+  transition: transform 0.2s ease;
+}
+
+.adjunto-item:hover .icono-archivo-grande {
+  transform: scale(1.1);
 }
 
 .icono-archivo {
@@ -525,31 +536,12 @@
   margin-bottom: 0.5rem;
 }
 
-.adjunto-info {
-  text-align: center;
-}
-
-.adjunto-tipo {
-  display: block;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: #333;
-  margin-bottom: 0.25rem;
-}
-
-.adjunto-accion {
-  display: block;
-  font-size: 0.7rem;
-  color: #666;
-  font-style: italic;
-}
-
 /* Nombre del archivo debajo de la previsualización */
 .adjunto-nombre {
   padding: 0.5rem;
   border-top: 1px solid #e0e0e0;
   background: #fafafa;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #555;
   text-align: center;
   word-break: break-word;
@@ -558,32 +550,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 500;
 }
 
 /* Responsive para adjuntos */
 @media (max-width: 768px) {
   .adjuntos-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.75rem;
+    padding: 0.25rem 0;
   }
   
   .adjunto-item {
     min-width: 100px;
-    max-width: 120px;
+    max-width: 110px;
   }
   
   .imagen-miniatura {
-    height: 60px;
+    height: 80px;
+  }
+  
+  .adjunto-imagen-preview {
+    height: 80px;
   }
   
   .adjunto-archivo-preview {
-    min-height: 60px;
-    padding: 0.75rem;
+    height: 80px;
+    margin: 0.25rem;
+  }
+  
+  .icono-archivo-grande {
+    font-size: 2rem;
   }
   
   .adjunto-nombre {
     font-size: 0.7rem;
     padding: 0.4rem;
+    min-height: 2rem;
   }
 }
 
@@ -1052,51 +1054,54 @@ select.input-edit option,
 }
 
 .checkbox-caratula.selected {
-  background: var(--color-primario, #007bff);
-  border-color: var(--color-primario, #007bff);
+  background: #007bff;
+  border-color: #007bff;
 }
 
-.checkbox-caratula.selected .checkbox-icon {
+.checkbox-caratula.selected::before {
+  content: '✓';
   color: white;
+  font-size: 12px;
   font-weight: bold;
 }
 
-/* Estilo para la clase seleccionado (modo visualización) */
-.checkbox-caratula.seleccionado {
-  background: var(--color-primario, #007bff);
-  border-color: var(--color-primario, #007bff);
-}
-
-.checkbox-caratula.seleccionado .checkbox-icon {
-  color: white;
-  font-weight: bold;
-}
-
-.btn-eliminar-adjunto-simple {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 24px;
-  height: 24px;
-  background: rgba(220, 53, 69, 0.9);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
-  z-index: 6;
+.checkbox-caratula::before {
+  content: '';
   transition: all 0.2s ease;
 }
 
-.btn-eliminar-adjunto-simple:hover {
-  background: rgba(220, 53, 69, 1);
-  transform: scale(1.1);
+/* Modo oscuro para adjuntos */
+body.modo-oscuro .adjunto-item,
+:host-context(.dark-mode) .adjunto-item {
+  background: #2d2d2d;
+  border-color: #444;
 }
 
-.adjunto-item {
-  position: relative; /* Necesario para posicionar el botón de eliminar */
+body.modo-oscuro .adjunto-item:hover,
+:host-context(.dark-mode) .adjunto-item:hover {
+  border-color: #007bff;
+  background: #333;
+}
+
+body.modo-oscuro .adjunto-archivo-preview,
+:host-context(.dark-mode) .adjunto-archivo-preview {
+  background: #1a1a1a;
+  border-color: #555;
+}
+
+body.modo-oscuro .adjunto-archivo-preview:hover,
+:host-context(.dark-mode) .adjunto-archivo-preview:hover {
+  border-color: #007bff;
+}
+
+body.modo-oscuro .adjunto-nombre,
+:host-context(.dark-mode) .adjunto-nombre {
+  background: #1a1a1a;
+  color: #ccc;
+  border-color: #444;
+}
+
+body.modo-oscuro .adjunto-imagen-preview,
+:host-context(.dark-mode) .adjunto-imagen-preview {
+  background: #1a1a1a;
 }

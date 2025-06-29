@@ -452,6 +452,27 @@ export class EventoComponent {
           url: enlace.url.trim()
         }));
       
+      // VALIDACIÓN ESPECIAL PARA ADJUNTOS: Verificar que no sean strings problemáticos
+      if (this.evento.adjuntos && Array.isArray(this.evento.adjuntos)) {
+        this.evento.adjuntos = this.evento.adjuntos.filter((adjunto: any) => {
+          // Filtrar adjuntos válidos
+          if (typeof adjunto === 'string') {
+            // Si es un string muy largo sin prefijo data:, probablemente está corrupto
+            if (adjunto.length > 1000 && !adjunto.startsWith('data:')) {
+              console.warn('DEBUG: Adjunto string problemático detectado y removido', adjunto.substring(0, 50) + '...');
+              return false;
+            }
+          } else if (adjunto && typeof adjunto === 'object') {
+            // Verificar que el objeto tenga la estructura correcta
+            if (!adjunto.name || !adjunto.data) {
+              console.warn('DEBUG: Adjunto objeto incompleto detectado y removido', adjunto);
+              return false;
+            }
+          }
+          return true;
+        });
+      }
+      
       // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
@@ -545,12 +566,23 @@ export class EventoComponent {
   // Funciones auxiliares para adjuntos
   esImagen(adjunto: string | ArchivoAdjunto): boolean {
     if (typeof adjunto === 'string') {
+      // PROTECCIÓN: Para strings problemáticos, ser más conservador
+      if (adjunto.length > 50000) { // 50KB aproximadamente
+        console.log('DEBUG: String muy grande, verificando solo si empieza con data:image/');
+        return adjunto.startsWith('data:image/');
+      }
+      
       // Si es una URL, verificar si contiene extensiones de imagen
       return /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(adjunto) || 
              adjunto.startsWith('data:image/');
     }
+    
     // Si es un objeto ArchivoAdjunto, verificar el tipo
-    return adjunto.type ? adjunto.type.startsWith('image/') : false;
+    if (adjunto && typeof adjunto === 'object') {
+      return adjunto.type ? adjunto.type.startsWith('image/') : false;
+    }
+    
+    return false;
   }
 
   abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
@@ -662,27 +694,53 @@ export class EventoComponent {
   }
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
-    console.log('DEBUG: obtenerNombreAdjunto - adjunto:', adjunto);
+    console.log('DEBUG: obtenerNombreAdjunto - adjunto tipo:', typeof adjunto, 'longitud:', typeof adjunto === 'string' ? adjunto.length : 'objeto');
     
     if (typeof adjunto === 'string') {
+      // PROTECCIÓN CRÍTICA: Si es un string muy largo, probablemente es base64 - nunca mostrar contenido crudo
+      if (adjunto.length > 100) {
+        console.log('DEBUG: String muy largo detectado, generando nombre seguro');
+        
+        // Si empieza con data:, extraer tipo MIME para generar nombre apropiado
+        if (adjunto.startsWith('data:')) {
+          const mimeMatch = adjunto.match(/data:([^;]+);/);
+          if (mimeMatch) {
+            const mimeType = mimeMatch[1];
+            if (mimeType.startsWith('image/')) {
+              const ext = mimeType.split('/')[1] || 'jpg';
+              return `Imagen_${index + 1}.${ext}`;
+            } else if (mimeType.includes('pdf')) {
+              return `Documento_${index + 1}.pdf`;
+            } else if (mimeType.includes('word')) {
+              return `Documento_${index + 1}.docx`;
+            } else if (mimeType.includes('excel')) {
+              return `Documento_${index + 1}.xlsx`;
+            }
+          }
+        }
+        
+        // Para cualquier string largo sin info de tipo, usar nombre genérico
+        return `Adjunto_${index + 1}`;
+      }
+      
       // Si es una URL, extraer el nombre del archivo de la URL
       try {
         const url = new URL(adjunto);
         const pathname = url.pathname;
         const filename = pathname.split('/').pop();
-        const result = filename && filename.length > 0 ? filename : `Adjunto ${index + 1}`;
+        const result = filename && filename.length > 0 ? filename : `Adjunto_${index + 1}`;
         console.log('DEBUG: String URL, filename extracted:', result);
         return result;
       } catch {
-        // Si no es una URL válida, asumir que es un nombre de archivo
-        const result = adjunto || `Adjunto ${index + 1}`;
+        // Si no es una URL válida y es corto, asumir que es un nombre de archivo
+        const result = adjunto.trim() || `Adjunto_${index + 1}`;
         console.log('DEBUG: String not URL, using as filename:', result);
         return result;
       }
     }
     
     // Para objetos ArchivoAdjunto
-    const result = adjunto.name || `Adjunto ${index + 1}`;
+    const result = adjunto?.name || `Adjunto_${index + 1}`;
     console.log('DEBUG: Object adjunto, name:', result);
     return result;
   }
