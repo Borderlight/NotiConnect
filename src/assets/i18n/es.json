@@ -242,11 +242,6 @@
         "HINT": "Elige el edificio o instalación",
         "ERROR": "El lugar es obligatorio"
       },
-      "CLASSROOM": {
-        "LABEL": "Aula",
-        "DESCRIPTION": "Indica el aula o espacio específico.",
-        "ERROR": "El aula es obligatoria"
-      },
       "ADD_DATE_PLACE": "Añadir Fecha y Lugar",
       "START": {
         "LABEL": "Hora de Inicio",
@@ -371,9 +366,6 @@
     "AULA_MAGNA": "Aula de grado",
     "LIBRARY": "Biblioteca",
     "ONLINE": "En línea",
-    "SELECT_OPTION": "Selecciona una opción",
-    "PRESENTIAL_SPACES": "Espacios Presenciales",
-    "VIRTUAL_SPACES": "Espacios Virtuales",
     "HUBdeInnovacion": "Hub de Innovación",
     "AuditorioJuanPablo": "Auditorio Juan Pablo II"
   },

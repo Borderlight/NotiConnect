@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Evento, ArchivoAdjunto } from '../../interfaces/evento.interface';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,16 +45,26 @@ export class EventoComponent {
   actividadesDisponibles: string[] = [];
   lugaresDisponibles: string[] = [];
 
-  // Mapeo de lugares
-  lugaresMap: { [key: string]: string } = {
-    'FACULTY': 'Facultad', 'AULA_MAGNA': 'Aula de grado', 'HUBdeInnovacion': 'HUB de Innovación',
-    'LIBRARY': 'Biblioteca', 'AuditorioJuanPablo': 'Auditorio Juan Pablo II', 'S-41': 'S-41', 'ONLINE': 'Online'
+  // Mapeo para traducir lugares guardados en la BD (claves) a nombres legibles
+  private lugaresTraduccion: { [key: string]: string } = {
+    'FACULTAD': 'Facultad',
+    'FACULTY': 'Facultad', // Retrocompatibilidad
+    'AULA_MAGNA': 'Aula de grado',
+    'HUB_INNOVACION': 'HUB de Innovación',
+    'HUBdeInnovacion': 'HUB de Innovación', // Retrocompatibilidad
+    'BIBLIOTECA': 'Biblioteca',
+    'LIBRARY': 'Biblioteca', // Retrocompatibilidad
+    'AUDITORIO_JUAN_PABLO': 'Auditorio Juan Pablo II',
+    'AuditorioJuanPablo': 'Auditorio Juan Pablo II', // Retrocompatibilidad
+    'S-41': 'S-41',
+    'ONLINE': 'Online'
   };
 
   constructor(
     private idiomaService: IdiomaService,
     private fb: FormBuilder,
-    private opcionesSincronizadasService: OpcionesSincronizadasService
+    private opcionesSincronizadasService: OpcionesSincronizadasService,
+    private translateService: TranslateService
   ) {
     this.idiomaService.obtenerIdiomaActual().subscribe(
       lang => this.currentLang = lang
@@ -103,9 +113,9 @@ export class EventoComponent {
     this.editForm = this.fb.group({
       tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
-      departamento: [this.obtenerDepartamentoValido(this.evento.departamento || this.evento.empresaOrganizadora || ''), Validators.required],
+      departamento: [this.normalizarDepartamento(this.evento.departamento || this.evento.empresaOrganizadora || ''), Validators.required],
       descripcion: [this.evento.descripcion || ''],
-      actividad: [this.evento.actividad || ''],
+      actividad: [this.normalizarActividad(this.evento.actividad || ''), ''],
       ubicaciones: this.fb.array([]),
       ponentes: this.fb.array([]),
       servicios: this.fb.array([]),
@@ -691,7 +701,7 @@ export class EventoComponent {
           tipoHorario: [tipoHorario],
           horaInicio: [ubicacion.horaInicio || '', Validators.required],
           horaFin: [tipoHorario === 'horario' ? (ubicacion.horaFin || '') : ''],
-          lugar: [ubicacion.lugar || '', Validators.required]
+          lugar: [this.normalizarLugar(ubicacion.lugar || ''), Validators.required]
         }));
       });
     } else {
@@ -716,7 +726,7 @@ export class EventoComponent {
         tipoHorario: [tipoHorarioDefault],
         horaInicio: [horaDefault, Validators.required],
         horaFin: [tipoHorarioDefault === 'horario' ? horaFinDefault : ''],
-        lugar: [lugarDefault, Validators.required]
+        lugar: [this.normalizarLugar(lugarDefault), Validators.required]
       }));
     }
   }
@@ -902,9 +912,9 @@ export class EventoComponent {
     return date.toISOString().substring(0, 10);
   }
 
-  // Método para traducir nombres de lugares
+  // Método para traducir nombres de lugares (de claves guardadas a nombres legibles)
   traducirLugar(lugar: string): string {
-    return this.lugaresMap[lugar] || lugar;
+    return this.lugaresTraduccion[lugar] || lugar;
   }
 
   // Métodos para manejar facultades y grados
@@ -919,21 +929,11 @@ export class EventoComponent {
 
   // Método para obtener opciones de lugar
   obtenerOpcionesLugar(): Array<{key: string, value: string}> {
-    const opcionesBase = Object.entries(this.lugaresMap).map(([key, value]) => ({key, value}));
-    
-    // Agregar lugares del servicio sincronizado, evitando duplicados
-    this.lugaresDisponibles.forEach(lugar => {
-      // Verificar que no exista ni como key ni como value
-      const existe = opcionesBase.some(opcion => 
-        opcion.key === lugar || opcion.value === lugar
-      );
-      
-      if (!existe) {
-        opcionesBase.push({ key: lugar, value: lugar });
-      }
-    });
-
-    return opcionesBase;
+    // Usar directamente lugaresDisponibles que ya están traducidos
+    return this.lugaresDisponibles.map(lugar => ({
+      key: lugar,
+      value: lugar
+    }));
   }
 
   // Sistema de selección de carátula
@@ -1023,5 +1023,64 @@ export class EventoComponent {
 
   get departamentoTexto(): string {
     return this.evento?.departamento || this.evento?.empresaOrganizadora || 'No especificado';
+  }
+
+  // Método para normalizar lugares (convierte claves viejas a nombres actuales)
+  private normalizarLugar(lugar: string): string {
+    if (!lugar || lugar.trim() === '') return '';
+    
+    // Si el lugar está en el mapeo de traducción, devolver la traducción
+    if (this.lugaresTraduccion[lugar]) {
+      return this.lugaresTraduccion[lugar];
+    }
+    
+    // Si ya está en lugaresDisponibles, devolverlo tal como está
+    if (this.lugaresDisponibles.includes(lugar)) {
+      return lugar;
+    }
+    
+    // Si no está en ningún lado, es un lugar personalizado - agregarlo al servicio
+    if (lugar.trim() !== '') {
+      this.opcionesSincronizadasService.agregarLugar(lugar);
+      return lugar;
+    }
+    
+    return lugar;
+  }
+
+  // Método para normalizar departamentos
+  private normalizarDepartamento(departamento: string): string {
+    if (!departamento || departamento.trim() === '') return '';
+    
+    // Si ya está en departamentosDisponibles, devolverlo tal como está
+    if (this.departamentosDisponibles.includes(departamento)) {
+      return departamento;
+    }
+    
+    // Si no está, es un departamento personalizado - agregarlo al servicio
+    if (departamento.trim() !== '') {
+      this.opcionesSincronizadasService.agregarDepartamento(departamento);
+      return departamento;
+    }
+    
+    return departamento;
+  }
+
+  // Método para normalizar actividades
+  private normalizarActividad(actividad: string): string {
+    if (!actividad || actividad.trim() === '') return '';
+    
+    // Si ya está en actividadesDisponibles, devolverlo tal como está
+    if (this.actividadesDisponibles.includes(actividad)) {
+      return actividad;
+    }
+    
+    // Si no está, es una actividad personalizada - agregarla al servicio
+    if (actividad.trim() !== '') {
+      this.opcionesSincronizadasService.agregarActividad(actividad);
+      return actividad;
+    }
+    
+    return actividad;
   }
 }

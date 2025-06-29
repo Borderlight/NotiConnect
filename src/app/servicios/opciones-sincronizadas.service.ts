@@ -24,8 +24,8 @@ export class OpcionesSincronizadasService {
 
   // Lugares base
   private lugaresBase = [
-    'FACULTAD', 'AULA_MAGNA', 'BIBLIOTECA', 'HUB_INNOVACION', 
-    'AUDITORIO_JUAN_PABLO', 'ONLINE'
+    'Facultad', 'Aula de grado', 'Biblioteca', 'HUB de Innovación', 
+    'Auditorio Juan Pablo II', 'S-41', 'Online'
   ];
 
   constructor() {

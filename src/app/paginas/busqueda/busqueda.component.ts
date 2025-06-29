@@ -10,6 +10,7 @@ import { EventoService } from '../../servicios/evento.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DescargaService } from '../../servicios/descarga.service';
 import { Location } from '@angular/common';
+import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -29,7 +30,7 @@ export class BusquedaComponent implements OnInit {
   borradoPendiente: 'masivo' | 'individual' | null = null;
   idEventoAEliminar: string | null = null;
   tiposEvento = Object.values(EventType);
-  actividadesRelacionadas = ['Semana de la Ciencia'];
+  actividadesRelacionadas: string[] = [];
   serviciosDisponibles = [
     'Gestión de la Investigación y Transferencia',
     'Unidad de Empleabilidad y Prácticas',
@@ -141,7 +142,8 @@ export class BusquedaComponent implements OnInit {
     private eventoService: EventoService,
     private location: Location,
     private translate: TranslateService,
-    private descargaService: DescargaService
+    private descargaService: DescargaService,
+    private opcionesSincronizadasService: OpcionesSincronizadasService
   ) {
     this.formularioBusqueda = this.fb.group({
       tipoEvento: [''],
@@ -161,20 +163,62 @@ export class BusquedaComponent implements OnInit {
       this.eventosDisponibles = eventos;
     });
 
-    // Prepare translation keys for lugares
-    const updateLugares = () => {
-      this.lugares = [
-        { key: 'LOCATIONS.FACULTY', value: 'Facultad' },
-        { key: 'LOCATIONS.AULA_MAGNA', value: 'Aula Magna' },
-        { key: 'LOCATIONS.LIBRARY', value: 'Biblioteca' },
-        { key: 'LOCATIONS.HUBdeInnovacion', value: 'Hub de Innovación' },
-        { key: 'LOCATIONS.AuditorioJuanPablo', value: 'Auditorio Juan Pablo' },
-        { key: 'LOCATIONS.ONLINE', value: 'Online' }
-      ];
-    };
+    // Cargar opciones desde el servicio sincronizado
+    this.cargarOpcionesSincronizadas();
 
-    updateLugares();
-    this.translate.onLangChange.subscribe(() => updateLugares());
+    // Suscribirse a cambios en las opciones
+    this.opcionesSincronizadasService.getActividades().subscribe((actividades: string[]) => {
+      this.actividadesRelacionadas = actividades;
+    });
+
+    this.opcionesSincronizadasService.getLugares().subscribe((lugaresDisponibles: string[]) => {
+      this.actualizarLugares(lugaresDisponibles);
+    });
+
+    // Actualizar cuando cambie el idioma
+    this.translate.onLangChange.subscribe(() => {
+      // Obtener lugares actuales y re-actualizarlos para que se traduzcan
+      this.opcionesSincronizadasService.getLugares().subscribe((lugaresDisponibles: string[]) => {
+        this.actualizarLugares(lugaresDisponibles);
+      });
+    });
+  }
+
+  private cargarOpcionesSincronizadas() {
+    // Cargar actividades
+    this.opcionesSincronizadasService.getActividades().subscribe((actividades: string[]) => {
+      this.actividadesRelacionadas = actividades;
+    });
+    
+    // Cargar lugares
+    this.opcionesSincronizadasService.getLugares().subscribe((lugaresDisponibles: string[]) => {
+      this.actualizarLugares(lugaresDisponibles);
+    });
+  }
+
+  private actualizarLugares(lugaresDisponibles: string[]) {
+    this.lugares = lugaresDisponibles.map(lugar => {
+      // Si es un lugar con clave de traducción, usarla; si no, mostrar el valor tal como está
+      const claveTraduccion = this.obtenerClaveTraduccionLugar(lugar);
+      return {
+        key: claveTraduccion || lugar,
+        value: lugar
+      };
+    });
+  }
+
+  private obtenerClaveTraduccionLugar(lugar: string): string | null {
+    const mapaLugares: { [key: string]: string } = {
+      'Facultad': 'LOCATIONS.FACULTY',
+      'Aula Magna': 'LOCATIONS.AULA_MAGNA',
+      'Biblioteca': 'LOCATIONS.LIBRARY',
+      'HUB de Innovación': 'LOCATIONS.HUBdeInnovacion',
+      'Hub de Innovación': 'LOCATIONS.HUBdeInnovacion',
+      'Auditorio Juan Pablo II': 'LOCATIONS.AuditorioJuanPablo',
+      'Auditorio Juan Pablo': 'LOCATIONS.AuditorioJuanPablo',
+      'Online': 'LOCATIONS.ONLINE'
+    };
+    return mapaLugares[lugar] || null;
   }
 
   buscarEventos() {
