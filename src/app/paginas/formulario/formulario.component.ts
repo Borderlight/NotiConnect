@@ -1019,8 +1019,8 @@ export class FormularioComponent {
   }
 
   // Método para generar IDs únicos
-  private generateUniqueId(): string {
-    return 'ponente_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  private generateUniqueId(): number {
+    return Date.now() + Math.floor(Math.random() * 1000);
   }
 
   agregarPonente() {

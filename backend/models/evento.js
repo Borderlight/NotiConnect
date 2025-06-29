@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const servicioSchema = new mongoose.Schema({
-    servicios: { type: String, required: false }
+    servicios: { type: String, required: false },
+    grado: { type: String, required: false }
 }, { _id: false });
 
 const enlaceSchema = new mongoose.Schema({

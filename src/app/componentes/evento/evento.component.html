@@ -228,7 +228,7 @@
               <div class="detalle-seccion">
                 <strong>Servicios:</strong>
                 @if (serviciosDetallados.length > 0) {
-                  @for (servicio of serviciosDetallados; track servicio.servicio) {
+                  @for (servicio of serviciosDetallados; track $index) {
                     <div class="detalle-item">
                       <p class="detalle-principal">{{ traducirServicio(servicio.servicio) | translate }}</p>
                       @if (servicio.grado) {
@@ -341,7 +341,7 @@
                     @if (serviciosFormArray.length === 0) {
                       <p class="detalle-vacio">No hay servicios. Haz clic en "+ Agregar" para añadir uno.</p>
                     } @else {
-                      @for (servicio of serviciosFormArray.controls; track servicio; let i = $index) {
+                      @for (servicio of serviciosFormArray.controls; track $index; let i = $index) {
                         <div class="detalle-item-edit" [formGroupName]="i">
                           <button type="button" class="btn-eliminar-simple" (click)="eliminarServicio(i)">×</button>
                           <div class="campos-servicio">

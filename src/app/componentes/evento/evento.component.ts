@@ -32,12 +32,102 @@ export class EventoComponent {
 
   // Datos de facultades y grados
   facultadesGrados = [
-    { "facultad": "Facultad de Ciencias de la Salud", "grados": ["Grado en Logopedia", "Grado en Enfermería", "Grado en Fisioterapia", "Grado en Nutrición Humana y Dietética"] },
-    { "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa", "grados": ["Grado en Administración y Dirección de Empresas", "Grado en Relaciones Internacionales", "Grado en Derecho"] },
-    { "facultad": "Facultad de Comunicación", "grados": ["Grado en Periodismo", "Grado en Comunicación Audiovisual"] },
-    { "facultad": "Facultad de Educación", "grados": ["Grado en Ciencias de la Actividad Física y del Deporte", "Grado en Maestro en Educación Infantil", "Grado en Maestro en Educación Primaria"] },
-    { "facultad": "Facultad de Informática", "grados": ["Grado en Ingeniería Informática", "Grado en Administración y Dirección de Empresas Tecnológicas"] },
-    { "facultad": "Facultad de Psicología", "grados": ["Grado en Psicología"] }
+    {
+      "facultad": "Facultad de Ciencias de la Salud",
+      "grados": [
+          "Grado en Logopedia",
+          "Grado en Enfermería",
+          "Grado en Fisioterapia",
+          "Grado en Nutrición Humana y Dietética"
+      ]
+    },
+    {
+      "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
+      "grados":[
+          "Grado en Administración y Dirección de Empresas",
+          "Grado en Relaciones Internacionales",
+          "Grado en Derecho"
+      ]
+    },
+    {
+      "facultad": "Facultad de Ciencias Humanas y Sociales",
+      "grados": [
+          "Máster de Formación Permanente en Gobernanza Ética",
+          "Grado en Filosofía"
+      ]
+    },
+    {
+      "facultad":"Facultad de Comunicación",
+      "grados": [
+          "Grado en Periodismo",
+          "Grado en Comunicación Audiovisual"
+      ]
+    },
+    {
+      "facultad":"Facultad de Derecho Canónico", 
+      "grados":[
+          "Doctorado Eclesiástico en Derecho Canónico",
+          "Licenciatura en Derecho Canónico"
+      ]
+    },
+    {
+      "facultad":"Facultad de Educación",
+      "grados": [
+          "Grado en Ciencias de la Actividad Física y del Deporte",
+          "Grado en Maestro en Educación Infantil",
+          "Grado en Maestro en Educación Primaria",
+          "Curso de Formación Pedagógica y Didáctica",
+          "Máster en Formación Permanente en Musicoterapia",
+          "Máster en Formación Permanente en Entrenamiento y Rendimiento en Fútbol",
+          "Máster Universitario en Formación del Profesorado de ESO y Bachillerato, FP y Enseñanza de Idiomas",
+          "Doble Grado en Maestro en Educación Primaria y Maestro en Educación Infantil",
+          "Máster Universitario en Psicopedagogía",
+          "Máster de Formación Permanente en Gestión en Situaciones de Crisis"
+      ]
+    },
+    {
+      "facultad":"Facultad de Enfermería y Fisioterapia Salus Infirmorum", 
+      "grados":[
+          "Grado en Fisioterapia (Madrid)",
+          "Grado en Enfermería (Madrid)"
+      ]
+    },
+    {
+      "facultad":"Facultad de Informática",
+      "grados": [
+          "Doble Grado en ADE Tecnológico e Ingeniería Informática",
+          "Grado en Administración y Dirección de Empresas Tecnológicas",
+          "Doble Grado en Ingeniería Informática y ADET",
+          "Grado en Ingeniería Informática",
+          "Diploma de Especialista en Inteligencia Artificial & Big Data Analytics",
+          "Máster Universitario en Informática Móvil",
+          "Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos"
+      ]
+    },
+    {
+      "facultad":"Facultad de Psicología",
+      "grados": [
+          "Grado en Psicología",
+          "Máster Universitario en Psicología General Sanitaria",
+          "Diploma de Experto en Invtervención Psicosocial"
+      ]
+    },
+    {
+      "facultad":"Facultad de Teología",
+      "grados": [
+          "Bachiller en Teología",
+          "Licenciatura en Teología Bíblica",
+          "Licenciatura en Teología Dogmática",
+          "Licenciatura en Teología Práctica",
+          "Licenciatura en Teología Pastoral",
+          "Doctorado Eclesiástico en Teología Bíblica",
+          "Doctorado Eclesiástico en Teología Dogmática",
+          "Doctorado Eclesiástico en Teología Práctica",
+          "Doctorado Eclesiástico en Teología Pastoral",
+          "Doctorado Eclesiástico en Teología de la Vida Consagrada",
+          "Máster Universitario en Doctrina Social de la Iglesia"
+      ]
+    }
   ];
 
   // Propiedades para opciones sincronizadas

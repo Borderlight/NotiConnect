@@ -233,27 +233,38 @@ export class BusquedaComponent implements OnInit {
     });
     this.eventoService.getEventosFiltrados(filtros).subscribe(eventos => {
       console.log('Eventos recibidos:', eventos); // <-- Depuración
-      // Aplanar ubicaciones: si hay una sola, copiar sus campos a la raíz
+      // Mantener los eventos completos para exportación, pero agregar campos de la primera ubicación para visualización
       this.eventosFiltrados = eventos.map(ev => {
         if (Array.isArray(ev.ubicaciones) && ev.ubicaciones.length > 0) {
-          const ub = ev.ubicaciones[0];
+          const ub = ev.ubicaciones[0]; // Solo para campos de visualización
           // Soportar ambos tipos de ubicaciones (hora única y horario)
           let horaInicio = '';
           let horaFin = undefined;
           if (ub.horaInicio) {
             horaInicio = ub.horaInicio;
-            horaFin = ub.horaFin;
+            // Solo asignar horaFin si existe y no es un valor por defecto como 23:59
+            if (ub.horaFin && ub.horaFin !== '23:59' && ub.horaFin !== '00:00' && ub.horaFin.trim() !== '' && ub.horaFin !== ub.horaInicio) {
+              horaFin = ub.horaFin;
+            }
           } else if (ub.hora) {
             horaInicio = ub.hora;
           }
-          return {
-            ...ev,
-            fecha: ub.fecha,
-            lugar: ub.lugar,
-            aula: ub.aula,
-            horaInicio,
-            horaFin
+          
+          // Mantener el evento completo pero agregar campos de la primera ubicación para visualización
+          const eventoConVisualizacion: any = {
+            ...ev, // Mantener todo el evento original incluidos todos los arrays
+            // Campos de visualización basados en la primera ubicación
+            fechaVisualizacion: ub.fecha,
+            lugarVisualizacion: ub.lugar,
+            aulaVisualizacion: ub.aula,
+            horaInicioVisualizacion: horaInicio
           };
+          
+          if (horaFin) {
+            eventoConVisualizacion.horaFinVisualizacion = horaFin;
+          }
+          
+          return eventoConVisualizacion;
         }
         return ev;
       }) as Evento[];
@@ -339,7 +350,12 @@ export class BusquedaComponent implements OnInit {
           
           // Usar el método obtenerValorCampo para obtener el valor correcto
           const valor = this.obtenerValorCampo(evento, field);
-          if (valor !== null) {
+          
+          // Para horaFin, siempre incluir el campo aunque sea null (aparecerá vacío)
+          if (field === 'horaFin') {
+            eventoFiltrado[field] = valor || '';
+          } else if (valor !== null) {
+            // Para otros campos, solo incluir si tienen valor
             eventoFiltrado[field] = valor;
           }
         }
@@ -435,6 +451,7 @@ export class BusquedaComponent implements OnInit {
     if (!original) return;
     // Crear objeto completo para el backend
     const eventoParaActualizar: Evento = { ...original, ...eventoEditado };
+    
     this.eventoService.actualizarEvento(eventoParaActualizar._id as string, eventoParaActualizar).subscribe({
       next: (eventoActualizado) => {
         this.eventosDisponibles = this.eventosDisponibles.map(ev =>
