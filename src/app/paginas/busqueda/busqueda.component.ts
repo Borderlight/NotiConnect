@@ -388,7 +388,7 @@ export class BusquedaComponent implements OnInit {
       case 'departamento':
         return evento.departamento || evento.empresaOrganizadora || null;
       case 'tipoEvento':
-        return evento.tipoEvento || null;
+        return evento.tipoEvento ? this.traducirTipoEvento(evento.tipoEvento) : null;
       case 'descripcion':
         return evento.descripcion || null;
       case 'fecha':
@@ -410,7 +410,7 @@ export class BusquedaComponent implements OnInit {
       case 'enlaces':
         return evento.enlaces ? evento.enlaces.map(e => `${e.tipo}: ${e.url}`).join('; ') : null;
       case 'servicios':
-        return evento.servicios ? evento.servicios.map(s => s.servicios + (s.grado ? ` (${s.grado})` : '')).join(', ') : null;
+        return evento.servicios ? evento.servicios.map(s => this.traducirServicio(s.servicios) + (s.grado ? ` (${s.grado})` : '')).join(', ') : null;
       case 'adjuntos':
         return evento.adjuntos ? evento.adjuntos.map(a => a.name || 'Archivo adjunto').join(', ') : null;
       default:
@@ -495,5 +495,48 @@ export class BusquedaComponent implements OnInit {
     this.mostrarModalConfirmar = false;
     this.borradoPendiente = null;
     this.idEventoAEliminar = null;
+  }
+
+  private traducirTipoEvento(tipoEvento: string): string {
+    const traducciones: { [key: string]: string } = {
+      'INTERVIEW': 'Entrevista',
+      'WORKSHOP': 'Taller',
+      'EXHIBITION': 'Exposición',
+      'TALK': 'Charla',
+      'CONFERENCE_OR_CONGRESS': 'Conferencia o Congreso',
+      'BOOK_PRESENTATION': 'Presentación de Libro',
+      'EVENT': 'Evento',
+      'VISITS_OR_EXCURSIONS': 'Visitas o Excursiones',
+      'CONTEST_OR_COMPETITION': 'Concurso o Competición',
+      'VISIT': 'Visita',
+      'COURSE': 'Curso',
+      'ROUND_TABLE': 'Mesa Redonda',
+      'HACKATHON': 'Hackathón',
+      'OPEN_DAY': 'Jornada de Puertas Abiertas',
+      'SEMINAR': 'Seminario'
+    };
+    return traducciones[tipoEvento] || tipoEvento;
+  }
+
+  private traducirServicio(servicio: string): string {
+    const traducciones: { [key: string]: string } = {
+      'SERVICES.GESTION_INVESTIGACION': 'Gestión de Investigación',
+      'SERVICES.UNIDAD_EMPLEABILIDAD': 'Unidad de Empleabilidad',
+      'SERVICES.MOVILIDAD_INTERNACIONAL': 'Movilidad Internacional',
+      'SERVICES.CAPELLANIA': 'Capellanía',
+      'SERVICES.DEPORTES': 'Deportes',
+      'SERVICES.CORO': 'Coro',
+      'SERVICES.ASISTENCIA_PSICOLOGICA': 'Asistencia Psicológica',
+      'SERVICES.CULTURA_CIENTIFICA': 'Cultura Científica',
+      'SERVICES.UNIDAD_IGUALDAD': 'Unidad de Igualdad',
+      'SERVICES.VOLUNTARIADO': 'Voluntariado',
+      'InvestigacionTransferencia': 'Investigación y Transferencia',
+      'OrdenacionAcademica': 'Ordenación Académica',
+      'FormacionPermanente': 'Formación Permanente',
+      'ComunidadUniversitaria': 'Comunidad Universitaria',
+      'InternacionalesCooperacion': 'Cooperación Internacional',
+      'Sin especificar': 'Sin especificar'
+    };
+    return traducciones[servicio] || servicio;
   }
 }
