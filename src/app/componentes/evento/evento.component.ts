@@ -974,8 +974,27 @@ export class EventoComponent {
       'SERVICES.UNIDAD_IGUALDAD': 'SERVICES.UNIDAD_IGUALDAD',
       'SERVICES.VOLUNTARIADO': 'SERVICES.VOLUNTARIADO'
     };
+
+    const vicerrectorados: { [key: string]: string } = {
+      'InvestigacionTransferencia': 'VICERRECTORADOS.InvestigacionTransferencia',
+      'OrdenacionAcademica': 'VICERRECTORADOS.OrdenacionAcademica',
+      'FormacionPermanente': 'VICERRECTORADOS.FormacionPermanente',
+      'ComunidadUniversitaria': 'VICERRECTORADOS.ComunidadUniversitaria',
+      'InternacionalesCooperacion': 'VICERRECTORADOS.InternacionalesCooperacion'
+    };
     
-    return this.esFacultad(servicio) ? servicio : (serviciosBasicos[servicio] || servicio);
+    // Si es una facultad, devolverlo tal como está
+    if (this.esFacultad(servicio)) {
+      return servicio;
+    }
+    
+    // Si es un vicerrectorado (sin prefijo), convertirlo a su clave de traducción
+    if (vicerrectorados[servicio]) {
+      return vicerrectorados[servicio];
+    }
+    
+    // Si es un servicio básico, usar su clave de traducción
+    return serviciosBasicos[servicio] || servicio;
   }
 
   onServicioChange(index: number, event: any): void {
