@@ -544,45 +544,147 @@ export class EventoComponent {
 
   // Funciones auxiliares para adjuntos
   esImagen(adjunto: string | ArchivoAdjunto): boolean {
-    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
-    return tipo ? tipo.startsWith('image/') : false;
+    if (typeof adjunto === 'string') {
+      // Si es una URL, verificar si contiene extensiones de imagen
+      return /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(adjunto) || 
+             adjunto.startsWith('data:image/');
+    }
+    // Si es un objeto ArchivoAdjunto, verificar el tipo
+    return adjunto.type ? adjunto.type.startsWith('image/') : false;
   }
 
   abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
+    console.log('DEBUG: abrirAdjunto called with:', adjunto);
+    
     const url = typeof adjunto === 'string' ? adjunto : adjunto.data;
+    console.log('DEBUG: URL extracted:', url);
+    
     if (url) {
       const link = document.createElement('a');
       link.href = url;
       link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      console.log('DEBUG: Link clicked with URL:', url);
+    } else {
+      console.log('DEBUG: No URL found, cannot open adjunto');
     }
   }
 
   obtenerIconoAdjunto(adjunto: string | ArchivoAdjunto): string {
-    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
+    if (typeof adjunto === 'string') {
+      // Para URLs, inferir tipo por extensión
+      if (/\.(pdf)$/i.test(adjunto)) return '📄';
+      if (/\.(doc|docx)$/i.test(adjunto)) return '📝';
+      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return '📊';
+      if (/\.(ppt|pptx)$/i.test(adjunto)) return '📈';
+      if (/\.(txt|md)$/i.test(adjunto)) return '📄';
+      if (/\.(zip|rar|7z)$/i.test(adjunto)) return '📦';
+      return '📎';
+    }
+    
+    const tipo = adjunto.type || '';
     if (tipo.includes('pdf')) return '📄';
-    if (tipo.includes('word')) return '📝';
+    if (tipo.includes('word') || tipo.includes('document')) return '📝';
     if (tipo.includes('excel') || tipo.includes('spreadsheet')) return '📊';
     if (tipo.includes('powerpoint') || tipo.includes('presentation')) return '📈';
     if (tipo.includes('text')) return '📄';
+    if (tipo.includes('zip') || tipo.includes('compressed')) return '📦';
     return '📎';
   }
 
-  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
-    const tipo = typeof adjunto === 'string' ? '' : adjunto.type;
+  obtenerIconoDocumento(adjunto: string | ArchivoAdjunto): string {
+    if (typeof adjunto === 'string') {
+      // Para URLs, inferir tipo por extensión
+      if (/\.(pdf)$/i.test(adjunto)) return 'PDF';
+      if (/\.(doc|docx)$/i.test(adjunto)) return 'DOC';
+      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return 'XLS';
+      if (/\.(ppt|pptx)$/i.test(adjunto)) return 'PPT';
+      if (/\.(txt|md)$/i.test(adjunto)) return 'TXT';
+      if (/\.(zip|rar|7z)$/i.test(adjunto)) return 'ZIP';
+      return 'FILE';
+    }
+    
+    const tipo = adjunto.type || '';
     if (tipo.includes('pdf')) return 'PDF';
-    if (tipo.includes('word')) return 'Word';
+    if (tipo.includes('word') || tipo.includes('document')) return 'DOC';
+    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return 'XLS';
+    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return 'PPT';
+    if (tipo.includes('text')) return 'TXT';
+    if (tipo.includes('zip') || tipo.includes('compressed')) return 'ZIP';
+    return 'FILE';
+  }
+
+  obtenerColorDocumento(adjunto: string | ArchivoAdjunto): string {
+    if (typeof adjunto === 'string') {
+      if (/\.(pdf)$/i.test(adjunto)) return '#e74c3c';
+      if (/\.(doc|docx)$/i.test(adjunto)) return '#2980b9';
+      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return '#27ae60';
+      if (/\.(ppt|pptx)$/i.test(adjunto)) return '#e67e22';
+      if (/\.(txt|md)$/i.test(adjunto)) return '#95a5a6';
+      if (/\.(zip|rar|7z)$/i.test(adjunto)) return '#9b59b6';
+      return '#34495e';
+    }
+    
+    const tipo = adjunto.type || '';
+    if (tipo.includes('pdf')) return '#e74c3c';
+    if (tipo.includes('word') || tipo.includes('document')) return '#2980b9';
+    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return '#27ae60';
+    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return '#e67e22';
+    if (tipo.includes('text')) return '#95a5a6';
+    if (tipo.includes('zip') || tipo.includes('compressed')) return '#9b59b6';
+    return '#34495e';
+  }
+
+  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
+    if (typeof adjunto === 'string') {
+      // Para URLs, inferir tipo por extensión
+      if (/\.(pdf)$/i.test(adjunto)) return 'PDF';
+      if (/\.(doc|docx)$/i.test(adjunto)) return 'Word';
+      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return 'Excel';
+      if (/\.(ppt|pptx)$/i.test(adjunto)) return 'PowerPoint';
+      if (/\.(txt|md)$/i.test(adjunto)) return 'Texto';
+      if (/\.(zip|rar|7z)$/i.test(adjunto)) return 'Archivo';
+      if (this.esImagen(adjunto)) return 'Imagen';
+      return 'Archivo';
+    }
+    
+    const tipo = adjunto.type || '';
+    if (tipo.includes('pdf')) return 'PDF';
+    if (tipo.includes('word') || tipo.includes('document')) return 'Word';
     if (tipo.includes('excel') || tipo.includes('spreadsheet')) return 'Excel';
     if (tipo.includes('powerpoint') || tipo.includes('presentation')) return 'PowerPoint';
     if (tipo.includes('text')) return 'Texto';
+    if (tipo.includes('image')) return 'Imagen';
     return 'Archivo';
   }
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
+    console.log('DEBUG: obtenerNombreAdjunto - adjunto:', adjunto);
+    
     if (typeof adjunto === 'string') {
-      return `Adjunto ${index + 1}`;
+      // Si es una URL, extraer el nombre del archivo de la URL
+      try {
+        const url = new URL(adjunto);
+        const pathname = url.pathname;
+        const filename = pathname.split('/').pop();
+        const result = filename && filename.length > 0 ? filename : `Adjunto ${index + 1}`;
+        console.log('DEBUG: String URL, filename extracted:', result);
+        return result;
+      } catch {
+        // Si no es una URL válida, asumir que es un nombre de archivo
+        const result = adjunto || `Adjunto ${index + 1}`;
+        console.log('DEBUG: String not URL, using as filename:', result);
+        return result;
+      }
     }
-    return adjunto.name || `Adjunto ${index + 1}`;
+    
+    // Para objetos ArchivoAdjunto
+    const result = adjunto.name || `Adjunto ${index + 1}`;
+    console.log('DEBUG: Object adjunto, name:', result);
+    return result;
   }
 
   // Getters para FormArrays
