@@ -388,6 +388,14 @@ export class BusquedaComponent implements OnInit {
           // Si no es JSON, mantener el valor original
         }
       }
+      if (eventoSimple.enlaces) {
+        try {
+          const enlaces = JSON.parse(eventoSimple.enlaces);
+          eventoSimple.enlaces = enlaces.map((e: any) => e.texto).join('; ');
+        } catch (error) {
+          // Si no es JSON, mantener el valor original
+        }
+      }
       return eventoSimple;
     });
 
@@ -472,7 +480,13 @@ export class BusquedaComponent implements OnInit {
       case 'actividad':
         return evento.actividad || null;
       case 'enlaces':
-        return evento.enlaces ? evento.enlaces.map(e => `${e.tipo}: ${e.url}`).join('; ') : null;
+        if (!evento.enlaces || evento.enlaces.length === 0) return null;
+        // Para exportación avanzada, devolver información detallada de cada enlace
+        return JSON.stringify(evento.enlaces.map(e => ({
+          tipo: e.tipo || 'Otro',
+          url: e.url,
+          texto: `${e.tipo || 'Otro'}: ${e.url}`
+        })));
       case 'servicios':
         return evento.servicios ? evento.servicios.map(s => this.traducirServicio(s.servicios) + (s.grado ? ` (${s.grado})` : '')).join(', ') : null;
       case 'adjuntos':

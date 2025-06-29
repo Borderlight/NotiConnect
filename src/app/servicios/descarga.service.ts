@@ -130,6 +130,30 @@ export class DescargaService {
             doc.text(lines, margin + 5, y + 5);
             y += (lines.length * 7) + 10;
           }
+        } else if (campo === 'enlaces') {
+          // Manejo especial para enlaces reales
+          try {
+            const enlaces = JSON.parse(valor);
+            y += 8;
+            
+            for (const enlace of enlaces) {
+              if (y > 250) {
+                doc.addPage();
+                y = 20;
+              }
+              
+              // Crear enlace clicable real
+              doc.setTextColor(0, 0, 255);
+              doc.textWithLink(`🔗 ${enlace.tipo}: ${enlace.url}`, margin + 10, y, { url: enlace.url });
+              doc.setTextColor(0, 0, 0);
+              y += 8;
+            }
+          } catch (error) {
+            // Si falla el parsing, usar el valor como texto normal
+            const lines = doc.splitTextToSize(valor.toString(), contentWidth);
+            doc.text(lines, margin + 5, y + 5);
+            y += (lines.length * 7) + 10;
+          }
         } else {
           // Para otros campos, comportamiento normal
           const lines = doc.splitTextToSize(valor.toString(), contentWidth);
@@ -176,6 +200,21 @@ export class DescargaService {
                   📄 <a href="#" style="color:blue;text-decoration:underline;">${adjunto.nombre}</a>
                 </div>`;
               }
+            });
+          } catch (error) {
+            // Si falla el parsing, usar el valor como texto normal
+            html += valor;
+          }
+        } else if (campo === 'enlaces') {
+          // Manejo especial para enlaces reales
+          try {
+            const enlaces = JSON.parse(valor);
+            html += '<br/>';
+            
+            enlaces.forEach((enlace: any) => {
+              html += `<div style="margin: 5px 0;">
+                🔗 <a href="${enlace.url}" target="_blank" style="color:blue;text-decoration:underline;">${enlace.tipo}: ${enlace.url}</a>
+              </div>`;
             });
           } catch (error) {
             // Si falla el parsing, usar el valor como texto normal
