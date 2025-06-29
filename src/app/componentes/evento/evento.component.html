@@ -73,7 +73,7 @@
                     <span>{{ ubicacion.fecha | date:'EEEE, d MMMM y':'':'es-ES' }}</span>
                   </div>
                   <div class="detalle-secundario">
-                    @if (ubicacion.tipoHorario === 'horario' && ubicacion.horaInicio && ubicacion.horaFin) {
+                    @if ((ubicacion.tipoHorario === 'horario' || (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== '00:00' && ubicacion.horaFin !== '23:59' && ubicacion.horaFin !== ubicacion.horaInicio)) && ubicacion.horaInicio && ubicacion.horaFin) {
                       <strong>Horario:</strong>
                       <span>{{ ubicacion.horaInicio }} - {{ ubicacion.horaFin }}</span>
                     } @else if (ubicacion.horaInicio) {

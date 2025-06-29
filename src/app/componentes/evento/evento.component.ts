@@ -199,8 +199,15 @@ export class EventoComponent {
       
       // Mejorar la lógica de detección de horario
       let hora = '';
-      if (ubicacion.tipoHorario === 'horario' || 
-          (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== '00:00' && ubicacion.horaFin !== '23:59')) {
+      // Verificar si es horario basándose en múltiples condiciones
+      const esHorario = ubicacion.tipoHorario === 'horario' || 
+                       (ubicacion.horaFin && 
+                        ubicacion.horaFin.trim() !== '' && 
+                        ubicacion.horaFin !== '00:00' && 
+                        ubicacion.horaFin !== '23:59' &&
+                        ubicacion.horaFin !== ubicacion.horaInicio);
+      
+      if (esHorario) {
         hora = `${ubicacion.horaInicio} - ${ubicacion.horaFin}`;
       } else {
         hora = ubicacion.horaInicio || ubicacion.hora || '';
@@ -215,13 +222,26 @@ export class EventoComponent {
   get horaTexto(): string {
     if (this.evento?.ubicaciones && this.evento.ubicaciones.length > 0) {
       const ubicacion = this.evento.ubicaciones[0];
-      if (ubicacion.tipoHorario === 'horario' && ubicacion.horaFin) {
+      
+      // Verificar si es horario basándose en múltiples condiciones
+      const esHorario = ubicacion.tipoHorario === 'horario' || 
+                       (ubicacion.horaFin && 
+                        ubicacion.horaFin.trim() !== '' && 
+                        ubicacion.horaFin !== '00:00' && 
+                        ubicacion.horaFin !== '23:59' &&
+                        ubicacion.horaFin !== ubicacion.horaInicio);
+      
+      if (esHorario) {
         return `${ubicacion.horaInicio} - ${ubicacion.horaFin}`;
       }
       return ubicacion.horaInicio || '';
     }
     // Retrocompatibilidad
-    if (this.evento?.horaFin) {
+    if (this.evento?.horaFin && 
+        this.evento.horaFin.trim() !== '' && 
+        this.evento.horaFin !== '00:00' && 
+        this.evento.horaFin !== '23:59' &&
+        this.evento.horaFin !== this.evento.horaInicio) {
       return `${this.evento.horaInicio} - ${this.evento.horaFin}`;
     }
     return this.evento?.horaInicio || '';
@@ -651,10 +671,19 @@ export class EventoComponent {
       this.evento.ubicaciones.forEach(ubicacion => {
         // Determinar el tipo de horario correctamente
         let tipoHorario = 'hora';
+        
+        // Si ya tiene tipoHorario definido, usar ese
         if (ubicacion.tipoHorario) {
           tipoHorario = ubicacion.tipoHorario;
-        } else if (ubicacion.horaFin && ubicacion.horaFin.trim() !== '' && ubicacion.horaFin !== '00:00' && ubicacion.horaFin !== '23:59') {
-          tipoHorario = 'horario';
+        } else {
+          // Si no tiene tipoHorario, inferir basado en la presencia de horaFin válida
+          if (ubicacion.horaFin && 
+              ubicacion.horaFin.trim() !== '' && 
+              ubicacion.horaFin !== '00:00' && 
+              ubicacion.horaFin !== '23:59' &&
+              ubicacion.horaFin !== ubicacion.horaInicio) {
+            tipoHorario = 'horario';
+          }
         }
         
         ubicacionesArray.push(this.fb.group({
@@ -672,11 +701,21 @@ export class EventoComponent {
       const horaFinDefault = this.evento.horaFin || '';
       const lugarDefault = this.evento.lugar || '';
       
+      // Determinar tipo de horario para datos legacy
+      let tipoHorarioDefault = 'hora';
+      if (horaFinDefault && 
+          horaFinDefault.trim() !== '' && 
+          horaFinDefault !== '00:00' && 
+          horaFinDefault !== '23:59' &&
+          horaFinDefault !== horaDefault) {
+        tipoHorarioDefault = 'horario';
+      }
+      
       ubicacionesArray.push(this.fb.group({
         fecha: [fechaDefault, Validators.required],
-        tipoHorario: [horaFinDefault && horaFinDefault.trim() !== '' ? 'horario' : 'hora'],
+        tipoHorario: [tipoHorarioDefault],
         horaInicio: [horaDefault, Validators.required],
-        horaFin: [horaFinDefault],
+        horaFin: [tipoHorarioDefault === 'horario' ? horaFinDefault : ''],
         lugar: [lugarDefault, Validators.required]
       }));
     }
@@ -882,9 +921,14 @@ export class EventoComponent {
   obtenerOpcionesLugar(): Array<{key: string, value: string}> {
     const opcionesBase = Object.entries(this.lugaresMap).map(([key, value]) => ({key, value}));
     
-    // Agregar lugares del servicio sincronizado
+    // Agregar lugares del servicio sincronizado, evitando duplicados
     this.lugaresDisponibles.forEach(lugar => {
-      if (!opcionesBase.some(opcion => opcion.key === lugar)) {
+      // Verificar que no exista ni como key ni como value
+      const existe = opcionesBase.some(opcion => 
+        opcion.key === lugar || opcion.value === lugar
+      );
+      
+      if (!existe) {
         opcionesBase.push({ key: lugar, value: lugar });
       }
     });
@@ -949,9 +993,21 @@ export class EventoComponent {
     const tipoHorario = event.target.value;
     const ubicacionControl = this.ubicacionesFormArray.at(ubicacionIndex);
     
-    // Si se cambia a "hora específica", limpiar la hora fin
     if (tipoHorario === 'hora') {
+      // Si se cambia a "hora específica", limpiar la hora fin
       ubicacionControl.get('horaFin')?.setValue('');
+    } else if (tipoHorario === 'horario') {
+      // Si se cambia a "horario" y no hay hora fin, establecer una por defecto
+      const horaFin = ubicacionControl.get('horaFin')?.value;
+      if (!horaFin || horaFin.trim() === '') {
+        const horaInicio = ubicacionControl.get('horaInicio')?.value;
+        if (horaInicio) {
+          // Establecer hora fin una hora después de la hora inicio como ejemplo
+          const [hora, minutos] = horaInicio.split(':');
+          const horaFinDefault = `${(parseInt(hora) + 1).toString().padStart(2, '0')}:${minutos}`;
+          ubicacionControl.get('horaFin')?.setValue(horaFinDefault);
+        }
+      }
     }
   }
 
