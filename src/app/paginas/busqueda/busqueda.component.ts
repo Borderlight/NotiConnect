@@ -339,7 +339,7 @@ export class BusquedaComponent implements OnInit {
       case 'ponente':
         return evento.ponente || null;
       case 'empresaOrganizadora':
-        return evento.empresaOrganizadora || null;
+        return evento.departamento || evento.empresaOrganizadora || null;
       case 'tipoEvento':
         return evento.tipoEvento || null;
       case 'fecha':

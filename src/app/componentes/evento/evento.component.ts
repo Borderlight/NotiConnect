@@ -103,7 +103,7 @@ export class EventoComponent {
     this.editForm = this.fb.group({
       tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
-      departamento: [this.obtenerDepartamentoValido(this.evento.departamento || ''), Validators.required],
+      departamento: [this.obtenerDepartamentoValido(this.evento.departamento || this.evento.empresaOrganizadora || ''), Validators.required],
       descripcion: [this.evento.descripcion || ''],
       actividad: [this.evento.actividad || ''],
       ubicaciones: this.fb.array([]),
@@ -1019,5 +1019,9 @@ export class EventoComponent {
   // Método para obtener el departamento válido o vacío si no existe
   obtenerDepartamentoValido(departamento: string): string {
     return this.departamentoExiste(departamento) ? departamento : '';
+  }
+
+  get departamentoTexto(): string {
+    return this.evento?.departamento || this.evento?.empresaOrganizadora || 'No especificado';
   }
 }
