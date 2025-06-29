@@ -192,6 +192,26 @@ export class EventoComponent {
     }));
   }
 
+  // Getter para construir correctamente la URL de la imagen de portada
+  get imagenPortadaUrl(): string | null {
+    if (!this.evento?.imagen) {
+      return null;
+    }
+
+    // Si ya es una data URL completa, usarla directamente
+    if (this.evento.imagen.startsWith('data:')) {
+      return this.evento.imagen;
+    }
+
+    // Si es base64 puro, construir la data URL
+    if (this.evento.imagen.length > 100) { // Asumimos que strings largos son base64
+      return `data:image/jpeg;base64,${this.evento.imagen}`;
+    }
+
+    // Si es una URL normal, usarla directamente
+    return this.evento.imagen;
+  }
+
 
 
   get ubicacionesTexto(): string {
@@ -390,9 +410,8 @@ export class EventoComponent {
   // Funciones auxiliares para adjuntos
   esImagen(adjunto: string | ArchivoAdjunto): boolean {
     if (typeof adjunto === 'string') {
-      // PROTECCIÓN: Para strings problemáticos, ser más conservador
-      if (adjunto.length > 50000) { // 50KB aproximadamente
-        console.log('DEBUG: String muy grande, verificando solo si empieza con data:image/');
+      // Para strings muy largos, verificar solo si es data URL de imagen
+      if (adjunto.length > 50000) {
         return adjunto.startsWith('data:image/');
       }
       
@@ -409,37 +428,90 @@ export class EventoComponent {
     return false;
   }
 
-  abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
-    console.log('DEBUG: abrirAdjunto called with:', adjunto);
+  // Método para construir correctamente la URL de un adjunto
+  construirUrlAdjunto(adjunto: string | ArchivoAdjunto): string | null {
+    if (typeof adjunto === 'string') {
+      // Si ya es una data URL completa, usarla directamente
+      if (adjunto.startsWith('data:')) {
+        return adjunto;
+      }
+
+      // Si es base64 puro, construir la data URL
+      if (adjunto.length > 100) { // Asumimos que strings largos son base64
+        // Detectar el tipo de imagen basado en la cabecera del base64
+        const imgType = this.detectarTipoImagen(adjunto);
+        return `data:${imgType};base64,${adjunto}`;
+      }
+
+      // Si es una URL normal, usarla directamente
+      return adjunto;
+    }
+
+    // Si es un objeto ArchivoAdjunto
+    if (adjunto && typeof adjunto === 'object' && adjunto.data) {
+      // Si ya es una data URL completa, usarla directamente
+      if (adjunto.data.startsWith('data:')) {
+        return adjunto.data;
+      }
+
+      // Si es base64 puro, construir la data URL usando el tipo del objeto
+      const mimeType = adjunto.type || 'application/octet-stream';
+      return `data:${mimeType};base64,${adjunto.data}`;
+    }
+
+    return null;
+  }
+
+  // Método auxiliar para detectar el tipo de imagen desde base64
+  private detectarTipoImagen(base64: string): string {
+    // Tomar los primeros caracteres para detectar la signature
+    const signature = base64.substring(0, 10);
     
-    let url: string | null = null;
+    if (signature.startsWith('/9j/')) return 'image/jpeg';
+    if (signature.startsWith('iVBORw')) return 'image/png';
+    if (signature.startsWith('R0lGOD')) return 'image/gif';
+    if (signature.startsWith('UklGR')) return 'image/webp';
+    
+    // Por defecto, asumir JPEG
+    return 'image/jpeg';
+  }
+
+  // Método auxiliar para inferir MIME type por extensión
+  private inferirMimeType(filename: string): string {
+    if (/\.(pdf)$/i.test(filename)) return 'application/pdf';
+    if (/\.(jpg|jpeg)$/i.test(filename)) return 'image/jpeg';
+    if (/\.(png)$/i.test(filename)) return 'image/png';
+    if (/\.(gif)$/i.test(filename)) return 'image/gif';
+    if (/\.(webp)$/i.test(filename)) return 'image/webp';
+    if (/\.(doc)$/i.test(filename)) return 'application/msword';
+    if (/\.(docx)$/i.test(filename)) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    if (/\.(xls)$/i.test(filename)) return 'application/vnd.ms-excel';
+    if (/\.(xlsx)$/i.test(filename)) return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    if (/\.(txt)$/i.test(filename)) return 'text/plain';
+    
+    return 'application/octet-stream';
+  }
+
+  abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
+    // Usar el método construirUrlAdjunto para obtener la URL correcta
+    const url = this.construirUrlAdjunto(adjunto);
     let filename: string = '';
     let mimeType: string = '';
     
-    // Extraer datos del adjunto
+    // Extraer metadatos del adjunto
     if (typeof adjunto === 'string') {
-      url = adjunto;
       filename = this.obtenerNombreAdjunto(adjunto, index);
-      // Inferir MIME type de la URL o contenido
+      // Inferir MIME type del contenido
       if (adjunto.startsWith('data:')) {
         const mimeMatch = adjunto.match(/data:([^;]+);/);
-        mimeType = mimeMatch ? mimeMatch[1] : '';
+        mimeType = mimeMatch ? mimeMatch[1] : this.detectarTipoImagen(adjunto);
       } else {
-        // Inferir por extensión
-        if (/\.(pdf)$/i.test(adjunto)) mimeType = 'application/pdf';
-        else if (/\.(jpg|jpeg)$/i.test(adjunto)) mimeType = 'image/jpeg';
-        else if (/\.(png)$/i.test(adjunto)) mimeType = 'image/png';
-        else if (/\.(gif)$/i.test(adjunto)) mimeType = 'image/gif';
-        else if (/\.(doc|docx)$/i.test(adjunto)) mimeType = 'application/msword';
-        else if (/\.(xls|xlsx)$/i.test(adjunto)) mimeType = 'application/vnd.ms-excel';
+        mimeType = this.inferirMimeType(adjunto);
       }
     } else if (adjunto && typeof adjunto === 'object') {
-      url = adjunto.data;
       filename = adjunto.name || this.obtenerNombreAdjunto(adjunto, index);
-      mimeType = adjunto.type || '';
+      mimeType = adjunto.type || 'application/octet-stream';
     }
-    
-    console.log('DEBUG: Processed data - URL:', url?.substring(0, 50) + '...', 'filename:', filename, 'mimeType:', mimeType);
     
     if (url) {
       try {
@@ -548,19 +620,14 @@ export class EventoComponent {
 
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
-    console.log('DEBUG: obtenerNombreAdjunto - adjunto tipo:', typeof adjunto, 'longitud:', typeof adjunto === 'string' ? adjunto.length : 'objeto');
-    
     // PRIORIDAD 1: Si es un objeto ArchivoAdjunto válido, usar su nombre real
     if (adjunto && typeof adjunto === 'object' && adjunto.name) {
-      console.log('DEBUG: Objeto ArchivoAdjunto válido, usando nombre real:', adjunto.name);
       return adjunto.name;
     }
     
     if (typeof adjunto === 'string') {
-      // PROTECCIÓN: Si es un string muy largo, probablemente es base64
+      // Para strings muy largos, probablemente es base64
       if (adjunto.length > 500) {
-        console.log('DEBUG: String muy largo detectado, puede ser base64, usando nombre genérico inteligente');
-        
         // Si empieza con data:, extraer tipo MIME para generar nombre apropiado
         if (adjunto.startsWith('data:')) {
           const mimeMatch = adjunto.match(/data:([^;]+);/);
@@ -588,27 +655,20 @@ export class EventoComponent {
         const url = new URL(adjunto);
         const pathname = url.pathname;
         const filename = pathname.split('/').pop();
-        const result = filename && filename.length > 0 ? filename : `Adjunto_${index + 1}`;
-        console.log('DEBUG: String URL, filename extracted:', result);
-        return result;
+        return filename && filename.length > 0 ? filename : `Adjunto_${index + 1}`;
       } catch {
         // Si no es una URL válida y es corto, puede ser un nombre de archivo válido
         const cleanString = adjunto.trim();
         if (cleanString && cleanString.length > 0 && cleanString.length < 100) {
-          console.log('DEBUG: String corto válido, usando como nombre de archivo:', cleanString);
           return cleanString;
         }
         
-        const result = `Adjunto_${index + 1}`;
-        console.log('DEBUG: String no válido como nombre, usando genérico:', result);
-        return result;
+        return `Adjunto_${index + 1}`;
       }
     }
     
     // Fallback final
-    const result = `Adjunto_${index + 1}`;
-    console.log('DEBUG: Fallback final, usando nombre genérico:', result);
-    return result;
+    return `Adjunto_${index + 1}`;
   }
 
   // Getters para FormArrays

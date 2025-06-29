@@ -27,13 +27,17 @@ const eventoSchema = new mongoose.Schema({
     empresaOrganizadora: { type: String, default: 'Sin especificar' },
     tipoEvento: { type: String, default: 'otro' },
     descripcion: { type: String, default: '' },
-    adjuntos: [String], // Simplificado a array de strings
+    adjuntos: mongoose.Schema.Types.Mixed, // Simplificado sin default
     servicios: [servicioSchema],
     enlaces: [enlaceSchema],
     actividad: { type: String, default: '' },
     ubicaciones: [ubicacionSchema]
 }, {
-    timestamps: true
+    timestamps: true,
+    strict: false // Permitir campos no definidos en el esquema
 });
+
+// Log para verificar el esquema
+console.log('🔧 Creando modelo Evento con adjuntos tipo:', eventoSchema.paths.adjuntos.instance);
 
 module.exports = mongoose.model('Evento', eventoSchema);

@@ -16,7 +16,7 @@
     }
   </div>
   <div class="evento-imagen-col">
-    <img [src]="evento.imagen" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
+    <img [src]="imagenPortadaUrl" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
     @if (evento.imagen) {
       <div class="caratula-label">
         {{ 'FORM.COVER.LABEL' | translate }}
@@ -271,7 +271,7 @@
                            style="cursor: pointer;">
                         @if (esImagen(adjunto)) {
                           <div class="adjunto-imagen-preview">
-                            <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
+                            <img [src]="construirUrlAdjunto(adjunto)" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
                           </div>
                         } @else {
                           <div class="adjunto-archivo-preview">
@@ -456,7 +456,7 @@
                                   title="Eliminar adjunto">×</button>
                           @if (esImagen(adjunto)) {
                             <div class="adjunto-imagen-preview">
-                              <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
+                              <img [src]="construirUrlAdjunto(adjunto)" class="imagen-miniatura">
                               <div class="checkbox-caratula" 
                                    (click)="seleccionarCaratula(adjunto, $event)"
                                    [class.selected]="esCaratulaSeleccionada(adjunto)"

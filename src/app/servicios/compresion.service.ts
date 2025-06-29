@@ -33,7 +33,9 @@ export class CompresionService {
 
         // Convertir a base64 con compresión
         const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve(dataUrl);
+        // Extraer solo la parte base64, removiendo el prefijo data:image/jpeg;base64,
+        const base64Only = dataUrl.split(',')[1];
+        resolve(base64Only);
       };
 
       img.onerror = () => reject(new Error('Error al cargar la imagen'));
@@ -71,8 +73,8 @@ export class CompresionService {
    * Obtiene el tamaño de un archivo base64 en bytes
    */
   obtenerTamanoBase64(base64: string): number {
-    // Eliminar el prefijo data:image/...;base64,
-    const base64Data = base64.split(',')[1] || base64;
+    // Si viene con prefijo, removerlo
+    const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
     // Calcular el tamaño aproximado (cada carácter base64 representa 6 bits)
     return Math.ceil(base64Data.length * 3 / 4);
   }
@@ -150,12 +152,17 @@ export class CompresionService {
   }
 
   /**
-   * Convierte un archivo a base64
+   * Convierte un archivo a base64 (solo la parte base64, sin prefijo data:)
    */
   private convertirArchivoABase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Extraer solo la parte base64, removiendo el prefijo data:type;base64,
+        const base64Only = result.split(',')[1];
+        resolve(base64Only);
+      };
       reader.onerror = error => reject(error);
       reader.readAsDataURL(file);
     });

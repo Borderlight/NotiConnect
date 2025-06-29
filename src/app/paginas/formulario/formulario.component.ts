@@ -10,7 +10,9 @@ import { UbicacionValidator } from '../../validadores/ubicacion.validator';
 import { EventoService } from '../../servicios/evento.service';
 import { Router } from '@angular/router';
 import { EventType } from '../../enums/event-type.enum';
+import { ArchivoAdjunto } from '../../interfaces/evento.interface';
 import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
+import { CompresionService } from '../../servicios/compresion.service';
 
 interface Servicio {
   servicios: string;
@@ -214,7 +216,8 @@ export class FormularioComponent {
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
-    private router: Router
+    private router: Router,
+    private compresionService: CompresionService
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
@@ -443,7 +446,12 @@ export class FormularioComponent {
   private convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Extraer solo la parte base64, removiendo el prefijo data:type;base64,
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
       reader.onerror = error => reject(error);
       reader.readAsDataURL(file);
     });
@@ -571,7 +579,9 @@ export class FormularioComponent {
       // --- NUEVO: Asignar la carátula seleccionada como imagen principal ---
       let imagenCaratula = '';
       if (this.caratulaSeleccionada !== null && this.selectedAdjuntos[this.caratulaSeleccionada]) {
-        imagenCaratula = this.selectedAdjuntos[this.caratulaSeleccionada];
+        const dataUrl = this.selectedAdjuntos[this.caratulaSeleccionada];
+        // Extraer solo la parte base64, removiendo el prefijo data:type;base64,
+        imagenCaratula = dataUrl.split(',')[1];
       }
       
       // Mostrar progreso
@@ -582,13 +592,24 @@ export class FormularioComponent {
       
       console.log('📦 Preparando datos como JSON...');
       
+      // DEBUG: Verificar que no se incluye adjuntos del formulario
+      console.log('🔍 Valor de adjuntos en formulario:', this.formularioEvento.get('adjuntos')?.value);
+      
       // Crear objeto de datos del evento
       const eventoData: any = {};
       Object.keys(this.formularioEvento.controls).forEach(key => {
         if (key !== 'adjuntos' && key !== 'actividad_relacionada') {
-          eventoData[key] = this.formularioEvento.get(key)?.value;
+          // Mapear departamento a empresaOrganizadora para compatibilidad con el backend
+          if (key === 'departamento') {
+            eventoData.empresaOrganizadora = this.formularioEvento.get(key)?.value;
+          } else {
+            eventoData[key] = this.formularioEvento.get(key)?.value;
+          }
         }
       });
+      
+      // DEBUG: Verificar el contenido de eventoData antes de procesar adjuntos
+      console.log('📦 eventoData antes de procesar adjuntos:', { ...eventoData });
       
       // Enviar el campo actividad correctamente
       const actividad = this.formularioEvento.get('actividad_relacionada')?.value;
@@ -600,34 +621,51 @@ export class FormularioComponent {
       this.progresoSubida = 25;
       this.mensajeProgreso = 'Procesando archivos adjuntos...';
       
-      // Convertir archivos a Base64
+      // Convertir archivos usando el servicio de compresión
       const files: FileList | null = this.adjuntosInput.nativeElement.files;
       console.log('📁 Archivos encontrados:', files ? files.length : 0);
       
       eventoData.adjuntos = [];
       if (files) {
-        console.log('🔄 Convirtiendo archivos a Base64...');
-        const filePromises: Promise<any>[] = [];
-        
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const promise = this.convertFileToBase64(file).then(base64 => ({
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            data: base64
-          }));
-          filePromises.push(promise);
-        }
+        console.log('🔄 Procesando archivos con compresión...');
         
         try {
-          eventoData.adjuntos = await Promise.all(filePromises);
-          console.log('✅ Archivos convertidos a Base64:', eventoData.adjuntos.length);
+          // Usar el servicio de compresión que devuelve objetos {name, type, size, data}
+          eventoData.adjuntos = await this.compresionService.comprimirArchivos(files, (progreso) => {
+            // Actualizar progreso entre 25% y 60%
+            this.progresoSubida = 25 + (progreso * 0.35);
+            this.mensajeProgreso = `Procesando archivos... ${progreso}%`;
+          });
+          
+          console.log('✅ Archivos procesados con compresión:', eventoData.adjuntos.length);
+          
+          // VERIFICACIÓN EXHAUSTIVA DE LA ESTRUCTURA
+          console.log('🔬 VERIFICACIÓN DETALLADA DE ADJUNTOS:');
+          eventoData.adjuntos.forEach((adj: any, index: number) => {
+            console.log(`   Adjunto ${index}:`);
+            console.log(`     - Tipo: ${typeof adj}`);
+            console.log(`     - Es objeto: ${typeof adj === 'object'}`);
+            console.log(`     - Constructor: ${adj.constructor.name}`);
+            console.log(`     - Keys: ${Object.keys(adj)}`);
+            console.log(`     - name: "${adj.name}" (tipo: ${typeof adj.name})`);
+            console.log(`     - type: "${adj.type}" (tipo: ${typeof adj.type})`);
+            console.log(`     - size: ${adj.size} (tipo: ${typeof adj.size})`);
+            console.log(`     - data length: ${adj.data ? adj.data.length : 'sin data'} (tipo: ${typeof adj.data})`);
+            console.log(`     - data starts with: ${adj.data ? adj.data.substring(0, 30) + '...' : 'no data'}`);
+          });
+          
+          console.log('📋 Estructura de adjuntos:', eventoData.adjuntos.map((adj: any) => ({ 
+            name: adj.name, 
+            type: adj.type, 
+            hasData: !!adj.data,
+            isObject: typeof adj === 'object'
+          })));
+          
           // Actualizar progreso
           this.progresoSubida = 60;
           this.mensajeProgreso = 'Archivos procesados correctamente...';
         } catch (error) {
-          console.error('❌ Error al convertir archivos:', error);
+          console.error('❌ Error al procesar archivos:', error);
           this.mostrarProgreso = false; // Ocultar progreso en caso de error
           alert('Error al procesar los archivos adjuntos.');
           return;
@@ -644,8 +682,64 @@ export class FormularioComponent {
       this.progresoSubida = 75;
       this.mensajeProgreso = 'Enviando evento al servidor...';
       
+      // DEBUG: Validar que adjuntos contiene objetos válidos
+      console.log('🔍 VERIFICACIÓN FINAL - Estructura de adjuntos:');
+      if (eventoData.adjuntos && Array.isArray(eventoData.adjuntos)) {
+        eventoData.adjuntos.forEach((adj: any, index: number) => {
+          console.log(`   Adjunto ${index}: tipo=${typeof adj}, es objeto=${typeof adj === 'object'}`);
+          if (typeof adj === 'object' && adj.name && adj.type && adj.data) {
+            console.log(`   Adjunto ${index}: nombre="${adj.name}", tipo="${adj.type}", size=${adj.size}, hasData=${!!adj.data}`);
+          } else {
+            console.log(`   🚨 PROBLEMA: Adjunto ${index} NO es un objeto válido:`, adj);
+          }
+        });
+      }
+      
+      // DEBUG: Verificar el objeto completo antes del envío
+      console.log('🔍 ESTRUCTURA FINAL del eventoData:');
+      console.log('🔍 adjuntos es array:', Array.isArray(eventoData.adjuntos));
+      console.log('🔍 adjuntos length:', eventoData.adjuntos?.length);
+      
+      // VERIFICACIÓN CRÍTICA: Vamos a hacer una prueba de serialización
+      console.log('🧪 PRUEBA DE SERIALIZACIÓN:');
+      try {
+        const testSerialization = JSON.stringify(eventoData);
+        const testDeserialization = JSON.parse(testSerialization);
+        console.log('🧪 Serialización/Deserialización exitosa');
+        console.log('🧪 Adjuntos después de deserializar:', testDeserialization.adjuntos);
+        
+        if (testDeserialization.adjuntos && testDeserialization.adjuntos.length > 0) {
+          testDeserialization.adjuntos.forEach((adj: any, index: number) => {
+            console.log(`🧪 Adjunto deserializado ${index}:`, {
+              type: typeof adj,
+              isObject: typeof adj === 'object',
+              name: adj.name,
+              hasData: !!adj.data
+            });
+          });
+        }
+      } catch (e) {
+        console.error('🧪 Error en prueba de serialización:', e);
+      }
+      
       // Submit como JSON puro
       console.log('🚀 Enviando formulario al servidor como JSON...');
+      console.log('📊 Datos a enviar (estructura completa):');
+      console.log('📊 eventoData.adjuntos:', eventoData.adjuntos);
+      
+      // Log detallado de cada adjunto
+      if (eventoData.adjuntos && eventoData.adjuntos.length > 0) {
+        eventoData.adjuntos.forEach((adj: any, index: number) => {
+          console.log(`📎 Adjunto ${index}:`, {
+            name: adj.name,
+            type: adj.type, 
+            size: adj.size,
+            dataLength: adj.data ? adj.data.length : 'sin data'
+          });
+        });
+      }
+      
+      console.log('📊 JSON completo:', JSON.stringify(eventoData, null, 2));
       this.eventoService.agregarEvento(eventoData).subscribe({
         next: (response) => {
           console.log('✅ Evento creado exitosamente:', response);
@@ -675,14 +769,24 @@ export class FormularioComponent {
         },
         error: (err) => {
           console.error('❌ Error al crear evento:', err);
-          console.log('🚨 Mostrando alerta de error...');
+          console.error('❌ Error completo:', JSON.stringify(err, null, 2));
           
           // Ocultar progreso en caso de error
           this.mostrarProgreso = false;
           this.progresoSubida = 0;
           
-          // Opcional: mostrar un mensaje de error al usuario
-          alert('Error al crear el evento. Revisa la consola para más detalles.');
+          // Mostrar un mensaje de error más detallado
+          let errorMessage = 'Error al crear el evento.';
+          if (err.error && err.error.message) {
+            errorMessage += ` Detalles: ${err.error.message}`;
+          } else if (err.message) {
+            errorMessage += ` Detalles: ${err.message}`;
+          } else if (err.status) {
+            errorMessage += ` Código de error: ${err.status}`;
+          }
+          
+          alert(errorMessage);
+          console.log('🚨 Mensaje de error mostrado:', errorMessage);
         }
       });
     } else {

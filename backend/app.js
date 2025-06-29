@@ -4,6 +4,14 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// 🧹 LIMPIAR CACHE DE MODELOS DE MONGOOSE
+console.log('🧹 Limpiando cache de modelos de Mongoose...');
+mongoose.modelNames().forEach(modelName => {
+    delete mongoose.models[modelName];
+    delete mongoose.modelSchemas[modelName];
+});
+console.log('✅ Cache limpiado exitosamente');
+
 const app = express();
 
 // Middleware
