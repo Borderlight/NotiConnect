@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdministradorService, Administrador } from '../../servicios/administrador.service';
 import { EliminarAdminDialogComponent } from '../../componentes/eliminar-admin-dialog/eliminar-admin-dialog.component';
@@ -23,7 +23,6 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private location: Location,
     private administradorService: AdministradorService,
     private translateService: TranslateService
   ) {
@@ -72,9 +71,5 @@ export class RolesComponent implements OnInit {
 
   filtrarAdministradores() {
     this.administradoresFiltrados = this.administradorService.buscarAdministradores(this.terminoBusqueda);
-  }
-
-  goBack() {
-    this.location.back();
   }
 }
