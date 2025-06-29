@@ -892,15 +892,33 @@ export class EventoComponent {
 
   eliminarAdjunto(index: number): void {
     if (this.evento.adjuntos && index >= 0 && index < this.evento.adjuntos.length) {
+      const adjuntoAEliminar = this.evento.adjuntos[index];
+      
+      // Verificar si el adjunto que se va a eliminar es la carátula actual
+      const esCaratulaActual = this.esCaratulaSeleccionada(adjuntoAEliminar);
+      
+      // Eliminar el adjunto
       this.evento.adjuntos.splice(index, 1);
+      
+      // Si el adjunto eliminado era la carátula, quitar la carátula
+      if (esCaratulaActual) {
+        this.evento.imagen = '';
+      }
       
       // En modo edición, los cambios se emitirán al guardar
       // Si no estamos en modo edición, emitir inmediatamente
       if (!this.editMode) {
-        this.actualizar.emit({
+        const updateData: any = {
           _id: this.evento._id,
           adjuntos: this.evento.adjuntos
-        });
+        };
+        
+        // Si se eliminó la carátula, incluir la actualización de imagen
+        if (esCaratulaActual) {
+          updateData.imagen = '';
+        }
+        
+        this.actualizar.emit(updateData);
       }
     }
   }
