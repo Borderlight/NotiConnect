@@ -356,7 +356,7 @@ export class BusquedaComponent implements OnInit {
       this.descargaService.descargarJSON(eventosParaDescargar, nombreBase);
     }
     if (options.formats.csv) {
-      this.descargaService.descargarCSV(eventosParaDescargar, nombreBase);
+      this.descargaService.descargarCSV(eventosParaDescargar, nombreBase, this.obtenerEtiquetaCampo.bind(this));
     }
     if (options.formats.pdf) {
       this.descargaService.descargarPDF(eventosParaDescargar, nombreBase, this.obtenerEtiquetaCampo.bind(this));

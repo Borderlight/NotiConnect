@@ -8,23 +8,44 @@ export class DescargaService {
     this.descargarArchivo(contenido, `${nombreBase}.json`, 'application/json');
   }
 
-  descargarCSV(eventos: any[], nombreBase: string) {
+  descargarCSV(eventos: any[], nombreBase: string, obtenerEtiquetaCampo: (campo: string) => string) {
     if (eventos.length === 0) return;
-    const headers = Object.keys(eventos[0]);
+    
+    // Obtener solo los campos que están presentes en los eventos (campos seleccionados)
+    const camposSeleccionados = Object.keys(eventos[0]);
+    
+    // Crear cabeceras usando las etiquetas traducidas
+    const headers = camposSeleccionados.map(campo => obtenerEtiquetaCampo(campo));
+    
+    // Función para escapar correctamente los valores CSV
+    const escaparCSV = (valor: string): string => {
+      if (!valor) return '';
+      // Convertir a string si no lo es
+      let cell = valor.toString();
+      // Si contiene punto y coma, comillas, saltos de línea, envolver en comillas
+      if (cell.includes(';') || cell.includes('"') || cell.includes('\n') || cell.includes('\r')) {
+        // Escapar comillas existentes duplicándolas
+        cell = cell.replace(/"/g, '""');
+        // Envolver en comillas
+        cell = `"${cell}"`;
+      }
+      return cell;
+    };
+    
+    // Usar punto y coma como separador (estándar europeo)
     const csvRows = [
-      headers.join(','),
+      headers.map(header => escaparCSV(header)).join(';'),
       ...eventos.map(evento =>
-        headers.map(header => {
-          let cell = evento[header]?.toString() || '';
-          if (cell.includes(',') || cell.includes('"')) {
-            cell = `"${cell.replace(/"/g, '""')}"`;
-          }
-          return cell;
-        }).join(',')
+        camposSeleccionados.map(campo => {
+          const valor = evento[campo] || '';
+          return escaparCSV(valor);
+        }).join(';')
       )
     ];
-    const contenido = csvRows.join('\n');
-    this.descargarArchivo(contenido, `${nombreBase}.csv`, 'text/csv');
+    
+    // Agregar BOM para UTF-8 y separador para Excel
+    const contenido = '\uFEFF' + csvRows.join('\n');
+    this.descargarArchivo(contenido, `${nombreBase}.csv`, 'text/csv;charset=utf-8');
   }
 
   descargarPDF(eventos: any[], nombreBase: string, obtenerEtiquetaCampo: (campo: string) => string) {
