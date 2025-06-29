@@ -30,32 +30,14 @@ export class EventoComponent {
   private caratulaOriginal: string | undefined;
   private adjuntosOriginales: ArchivoAdjunto[] = [];
 
-  // Datos de facultades y grados (simplificado)
+  // Datos de facultades y grados
   facultadesGrados = [
-    {
-      "facultad": "Facultad de Ciencias de la Salud",
-      "grados": ["Grado en Logopedia", "Grado en Enfermería", "Grado en Fisioterapia", "Grado en Nutrición Humana y Dietética"]
-    },
-    {
-      "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
-      "grados": ["Grado en Administración y Dirección de Empresas", "Grado en Relaciones Internacionales", "Grado en Derecho"]
-    },
-    {
-      "facultad": "Facultad de Comunicación",
-      "grados": ["Grado en Periodismo", "Grado en Comunicación Audiovisual"]
-    },
-    {
-      "facultad": "Facultad de Educación",
-      "grados": ["Grado en Ciencias de la Actividad Física y del Deporte", "Grado en Maestro en Educación Infantil", "Grado en Maestro en Educación Primaria"]
-    },
-    {
-      "facultad": "Facultad de Informática",
-      "grados": ["Grado en Ingeniería Informática", "Grado en Administración y Dirección de Empresas Tecnológicas"]
-    },
-    {
-      "facultad": "Facultad de Psicología",
-      "grados": ["Grado en Psicología"]
-    }
+    { "facultad": "Facultad de Ciencias de la Salud", "grados": ["Grado en Logopedia", "Grado en Enfermería", "Grado en Fisioterapia", "Grado en Nutrición Humana y Dietética"] },
+    { "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa", "grados": ["Grado en Administración y Dirección de Empresas", "Grado en Relaciones Internacionales", "Grado en Derecho"] },
+    { "facultad": "Facultad de Comunicación", "grados": ["Grado en Periodismo", "Grado en Comunicación Audiovisual"] },
+    { "facultad": "Facultad de Educación", "grados": ["Grado en Ciencias de la Actividad Física y del Deporte", "Grado en Maestro en Educación Infantil", "Grado en Maestro en Educación Primaria"] },
+    { "facultad": "Facultad de Informática", "grados": ["Grado en Ingeniería Informática", "Grado en Administración y Dirección de Empresas Tecnológicas"] },
+    { "facultad": "Facultad de Psicología", "grados": ["Grado en Psicología"] }
   ];
 
   // Propiedades para opciones sincronizadas
@@ -63,15 +45,10 @@ export class EventoComponent {
   actividadesDisponibles: string[] = [];
   lugaresDisponibles: string[] = [];
 
-  // Mapeo de lugares (simplificado)
+  // Mapeo de lugares
   lugaresMap: { [key: string]: string } = {
-    'FACULTY': 'Facultad',
-    'AULA_MAGNA': 'Aula de grado',
-    'HUBdeInnovacion': 'HUB de Innovación',
-    'LIBRARY': 'Biblioteca',
-    'AuditorioJuanPablo': 'Auditorio Juan Pablo II',
-    'S-41': 'S-41',
-    'ONLINE': 'Online'
+    'FACULTY': 'Facultad', 'AULA_MAGNA': 'Aula de grado', 'HUBdeInnovacion': 'HUB de Innovación',
+    'LIBRARY': 'Biblioteca', 'AuditorioJuanPablo': 'Auditorio Juan Pablo II', 'S-41': 'S-41', 'ONLINE': 'Online'
   };
 
   constructor(
@@ -119,14 +96,10 @@ export class EventoComponent {
 
   editarEvento(event: Event) {
     event.stopPropagation();
-    
-    // Guardar la carátula original y adjuntos originales para poder restaurarlos si se cancela
     this.caratulaOriginal = this.evento.imagen;
     this.adjuntosOriginales = this.evento.adjuntos ? [...this.evento.adjuntos] : [];
-    
     this.editMode = true;
     
-    // Crear formulario con FormArrays vacíos inicialmente
     this.editForm = this.fb.group({
       tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
@@ -139,7 +112,6 @@ export class EventoComponent {
       enlaces: this.fb.array([])
     });
 
-    // Llenar FormArrays con datos existentes
     this.initUbicaciones();
     this.initPonentes();
     this.initServicios();
@@ -148,15 +120,12 @@ export class EventoComponent {
 
   cancelarEdicion(event: Event) {
     event.stopPropagation();
-    
-    // Restaurar la carátula original y adjuntos originales
     if (this.caratulaOriginal !== undefined) {
       this.evento.imagen = this.caratulaOriginal;
     }
     if (this.adjuntosOriginales.length > 0 || this.evento.adjuntos?.length !== this.adjuntosOriginales.length) {
       this.evento.adjuntos = [...this.adjuntosOriginales];
     }
-    
     this.editMode = false;
   }
 
@@ -335,27 +304,6 @@ export class EventoComponent {
           url: enlace.url.trim()
         }));
       
-      // VALIDACIÓN ESPECIAL PARA ADJUNTOS: Verificar que no sean strings problemáticos
-      if (this.evento.adjuntos && Array.isArray(this.evento.adjuntos)) {
-        this.evento.adjuntos = this.evento.adjuntos.filter((adjunto: any) => {
-          // Filtrar adjuntos válidos
-          if (typeof adjunto === 'string') {
-            // Si es un string muy largo sin prefijo data:, probablemente está corrupto
-            if (adjunto.length > 1000 && !adjunto.startsWith('data:')) {
-              console.warn('DEBUG: Adjunto string problemático detectado y removido', adjunto.substring(0, 50) + '...');
-              return false;
-            }
-          } else if (adjunto && typeof adjunto === 'object') {
-            // Verificar que el objeto tenga la estructura correcta
-            if (!adjunto.name || !adjunto.data) {
-              console.warn('DEBUG: Adjunto objeto incompleto detectado y removido', adjunto);
-              return false;
-            }
-          }
-          return true;
-        });
-      }
-      
       // Emitir los cambios al componente padre
       this.actualizar.emit({
         _id: this.evento._id,
@@ -368,8 +316,8 @@ export class EventoComponent {
         ubicaciones: this.evento.ubicaciones,
         servicios: this.evento.servicios,
         enlaces: this.evento.enlaces,
-        imagen: this.evento.imagen, // Incluir la carátula seleccionada
-        adjuntos: this.evento.adjuntos // Incluir los adjuntos modificados
+        imagen: this.evento.imagen,
+        adjuntos: this.evento.adjuntos
       });
       
       // Actualizar campos directos en el evento local
@@ -382,16 +330,7 @@ export class EventoComponent {
       this.editMode = false;
     } else {
       // Marcar campos como tocados para mostrar errores
-      console.log('Formulario inválido, marcando campos como tocados');
       this.editForm.markAllAsTouched();
-      
-      // Mostrar errores específicos de cada campo
-      Object.keys(this.editForm.controls).forEach(key => {
-        const control = this.editForm.get(key);
-        if (control && control.errors) {
-          console.log(`Error en campo ${key}:`, control.errors);
-        }
-      });
     }
   }
 
@@ -493,88 +432,105 @@ export class EventoComponent {
   }
 
   abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
-    // Usar el método construirUrlAdjunto para obtener la URL correcta
-    const url = this.construirUrlAdjunto(adjunto);
     let filename: string = '';
     let mimeType: string = '';
+    let dataUrl: string = '';
     
     // Extraer metadatos del adjunto
     if (typeof adjunto === 'string') {
       filename = this.obtenerNombreAdjunto(adjunto, index);
-      // Inferir MIME type del contenido
+      dataUrl = adjunto.startsWith('data:') ? adjunto : `data:application/octet-stream;base64,${adjunto}`;
+      
       if (adjunto.startsWith('data:')) {
         const mimeMatch = adjunto.match(/data:([^;]+);/);
-        mimeType = mimeMatch ? mimeMatch[1] : this.detectarTipoImagen(adjunto);
+        mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
       } else {
-        mimeType = this.inferirMimeType(adjunto);
+        mimeType = this.inferirMimeType(filename);
+        dataUrl = `data:${mimeType};base64,${adjunto}`;
       }
     } else if (adjunto && typeof adjunto === 'object') {
       filename = adjunto.name || this.obtenerNombreAdjunto(adjunto, index);
       mimeType = adjunto.type || 'application/octet-stream';
+      dataUrl = adjunto.data.startsWith('data:') ? adjunto.data : `data:${mimeType};base64,${adjunto.data}`;
     }
     
-    if (url) {
-      try {
-        // Método 1: Intentar abrir directamente (funciona bien para PDFs, imágenes y URLs)
-        if (url.startsWith('http') || url.startsWith('data:')) {
-          const newWindow = window.open('', '_blank', 'noopener,noreferrer');
-          if (newWindow) {
-            if (url.startsWith('data:')) {
-              // Para datos base64, crear un documento HTML simple que muestre el contenido
-              if (mimeType.startsWith('image/')) {
-                newWindow.document.write(`
-                  <html>
-                    <head><title>${filename}</title></head>
-                    <body style="margin:0;padding:20px;background:#f0f0f0;display:flex;justify-content:center;align-items:center;min-height:100vh;">
-                      <img src="${url}" alt="${filename}" style="max-width:100%;max-height:100%;object-fit:contain;" />
-                    </body>
-                  </html>
-                `);
-              } else if (mimeType.includes('pdf')) {
-                newWindow.document.write(`
-                  <html>
-                    <head><title>${filename}</title></head>
-                    <body style="margin:0;padding:0;">
-                      <embed src="${url}" type="application/pdf" width="100%" height="100%" />
-                    </body>
-                  </html>
-                `);
-              } else {
-                // Para otros tipos, intentar mostrar en iframe o descargar
-                newWindow.document.write(`
-                  <html>
-                    <head><title>${filename}</title></head>
-                    <body style="margin:20px;">
-                      <h3>Archivo: ${filename}</h3>
-                      <p>Tipo: ${mimeType}</p>
-                      <a href="${url}" download="${filename}">Descargar archivo</a>
-                      <br><br>
-                      <iframe src="${url}" width="100%" height="80%" style="border:1px solid #ccc;"></iframe>
-                    </body>
-                  </html>
-                `);
-              }
-              newWindow.document.close();
-            } else {
-              // Para URLs externas, redirigir directamente
-              newWindow.location.href = url;
-            }
-            console.log('DEBUG: Archivo abierto en nueva ventana');
-          } else {
-            // Fallback si el popup fue bloqueado
-            this.descargarAdjunto(adjunto, filename);
-          }
-        } else {
-          // Método 2: Crear blob y abrir (para datos que no son URLs ni data:)
-          this.descargarAdjunto(adjunto, filename);
-        }
-      } catch (error) {
-        console.error('ERROR: No se pudo abrir el adjunto:', error);
-        // Fallback: intentar descargar
-        this.descargarAdjunto(adjunto, filename);
+    if (dataUrl) {
+      // Método simplificado: abrir directamente
+      this.abrirArchivoDirectamente(dataUrl, filename, mimeType);
+    }
+  }
+
+  // Método simplificado para abrir archivos directamente
+  private abrirArchivoDirectamente(dataUrl: string, filename: string, mimeType: string): void {
+    try {
+      // Crear blob con nombre correcto
+      const byteCharacters = atob(dataUrl.split(',')[1]);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-    } else {
-      console.log('DEBUG: No URL found, cannot open adjunto');
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: mimeType });
+      
+      // Crear URL del blob
+      const blobUrl = URL.createObjectURL(blob);
+      
+      // Crear un elemento <a> temporal para simular descarga pero sin descarga real
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      
+      // Para navegadores que soportan, asignar el nombre del archivo
+      // pero sin activar descarga
+      if (mimeType.startsWith('image/') || mimeType.includes('pdf')) {
+        // Para imágenes y PDFs, abrir directamente sin nombre de descarga
+        link.click();
+      } else {
+        // Para otros archivos, intentar que se abra en el navegador
+        link.click();
+      }
+      
+      // Limpiar después de un breve tiempo
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+        if (link.parentNode) {
+          link.parentNode.removeChild(link);
+        }
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Error al abrir archivo:', error);
+      // Fallback: usar la data URL directamente
+      const newWindow = window.open();
+      if (newWindow) {
+        newWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>${filename}</title>
+            <style>
+              body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+              img { max-width: 100%; height: auto; }
+              iframe { width: 100%; height: 100vh; border: none; }
+              .container { text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h3>${filename}</h3>
+              ${mimeType.startsWith('image/') 
+                ? `<img src="${dataUrl}" alt="${filename}" />` 
+                : mimeType.includes('pdf')
+                  ? `<iframe src="${dataUrl}"></iframe>`
+                  : `<p>Archivo: ${filename}</p><a href="${dataUrl}" download="${filename}">Descargar</a>`
+              }
+            </div>
+          </body>
+          </html>
+        `);
+        newWindow.document.close();
+      }
     }
   }
 
@@ -589,7 +545,6 @@ export class EventoComponent {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      console.log('DEBUG: Archivo descargado:', filename);
     } catch (error) {
       console.error('ERROR: No se pudo descargar el adjunto:', error);
     }
