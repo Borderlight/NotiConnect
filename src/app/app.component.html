@@ -1,8 +1,10 @@
-<header class="app-header" role="banner">
+<header class="app-header" role="banner" (click)="cerrarDropdown()">
   <div class="header-content">
-    <button class="back-button" [attr.aria-label]="'COMMON.BACK' | translate" (click)="volver()">
-      <img src="/assets/pantalla-principal/volver atras.png" [alt]="'COMMON.BACK' | translate" class="icono-volver" />
-    </button>
+    @if (mostrarBotonVolver) {
+      <button class="back-button" [attr.aria-label]="'COMMON.BACK' | translate" (click)="volver()">
+        <img src="/assets/pantalla-principal/volver atras.png" [alt]="'COMMON.BACK' | translate" class="icono-volver" />
+      </button>
+    }
     <div class="logo-upsa-container">
       <img src="/assets/pantalla-principal/logo_upsa.png"
            [alt]="'COMMON.UPSA_LOGO_ALT' | translate"
@@ -18,8 +20,34 @@
       </button>
       <div class="noticonnect-label">NotiConnect</div>
     </div>
+    
+    <!-- Icono de usuario en el extremo derecho -->
+    @if (usuarioAutenticado) {
+      <div class="user-section" (click)="$event.stopPropagation()">
+        <div class="user-dropdown">
+          <button class="user-icon-btn" (click)="toggleDropdownUsuario()" [attr.aria-label]="'Menú de usuario'">
+            <img src="/assets/pantalla-principal/user-icon.webp" alt="Usuario" class="user-icon">
+          </button>
+          
+          <!-- Dropdown menu -->
+          @if (mostrarDropdownUsuario) {
+            <div class="dropdown-menu">
+              <div class="user-info-dropdown">
+                <div class="user-name">{{ usuarioAutenticado.nombre || 'Usuario' }}</div>
+                <div class="user-email">{{ usuarioAutenticado.email }}</div>
+                <div class="user-department">{{ usuarioAutenticado.departamento }}</div>
+              </div>
+              <hr class="dropdown-divider">
+              <button class="dropdown-item logout-item" (click)="cerrarSesion()">
+                <span class="logout-icon">🚪</span>
+                Cerrar sesión
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
   </div>
-  
 </header>
 
 <main class="app-main" role="main">

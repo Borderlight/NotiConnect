@@ -1,0 +1,177 @@
+@if (mostrar) {
+<div class="modal-overlay">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ modoRegistro ? 'Crear Cuenta' : 'Iniciar Sesión' }}
+      </h2>
+      <!-- Botón cerrar removido para que no se pueda cerrar sin autenticarse -->
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        
+        <!-- Campo Nombre - Solo en modo registro -->
+        @if (modoRegistro) {
+          <div class="form-group">
+            <label for="nombre" class="form-label">
+              Nombre completo <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="nombre"
+              formControlName="nombre"
+              class="form-input"
+              [class.error]="esCampoInvalido('nombre')"
+            />
+            @if (esCampoInvalido('nombre')) {
+              <div class="error-message">
+                {{ obtenerErrorCampo('nombre') }}
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Campo Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            Correo electrónico <span class="required">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-input"
+            [class.error]="esCampoInvalido('email')"
+          />
+          @if (esCampoInvalido('email')) {
+            <div class="error-message">
+              {{ obtenerErrorCampo('email') }}
+            </div>
+          }
+        </div>
+
+        <!-- Campo Departamento -->
+        <div class="form-group">
+          <label for="departamento" class="form-label">
+            Departamento <span class="required">*</span>
+          </label>
+          <select
+            id="departamento"
+            formControlName="departamento"
+            class="form-select"
+            [class.error]="esCampoInvalido('departamento')"
+          >
+            <option value="">Seleccione su departamento</option>
+            @for (dept of departamentos; track dept) {
+              <option [value]="dept">
+                {{ dept }}
+              </option>
+            }
+          </select>
+          @if (esCampoInvalido('departamento')) {
+            <div class="error-message">
+              {{ obtenerErrorCampo('departamento') }}
+            </div>
+          }
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            Contraseña <span class="required">*</span>
+          </label>
+          <div class="input-with-icon">
+            <input
+              [type]="mostrarPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="form-input"
+              [class.error]="esCampoInvalido('password')"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="toggleMostrarPassword()"
+              tabindex="-1"
+            >
+              {{ mostrarPassword ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+          @if (esCampoInvalido('password')) {
+            <div class="error-message">
+              {{ obtenerErrorCampo('password') }}
+            </div>
+          }
+        </div>
+
+        <!-- Campo Confirmar Contraseña - Solo en modo registro -->
+        @if (modoRegistro) {
+          <div class="form-group">
+            <label for="confirmarPassword" class="form-label">
+              Confirmar contraseña <span class="required">*</span>
+            </label>
+            <div class="input-with-icon">
+              <input
+                [type]="mostrarConfirmarPassword ? 'text' : 'password'"
+                id="confirmarPassword"
+                formControlName="confirmarPassword"
+                class="form-input"
+                [class.error]="esCampoInvalido('confirmarPassword') || obtenerErrorPasswords()"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                (click)="toggleMostrarConfirmarPassword()"
+                tabindex="-1"
+              >
+                {{ mostrarConfirmarPassword ? '👁️' : '👁️‍🗨️' }}
+              </button>
+            </div>
+            @if (esCampoInvalido('confirmarPassword')) {
+              <div class="error-message">
+                {{ obtenerErrorCampo('confirmarPassword') }}
+              </div>
+            }
+            @if (obtenerErrorPasswords()) {
+              <div class="error-message">
+                {{ obtenerErrorPasswords() }}
+              </div>
+            }
+          </div>
+        }
+
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onSubmit()"
+        [disabled]="formulario.invalid"
+      >
+        {{ modoRegistro ? 'Crear Cuenta' : 'Iniciar Sesión' }}
+      </button>
+      
+      <div class="toggle-mode">
+        @if (modoRegistro) {
+          <p>
+            ¿Ya tienes cuenta? 
+            <button type="button" class="btn-link" (click)="cambiarModo()">
+              Inicia sesión aquí
+            </button>
+          </p>
+        } @else {
+          <p>
+            ¿No tienes cuenta? 
+            <button type="button" class="btn-link" (click)="cambiarModo()">
+              Créala aquí
+            </button>
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -1,29 +1,41 @@
-<nav [attr.aria-label]="'NAV.MAIN' | translate">
-  <h1 class="sr-only">{{ 'NAV.HOME_TITLE' | translate }}</h1>
-  <div class="iconos-container">
-    <div class="icono-bloque">
-      <button class="boton-icono" [routerLink]="['/formulario']">
-        <img src="assets/pagina-principal/formulario.png" [alt]="'NAV.CREATE_EVENT' | translate">
-      </button>
-      <div class="icono-texto">{{ 'NAV.CREATE_EVENT' | translate }}</div>
+<!-- Contenido principal solo visible si está autenticado -->
+@if (usuarioAutenticado) {
+  <nav [attr.aria-label]="'NAV.MAIN' | translate">
+    <h1 class="sr-only">{{ 'NAV.HOME_TITLE' | translate }}</h1>
+    <div class="iconos-container">
+      <div class="icono-bloque">
+        <button class="boton-icono" [routerLink]="['/formulario']">
+          <img src="assets/pagina-principal/formulario.png" [alt]="'NAV.CREATE_EVENT' | translate">
+        </button>
+        <div class="icono-texto">{{ 'NAV.CREATE_EVENT' | translate }}</div>
+      </div>
+      <div class="icono-bloque">
+        <button class="boton-icono" [routerLink]="['/busqueda']">
+          <img src="assets/pagina-principal/busqueda.png" [alt]="'NAV.SEARCH' | translate">
+        </button>
+        <div class="icono-texto">{{ 'NAV.SEARCH' | translate }}</div>
+      </div>
+      <div class="icono-bloque">
+        <button class="boton-icono" [routerLink]="['/roles']">
+          <img src="assets/pagina-principal/roles.png" [alt]="'NAV.ROLES' | translate">
+        </button>
+        <div class="icono-texto">{{ 'NAV.ROLES' | translate }}</div>
+      </div>
+      <div class="icono-bloque">
+        <button class="boton-icono" [routerLink]="['/ajustes']">
+          <img src="assets/pagina-principal/ajustes.png" [alt]="'NAV.SETTINGS' | translate">
+        </button>
+        <div class="icono-texto">{{ 'NAV.SETTINGS' | translate }}</div>
+      </div>
     </div>
-    <div class="icono-bloque">
-      <button class="boton-icono" [routerLink]="['/busqueda']">
-        <img src="assets/pagina-principal/busqueda.png" [alt]="'NAV.SEARCH' | translate">
-      </button>
-      <div class="icono-texto">{{ 'NAV.SEARCH' | translate }}</div>
-    </div>
-    <div class="icono-bloque">
-      <button class="boton-icono" [routerLink]="['/roles']">
-        <img src="assets/pagina-principal/roles.png" [alt]="'NAV.ROLES' | translate">
-      </button>
-      <div class="icono-texto">{{ 'NAV.ROLES' | translate }}</div>
-    </div>
-    <div class="icono-bloque">
-      <button class="boton-icono" [routerLink]="['/ajustes']">
-        <img src="assets/pagina-principal/ajustes.png" [alt]="'NAV.SETTINGS' | translate">
-      </button>
-      <div class="icono-texto">{{ 'NAV.SETTINGS' | translate }}</div>
-    </div>
-  </div>
-</nav>
+  </nav>
+}
+
+<!-- Modal de autenticación - NO se puede cerrar hasta completar login -->
+<app-auth-modal
+  #authModal
+  [mostrar]="mostrarAuthModal"
+  (cerrar)="onCerrarAuthModal()"
+  (usuarioRegistrado)="onUsuarioRegistrado($event)"
+  (usuarioLogueado)="onUsuarioLogueado($event)"
+></app-auth-modal>

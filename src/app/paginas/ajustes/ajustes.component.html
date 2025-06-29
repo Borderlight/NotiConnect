@@ -22,9 +22,15 @@
         <div class="ajuste-item">
             <label for="idioma" class="ajuste-titulo">{{ 'SETTINGS.SELECT_LANGUAGE' | translate }}</label>
             <div class="idioma-selector-container">
-                <img *ngIf="idiomaSeleccionado === 'es'" src="assets/idiomas/Flag_of_Spain.jpg" alt="Español" class="idioma-bandera" width="28" height="20">
-                <img *ngIf="idiomaSeleccionado === 'en'" src="assets/idiomas/Flag_of_the_United_Kingdom.jpg" alt="English" class="idioma-bandera" width="28" height="20">
-                <img *ngIf="idiomaSeleccionado === 'fr'" src="assets/idiomas/Flag_of_France.jpg" alt="Français" class="idioma-bandera" width="28" height="20">
+                @if (idiomaSeleccionado === 'es') {
+                    <img src="assets/idiomas/Flag_of_Spain.jpg" alt="Español" class="idioma-bandera" width="28" height="20">
+                }
+                @if (idiomaSeleccionado === 'en') {
+                    <img src="assets/idiomas/Flag_of_the_United_Kingdom.jpg" alt="English" class="idioma-bandera" width="28" height="20">
+                }
+                @if (idiomaSeleccionado === 'fr') {
+                    <img src="assets/idiomas/Flag_of_France.jpg" alt="Français" class="idioma-bandera" width="28" height="20">
+                }
                 <select id="idioma"
                         [(ngModel)]="idiomaSeleccionado"
                         (change)="cambiarIdioma($event)"

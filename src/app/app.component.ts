@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { IdiomaService } from './servicios/idioma.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService, UsuarioAutenticado } from './servicios/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,14 @@ export class AppComponent {
   title = 'NotiConnect';
   mostrarBotonVolver = false;
   idiomaActual = 'es';
+  usuarioAutenticado: UsuarioAutenticado | null = null;
+  mostrarDropdownUsuario = false;
 
   constructor(
     private router: Router,
     private location: Location,
-    private idiomaService: IdiomaService
+    private idiomaService: IdiomaService,
+    private authService: AuthService
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -33,6 +37,11 @@ export class AppComponent {
     this.idiomaService.obtenerIdiomaActual().subscribe(
       lang => this.idiomaActual = lang
     );
+
+    // Suscribirse al estado de autenticación
+    this.authService.usuario$.subscribe(usuario => {
+      this.usuarioAutenticado = usuario;
+    });
   }
 
   navegarInicio() {
@@ -46,5 +55,18 @@ export class AppComponent {
   cambiarIdioma(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.idiomaService.cambiarIdioma(select.value);
+  }
+
+  toggleDropdownUsuario() {
+    this.mostrarDropdownUsuario = !this.mostrarDropdownUsuario;
+  }
+
+  cerrarSesion() {
+    this.authService.cerrarSesion();
+    this.mostrarDropdownUsuario = false;
+  }
+
+  cerrarDropdown() {
+    this.mostrarDropdownUsuario = false;
   }
 }
