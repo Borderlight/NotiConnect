@@ -234,7 +234,7 @@ export class FormularioComponent {
       ubicaciones: this.fb.array([this.crearUbicacion()]), // Requerido: fecha, tipo horario, lugar
       ponentes: this.fb.array([
         this.fb.group({
-          id: [0],
+          id: [this.generateUniqueId()],
           nombre: [''], // Sin required
           afiliacion: ['']
         })
@@ -283,6 +283,7 @@ export class FormularioComponent {
 
   crearCampoServicio(): FormGroup {
     return this.fb.group({
+      id: [this.generateUniqueId()],
       servicios: [''], // Sin required - servicios no son obligatorios
       grado: [''] // Sin validadores
     });
@@ -332,6 +333,7 @@ export class FormularioComponent {
   // Crear un nuevo enlace con validaciones
   private crearEnlace(): FormGroup {
     return this.fb.group({
+      id: [this.generateUniqueId()],
       tipo: [''], // Sin required
       url: ['']  // Sin required ni validadores personalizados
     });
@@ -828,6 +830,7 @@ export class FormularioComponent {
 
   crearUbicacion(): FormGroup {
     const ubicacionGroup = this.fb.group({
+      id: [this.generateUniqueId()],
       fecha: ['', Validators.required], // Requerido
       tipoHorario: ['hora', Validators.required], // Requerido
       horaInicio: ['', Validators.required], // Requerido
@@ -1015,9 +1018,6 @@ export class FormularioComponent {
     return this.formularioEvento.get('ponentes') as FormArray;
   }
 
-  // Generador simple de IDs únicos para ponentes
-  private ponenteIdCounter = 0;
-
   // Método para generar IDs únicos
   private generateUniqueId(): string {
     return 'ponente_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -1025,7 +1025,7 @@ export class FormularioComponent {
 
   agregarPonente() {
     this.listadoPonentes.push(this.fb.group({
-      id: [this.ponenteIdCounter++],
+      id: [this.generateUniqueId()],
       nombre: ['', Validators.required],
       afiliacion: ['']
     }));
