@@ -117,10 +117,8 @@ export class DescargaService {
                   y += 8;
                 }
               } else {
-                // Para documentos, crear texto clicable (enlace)
-                doc.setTextColor(0, 0, 255);
-                doc.textWithLink(`📄 ${adjunto.nombre}`, margin + 10, y, { url: '#' });
-                doc.setTextColor(0, 0, 0);
+                // Para documentos, mostrar solo como texto sin enlace
+                doc.text(`${adjunto.nombre}`, margin + 10, y);
                 y += 8;
               }
             }
@@ -142,9 +140,9 @@ export class DescargaService {
                 y = 20;
               }
               
-              // Crear enlace clicable real
+              // Crear enlace clicable real sin icono
               doc.setTextColor(0, 0, 255);
-              doc.textWithLink(`🔗 ${enlace.tipo}: ${enlace.url}`, margin + 10, y, { url: enlace.url });
+              doc.textWithLink(`${enlace.tipo}: ${enlace.url}`, margin + 10, y, { url: enlace.url });
               doc.setTextColor(0, 0, 0);
               y += 8;
             }
@@ -195,9 +193,9 @@ export class DescargaService {
                   <img src="${imgData}" alt="${adjunto.nombre}" style="max-width:300px;max-height:200px;border:1px solid #ccc;"/>
                 </div>`;
               } else {
-                // Para documentos, crear un enlace (aunque en Word no será completamente funcional)
+                // Para documentos, mostrar solo como texto sin enlace
                 html += `<div style="margin: 5px 0;">
-                  📄 <a href="#" style="color:blue;text-decoration:underline;">${adjunto.nombre}</a>
+                  ${adjunto.nombre}
                 </div>`;
               }
             });
