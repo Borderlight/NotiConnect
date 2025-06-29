@@ -319,19 +319,19 @@
     },
     "FIELDS": {
       "TITLE": "Title",
-      "SPEAKER": "Speaker",
-      "ORGANIZER": "Organizing company",
       "TYPE": "Event type",
+      "DEPARTMENT": "Department",
+      "DESCRIPTION": "Description",
+      "LOCATIONS": "Locations",
       "DATE": "Date",
       "START_TIME": "Start time",
       "END_TIME": "End time",
       "PLACE": "Location",
-      "CLASSROOM": "Room",
-      "DESCRIPTION": "Description",
+      "SPEAKER": "Speaker",
       "ACTIVITY": "Related activity",
-      "ATTACHMENTS": "Attached files",
+      "SERVICES": "Services",
       "LINKS": "Links",
-      "SERVICES": "Services"
+      "ATTACHMENTS": "Attached files"
     },
     "BUTTONS": {
       "DOWNLOAD": "Download selected",

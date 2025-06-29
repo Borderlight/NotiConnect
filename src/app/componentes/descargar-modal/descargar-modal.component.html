@@ -1,9 +1,9 @@
 <div class="modal-backdrop" (click)="cerrarModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>{{ 'DOWNLOAD_MODAL.TITLE' | translate }}</h2>
+    <h2>Opciones de descarga</h2>
     
     <div class="seccion">
-      <h3>{{ 'DOWNLOAD_MODAL.FORMAT_SECTION.TITLE' | translate }}</h3>
+      <h3>Formato de descarga</h3>
       <div class="checkbox-group">
         <label>
           <input type="checkbox" [(ngModel)]="options.formats.json"> JSON
@@ -21,7 +21,7 @@
     </div>
 
     <div class="seccion">
-      <h3>{{ 'DOWNLOAD_MODAL.FIELDS_SECTION.TITLE' | translate }}</h3>
+      <h3>Campos a incluir</h3>
       <div class="campos-container">
         
         <!-- Columna Izquierda -->
@@ -30,7 +30,7 @@
             @if (!field.isGroup) {
               <label>
                 <input type="checkbox" [(ngModel)]="options.fields[field.value]">
-                {{ field.label | translate }}
+                {{ field.label }}
               </label>
             } @else {
               <!-- Checkbox agrupador de Ubicaciones -->
@@ -40,7 +40,7 @@
                          #ubicacionesCheckbox
                          [(ngModel)]="options.fields[field.value]"
                          (change)="onUbicacionesChange(ubicacionesCheckbox.checked)">
-                  {{ field.label | translate }}
+                  {{ field.label }}
                   <button type="button" 
                           class="btn-expandir" 
                           (click)="toggleSubcamposUbicaciones()"
@@ -57,7 +57,7 @@
                         <input type="checkbox" 
                                [(ngModel)]="options.fields[subField.value]"
                                (change)="onSubcampoUbicacionChange()">
-                        {{ subField.label | translate }}
+                        {{ subField.label }}
                       </label>
                     }
                   </div>
@@ -72,7 +72,7 @@
           @for (field of rightColumnFields; track field.value) {
             <label>
               <input type="checkbox" [(ngModel)]="options.fields[field.value]">
-              {{ field.label | translate }}
+              {{ field.label }}
             </label>
           }
         </div>
@@ -84,9 +84,9 @@
       <button class="btn-descargar" 
               [disabled]="!isValidSelection()" 
               (click)="descargarSeleccionado()">
-        {{ 'DOWNLOAD_MODAL.BUTTONS.DOWNLOAD' | translate }}
+        Descargar seleccionado
       </button>
-      <button class="btn-cancelar" (click)="cerrarModal()">{{ 'DOWNLOAD_MODAL.BUTTONS.CANCEL' | translate }}</button>
+      <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
     </div>
   </div>
 </div>

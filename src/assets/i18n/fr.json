@@ -313,19 +313,19 @@
     },
     "FIELDS": {
       "TITLE": "Titre",
-      "SPEAKER": "Intervenant",
-      "ORGANIZER": "Entreprise organisatrice",
       "TYPE": "Type d'événement",
+      "DEPARTMENT": "Département",
+      "DESCRIPTION": "Description",
+      "LOCATIONS": "Emplacements",
       "DATE": "Date",
       "START_TIME": "Heure de début",
       "END_TIME": "Heure de fin",
       "PLACE": "Lieu",
-      "CLASSROOM": "Salle",
-      "DESCRIPTION": "Description",
+      "SPEAKER": "Intervenant",
       "ACTIVITY": "Activité associée",
-      "ATTACHMENTS": "Fichiers joints",
+      "SERVICES": "Services",
       "LINKS": "Liens",
-      "SERVICES": "Services"
+      "ATTACHMENTS": "Fichiers joints"
     },
     "BUTTONS": {
       "DOWNLOAD": "Télécharger la sélection",

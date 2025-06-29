@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Evento } from '../../interfaces/evento.interface';
 
 interface DownloadOptions {
@@ -19,40 +18,40 @@ interface DownloadOptions {
 @Component({
   selector: 'app-descargar-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './descargar-modal.component.html',
   styleUrls: ['./descargar-modal.component.css']
 })
-export class DescargarModalComponent {
+export class DescargarModalComponent implements OnInit {
   @Input() eventos: Evento[] = [];
   @Output() cerrar = new EventEmitter<void>();
   @Output() descargar = new EventEmitter<DownloadOptions>();
 
   // Campos organizados en dos columnas
   leftColumnFields = [
-    { value: 'titulo', label: 'DOWNLOAD_MODAL.FIELDS.TITLE' },
-    { value: 'tipoEvento', label: 'DOWNLOAD_MODAL.FIELDS.TYPE' },
-    { value: 'departamento', label: 'DOWNLOAD_MODAL.FIELDS.DEPARTMENT' },
-    { value: 'descripcion', label: 'DOWNLOAD_MODAL.FIELDS.DESCRIPTION' },
+    { value: 'titulo', label: 'Título' },
+    { value: 'tipoEvento', label: 'Tipo de evento' },
+    { value: 'departamento', label: 'Departamento' },
+    { value: 'descripcion', label: 'Descripción' },
     { 
       value: 'ubicaciones', 
-      label: 'DOWNLOAD_MODAL.FIELDS.LOCATIONS',
+      label: 'Ubicaciones',
       isGroup: true,
       subFields: [
-        { value: 'fecha', label: 'DOWNLOAD_MODAL.FIELDS.DATE' },
-        { value: 'horaInicio', label: 'DOWNLOAD_MODAL.FIELDS.START_TIME' },
-        { value: 'horaFin', label: 'DOWNLOAD_MODAL.FIELDS.END_TIME' },
-        { value: 'lugar', label: 'DOWNLOAD_MODAL.FIELDS.PLACE' }
+        { value: 'fecha', label: 'Fecha' },
+        { value: 'horaInicio', label: 'Hora de inicio' },
+        { value: 'horaFin', label: 'Hora de fin' },
+        { value: 'lugar', label: 'Lugar' }
       ]
     }
   ];
 
   rightColumnFields = [
-    { value: 'ponente', label: 'DOWNLOAD_MODAL.FIELDS.SPEAKER' },
-    { value: 'actividad', label: 'DOWNLOAD_MODAL.FIELDS.ACTIVITY' },
-    { value: 'servicios', label: 'DOWNLOAD_MODAL.FIELDS.SERVICES' },
-    { value: 'enlaces', label: 'DOWNLOAD_MODAL.FIELDS.LINKS' },
-    { value: 'adjuntos', label: 'DOWNLOAD_MODAL.FIELDS.ATTACHMENTS' }
+    { value: 'ponente', label: 'Ponente' },
+    { value: 'actividad', label: 'Actividad relacionada' },
+    { value: 'servicios', label: 'Servicios' },
+    { value: 'enlaces', label: 'Enlaces' },
+    { value: 'adjuntos', label: 'Archivos adjuntos' }
   ];
 
   // Control para mostrar/ocultar subfields de ubicaciones
@@ -83,7 +82,11 @@ export class DescargarModalComponent {
     }
   };
 
-  constructor(private translateService: TranslateService) {}
+  constructor() {}
+
+  ngOnInit() {
+    // Componente inicializado con textos en español
+  }
 
   // Método para manejar el checkbox agrupador de ubicaciones
   onUbicacionesChange(value: boolean) {
