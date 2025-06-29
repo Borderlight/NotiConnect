@@ -30,103 +30,31 @@ export class EventoComponent {
   private caratulaOriginal: string | undefined;
   private adjuntosOriginales: ArchivoAdjunto[] = [];
 
-  // Datos de facultades y grados
+  // Datos de facultades y grados (simplificado)
   facultadesGrados = [
     {
       "facultad": "Facultad de Ciencias de la Salud",
-      "grados": [
-        "Grado en Logopedia",
-        "Grado en Enfermería",
-        "Grado en Fisioterapia",
-        "Grado en Nutrición Humana y Dietética"
-      ]
+      "grados": ["Grado en Logopedia", "Grado en Enfermería", "Grado en Fisioterapia", "Grado en Nutrición Humana y Dietética"]
     },
     {
       "facultad": "Facultad de Ciencias del Seguro, Jurídicas y de la Empresa",
-      "grados": [
-        "Grado en Administración y Dirección de Empresas",
-        "Grado en Relaciones Internacionales",
-        "Grado en Derecho"
-      ]
-    },
-    {
-      "facultad": "Facultad de Ciencias Humanas y Sociales",
-      "grados": [
-        "Máster de Formación Permanente en Gobernanza Ética",
-        "Grado en Filosofía"
-      ]
+      "grados": ["Grado en Administración y Dirección de Empresas", "Grado en Relaciones Internacionales", "Grado en Derecho"]
     },
     {
       "facultad": "Facultad de Comunicación",
-      "grados": [
-        "Grado en Periodismo",
-        "Grado en Comunicación Audiovisual"
-      ]
-    },
-    {
-      "facultad": "Facultad de Derecho Canónico",
-      "grados": [
-        "Doctorado Eclesiástico en Derecho Canónico",
-        "Licenciatura en Derecho Canónico"
-      ]
+      "grados": ["Grado en Periodismo", "Grado en Comunicación Audiovisual"]
     },
     {
       "facultad": "Facultad de Educación",
-      "grados": [
-        "Grado en Ciencias de la Actividad Física y del Deporte",
-        "Grado en Maestro en Educación Infantil",
-        "Grado en Maestro en Educación Primaria",
-        "Curso de Formación Pedagógica y Didáctica",
-        "Máster en Formación Permanente en Musicoterapia",
-        "Máster en Formación Permanente en Entrenamiento y Rendimiento en Fútbol",
-        "Máster Universitario en Formación del Profesorado de ESO y Bachillerato, FP y Enseñanza de Idiomas",
-        "Doble Grado en Maestro en Educación Primaria y Maestro en Educación Infantil",
-        "Máster Universitario en Psicopedagogía",
-        "Máster de Formación Permanente en Gestión en Situaciones de Crisis"
-      ]
-    },
-    {
-      "facultad": "Facultad de Enfermería y Fisioterapia Salus Infirmorum",
-      "grados": [
-        "Grado en Fisioterapia (Madrid)",
-        "Grado en Enfermería (Madrid)"
-      ]
+      "grados": ["Grado en Ciencias de la Actividad Física y del Deporte", "Grado en Maestro en Educación Infantil", "Grado en Maestro en Educación Primaria"]
     },
     {
       "facultad": "Facultad de Informática",
-      "grados": [
-        "Doble Grado en ADE Tecnológico e Ingeniería Informática",
-        "Grado en Administración y Dirección de Empresas Tecnológicas",
-        "Doble Grado en Ingeniería Informática y ADET",
-        "Grado en Ingeniería Informática",
-        "Diploma de Especialista en Inteligencia Artificial & Big Data Analytics",
-        "Máster Universitario en Informática Móvil",
-        "Máster Universitario en Dirección en Proyectos Informáticos y Servicios Tecnológicos"
-      ]
+      "grados": ["Grado en Ingeniería Informática", "Grado en Administración y Dirección de Empresas Tecnológicas"]
     },
     {
       "facultad": "Facultad de Psicología",
-      "grados": [
-        "Grado en Psicología",
-        "Máster Universitario en Psicología General Sanitaria",
-        "Diploma de Experto en Invtervención Psicosocial"
-      ]
-    },
-    {
-      "facultad": "Facultad de Teología",
-      "grados": [
-        "Bachiller en Teología",
-        "Licenciatura en Teología Bíblica",
-        "Licenciatura en Teología Dogmática",
-        "Licenciatura en Teología Práctica",
-        "Licenciatura en Teología Pastoral",
-        "Doctorado Eclesiástico en Teología Bíblica",
-        "Doctorado Eclesiástico en Teología Dogmática",
-        "Doctorado Eclesiástico en Teología Práctica",
-        "Doctorado Eclesiástico en Teología Pastoral",
-        "Doctorado Eclesiástico en Teología de la Vida Consagrada",
-        "Máster Universitario en Doctrina Social de la Iglesia"
-      ]
+      "grados": ["Grado en Psicología"]
     }
   ];
 
@@ -135,7 +63,7 @@ export class EventoComponent {
   actividadesDisponibles: string[] = [];
   lugaresDisponibles: string[] = [];
 
-  // Mapeo de lugares
+  // Mapeo de lugares (simplificado)
   lugaresMap: { [key: string]: string } = {
     'FACULTY': 'Facultad',
     'AULA_MAGNA': 'Aula de grado',
@@ -232,62 +160,7 @@ export class EventoComponent {
     this.editMode = false;
   }
 
-  get serviciosTexto(): string {
-    if (!this.evento?.servicios || !Array.isArray(this.evento.servicios)) {
-      return '';
-    }
-    return this.evento.servicios.map(s => s.servicios).join(', ') || '';
-  }
-  set serviciosTexto(valor: string) {
-    if (!valor || valor.trim() === '') {
-      this.evento.servicios = [];
-      return;
-    }
-    this.evento.servicios = valor.split(',').map(s => ({ servicios: s.trim() })).filter(s => s.servicios);
-  }
 
-  get adjuntosTexto(): string {
-    if (!this.evento?.adjuntos || !Array.isArray(this.evento.adjuntos)) {
-      return '';
-    }
-    return this.evento.adjuntos.map(a => a.name || a).join(', ') || '';
-  }
-  set adjuntosTexto(valor: string) {
-    if (!valor || valor.trim() === '') {
-      this.evento.adjuntos = [];
-      return;
-    }
-    // Convertir strings a objetos ArchivoAdjunto básicos
-    this.evento.adjuntos = valor.split(',').map(a => {
-      const nombre = a.trim();
-      return nombre ? { name: nombre, type: '', size: 0, data: '' } : null;
-    }).filter(a => a) as any[];
-  }
-
-  get enlacesTexto(): string {
-    if (!this.evento?.enlaces || !Array.isArray(this.evento.enlaces)) {
-      return '';
-    }
-    return this.evento.enlaces.map(e => e.url).join(', ') || '';
-  }
-  set enlacesTexto(valor: string) {
-    if (!valor || valor.trim() === '') {
-      this.evento.enlaces = [];
-      return;
-    }
-    this.evento.enlaces = valor.split(',').map(url => ({ tipo: 'otro', url: url.trim() })).filter(e => e.url);
-  }
-
-  get descripcionTexto(): string {
-    return this.evento?.descripcion || '';
-  }
-  set descripcionTexto(valor: string) {
-    this.evento.descripcion = valor;
-  }
-
-  get ponentesTexto(): string {
-    return this.evento?.ponentes?.map(p => p.nombre).filter(n => n).join(', ') || '';
-  }
 
   get ponentesDetallados(): any[] {
     if (!this.evento?.ponentes || !Array.isArray(this.evento.ponentes)) {
@@ -319,17 +192,7 @@ export class EventoComponent {
     }));
   }
 
-  get adjuntosDetallados(): any[] {
-    if (!this.evento?.adjuntos || !Array.isArray(this.evento.adjuntos)) {
-      return [];
-    }
-    return this.evento.adjuntos.filter(a => a).map(a => {
-      if (typeof a === 'string') {
-        return { name: a, type: '', size: 0 };
-      }
-      return a;
-    });
-  }
+
 
   get ubicacionesTexto(): string {
     if (!this.evento?.ubicaciones || this.evento.ubicaciones.length === 0) {
@@ -522,46 +385,7 @@ export class EventoComponent {
     this.mostrarDetalles = !this.mostrarDetalles;
   }
 
-  private descargarArchivo(contenido: string, nombreArchivo: string, tipo: string) {
-    const blob = new Blob([contenido], { type: tipo });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = nombreArchivo;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  }
 
-  private convertirEventoACSV(evento: any): string {
-    const headers = Object.keys(evento);
-    const values = headers.map(h => {
-      let cell = evento[h]?.toString() || '';
-      if (cell.includes(',') || cell.includes('"')) {
-        cell = `"${cell.replace(/"/g, '""')}"`;
-      }
-      return cell;
-    });
-    return headers.join(',') + '\n' + values.join(',');
-  }
-
-  private descargarPDF(evento: any) {
-    // Solo si jsPDF está disponible
-    if (typeof window !== 'undefined' && (window as any).jsPDF) {
-      const doc = new (window as any).jsPDF();
-      let y = 20;
-      doc.setFontSize(16);
-      doc.text('Evento', 20, y);
-      y += 10;
-      doc.setFontSize(12);
-      Object.keys(evento).forEach(key => {
-        doc.text(`${key}: ${evento[key]}`, 20, y);
-        y += 8;
-      });
-      doc.save(`evento_${evento._id}.pdf`);
-    }
-  }
 
   // Funciones auxiliares para adjuntos
   esImagen(adjunto: string | ArchivoAdjunto): boolean {
@@ -588,20 +412,114 @@ export class EventoComponent {
   abrirAdjunto(adjunto: string | ArchivoAdjunto, index: number): void {
     console.log('DEBUG: abrirAdjunto called with:', adjunto);
     
-    const url = typeof adjunto === 'string' ? adjunto : adjunto.data;
-    console.log('DEBUG: URL extracted:', url);
+    let url: string | null = null;
+    let filename: string = '';
+    let mimeType: string = '';
+    
+    // Extraer datos del adjunto
+    if (typeof adjunto === 'string') {
+      url = adjunto;
+      filename = this.obtenerNombreAdjunto(adjunto, index);
+      // Inferir MIME type de la URL o contenido
+      if (adjunto.startsWith('data:')) {
+        const mimeMatch = adjunto.match(/data:([^;]+);/);
+        mimeType = mimeMatch ? mimeMatch[1] : '';
+      } else {
+        // Inferir por extensión
+        if (/\.(pdf)$/i.test(adjunto)) mimeType = 'application/pdf';
+        else if (/\.(jpg|jpeg)$/i.test(adjunto)) mimeType = 'image/jpeg';
+        else if (/\.(png)$/i.test(adjunto)) mimeType = 'image/png';
+        else if (/\.(gif)$/i.test(adjunto)) mimeType = 'image/gif';
+        else if (/\.(doc|docx)$/i.test(adjunto)) mimeType = 'application/msword';
+        else if (/\.(xls|xlsx)$/i.test(adjunto)) mimeType = 'application/vnd.ms-excel';
+      }
+    } else if (adjunto && typeof adjunto === 'object') {
+      url = adjunto.data;
+      filename = adjunto.name || this.obtenerNombreAdjunto(adjunto, index);
+      mimeType = adjunto.type || '';
+    }
+    
+    console.log('DEBUG: Processed data - URL:', url?.substring(0, 50) + '...', 'filename:', filename, 'mimeType:', mimeType);
     
     if (url) {
+      try {
+        // Método 1: Intentar abrir directamente (funciona bien para PDFs, imágenes y URLs)
+        if (url.startsWith('http') || url.startsWith('data:')) {
+          const newWindow = window.open('', '_blank', 'noopener,noreferrer');
+          if (newWindow) {
+            if (url.startsWith('data:')) {
+              // Para datos base64, crear un documento HTML simple que muestre el contenido
+              if (mimeType.startsWith('image/')) {
+                newWindow.document.write(`
+                  <html>
+                    <head><title>${filename}</title></head>
+                    <body style="margin:0;padding:20px;background:#f0f0f0;display:flex;justify-content:center;align-items:center;min-height:100vh;">
+                      <img src="${url}" alt="${filename}" style="max-width:100%;max-height:100%;object-fit:contain;" />
+                    </body>
+                  </html>
+                `);
+              } else if (mimeType.includes('pdf')) {
+                newWindow.document.write(`
+                  <html>
+                    <head><title>${filename}</title></head>
+                    <body style="margin:0;padding:0;">
+                      <embed src="${url}" type="application/pdf" width="100%" height="100%" />
+                    </body>
+                  </html>
+                `);
+              } else {
+                // Para otros tipos, intentar mostrar en iframe o descargar
+                newWindow.document.write(`
+                  <html>
+                    <head><title>${filename}</title></head>
+                    <body style="margin:20px;">
+                      <h3>Archivo: ${filename}</h3>
+                      <p>Tipo: ${mimeType}</p>
+                      <a href="${url}" download="${filename}">Descargar archivo</a>
+                      <br><br>
+                      <iframe src="${url}" width="100%" height="80%" style="border:1px solid #ccc;"></iframe>
+                    </body>
+                  </html>
+                `);
+              }
+              newWindow.document.close();
+            } else {
+              // Para URLs externas, redirigir directamente
+              newWindow.location.href = url;
+            }
+            console.log('DEBUG: Archivo abierto en nueva ventana');
+          } else {
+            // Fallback si el popup fue bloqueado
+            this.descargarAdjunto(adjunto, filename);
+          }
+        } else {
+          // Método 2: Crear blob y abrir (para datos que no son URLs ni data:)
+          this.descargarAdjunto(adjunto, filename);
+        }
+      } catch (error) {
+        console.error('ERROR: No se pudo abrir el adjunto:', error);
+        // Fallback: intentar descargar
+        this.descargarAdjunto(adjunto, filename);
+      }
+    } else {
+      console.log('DEBUG: No URL found, cannot open adjunto');
+    }
+  }
+
+  private descargarAdjunto(adjunto: string | ArchivoAdjunto, filename: string): void {
+    try {
+      const url = typeof adjunto === 'string' ? adjunto : adjunto.data;
       const link = document.createElement('a');
       link.href = url;
+      link.download = filename;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      console.log('DEBUG: Link clicked with URL:', url);
-    } else {
-      console.log('DEBUG: No URL found, cannot open adjunto');
+      console.log('DEBUG: Archivo descargado:', filename);
+    } catch (error) {
+      console.error('ERROR: No se pudo descargar el adjunto:', error);
     }
   }
 
@@ -627,79 +545,21 @@ export class EventoComponent {
     return '📎';
   }
 
-  obtenerIconoDocumento(adjunto: string | ArchivoAdjunto): string {
-    if (typeof adjunto === 'string') {
-      // Para URLs, inferir tipo por extensión
-      if (/\.(pdf)$/i.test(adjunto)) return 'PDF';
-      if (/\.(doc|docx)$/i.test(adjunto)) return 'DOC';
-      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return 'XLS';
-      if (/\.(ppt|pptx)$/i.test(adjunto)) return 'PPT';
-      if (/\.(txt|md)$/i.test(adjunto)) return 'TXT';
-      if (/\.(zip|rar|7z)$/i.test(adjunto)) return 'ZIP';
-      return 'FILE';
-    }
-    
-    const tipo = adjunto.type || '';
-    if (tipo.includes('pdf')) return 'PDF';
-    if (tipo.includes('word') || tipo.includes('document')) return 'DOC';
-    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return 'XLS';
-    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return 'PPT';
-    if (tipo.includes('text')) return 'TXT';
-    if (tipo.includes('zip') || tipo.includes('compressed')) return 'ZIP';
-    return 'FILE';
-  }
 
-  obtenerColorDocumento(adjunto: string | ArchivoAdjunto): string {
-    if (typeof adjunto === 'string') {
-      if (/\.(pdf)$/i.test(adjunto)) return '#e74c3c';
-      if (/\.(doc|docx)$/i.test(adjunto)) return '#2980b9';
-      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return '#27ae60';
-      if (/\.(ppt|pptx)$/i.test(adjunto)) return '#e67e22';
-      if (/\.(txt|md)$/i.test(adjunto)) return '#95a5a6';
-      if (/\.(zip|rar|7z)$/i.test(adjunto)) return '#9b59b6';
-      return '#34495e';
-    }
-    
-    const tipo = adjunto.type || '';
-    if (tipo.includes('pdf')) return '#e74c3c';
-    if (tipo.includes('word') || tipo.includes('document')) return '#2980b9';
-    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return '#27ae60';
-    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return '#e67e22';
-    if (tipo.includes('text')) return '#95a5a6';
-    if (tipo.includes('zip') || tipo.includes('compressed')) return '#9b59b6';
-    return '#34495e';
-  }
-
-  obtenerTipoAdjunto(adjunto: string | ArchivoAdjunto): string {
-    if (typeof adjunto === 'string') {
-      // Para URLs, inferir tipo por extensión
-      if (/\.(pdf)$/i.test(adjunto)) return 'PDF';
-      if (/\.(doc|docx)$/i.test(adjunto)) return 'Word';
-      if (/\.(xls|xlsx|csv)$/i.test(adjunto)) return 'Excel';
-      if (/\.(ppt|pptx)$/i.test(adjunto)) return 'PowerPoint';
-      if (/\.(txt|md)$/i.test(adjunto)) return 'Texto';
-      if (/\.(zip|rar|7z)$/i.test(adjunto)) return 'Archivo';
-      if (this.esImagen(adjunto)) return 'Imagen';
-      return 'Archivo';
-    }
-    
-    const tipo = adjunto.type || '';
-    if (tipo.includes('pdf')) return 'PDF';
-    if (tipo.includes('word') || tipo.includes('document')) return 'Word';
-    if (tipo.includes('excel') || tipo.includes('spreadsheet')) return 'Excel';
-    if (tipo.includes('powerpoint') || tipo.includes('presentation')) return 'PowerPoint';
-    if (tipo.includes('text')) return 'Texto';
-    if (tipo.includes('image')) return 'Imagen';
-    return 'Archivo';
-  }
 
   obtenerNombreAdjunto(adjunto: string | ArchivoAdjunto, index: number): string {
     console.log('DEBUG: obtenerNombreAdjunto - adjunto tipo:', typeof adjunto, 'longitud:', typeof adjunto === 'string' ? adjunto.length : 'objeto');
     
+    // PRIORIDAD 1: Si es un objeto ArchivoAdjunto válido, usar su nombre real
+    if (adjunto && typeof adjunto === 'object' && adjunto.name) {
+      console.log('DEBUG: Objeto ArchivoAdjunto válido, usando nombre real:', adjunto.name);
+      return adjunto.name;
+    }
+    
     if (typeof adjunto === 'string') {
-      // PROTECCIÓN CRÍTICA: Si es un string muy largo, probablemente es base64 - nunca mostrar contenido crudo
-      if (adjunto.length > 100) {
-        console.log('DEBUG: String muy largo detectado, generando nombre seguro');
+      // PROTECCIÓN: Si es un string muy largo, probablemente es base64
+      if (adjunto.length > 500) {
+        console.log('DEBUG: String muy largo detectado, puede ser base64, usando nombre genérico inteligente');
         
         // Si empieza con data:, extraer tipo MIME para generar nombre apropiado
         if (adjunto.startsWith('data:')) {
@@ -732,16 +592,22 @@ export class EventoComponent {
         console.log('DEBUG: String URL, filename extracted:', result);
         return result;
       } catch {
-        // Si no es una URL válida y es corto, asumir que es un nombre de archivo
-        const result = adjunto.trim() || `Adjunto_${index + 1}`;
-        console.log('DEBUG: String not URL, using as filename:', result);
+        // Si no es una URL válida y es corto, puede ser un nombre de archivo válido
+        const cleanString = adjunto.trim();
+        if (cleanString && cleanString.length > 0 && cleanString.length < 100) {
+          console.log('DEBUG: String corto válido, usando como nombre de archivo:', cleanString);
+          return cleanString;
+        }
+        
+        const result = `Adjunto_${index + 1}`;
+        console.log('DEBUG: String no válido como nombre, usando genérico:', result);
         return result;
       }
     }
     
-    // Para objetos ArchivoAdjunto
-    const result = adjunto?.name || `Adjunto_${index + 1}`;
-    console.log('DEBUG: Object adjunto, name:', result);
+    // Fallback final
+    const result = `Adjunto_${index + 1}`;
+    console.log('DEBUG: Fallback final, usando nombre genérico:', result);
     return result;
   }
 
@@ -972,67 +838,7 @@ export class EventoComponent {
 
   // Método para traducir nombres de lugares
   traducirLugar(lugar: string): string {
-    const traduccionesLugares: { [key: string]: string } = {
-      'FACULTY': 'Facultad',
-      'AULA_MAGNA': 'Aula de grado',
-      'HUBdeInnovacion': 'HUB de Innovación',
-      'LIBRARY': 'Biblioteca',
-      'AuditorioJuanPablo': 'Auditorio Juan Pablo II',
-      'S-41': 'S-41',
-      'ONLINE': 'Online'
-    };
-    
-    return traduccionesLugares[lugar] || lugar;
-  }
-
-  // Método para traducir servicios
-  traducirServicio(servicio: string): string {
-    // Mapeo directo de servicios a claves de traducción
-    const serviciosMap: { [key: string]: string } = {
-      'SERVICES.DEPORTES': 'SERVICES.DEPORTES',
-      'SERVICES.CORO': 'SERVICES.CORO',
-      'SERVICES.GESTION_INVESTIGACION': 'SERVICES.GESTION_INVESTIGACION',
-      'SERVICES.UNIDAD_EMPLEABILIDAD': 'SERVICES.UNIDAD_EMPLEABILIDAD',
-      'SERVICES.MOVILIDAD_INTERNACIONAL': 'SERVICES.MOVILIDAD_INTERNACIONAL',
-      'SERVICES.CAPELLANIA': 'SERVICES.CAPELLANIA',
-      'SERVICES.ASISTENCIA_PSICOLOGICA': 'SERVICES.ASISTENCIA_PSICOLOGICA',
-      'SERVICES.CULTURA_CIENTIFICA': 'SERVICES.CULTURA_CIENTIFICA',
-      'SERVICES.UNIDAD_IGUALDAD': 'SERVICES.UNIDAD_IGUALDAD',
-      'SERVICES.VOLUNTARIADO': 'SERVICES.VOLUNTARIADO',
-      
-      // Mapeo para servicios que podrían estar guardados en texto plano
-      'Deportes': 'SERVICES.DEPORTES',
-      'Coro': 'SERVICES.CORO',
-      'Gestión de la Investigación y Transferencia': 'SERVICES.GESTION_INVESTIGACION',
-      'Unidad de Empleabilidad y Prácticas': 'SERVICES.UNIDAD_EMPLEABILIDAD',
-      'Movilidad Internacional': 'SERVICES.MOVILIDAD_INTERNACIONAL',
-      'Capellanía': 'SERVICES.CAPELLANIA',
-      'Asistencia Psicológica': 'SERVICES.ASISTENCIA_PSICOLOGICA',
-      'Cultura Científica': 'SERVICES.CULTURA_CIENTIFICA',
-      'Unidad de Igualdad': 'SERVICES.UNIDAD_IGUALDAD',
-      'Voluntariado': 'SERVICES.VOLUNTARIADO',
-      
-      // Mapeo para vicerrectorados
-      'VICERRECTORADOS.InvestigacionTransferencia': 'VICERRECTORADOS.InvestigacionTransferencia',
-      'VICERRECTORADOS.OrdenacionAcademica': 'VICERRECTORADOS.OrdenacionAcademica',
-      'VICERRECTORADOS.FormacionPermanente': 'VICERRECTORADOS.FormacionPermanente',
-      'VICERRECTORADOS.ComunidadUniversitaria': 'VICERRECTORADOS.ComunidadUniversitaria',
-      'VICERRECTORADOS.InternacionalesCooperacion': 'VICERRECTORADOS.InternacionalesCooperacion',
-      
-      // Mapeo para vicerrectorados que podrían estar guardados en texto plano
-      'Vicerrectorado de Investigación y Transferencia': 'VICERRECTORADOS.InvestigacionTransferencia',
-      'Vicerrectorado de Ordenación Académica': 'VICERRECTORADOS.OrdenacionAcademica',
-      'Vicerrectorado de Formación Permanente': 'VICERRECTORADOS.FormacionPermanente',
-      'Vicerrectorado de Comunidad Universitaria': 'VICERRECTORADOS.ComunidadUniversitaria',
-      'Vicerrectorado de Internacionales y Cooperación': 'VICERRECTORADOS.InternacionalesCooperacion'
-    };
-    
-    // Si es una facultad, devolverla tal como está (sin traducir)
-    if (this.esFacultad(servicio)) {
-      return servicio;
-    }
-    
-    return serviciosMap[servicio] || servicio;
+    return this.lugaresMap[lugar] || lugar;
   }
 
   // Métodos para manejar facultades y grados
@@ -1045,39 +851,10 @@ export class EventoComponent {
     return facultadEncontrada ? facultadEncontrada.grados : [];
   }
 
-  onServicioChange(index: number, event: any): void {
-    const servicioSeleccionado = event.target.value;
-    const servicioControl = this.serviciosFormArray.at(index);
-    
-    // Limpiar el grado si no es una facultad
-    if (!this.esFacultad(servicioSeleccionado)) {
-      servicioControl.get('grado')?.setValue('');
-    }
-  }
-
-  // Método para manejar cambio de tipo de horario
-  onTipoHorarioChange(ubicacionIndex: number, event: any): void {
-    const tipoHorario = event.target.value;
-    const ubicacionControl = this.ubicacionesFormArray.at(ubicacionIndex);
-    
-    // Si se cambia a "hora específica", limpiar la hora fin
-    if (tipoHorario === 'hora') {
-      ubicacionControl.get('horaFin')?.setValue('');
-    }
-  }
-
-  // Método para obtener opciones de lugar con lugares personalizados
+  // Método para obtener opciones de lugar
   obtenerOpcionesLugar(): Array<{key: string, value: string}> {
-    const opcionesBase = [
-      { key: 'FACULTY', value: 'Facultad' },
-      { key: 'AULA_MAGNA', value: 'Aula de grado' },
-      { key: 'HUBdeInnovacion', value: 'HUB de Innovación' },
-      { key: 'LIBRARY', value: 'Biblioteca' },
-      { key: 'AuditorioJuanPablo', value: 'Auditorio Juan Pablo II' },
-      { key: 'S-41', value: 'S-41' },
-      { key: 'ONLINE', value: 'Online' }
-    ];
-
+    const opcionesBase = Object.entries(this.lugaresMap).map(([key, value]) => ({key, value}));
+    
     // Agregar lugares del servicio sincronizado
     this.lugaresDisponibles.forEach(lugar => {
       if (!opcionesBase.some(opcion => opcion.key === lugar)) {
@@ -1086,16 +863,6 @@ export class EventoComponent {
     });
 
     return opcionesBase;
-  }
-
-  // Método para verificar si un departamento está en las opciones disponibles
-  departamentoExiste(departamento: string): boolean {
-    return this.departamentosDisponibles.includes(departamento);
-  }
-
-  // Método para obtener el departamento válido o vacío si no existe
-  obtenerDepartamentoValido(departamento: string): string {
-    return this.departamentoExiste(departamento) ? departamento : '';
   }
 
   // Sistema de selección de carátula
@@ -1120,5 +887,54 @@ export class EventoComponent {
   esCaratulaSeleccionada(adjunto: string | ArchivoAdjunto): boolean {
     const adjuntoData = typeof adjunto === 'string' ? adjunto : adjunto.data;
     return this.evento.imagen === adjuntoData;
+  }
+
+  // Método para traducir servicios (simplificado)
+  traducirServicio(servicio: string): string {
+    const serviciosBasicos: { [key: string]: string } = {
+      'SERVICES.DEPORTES': 'SERVICES.DEPORTES',
+      'SERVICES.CORO': 'SERVICES.CORO',
+      'SERVICES.GESTION_INVESTIGACION': 'SERVICES.GESTION_INVESTIGACION',
+      'SERVICES.UNIDAD_EMPLEABILIDAD': 'SERVICES.UNIDAD_EMPLEABILIDAD',
+      'SERVICES.MOVILIDAD_INTERNACIONAL': 'SERVICES.MOVILIDAD_INTERNACIONAL',
+      'SERVICES.CAPELLANIA': 'SERVICES.CAPELLANIA',
+      'SERVICES.ASISTENCIA_PSICOLOGICA': 'SERVICES.ASISTENCIA_PSICOLOGICA',
+      'SERVICES.CULTURA_CIENTIFICA': 'SERVICES.CULTURA_CIENTIFICA',
+      'SERVICES.UNIDAD_IGUALDAD': 'SERVICES.UNIDAD_IGUALDAD',
+      'SERVICES.VOLUNTARIADO': 'SERVICES.VOLUNTARIADO'
+    };
+    
+    return this.esFacultad(servicio) ? servicio : (serviciosBasicos[servicio] || servicio);
+  }
+
+  onServicioChange(index: number, event: any): void {
+    const servicioSeleccionado = event.target.value;
+    const servicioControl = this.serviciosFormArray.at(index);
+    
+    // Limpiar el grado si no es una facultad
+    if (!this.esFacultad(servicioSeleccionado)) {
+      servicioControl.get('grado')?.setValue('');
+    }
+  }
+
+  // Método para manejar cambio de tipo de horario
+  onTipoHorarioChange(ubicacionIndex: number, event: any): void {
+    const tipoHorario = event.target.value;
+    const ubicacionControl = this.ubicacionesFormArray.at(ubicacionIndex);
+    
+    // Si se cambia a "hora específica", limpiar la hora fin
+    if (tipoHorario === 'hora') {
+      ubicacionControl.get('horaFin')?.setValue('');
+    }
+  }
+
+  // Método para verificar si un departamento está en las opciones disponibles
+  departamentoExiste(departamento: string): boolean {
+    return this.departamentosDisponibles.includes(departamento);
+  }
+
+  // Método para obtener el departamento válido o vacío si no existe
+  obtenerDepartamentoValido(departamento: string): string {
+    return this.departamentoExiste(departamento) ? departamento : '';
   }
 }

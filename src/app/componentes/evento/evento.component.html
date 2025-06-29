@@ -266,7 +266,9 @@
                 @if (evento.adjuntos && evento.adjuntos.length > 0) {
                   <div class="adjuntos-grid">
                     @for (adjunto of evento.adjuntos; track $index) {
-                      <div class="adjunto-item" (click)="abrirAdjunto(adjunto, $index)">
+                      <div class="adjunto-item" (click)="abrirAdjunto(adjunto, $index); $event.stopPropagation()" 
+                           title="Clic para abrir {{ obtenerNombreAdjunto(adjunto, $index) }}"
+                           style="cursor: pointer;">
                         @if (esImagen(adjunto)) {
                           <div class="adjunto-imagen-preview">
                             <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" [alt]="'Adjunto ' + ($index + 1)" class="imagen-miniatura">
@@ -446,14 +448,19 @@
                   @if (evento.adjuntos && evento.adjuntos.length > 0) {
                     <div class="adjuntos-grid">
                       @for (adjunto of evento.adjuntos; track $index) {
-                        <div class="adjunto-item">
-                          <button type="button" class="btn-eliminar-adjunto-simple" (click)="eliminarAdjunto($index)">×</button>
+                        <div class="adjunto-item" (click)="abrirAdjunto(adjunto, $index); $event.stopPropagation()" 
+                             title="Clic para abrir {{ obtenerNombreAdjunto(adjunto, $index) }}"
+                             style="cursor: pointer; position: relative;">
+                          <button type="button" class="btn-eliminar-adjunto-simple" 
+                                  (click)="eliminarAdjunto($index); $event.stopPropagation()"
+                                  title="Eliminar adjunto">×</button>
                           @if (esImagen(adjunto)) {
                             <div class="adjunto-imagen-preview">
                               <img [src]="typeof adjunto === 'string' ? adjunto : adjunto.data" class="imagen-miniatura">
                               <div class="checkbox-caratula" 
                                    (click)="seleccionarCaratula(adjunto, $event)"
-                                   [class.selected]="esCaratulaSeleccionada(adjunto)">
+                                   [class.selected]="esCaratulaSeleccionada(adjunto)"
+                                   title="Seleccionar como carátula">
                               </div>
                             </div>
                           } @else {

@@ -471,7 +471,7 @@
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   border: 2px solid #e0e0e0;
   min-width: 120px;
   max-width: 140px;
@@ -487,6 +487,24 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-color: #007bff;
+}
+
+/* Indicador visual de que es clickeable */
+.adjunto-item:hover::before {
+  content: '👁️ Ver';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 123, 255, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 .adjunto-imagen-preview {

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { TraductorService } from './servicios/traductor.service';
 import { CommonModule } from '@angular/common';
 import { IdiomaService } from './servicios/idioma.service';
 import { TranslateModule } from '@ngx-translate/core';

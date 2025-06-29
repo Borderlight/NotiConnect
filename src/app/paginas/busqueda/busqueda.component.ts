@@ -7,9 +7,9 @@ import { ConfirmarModalComponent } from '../../componentes/confirmar-modal/confi
 import { Evento } from '../../interfaces/evento.interface';
 import { EventType } from '../../enums/event-type.enum';
 import { EventoService } from '../../servicios/evento.service';
-import { NavigationService } from '../../servicios/navigation.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DescargaService } from '../../servicios/descarga.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-busqueda',
@@ -139,7 +139,7 @@ export class BusquedaComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private eventoService: EventoService,
-    private navigationService: NavigationService,
+    private location: Location,
     private translate: TranslateService,
     private descargaService: DescargaService
   ) {
@@ -366,7 +366,7 @@ export class BusquedaComponent implements OnInit {
   }
 
   goBack(): void {
-    this.navigationService.goBack();
+    this.location.back();
   }
 
   actualizarEvento(eventoEditado: Partial<Evento>) {

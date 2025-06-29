@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavigationService } from '../../servicios/navigation.service';
 import { AdministradorService, Administrador } from '../../servicios/administrador.service';
 import { EliminarAdminDialogComponent } from '../../componentes/eliminar-admin-dialog/eliminar-admin-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -24,7 +23,7 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private navigationService: NavigationService,
+    private location: Location,
     private administradorService: AdministradorService,
     private translateService: TranslateService
   ) {
@@ -76,6 +75,6 @@ export class RolesComponent implements OnInit {
   }
 
   goBack() {
-    this.navigationService.goBack();
+    this.location.back();
   }
 }

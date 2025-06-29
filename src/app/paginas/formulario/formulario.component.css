@@ -1,27 +1,3 @@
-/* =========================
-   Variables y modo oscuro
-   ========================= */
-:root {
-  --color-texto-principal: #000;
-  --color-texto-secundario: #1a1a1a;
-  --color-fondo: #fff;
-  --color-fondo-seccion: #f8f9fa;
-  --color-borde: #000;
-  --color-error: #c41425;
-  --color-fondo-input: #fff;
-  --color-texto-input: #000;
-}
-
-body.modo-oscuro, .modo-oscuro :root, .dark-mode, :host-context(.dark-mode) {
-  --color-texto-principal: #fff;
-  --color-texto-secundario: #e0e0e0;
-  --color-fondo: #181818;
-  --color-fondo-seccion: #232323;
-  --color-borde: #fff;
-  --color-fondo-input: #232323;
-  --color-texto-input: #fff;
-}
-
 /* Selectores y opciones: fondo y texto según modo */
 select, .tipo-enlace, .select-container select, .campo-form select, .campo-form .select-container select {
   background-color: var(--color-fondo-input) !important;
