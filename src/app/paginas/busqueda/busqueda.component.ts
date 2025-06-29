@@ -449,7 +449,12 @@ export class BusquedaComponent implements OnInit {
           return `Ubicación ${index + 1} (fecha: ${fecha}, hora inicio: ${horaInicio}, hora fin: ${horaFin}, lugar: ${lugar})`;
         }).join(', ');
       case 'ponente':
-        return evento.ponente || (evento.ponentes ? evento.ponentes.map(p => p.nombre).join(', ') : null);
+        return evento.ponente || (evento.ponentes ? evento.ponentes.map(p => {
+          if (p.afiliacion && p.afiliacion.trim() !== '') {
+            return `${p.nombre} (${p.afiliacion})`;
+          }
+          return p.nombre;
+        }).join(', ') : null);
       case 'actividad':
         return evento.actividad || null;
       case 'enlaces':
