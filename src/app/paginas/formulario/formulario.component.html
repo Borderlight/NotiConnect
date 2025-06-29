@@ -45,7 +45,7 @@
         <div class="campo-form" formArrayName="ponentes">
             <label>{{ 'FORM.EVENT.SPEAKER.LABEL' | translate }}</label>
             <p class="campo-descripcion">Añade los ponentes relacionados con el evento y su afiliación.</p>
-            @for (ponente of listadoPonentes.controls; let i = $index; track $index) {
+            @for (ponente of listadoPonentes.controls; let i = $index; track trackByPonenteId(i, ponente)) {
               <div [formGroupName]="i" class="ponente-row" [ngClass]="{'ponente-separado': i > 0}">
                 <label class="ponente-label">Ponente {{ i + 1 }}</label>
                 <p class="descripcion-campo" style="margin-bottom: 0.3rem;">Introduce el nombre completo del ponente</p>
@@ -242,7 +242,7 @@
             <p class="descripcion-campo" id="servicios-desc">
                 {{ 'FORM.ACTIVITY_SERVICES.RELATED_SERVICES.DESC' | translate }}
             </p>
-        @for (campo of listadoServicios.controls; track $index; let i = $index) {
+        @for (campo of listadoServicios.controls; track trackByServicioId(i, campo); let i = $index) {
           <div [formGroupName]="i" class="campo-form servicio-section" role="group" [attr.aria-labelledby]="'servicio-' + i + '-label'">
             <label [id]="'servicio-' + i + '-label'">
               Servicio número {{i + 1}}
@@ -416,7 +416,7 @@
                 </p>
             </div>
 
-        @for (enlace of listadoEnlaces.controls; track $index; let index2 = $index) {
+        @for (enlace of listadoEnlaces.controls; track trackByEnlaceId(index2, enlace); let index2 = $index) {
                 <div [formGroupName]="index2" class="agrupacion_enlaces" role="group" [attr.aria-labelledby]="'enlace-' + index2 + '-label'">
                     <div class="enlace-header">
                         <label [id]="'enlace-' + index2 + '-label'" class="enlace-label">
@@ -530,7 +530,7 @@
         </p>
 
         <div class="campo-form" formArrayName="ubicaciones">
-            @for (ubicacion of listadoUbicaciones.controls; track $index; let i = $index) {
+            @for (ubicacion of listadoUbicaciones.controls; track trackByUbicacionId(i, ubicacion); let i = $index) {
                 <div [formGroupName]="i" class="ubicacion-section" role="group" [attr.aria-labelledby]="'ubicacion-' + i + '-label'">
                     <div class="ubicacion-header">
                         <h3 [id]="'ubicacion-' + i + '-label'" class="align-left">

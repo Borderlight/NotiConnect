@@ -1018,6 +1018,11 @@ export class FormularioComponent {
   // Generador simple de IDs únicos para ponentes
   private ponenteIdCounter = 0;
 
+  // Método para generar IDs únicos
+  private generateUniqueId(): string {
+    return 'ponente_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  }
+
   agregarPonente() {
     this.listadoPonentes.push(this.fb.group({
       id: [this.ponenteIdCounter++],
@@ -1039,6 +1044,18 @@ export class FormularioComponent {
 
   trackByPonenteId(index: number, ponente: AbstractControl) {
     return ponente.get('id')?.value;
+  }
+
+  trackByServicioId(index: number, servicio: AbstractControl) {
+    return servicio.get('id')?.value;
+  }
+
+  trackByEnlaceId(index: number, enlace: AbstractControl) {
+    return enlace.get('id')?.value;
+  }
+
+  trackByUbicacionId(index: number, ubicacion: AbstractControl) {
+    return ubicacion.get('id')?.value;
   }
 
   // Índice de la imagen seleccionada como carátula
