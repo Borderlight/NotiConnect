@@ -72,7 +72,11 @@ export class DescargaService {
     eventos.forEach(evento => {
       html += '<h2>' + (evento.titulo || 'Evento') + '</h2><ul>';
       Object.keys(evento).forEach(campo => {
-        html += `<li><b>${obtenerEtiquetaCampo(campo)}:</b> ${evento[campo] ?? ''}</li>`;
+        if (campo === 'titulo') return; // No repetir el título
+        const valor = evento[campo];
+        if (valor) { // Solo incluir campos que tengan valor
+          html += `<li><b>${obtenerEtiquetaCampo(campo)}:</b> ${valor}</li>`;
+        }
       });
       html += '</ul><hr/>';
     });
