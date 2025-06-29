@@ -366,6 +366,9 @@
     "AULA_MAGNA": "Aula de grado",
     "LIBRARY": "Biblioteca",
     "ONLINE": "En línea",
+    "SELECT_OPTION": "Selecciona una opción",
+    "PRESENTIAL_SPACES": "Espacios Presenciales",
+    "VIRTUAL_SPACES": "Espacios Virtuales",
     "HUBdeInnovacion": "Hub de Innovación",
     "AuditorioJuanPablo": "Auditorio Juan Pablo II"
   },

@@ -13,6 +13,7 @@ import { EventType } from '../../enums/event-type.enum';
 import { ArchivoAdjunto } from '../../interfaces/evento.interface';
 import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
 import { CompresionService } from '../../servicios/compresion.service';
+import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
 
 interface Servicio {
   servicios: string;
@@ -77,12 +78,13 @@ export class FormularioComponent {
         this.mensajeErrorActividad = 'Esta actividad ya existe. Por favor, comprueba el listado de actividades.';
         return;
       }
+      
+      // Añadir al array local (para compatibilidad inmediata)
       this.actividadesRelacionadas.push(actividadTrimmed);
-      // Guardar en localStorage
-      const customActs = localStorage.getItem('actividadesPersonalizadas');
-      const customActsArr = customActs ? JSON.parse(customActs) : [];
-      customActsArr.push(actividadTrimmed);
-      localStorage.setItem('actividadesPersonalizadas', JSON.stringify(customActsArr));
+      
+      // Sincronizar con el servicio de opciones (esto actualiza localStorage y notifica a otros componentes)
+      this.opcionesSincronizadasService.agregarActividad(actividadTrimmed);
+      
       this.formularioEvento.patchValue({
         actividad_relacionada: actividadTrimmed
       });
@@ -217,7 +219,8 @@ export class FormularioComponent {
     private fb: FormBuilder,
     private eventoService: EventoService,
     private router: Router,
-    private compresionService: CompresionService
+    private compresionService: CompresionService,
+    private opcionesSincronizadasService: OpcionesSincronizadasService
   ){
     this.formularioEvento = this.fb.group({
       titulo: ['', [Validators.required]],
@@ -886,6 +889,7 @@ export class FormularioComponent {
     'ComunidadUniversitaria',
     'InternacionalesCooperacion'
   ];
+  lugaresDisponibles: string[] = []; // Array sincronizado con el servicio
   lugaresPresenciales: string[] = [
     'FACULTY',
     'AULA_MAGNA',
@@ -944,8 +948,12 @@ export class FormularioComponent {
       return;
     }
     if (valor && !this.opcionesDepartamento.includes(valor) && !this.departamentosPersonalizados.includes(valor)) {
+      // Añadir al array local (para compatibilidad inmediata)
       this.departamentosPersonalizados.push(valor);
-      localStorage.setItem('departamentosPersonalizados', JSON.stringify(this.departamentosPersonalizados));
+      
+      // Sincronizar con el servicio de opciones (esto actualiza localStorage y notifica a otros componentes)
+      this.opcionesSincronizadasService.agregarDepartamento(valor);
+      
       this.formularioEvento.get('departamento')?.setValue(valor);
       this.mostrarInputDepartamento = false;
       this.nuevoDepartamento = '';
@@ -968,21 +976,39 @@ export class FormularioComponent {
     this.nuevoLugar = Array(numUbicaciones).fill('');
     this.mostrarErrorLugar = Array(numUbicaciones).fill(false);
     this.mensajeErrorLugar = Array(numUbicaciones).fill('');
+    
+    // Cargar datos desde el servicio de opciones sincronizadas
+    this.cargarOpcionesDesdeSercicio();
+    
     this.translateService.onLangChange.subscribe(event => {
-      const customActs = localStorage.getItem('actividadesPersonalizadas');
-      const customActsArr = customActs ? JSON.parse(customActs) : [];
-      this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
       this.currentLang = event.lang;
+      // Las actividades ahora se manejan por el servicio, no necesitamos cargar desde localStorage aquí
       // Forzar actualización del valor seleccionado si existe
       const selected = this.formularioEvento.get('actividad_relacionada')?.value;
       if (selected && !this.actividadesRelacionadas.includes(selected)) {
         this.formularioEvento.patchValue({ actividad_relacionada: '' });
       }
     });
-    // Inicialización normal
-    const customActs = localStorage.getItem('actividadesPersonalizadas');
-    const customActsArr = customActs ? JSON.parse(customActs) : [];
-    this.actividadesRelacionadas = [...this.actividadesPorDefecto, ...customActsArr];
+  }
+
+  private cargarOpcionesDesdeSercicio() {
+    // Cargar actividades
+    this.opcionesSincronizadasService.getActividades().subscribe((actividades: string[]) => {
+      this.actividadesRelacionadas = actividades;
+    });
+    
+    // Cargar departamentos 
+    this.opcionesSincronizadasService.getDepartamentos().subscribe((departamentos: string[]) => {
+      // Actualizar opciones base del departamento (mantener compatibilidad)
+      const departamentosBase = this.opcionesDepartamento;
+      const departamentosPersonalizados = departamentos.filter(d => !departamentosBase.includes(d));
+      this.departamentosPersonalizados = departamentosPersonalizados;
+    });
+
+    // Cargar lugares
+    this.opcionesSincronizadasService.getLugares().subscribe((lugares: string[]) => {
+      this.lugaresDisponibles = lugares;
+    });
   }
 
   get listadoPonentes() {
@@ -1056,7 +1082,7 @@ export class FormularioComponent {
       .trim();
   }
 
-  // Mapeo de valores internos a etiquetas legibles
+  // Mapeo de valores internos a etiquetas legibles (para compatibilidad con claves antiguas)
   private labelsLugares: { [key: string]: string } = {
     'FACULTY': 'Facultad',
     'AULA_MAGNA': 'Aula de grado',
@@ -1069,21 +1095,31 @@ export class FormularioComponent {
 
   // Devuelve la etiqueta legible para un lugar
   getLabelLugar(lugar: string): string {
-    return this.labelsLugares[lugar] || lugar;
+    // Si tiene una traducción en el mapeo, usarla
+    if (this.labelsLugares[lugar]) {
+      return this.labelsLugares[lugar];
+    }
+    // Si no, devolver el valor tal como está (para lugares personalizados o nombres directos)
+    return lugar;
   }
 
-  // Devuelve todas las opciones de lugar para la ubicación i (presenciales + personalizados + virtuales, sin duplicados)
+  // Devuelve todas las opciones de lugar para la ubicación i (lugares sincronizados + personalizados locales, sin duplicados)
   getOpcionesLugarUnificado(i: number): string[] {
-    const normalizadosPresenciales = this.lugaresPresenciales.map(l => this.normalizarLugar(l));
-    const personalizadosFiltrados = (this.lugaresPersonalizados[i] || []).filter(
-      pers => !normalizadosPresenciales.includes(this.normalizarLugar(pers))
+    // Usar lugares sincronizados del servicio
+    const lugaresDelServicio = this.lugaresDisponibles || [];
+    
+    // Añadir lugares personalizados locales de esta ubicación específica que no estén ya en el servicio
+    const normalizadosDelServicio = lugaresDelServicio.map(l => this.normalizarLugar(l));
+    const personalizadosLocales = (this.lugaresPersonalizados[i] || []).filter(
+      pers => !normalizadosDelServicio.includes(this.normalizarLugar(pers))
     );
-    // Unir presenciales, personalizados y virtuales, sin duplicados
+    
+    // Combinar lugares del servicio + lugares personalizados locales
     const todos = [
-      ...this.lugaresPresenciales,
-      ...personalizadosFiltrados,
-      ...this.lugaresVirtuales
+      ...lugaresDelServicio,
+      ...personalizadosLocales
     ];
+    
     // Eliminar duplicados por normalización
     const vistos = new Set<string>();
     return todos.filter(lugar => {
@@ -1135,8 +1171,14 @@ export class FormularioComponent {
       this.mensajeErrorLugar[i] = 'Este lugar ya existe. Por favor, comprueba el listado.';
       return;
     }
-    // Añadir el nuevo lugar personalizado y seleccionarlo automáticamente
+    
+    // Añadir el nuevo lugar personalizado localmente (para compatibilidad inmediata)
     this.lugaresPersonalizados[i].push(valor);
+    
+    // Sincronizar con el servicio de opciones (esto actualiza localStorage y notifica a otros componentes)
+    this.opcionesSincronizadasService.agregarLugar(valor);
+    
+    // Seleccionar automáticamente el nuevo lugar
     this.formularioEvento.get('ubicaciones')?.get(''+i)?.get('lugar')?.setValue(valor);
     this.mostrarInputLugar[i] = false;
     this.nuevoLugar[i] = '';
