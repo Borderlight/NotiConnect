@@ -377,11 +377,25 @@ export class BusquedaComponent implements OnInit {
       nombreBase = eventosParaDescargar[0].titulo.replace(/[^a-zA-Z0-9-_]/g, '_').substring(0, 40);
     }
 
+    // Para CSV y JSON, convertir adjuntos complejos a formato simple
+    const eventosParaCSVJSON = eventosParaDescargar.map(evento => {
+      const eventoSimple = { ...evento };
+      if (eventoSimple.adjuntos) {
+        try {
+          const adjuntos = JSON.parse(eventoSimple.adjuntos);
+          eventoSimple.adjuntos = adjuntos.map((a: any) => a.nombre).join(', ');
+        } catch (error) {
+          // Si no es JSON, mantener el valor original
+        }
+      }
+      return eventoSimple;
+    });
+
     if (options.formats.json) {
-      this.descargaService.descargarJSON(eventosParaDescargar, nombreBase);
+      this.descargaService.descargarJSON(eventosParaCSVJSON, nombreBase);
     }
     if (options.formats.csv) {
-      this.descargaService.descargarCSV(eventosParaDescargar, nombreBase, this.obtenerEtiquetaCampo.bind(this));
+      this.descargaService.descargarCSV(eventosParaCSVJSON, nombreBase, this.obtenerEtiquetaCampo.bind(this));
     }
     if (options.formats.pdf) {
       this.descargaService.descargarPDF(eventosParaDescargar, nombreBase, this.obtenerEtiquetaCampo.bind(this));
@@ -462,7 +476,21 @@ export class BusquedaComponent implements OnInit {
       case 'servicios':
         return evento.servicios ? evento.servicios.map(s => this.traducirServicio(s.servicios) + (s.grado ? ` (${s.grado})` : '')).join(', ') : null;
       case 'adjuntos':
-        return evento.adjuntos ? evento.adjuntos.map(a => a.name || 'Archivo adjunto').join(', ') : null;
+        if (!evento.adjuntos || evento.adjuntos.length === 0) return null;
+        // Para exportación avanzada, devolver información detallada de cada adjunto
+        return JSON.stringify(evento.adjuntos.map(a => {
+          const nombre = a.name || 'Archivo adjunto';
+          const tipo = a.type || '';
+          const data = a.data || a;
+          const esImagen = tipo.startsWith('image/') || (typeof data === 'string' && data.startsWith('data:image/'));
+          
+          return {
+            nombre: nombre,
+            tipo: tipo,
+            data: data,
+            esImagen: esImagen
+          };
+        }));
       default:
         return null;
     }
