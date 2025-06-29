@@ -279,28 +279,28 @@ export class EventoComponent {
         return ubicacionData;
       });
       
-      // Actualizar ponentes
+      // Actualizar ponentes - solo incluir los que tienen nombre
       this.evento.ponentes = formValue.ponentes
-        .filter((p: any) => p.nombre && p.nombre.trim())
+        .filter((p: any) => p.nombre && p.nombre.trim() !== '')
         .map((ponente: any, index: number) => ({
           id: index + 1,
           nombre: ponente.nombre.trim(),
-          afiliacion: ponente.afiliacion || undefined
+          afiliacion: ponente.afiliacion && ponente.afiliacion.trim() ? ponente.afiliacion.trim() : undefined
         }));
       
-      // Actualizar servicios
+      // Actualizar servicios - solo incluir los que tienen servicio seleccionado
       this.evento.servicios = formValue.servicios
-        .filter((s: any) => s.servicios && s.servicios.trim())
+        .filter((s: any) => s.servicios && s.servicios.trim() !== '')
         .map((servicio: any) => ({
           servicios: servicio.servicios.trim(),
-          grado: servicio.grado || undefined
+          grado: servicio.grado && servicio.grado.trim() ? servicio.grado.trim() : undefined
         }));
       
-      // Actualizar enlaces
+      // Actualizar enlaces - solo incluir los que tienen URL válida
       this.evento.enlaces = formValue.enlaces
-        .filter((e: any) => e.url && e.url.trim())
+        .filter((e: any) => e.url && e.url.trim() !== '')
         .map((enlace: any) => ({
-          tipo: enlace.tipo,
+          tipo: enlace.tipo || 'Otro',
           url: enlace.url.trim()
         }));
       
@@ -685,43 +685,55 @@ export class EventoComponent {
   private initPonentes(): void {
     const ponentesArray = this.editForm.get('ponentes') as FormArray;
     
+    // Solo agregar ponentes que tengan nombre válido
     if (this.evento.ponentes && this.evento.ponentes.length > 0) {
       this.evento.ponentes.forEach(ponente => {
-        ponentesArray.push(this.fb.group({
-          nombre: [ponente.nombre || '', Validators.required],
-          afiliacion: [ponente.afiliacion || '']
-        }));
+        // Solo agregar si el ponente tiene nombre
+        if (ponente.nombre && ponente.nombre.trim() !== '') {
+          ponentesArray.push(this.fb.group({
+            nombre: [ponente.nombre || '', Validators.required],
+            afiliacion: [ponente.afiliacion || '']
+          }));
+        }
       });
     }
-    // Si no hay ponentes, el usuario puede agregar con el botón +
+    // Si no hay ponentes válidos, dejar el array vacío para mostrar el mensaje
   }
 
   private initServicios(): void {
     const serviciosArray = this.editForm.get('servicios') as FormArray;
     
+    // Solo agregar servicios que tengan servicio válido
     if (this.evento.servicios && this.evento.servicios.length > 0) {
       this.evento.servicios.forEach(servicio => {
-        serviciosArray.push(this.fb.group({
-          servicios: [servicio.servicios || '', Validators.required],
-          grado: [servicio.grado || '']
-        }));
+        // Solo agregar si el servicio tiene servicios
+        if (servicio.servicios && servicio.servicios.trim() !== '') {
+          serviciosArray.push(this.fb.group({
+            servicios: [servicio.servicios || '', Validators.required],
+            grado: [servicio.grado || '']
+          }));
+        }
       });
     }
-    // Si no hay servicios, el usuario puede agregar con el botón +
+    // Si no hay servicios válidos, dejar el array vacío para mostrar el mensaje
   }
 
   private initEnlaces(): void {
     const enlacesArray = this.editForm.get('enlaces') as FormArray;
     
+    // Solo agregar enlaces que tengan URL válida
     if (this.evento.enlaces && this.evento.enlaces.length > 0) {
       this.evento.enlaces.forEach(enlace => {
-        enlacesArray.push(this.fb.group({
-          tipo: [enlace.tipo || '', Validators.required],
-          url: [enlace.url || '', Validators.required]
-        }));
+        // Solo agregar si el enlace tiene URL
+        if (enlace.url && enlace.url.trim() !== '') {
+          enlacesArray.push(this.fb.group({
+            tipo: [enlace.tipo || '', Validators.required],
+            url: [enlace.url || '', Validators.required]
+          }));
+        }
       });
     }
-    // Si no hay enlaces, el usuario puede agregar con el botón +
+    // Si no hay enlaces válidos, dejar el array vacío para mostrar el mensaje
   }
 
   // Métodos para agregar elementos
