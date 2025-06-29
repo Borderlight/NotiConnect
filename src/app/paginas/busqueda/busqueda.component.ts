@@ -342,9 +342,18 @@ export class BusquedaComponent implements OnInit {
       const eventoFiltrado: any = {};
       Object.keys(options.fields).forEach(field => {
         if (options.fields[field]) {
-          // Si el campo es 'ubicaciones', no lo incluimos en la descarga
-          // porque sus subcampos (fecha, horaInicio, horaFin, lugar) ya están incluidos
+          // Si el campo es 'ubicaciones', incluirlo con formato agrupado
           if (field === 'ubicaciones') {
+            const valor = this.obtenerValorCampo(evento, field);
+            if (valor !== null) {
+              eventoFiltrado[field] = valor;
+            }
+            return;
+          }
+          
+          // Para subcampos de ubicaciones (fecha, horaInicio, horaFin, lugar), 
+          // solo incluirlos si no se ha seleccionado el campo agrupador 'ubicaciones'
+          if (['fecha', 'horaInicio', 'horaFin', 'lugar'].includes(field) && options.fields['ubicaciones']) {
             return;
           }
           
@@ -422,9 +431,15 @@ export class BusquedaComponent implements OnInit {
       case 'lugar':
         return evento.lugar || null;
       case 'ubicaciones':
-        return evento.ubicaciones ? evento.ubicaciones.map(u => 
-          `${new Date(u.fecha).toLocaleDateString()} - ${u.lugar} (${u.horaInicio}${u.horaFin ? '-' + u.horaFin : ''})`
-        ).join('; ') : null;
+        if (!evento.ubicaciones || evento.ubicaciones.length === 0) return null;
+        return evento.ubicaciones.map((u, index) => {
+          const fecha = u.fecha ? new Date(u.fecha).toLocaleDateString() : '';
+          const horaInicio = u.horaInicio || '';
+          const horaFin = u.horaFin || '';
+          const lugar = u.lugar || '';
+          
+          return `Ubicación ${index + 1} (fecha: ${fecha}, hora inicio: ${horaInicio}, hora fin: ${horaFin}, lugar: ${lugar})`;
+        }).join(', ');
       case 'ponente':
         return evento.ponente || (evento.ponentes ? evento.ponentes.map(p => p.nombre).join(', ') : null);
       case 'actividad':
