@@ -331,6 +331,12 @@ export class BusquedaComponent implements OnInit {
       const eventoFiltrado: any = {};
       Object.keys(options.fields).forEach(field => {
         if (options.fields[field]) {
+          // Si el campo es 'ubicaciones', no lo incluimos en la descarga
+          // porque sus subcampos (fecha, horaInicio, horaFin, lugar) ya están incluidos
+          if (field === 'ubicaciones') {
+            return;
+          }
+          
           // Usar el método obtenerValorCampo para obtener el valor correcto
           const valor = this.obtenerValorCampo(evento, field);
           if (valor !== null) {
@@ -394,9 +400,9 @@ export class BusquedaComponent implements OnInit {
       case 'fecha':
         return evento.fecha ? new Date(evento.fecha).toLocaleDateString() : null;
       case 'horaInicio':
-        return evento.horaInicio ? new Date(evento.horaInicio).toLocaleTimeString() : null;
+        return evento.horaInicio ? (new Date(evento.horaInicio).toString() !== 'Invalid Date' ? new Date(evento.horaInicio).toLocaleTimeString() : evento.horaInicio.toString()) : null;
       case 'horaFin':
-        return evento.horaFin ? new Date(evento.horaFin).toLocaleTimeString() : null;
+        return evento.horaFin ? (new Date(evento.horaFin).toString() !== 'Invalid Date' ? new Date(evento.horaFin).toLocaleTimeString() : evento.horaFin.toString()) : null;
       case 'lugar':
         return evento.lugar || null;
       case 'ubicaciones':
