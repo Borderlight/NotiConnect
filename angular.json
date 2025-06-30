@@ -21,7 +21,11 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-  "src/favicon.ico",
+  {
+    "glob": "NotiConnect.png", 
+    "input": "src/assets/pantalla-principal",
+    "output": "/"
+  },
   "src/assets",
   {
     "glob": "**/*",
