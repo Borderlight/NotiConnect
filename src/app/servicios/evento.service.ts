@@ -12,6 +12,11 @@ export class EventoService {
   constructor(private http: HttpClient) {}
 
   private getApiUrl(): string {
+    // Si estamos en producción (Render)
+    if (window.location.hostname === 'noticonnect.onrender.com') {
+      // Intentar primero con el mismo dominio del frontend
+      return 'https://noticonnect.onrender.com/api/eventos';
+    }
     // Si estamos en un entorno de desarrollo túnel, usar la URL del túnel del backend
     if (window.location.hostname.includes('devtunnels.ms')) {
       return 'https://zd51xrvm-3000.uks1.devtunnels.ms/api/eventos';

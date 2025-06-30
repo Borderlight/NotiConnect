@@ -19,7 +19,9 @@ app.use(cors({
     origin: [
         'http://localhost:4200',
         'https://zd51xrvm-4200.uks1.devtunnels.ms',
-        /https:\/\/.*\.devtunnels\.ms$/
+        'https://noticonnect.onrender.com',
+        /https:\/\/.*\.devtunnels\.ms$/,
+        /https:\/\/.*\.onrender\.com$/
     ],
     credentials: true
 }));
