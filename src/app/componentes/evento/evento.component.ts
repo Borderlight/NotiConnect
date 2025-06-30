@@ -6,6 +6,7 @@ import { IdiomaService } from '../../servicios/idioma.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
+import { AuthService } from '../../servicios/auth.service';
 
 @Component({
   selector: 'app-evento',
@@ -154,7 +155,8 @@ export class EventoComponent {
     private idiomaService: IdiomaService,
     private fb: FormBuilder,
     private opcionesSincronizadasService: OpcionesSincronizadasService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private authService: AuthService
   ) {
     this.idiomaService.obtenerIdiomaActual().subscribe(
       lang => this.currentLang = lang
@@ -424,8 +426,9 @@ export class EventoComponent {
           url: enlace.url.trim()
         }));
       
-      // Emitir los cambios al componente padre
-      this.actualizar.emit({
+      // Agregar el usuario modificador automáticamente
+      const usuarioActual = this.authService.getUsuarioActual();
+      const datosActualizacion: any = {
         _id: this.evento._id,
         tipoEvento: formValue.tipoEvento,
         titulo: formValue.titulo,
@@ -438,7 +441,16 @@ export class EventoComponent {
         enlaces: this.evento.enlaces,
         imagen: this.evento.imagen,
         adjuntos: this.evento.adjuntos
-      });
+      };
+      
+      // Añadir modificadoPor si hay usuario autenticado
+      if (usuarioActual) {
+        datosActualizacion.modificadoPor = usuarioActual.email;
+        console.log('👤 Usuario modificador asignado:', datosActualizacion.modificadoPor);
+      }
+      
+      // Emitir los cambios al componente padre
+      this.actualizar.emit(datosActualizacion);
       
       // Actualizar campos directos en el evento local
       this.evento.tipoEvento = formValue.tipoEvento;

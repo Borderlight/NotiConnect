@@ -46,6 +46,23 @@
           </select>
         </div>
       }
+      
+      <!-- Información de autoría -->
+      @if (!editMode) {
+        <div class="evento-autoria">
+          @if (evento.creadoPor) {
+            <div class="autoria-item">
+              <small><strong>Creado por:</strong> {{ evento.creadoPor }}</small>
+            </div>
+          }
+          @if (evento.modificadoPor && evento.modificadoPor !== evento.creadoPor) {
+            <div class="autoria-item">
+              <small><strong>Modificado por:</strong> {{ evento.modificadoPor }}</small>
+            </div>
+          }
+        </div>
+      }
+      
       <span class="acciones">
         <!-- Los botones aquí quedan ocultos por CSS -->
       </span>

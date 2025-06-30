@@ -14,6 +14,7 @@ import { ArchivoAdjunto } from '../../interfaces/evento.interface';
 import { ProgresoSubidaComponent } from '../../componentes/progreso-subida/progreso-subida.component';
 import { CompresionService } from '../../servicios/compresion.service';
 import { OpcionesSincronizadasService } from '../../servicios/opciones-sincronizadas.service';
+import { AuthService } from '../../servicios/auth.service';
 
 interface Servicio {
   servicios: string;
@@ -30,6 +31,7 @@ interface Servicio {
 export class FormularioComponent {
   currentLang: string;
   private translateService = inject(TranslateService);
+  private authService = inject(AuthService);
 
   mostrarError: boolean = false
   opcionSeleccionada: string = '0'
@@ -620,6 +622,13 @@ export class FormularioComponent {
       const actividad = this.formularioEvento.get('actividad_relacionada')?.value;
       if (actividad) {
         eventoData.actividad = actividad;
+      }
+      
+      // Agregar el usuario creador automáticamente
+      const usuarioActual = this.authService.getUsuarioActual();
+      if (usuarioActual) {
+        eventoData.creadoPor = usuarioActual.email;
+        console.log('👤 Usuario creador asignado:', eventoData.creadoPor);
       }
       
       // Actualizar progreso

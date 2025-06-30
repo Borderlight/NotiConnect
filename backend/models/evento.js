@@ -32,7 +32,10 @@ const eventoSchema = new mongoose.Schema({
     servicios: [servicioSchema],
     enlaces: [enlaceSchema],
     actividad: { type: String, default: '' },
-    ubicaciones: [ubicacionSchema]
+    ubicaciones: [ubicacionSchema],
+    // Campos de autoría
+    creadoPor: { type: String, required: false }, // Email del usuario que creó el evento
+    modificadoPor: { type: String, required: false } // Email del usuario que modificó el evento por última vez
 }, {
     timestamps: true,
     strict: false // Permitir campos no definidos en el esquema

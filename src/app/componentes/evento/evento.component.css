@@ -1123,3 +1123,39 @@ body.modo-oscuro .adjunto-imagen-preview,
 :host-context(.dark-mode) .adjunto-imagen-preview {
   background: #1a1a1a;
 }
+
+/* Estilos para la información de autoría */
+.evento-autoria {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-self: flex-start;
+}
+
+.autoria-item {
+  color: var(--color-texto-secundario);
+  opacity: 0.8;
+}
+
+.autoria-item small {
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.autoria-item strong {
+  color: var(--color-texto-principal);
+  font-weight: 600;
+}
+
+/* Modo oscuro para autoría */
+body.modo-oscuro .autoria-item,
+:host-context(.dark-mode) .autoria-item {
+  color: #b0b0b0;
+}
+
+body.modo-oscuro .autoria-item strong,
+:host-context(.dark-mode) .autoria-item strong {
+  color: #ffffff;
+}

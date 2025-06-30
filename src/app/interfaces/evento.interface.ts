@@ -15,6 +15,9 @@ export interface Evento {
   enlaces: Enlace[];
   actividad?: string; // Opcional
   ubicaciones: Ubicacion[];
+  // Campos de autoría
+  creadoPor?: string; // Email del usuario que creó el evento
+  modificadoPor?: string; // Email del usuario que modificó el evento por última vez
   // Campos antiguos para retrocompatibilidad
   fecha?: Date;
   lugar?: string;
