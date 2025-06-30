@@ -21,17 +21,20 @@ export class PaginaPrincipalComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    // Inicialmente mostrar el modal hasta que se autentique
-    this.mostrarAuthModal = true;
+    // Verificar si hay usuario autenticado al inicializar
+    const usuarioActual = this.authService.getUsuarioActual();
     
-    // Verificar si hay usuario autenticado
+    // Si no hay usuario autenticado, mostrar el modal
+    this.mostrarAuthModal = !usuarioActual?.isAuthenticated;
+    
+    // Suscribirse a cambios en el estado de autenticación
     this.authService.usuario$.subscribe(usuario => {
       this.usuarioAutenticado = usuario;
       
-      // Solo actualizar el modal si no está siendo gestionado manualmente
+      // Actualizar la visibilidad del modal basado en el estado de autenticación
       if (usuario && usuario.isAuthenticated) {
         this.mostrarAuthModal = false;
-      } else if (!usuario) {
+      } else {
         this.mostrarAuthModal = true;
       }
     });
