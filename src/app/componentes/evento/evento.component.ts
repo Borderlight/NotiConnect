@@ -381,6 +381,14 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     
+    console.log('🔄 Iniciando guardado de edición...');
+    console.log('📄 Evento antes de editar:', {
+      id: this.evento._id,
+      titulo: this.evento.titulo,
+      creadoPor: this.evento.creadoPor,
+      modificadoPor: this.evento.modificadoPor
+    });
+    
     if (this.editForm.valid) {
       const formValue = this.editForm.value;
       
@@ -458,6 +466,19 @@ export class EventoComponent {
       this.evento.departamento = formValue.departamento;
       this.evento.descripcion = formValue.descripcion;
       this.evento.actividad = formValue.actividad;
+      
+      // Actualizar también el campo modificadoPor localmente
+      if (usuarioActual) {
+        this.evento.modificadoPor = usuarioActual.email;
+        console.log('👤 Campo modificadoPor actualizado localmente:', this.evento.modificadoPor);
+      }
+      
+      console.log('✅ Evento después de editar:', {
+        id: this.evento._id,
+        titulo: this.evento.titulo,
+        creadoPor: this.evento.creadoPor,
+        modificadoPor: this.evento.modificadoPor
+      });
       
       this.editMode = false;
     } else {
@@ -1221,5 +1242,21 @@ export class EventoComponent {
     }
     
     return actividad;
+  }
+
+  // Método auxiliar para obtener información de autoría
+  obtenerInfoAutoria(): { mostrarCreado: boolean, mostrarModificado: boolean } {
+    const mostrarCreado = !!this.evento.creadoPor;
+    const mostrarModificado = !!this.evento.modificadoPor && 
+                             this.evento.modificadoPor !== this.evento.creadoPor;
+    
+    console.log('📋 Info de autoría:', {
+      creadoPor: this.evento.creadoPor,
+      modificadoPor: this.evento.modificadoPor,
+      mostrarCreado,
+      mostrarModificado
+    });
+    
+    return { mostrarCreado, mostrarModificado };
   }
 }

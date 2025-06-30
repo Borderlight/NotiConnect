@@ -1128,6 +1128,7 @@ body.modo-oscuro .adjunto-imagen-preview,
 .evento-autoria {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  margin-left: 1.5rem; /* Mover hacia la derecha */
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

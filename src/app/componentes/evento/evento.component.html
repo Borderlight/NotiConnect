@@ -55,7 +55,7 @@
               <small><strong>Creado por:</strong> {{ evento.creadoPor }}</small>
             </div>
           }
-          @if (evento.modificadoPor && evento.modificadoPor !== evento.creadoPor) {
+          @if (evento.modificadoPor) {
             <div class="autoria-item">
               <small><strong>Modificado por:</strong> {{ evento.modificadoPor }}</small>
             </div>
