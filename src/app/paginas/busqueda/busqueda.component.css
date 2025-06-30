@@ -46,7 +46,6 @@
   color: var(--color-texto-principal);
   font-weight: 600;
   font-size: 1rem;
-  margin-bottom: -0.25rem; /* Negative margin to eliminate spacing */
 }
 
 .filtro-select,
@@ -59,7 +58,6 @@
   background-color: var(--color-fondo-input);
   color: var(--color-texto-input);
   min-height: 44px;
-  margin-top: -0.25rem; /* Negative margin to eliminate spacing */
 }
 
 .filtro-select:focus,

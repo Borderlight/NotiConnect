@@ -1,5 +1,5 @@
-<div class="modal-backdrop" (click)="cerrarModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
+<div class="modal-backdrop-global" (click)="cerrarModal()">
+  <div class="modal-content-global modal-large" (click)="$event.stopPropagation()">
     <h2>Opciones de descarga</h2>
     
     <div class="seccion">
@@ -81,12 +81,12 @@
     </div>
 
     <div class="botones">
-      <button class="btn-descargar" 
+      <button class="btn-primary" 
               [disabled]="!isValidSelection()" 
               (click)="descargarSeleccionado()">
         Descargar seleccionado
       </button>
-      <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
     </div>
   </div>
 </div>

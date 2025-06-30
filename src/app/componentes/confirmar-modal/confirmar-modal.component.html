@@ -1,10 +1,10 @@
 @if (visible) {
-  <div class="modal-backdrop">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+  <div class="modal-backdrop-global">
+    <div class="modal-content-global" (click)="$event.stopPropagation()">
       <p>{{ mensaje }}</p>
       <div class="modal-actions">
-        <button class="btn-confirmar" (click)="onConfirmar()">Eliminar</button>
-        <button class="btn-cancelar" (click)="onCancelar()">Cancelar</button>
+        <button class="btn-danger" (click)="onConfirmar()">Eliminar</button>
+        <button class="btn-secondary" (click)="onCancelar()">Cancelar</button>
       </div>
     </div>
   </div>

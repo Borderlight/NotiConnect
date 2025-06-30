@@ -1,20 +1,3 @@
-/* Selectores y opciones: fondo y texto según modo */
-select, .tipo-enlace, .select-container select, .campo-form select, .campo-form .select-container select {
-  background-color: var(--color-fondo-input) !important;
-  color: var(--color-texto-input) !important;
-  border: 2px solid var(--color-borde);
-}
-
-select option, .tipo-enlace option, .select-container select option {
-  background-color: var(--color-fondo-input) !important;
-  color: var(--color-texto-input) !important;
-}
-
-select:disabled, select option:disabled {
-  color: #888 !important;
-  background-color: #222 !important;
-}
-
 /* =========================
    Estructura principal
    ========================= */

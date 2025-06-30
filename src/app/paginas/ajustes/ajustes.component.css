@@ -127,29 +127,6 @@ input:checked + .slider:before {
     .ajuste-seccion {
         border-bottom-color: #444;
     }
-
-    .selector-idioma, .idioma-selector-container select {
-      background-color: var(--color-fondo-input) !important;
-      color: var(--color-texto-input) !important;
-      border: 2px solid var(--color-borde);
-    }
-
-    .selector-idioma option {
-      background-color: var(--color-fondo-input) !important;
-      color: var(--color-texto-input) !important;
-    }
-
-    .selector-idioma:focus {
-      border-color: #4CAF50;
-      outline: 3px solid #005FCC;
-      outline-offset: 2px;
-      box-shadow: 0 0 0 3px rgba(0, 95, 204, 0.2);
-    }
-
-    .selector-idioma:disabled, .selector-idioma option:disabled {
-      color: #888 !important;
-      background-color: #222 !important;
-    }
 }
 
 /* Asegura que la bandera del idioma seleccionado se muestre correctamente alineada y visible junto al selector */

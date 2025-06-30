@@ -1,10 +1,10 @@
-<div class="dialog-backdrop" (click)="cerrarDialog()">
-  <div class="dialog-content" (click)="$event.stopPropagation()">
+<div class="modal-backdrop-global" (click)="cerrarDialog()">
+  <div class="modal-content-global" (click)="$event.stopPropagation()">
     <h2>{{ 'ROLES.DELETE_DIALOG.TITLE' | translate }}</h2>
     <p>{{ 'ROLES.DELETE_DIALOG.MESSAGE' | translate: { name: nombreAdmin } }}</p>
     <div class="dialog-buttons">
-      <button class="btn-cancelar" (click)="cerrarDialog()">{{ 'ROLES.DELETE_DIALOG.CANCEL' | translate }}</button>
-      <button class="btn-eliminar" (click)="confirmarEliminacion()">{{ 'ROLES.DELETE_DIALOG.CONFIRM' | translate }}</button>
+      <button class="btn-secondary" (click)="cerrarDialog()">{{ 'ROLES.DELETE_DIALOG.CANCEL' | translate }}</button>
+      <button class="btn-danger" (click)="confirmarEliminacion()">{{ 'ROLES.DELETE_DIALOG.CONFIRM' | translate }}</button>
     </div>
   </div>
 </div>

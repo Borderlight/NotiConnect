@@ -15,6 +15,13 @@
     align-items: center;
 }
 
+.icono-texto {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-texto-principal);
+}
+
 .boton-icono {
     width: 160px;
     height: 160px;

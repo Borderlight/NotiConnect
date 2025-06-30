@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { TemaService } from '../../servicios/tema.service';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,7 +16,7 @@ interface Idioma {
   templateUrl: './ajustes.component.html',
   styleUrls: ['./ajustes.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, TranslateModule]
+  imports: [FormsModule, CommonModule, TranslateModule]
 })
 export class AjustesComponent implements OnInit {
   modoOscuro: boolean = false;
@@ -50,10 +49,5 @@ export class AjustesComponent implements OnInit {
   cambiarIdioma(evento: Event) {
     const idiomaSeleccionado = (evento.target as HTMLSelectElement).value;
     this.idiomaService.cambiarIdioma(idiomaSeleccionado);
-  }
-
-  getBanderaPorCodigo(codigo: string): string {
-    const idioma = this.idiomas.find(i => i.codigo === codigo);
-    return idioma ? idioma.bandera : '';
   }
 }

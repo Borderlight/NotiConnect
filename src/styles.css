@@ -161,3 +161,178 @@ textarea:disabled {
   background: #e53935 !important;
   border-color: #e53935 !important;
 }
+
+/* =========================
+   CLASES COMUNES GLOBALES
+   ========================= */
+
+/* Modal backdrop común para todos los modales */
+.modal-backdrop-common {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenido de modal común */
+.modal-content-common {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Transiciones comunes */
+.transition-smooth {
+  transition: all 0.2s ease;
+}
+
+.transition-transform {
+  transition: transform 0.2s ease;
+}
+
+.transition-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Botones comunes */
+.btn-common {
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.btn-secondary {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #bdbdbd;
+}
+
+/* Estilos de inputs comunes */
+.input-common {
+  padding: 0.75rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 6px;
+  background-color: var(--color-fondo-input);
+  color: var(--color-texto-input);
+}
+
+.input-common:focus {
+  outline: 3px solid #005FCC;
+  outline-offset: 2px;
+  border-color: #005FCC;
+}
+
+/* =========================
+   CLASES GLOBALES PARA MODALES
+   ========================= */
+
+/* Backdrop de modal global */
+.modal-backdrop-global {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenido de modal global */
+.modal-content-global {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+/* Modal grande para descarga */
+.modal-large {
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: left;
+}
+
+/* Botones globales */
+.btn-primary {
+  background: #1976d2;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+/* =========================
+   FIN CLASES GLOBALES PARA MODALES
+   ========================= */
