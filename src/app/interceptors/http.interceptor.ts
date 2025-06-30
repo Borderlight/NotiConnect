@@ -17,9 +17,6 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
         errorMessage = error.error.message;
       }
       
-      console.error('Error HTTP:', error);
-      console.error('Mensaje de error:', errorMessage);
-      
       return throwError(() => ({
         ...error,
         userMessage: errorMessage
@@ -27,3 +24,4 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 };
+

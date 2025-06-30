@@ -185,3 +185,4 @@ export class AuthModalComponent implements OnInit {
     return '';
   }
 }
+

@@ -62,7 +62,6 @@ export class AppComponent {
   }
 
   cerrarSesion() {
-    console.log('Cerrando sesión y redirigiendo a página principal...');
     this.authService.cerrarSesion();
     this.mostrarDropdownUsuario = false;
     // Redirigir a la página principal para mostrar el modal de login

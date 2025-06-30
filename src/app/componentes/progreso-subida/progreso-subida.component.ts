@@ -79,3 +79,4 @@ export class ProgresoSubidaComponent {
   @Input() titulo: string = 'Procesando...';
   @Input() mensaje: string = 'Por favor, espera mientras se procesan los archivos.';
 }
+

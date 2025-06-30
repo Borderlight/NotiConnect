@@ -246,3 +246,4 @@ export class DescargaService {
     window.URL.revokeObjectURL(url);
   }
 }
+

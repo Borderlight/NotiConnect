@@ -22,3 +22,4 @@ export class ConfirmarModalComponent {
     this.cancelar.emit();
   }
 }
+

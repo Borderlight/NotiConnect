@@ -17,11 +17,6 @@
   </div>
   <div class="evento-imagen-col">
     <img [src]="imagenPortadaUrl" [alt]="'EVENT_CARD.EVENT_IMAGE' | translate:{title: evento.titulo}" class="evento-imagen">
-    @if (evento.imagen) {
-      <div class="caratula-label">
-        {{ 'FORM.COVER.LABEL' | translate }}
-      </div>
-    }
   </div>
   <div class="evento-main-col">
     <div class="evento-header">

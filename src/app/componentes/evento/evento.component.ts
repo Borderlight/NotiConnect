@@ -381,7 +381,7 @@ export class EventoComponent {
   guardarEdicion(event: Event) {
     event.stopPropagation();
     
-    console.log('🔄 Iniciando guardado de edición...');
+
     console.log('📄 Evento antes de editar:', {
       id: this.evento._id,
       titulo: this.evento.titulo,
@@ -454,7 +454,7 @@ export class EventoComponent {
       // Añadir modificadoPor si hay usuario autenticado
       if (usuarioActual) {
         datosActualizacion.modificadoPor = usuarioActual.email;
-        console.log('👤 Usuario modificador asignado:', datosActualizacion.modificadoPor);
+
       }
       
       // Emitir los cambios al componente padre
@@ -470,7 +470,7 @@ export class EventoComponent {
       // Actualizar también el campo modificadoPor localmente
       if (usuarioActual) {
         this.evento.modificadoPor = usuarioActual.email;
-        console.log('👤 Campo modificadoPor actualizado localmente:', this.evento.modificadoPor);
+
       }
       
       console.log('✅ Evento después de editar:', {
@@ -1260,3 +1260,4 @@ export class EventoComponent {
     return { mostrarCreado, mostrarModificado };
   }
 }
+

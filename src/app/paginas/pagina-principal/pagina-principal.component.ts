@@ -44,7 +44,6 @@ export class PaginaPrincipalComponent implements OnInit {
     this.authService.registrarUsuario(usuario).subscribe({
       next: (success) => {
         if (success) {
-          console.log('Usuario registrado exitosamente');
           // NO cerrar modal aquí - el modal cambiará a modo login automáticamente
           // El modal se cerrará solo cuando se haga login
         }
@@ -57,12 +56,9 @@ export class PaginaPrincipalComponent implements OnInit {
   }
 
   onUsuarioLogueado(loginData: LoginData) {
-    console.log('PaginaPrincipal - Intentando login con:', loginData);
     this.authService.iniciarSesion(loginData).subscribe({
       next: (success) => {
-        console.log('PaginaPrincipal - Login result:', success);
         if (success) {
-          console.log('Usuario logueado exitosamente');
           this.authModal?.limpiarFormulario();
           // No cerrar manualmente el modal aquí, dejar que la suscripción lo haga
         }

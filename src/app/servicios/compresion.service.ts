@@ -7,14 +7,7 @@ export class CompresionService {
 
   constructor() { }
 
-  /**
-   * Comprime una imagen manteniendo la calidad visual pero reduciendo el tamaño del archivo
-   * @param file - Archivo de imagen a comprimir
-   * @param maxWidth - Ancho máximo de la imagen (por defecto 1920)
-   * @param maxHeight - Alto máximo de la imagen (por defecto 1080)
-   * @param quality - Calidad de compresión (0.1 a 1.0, por defecto 0.8)
-   * @returns Promise<string> - Imagen comprimida en base64
-   */
+  
   async comprimirImagen(file: File, maxWidth: number = 1920, maxHeight: number = 1080, quality: number = 0.8): Promise<string> {
     return new Promise((resolve, reject) => {
       const canvas = document.createElement('canvas');
@@ -45,9 +38,7 @@ export class CompresionService {
     });
   }
 
-  /**
-   * Calcula las nuevas dimensiones manteniendo la proporción
-   */
+  
   private calcularNuevasDimensiones(originalWidth: number, originalHeight: number, maxWidth: number, maxHeight: number): { width: number, height: number } {
     let width = originalWidth;
     let height = originalHeight;
@@ -62,16 +53,12 @@ export class CompresionService {
     return { width, height };
   }
 
-  /**
-   * Verifica si un archivo es una imagen
-   */
+  
   esImagen(file: File): boolean {
     return file.type.startsWith('image/');
   }
 
-  /**
-   * Obtiene el tamaño de un archivo base64 en bytes
-   */
+  
   obtenerTamanoBase64(base64: string): number {
     // Si viene con prefijo, removerlo
     const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
@@ -79,9 +66,7 @@ export class CompresionService {
     return Math.ceil(base64Data.length * 3 / 4);
   }
 
-  /**
-   * Convierte bytes a formato legible
-   */
+  
   formatearTamano(bytes: number): string {
     if (bytes === 0) return '0 Bytes';
     
@@ -92,10 +77,7 @@ export class CompresionService {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  /**
-   * Comprime múltiples archivos de forma secuencial para evitar sobrecarga de memoria
-   * OPTIMIZADO: Solo comprime archivos que realmente lo necesitan
-   */
+  
   async comprimirArchivos(files: FileList, progressCallback?: (progreso: number) => void): Promise<Array<{name: string, type: string, size: number, data: string}>> {
     const archivosComprimidos: Array<{name: string, type: string, size: number, data: string}> = [];
     
@@ -108,8 +90,6 @@ export class CompresionService {
         const debeComprimir = file.size > 500 * 1024; // Mayor a 500KB
         
         if (debeComprimir) {
-          console.log(`🗜️ Comprimiendo imagen: ${file.name} (${this.formatearTamano(file.size)})`);
-          
           // Ajustar parámetros de compresión según el tamaño del archivo
           let maxWidth = 1920, maxHeight = 1080, quality = 0.8;
           
@@ -124,10 +104,7 @@ export class CompresionService {
           }
           
           base64Data = await this.comprimirImagen(file, maxWidth, maxHeight, quality);
-          const nuevoTamano = this.obtenerTamanoBase64(base64Data);
-          console.log(`✅ Imagen comprimida: ${this.formatearTamano(nuevoTamano)} (reducción: ${Math.round((1 - nuevoTamano/file.size) * 100)}%)`);
         } else {
-          console.log(`⏩ Imagen pequeña, sin compresión: ${file.name}`);
           base64Data = await this.convertirArchivoABase64(file);
         }
       } else {
@@ -151,9 +128,7 @@ export class CompresionService {
     return archivosComprimidos;
   }
 
-  /**
-   * Convierte un archivo a base64 (solo la parte base64, sin prefijo data:)
-   */
+  
   private convertirArchivoABase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -168,3 +143,4 @@ export class CompresionService {
     });
   }
 }
+

@@ -567,10 +567,10 @@ export class BusquedaComponent implements OnInit {
   }
 
   eliminarEventoDesdePadre(id: string) {
-    console.log('ID recibido para eliminar:', id);
+
     this.eventoService.eliminarEvento(id).subscribe({
       next: () => {
-        console.log('Evento eliminado exitosamente');
+
         this.eventosDisponibles = this.eventosDisponibles.filter(evento => evento._id !== id);
         this.eventosFiltrados = this.eventosFiltrados.filter(evento => evento._id !== id);
         if (this.eventosFiltrados.length === 0) {
@@ -633,3 +633,4 @@ export class BusquedaComponent implements OnInit {
     return traducciones[servicio] || servicio;
   }
 }
+
