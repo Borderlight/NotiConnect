@@ -30,7 +30,7 @@ export class AuthModalComponent implements OnInit {
   @Output() usuarioRegistrado = new EventEmitter<Usuario>();
   @Output() usuarioLogueado = new EventEmitter<LoginData>();
 
-  modoRegistro = true; // true = registro, false = login
+  modoRegistro = false; // false = login (por defecto), true = registro
   formulario: FormGroup;
   mostrarPassword = false;
   mostrarConfirmarPassword = false;
