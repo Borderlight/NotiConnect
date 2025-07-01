@@ -32,6 +32,7 @@ export class DescargarModalComponent implements OnInit {
     { value: 'titulo', label: 'Título' },
     { value: 'tipoEvento', label: 'Tipo de evento' },
     { value: 'departamento', label: 'Departamento' },
+    { value: 'numeroParticipantes', label: 'Número de participantes' },
     { value: 'descripcion', label: 'Descripción' },
     { 
       value: 'ubicaciones', 
@@ -68,6 +69,7 @@ export class DescargarModalComponent implements OnInit {
       titulo: false,
       tipoEvento: false,
       departamento: false,
+      numeroParticipantes: false,
       descripcion: false,
       ubicaciones: false,
       fecha: false,

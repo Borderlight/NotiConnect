@@ -419,6 +419,8 @@ export class BusquedaComponent implements OnInit {
       titulo: 'Título',
       tipoEvento: 'Tipo de Evento',
       departamento: 'Departamento',
+      numeroParticipantes: 'Número de Participantes',
+      participantesDesconocido: 'Participantes Desconocido',
       descripcion: 'Descripción',
       ubicaciones: 'Ubicaciones',
       fecha: 'Fecha',
@@ -442,6 +444,13 @@ export class BusquedaComponent implements OnInit {
         return evento.departamento || evento.empresaOrganizadora || null;
       case 'tipoEvento':
         return evento.tipoEvento ? this.traducirTipoEvento(evento.tipoEvento) : null;
+      case 'numeroParticipantes':
+        if (evento.participantesDesconocido) {
+          return 'Desconocido';
+        }
+        return evento.numeroParticipantes ? evento.numeroParticipantes.toString() : null;
+      case 'participantesDesconocido':
+        return evento.participantesDesconocido ? 'Sí' : 'No';
       case 'descripcion':
         return evento.descripcion || null;
       case 'fecha':
