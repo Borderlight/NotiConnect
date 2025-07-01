@@ -68,6 +68,17 @@
           <h2 class="evento-titulo">{{ evento.titulo }}</h2>
           <p><strong>Departamento:</strong> {{ departamentoTexto }}</p>
           
+          <!-- Número de participantes -->
+          @if (evento.participantesDesconocido || evento.numeroParticipantes) {
+            <p><strong>Participantes:</strong> 
+              @if (evento.participantesDesconocido) {
+                <span>Desconocido</span>
+              } @else {
+                <span>{{ evento.numeroParticipantes }}</span>
+              }
+            </p>
+          }
+          
           <!-- Descripción -->
           <div class="detalle-seccion">
             <strong>Descripción:</strong>
@@ -138,6 +149,29 @@
                 }
               </select>
             </p>
+            
+            <!-- Número de participantes -->
+            <div class="participantes-edit-container" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <strong>Participantes:</strong>
+                <input formControlName="numeroParticipantes" 
+                       type="number" 
+                       min="1"
+                       class="input-edit" 
+                       style="width: 100px;"
+                       [disabled]="editForm.get('participantesDesconocido')?.value"
+                       (input)="onEditNumeroParticipantesChange($event)"
+                       placeholder="Número" />
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input formControlName="participantesDesconocido" 
+                       type="checkbox" 
+                       id="editParticipantesDesconocido"
+                       [disabled]="editForm.get('numeroParticipantes')?.value && editForm.get('numeroParticipantes')?.value > 0"
+                       (change)="onEditParticipantesDesconocidoChange($event)" />
+                <label for="editParticipantesDesconocido" style="margin: 0; font-weight: normal;">Desconocido</label>
+              </div>
+            </div>
             
             <!-- Descripción -->
             <div class="detalle-seccion">

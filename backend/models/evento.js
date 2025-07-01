@@ -27,6 +27,8 @@ const eventoSchema = new mongoose.Schema({
     }],
     empresaOrganizadora: { type: String, default: 'Sin especificar' },
     tipoEvento: { type: String, default: 'otro' },
+    numeroParticipantes: { type: Number, required: false },
+    participantesDesconocido: { type: Boolean, default: false },
     descripcion: { type: String, default: '' },
     adjuntos: mongoose.Schema.Types.Mixed, // Simplificado sin default
     servicios: [servicioSchema],

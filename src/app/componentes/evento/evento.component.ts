@@ -180,6 +180,8 @@ export class EventoComponent {
       tipoEvento: [''],
       titulo: [''],
       departamento: [''],
+      numeroParticipantes: [''],
+      participantesDesconocido: [false],
       descripcion: [''],
       actividad: [''],
       ubicaciones: this.fb.array([]),
@@ -206,6 +208,8 @@ export class EventoComponent {
       tipoEvento: [this.evento.tipoEvento || '', Validators.required],
       titulo: [this.evento.titulo, Validators.required],
       departamento: [this.normalizarDepartamento(this.evento.departamento || this.evento.empresaOrganizadora || ''), Validators.required],
+      numeroParticipantes: [this.evento.numeroParticipantes || ''],
+      participantesDesconocido: [this.evento.participantesDesconocido || false],
       descripcion: [this.evento.descripcion || ''],
       actividad: [this.normalizarActividad(this.evento.actividad || ''), ''],
       ubicaciones: this.fb.array([]),
@@ -232,6 +236,31 @@ export class EventoComponent {
   }
 
 
+
+  // Método para manejar el cambio del checkbox de participantes desconocido en modo edición
+  onEditParticipantesDesconocidoChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    const isChecked = checkbox.checked;
+    
+    // Actualizar el valor del checkbox en el formulario
+    this.editForm.get('participantesDesconocido')?.setValue(isChecked);
+    
+    // Si está marcado, limpiar campo número
+    if (isChecked) {
+      this.editForm.get('numeroParticipantes')?.setValue('');
+    }
+  }
+
+  // Método para manejar el cambio del campo número de participantes en modo edición
+  onEditNumeroParticipantesChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    
+    // Si se introduce un número válido (mayor que 0), desmarcar el checkbox
+    if (value && parseInt(value) > 0) {
+      this.editForm.get('participantesDesconocido')?.setValue(false);
+    }
+  }
 
   get ponentesDetallados(): any[] {
     if (!this.evento?.ponentes || !Array.isArray(this.evento.ponentes)) {
@@ -441,6 +470,8 @@ export class EventoComponent {
         tipoEvento: formValue.tipoEvento,
         titulo: formValue.titulo,
         departamento: formValue.departamento,
+        numeroParticipantes: formValue.numeroParticipantes,
+        participantesDesconocido: formValue.participantesDesconocido,
         descripcion: formValue.descripcion,
         actividad: formValue.actividad,
         ponentes: this.evento.ponentes,
@@ -464,6 +495,8 @@ export class EventoComponent {
       this.evento.tipoEvento = formValue.tipoEvento;
       this.evento.titulo = formValue.titulo;
       this.evento.departamento = formValue.departamento;
+      this.evento.numeroParticipantes = formValue.numeroParticipantes;
+      this.evento.participantesDesconocido = formValue.participantesDesconocido;
       this.evento.descripcion = formValue.descripcion;
       this.evento.actividad = formValue.actividad;
       

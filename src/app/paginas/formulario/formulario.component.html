@@ -149,6 +149,44 @@
         </div>
 
         <div class="campo-form">
+            <label for="numeroParticipantes" id="participantes-label">Número de participantes <span class="campo-requerido">*</span></label>
+            <p id="participantes-desc" class="campo-descripcion">
+                Selecciona el número de participantes
+            </p>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="number" 
+                       id="numeroParticipantes" 
+                       formControlName="numeroParticipantes" 
+                       min="1"
+                       [disabled]="formularioEvento.get('participantesDesconocido')?.value"
+                       (input)="onNumeroParticipantesChange($event)"
+                       aria-describedby="participantes-desc participantes-error"
+                       aria-required="true"
+                       [attr.aria-invalid]="formularioEvento.get('numeroParticipantes')?.invalid && formularioEvento.get('numeroParticipantes')?.touched"
+                       [attr.aria-label]="'Número de participantes'"
+                       style="width: 120px; max-width: 120px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" 
+                           id="participantesDesconocido"
+                           formControlName="participantesDesconocido"
+                           [disabled]="formularioEvento.get('numeroParticipantes')?.value && formularioEvento.get('numeroParticipantes')?.value > 0"
+                           (change)="onParticipantesDesconocidoChange($event)"
+                           aria-describedby="participantes-desc">
+                    <label for="participantesDesconocido" style="margin: 0; font-weight: normal;">Desconocido</label>
+                </div>
+            </div>
+            @if (formularioEvento.get('numeroParticipantes')?.invalid && formularioEvento.get('numeroParticipantes')?.touched) {
+                <p class="mensaje_error" 
+                   id="participantes-error" 
+                   role="alert"
+                   aria-live="assertive">
+                    El número de participantes debe ser mayor a 0 o marcar como desconocido.
+                </p>
+            }
+            <span id="participantes-error" class="visually-hidden"></span>
+        </div>
+
+        <div class="campo-form">
             <label for="descripcion" id="descripcion-label">{{ 'FORM.EVENT.DESCRIPTION.LABEL' | translate }} <span class="campo-requerido">*</span></label>
             <p id="descripcion-desc" class="campo-descripcion">
                 {{ 'FORM.EVENT.DESCRIPTION.DESC' | translate }}

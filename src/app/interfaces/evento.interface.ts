@@ -9,6 +9,8 @@ export interface Evento {
   ponentes?: Ponente[]; // Nuevo: array de ponentes
   empresaOrganizadora?: string; // Mantener para retrocompatibilidad
   tipoEvento: EventType;
+  numeroParticipantes?: number;
+  participantesDesconocido?: boolean;
   descripcion: string;
   adjuntos: ArchivoAdjunto[]; // Cambiar a array de objetos
   servicios: Servicio[];

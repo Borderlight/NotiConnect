@@ -223,6 +223,8 @@ export class FormularioComponent {
       titulo: ['', [Validators.required]],
       departamento: ['', [Validators.required]], // Departamento organizador (antes empresaOrganizadora)
       tipoEvento: ['', Validators.required],
+      numeroParticipantes: ['', [this.participantesValidator]],
+      participantesDesconocido: [false],
       descripcion: ['', [Validators.required]],
       adjuntos: [''], // Sin validadores
       servicios: this.fb.array([this.crearCampoServicio()]), // Sin required
@@ -464,6 +466,24 @@ export class FormularioComponent {
     this.router.navigate(['/']);
   }
 
+  // Validador personalizado para número de participantes
+  participantesValidator = (control: AbstractControl) => {
+    const participantesDesconocido = this.formularioEvento?.get('participantesDesconocido')?.value;
+    const numeroParticipantes = control.value;
+    
+    // Si está marcado como desconocido, es válido
+    if (participantesDesconocido) {
+      return null;
+    }
+    
+    // Si no está marcado como desconocido, debe tener un número válido
+    if (!numeroParticipantes || numeroParticipantes < 1) {
+      return { participantesRequerido: true };
+    }
+    
+    return null;
+  };
+
   async onSubmit(): Promise<void> {
 
     
@@ -497,6 +517,13 @@ export class FormularioComponent {
       tipoEvento: this.formularioEvento.get('tipoEvento')?.value,
       descripcion: this.formularioEvento.get('descripcion')?.value,
     };
+
+    // Verificar número de participantes con la nueva lógica
+    const numeroParticipantesControl = this.formularioEvento.get('numeroParticipantes');
+    if (numeroParticipantesControl?.invalid) {
+      numeroParticipantesControl.markAsTouched();
+      return;
+    }
 
 
 
@@ -928,6 +955,37 @@ export class FormularioComponent {
       this.mostrarErrorDepartamento = false;
       this.mensajeErrorDepartamento = '';
     }
+  }
+
+  // Método para manejar el cambio del checkbox "Participantes Desconocido"
+  onParticipantesDesconocidoChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    const isChecked = checkbox.checked;
+    
+    // Actualizar el valor del checkbox en el formulario
+    this.formularioEvento.get('participantesDesconocido')?.setValue(isChecked);
+    
+    // Si está marcado, limpiar campo número y deshabilitarlo
+    if (isChecked) {
+      this.formularioEvento.get('numeroParticipantes')?.setValue('');
+    }
+    
+    // Actualizar validación para que se reevalúe
+    this.formularioEvento.get('numeroParticipantes')?.updateValueAndValidity();
+  }
+
+  // Método para manejar el cambio del campo número de participantes
+  onNumeroParticipantesChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    
+    // Si se introduce un número válido (mayor que 0), desmarcar el checkbox
+    if (value && parseInt(value) > 0) {
+      this.formularioEvento.get('participantesDesconocido')?.setValue(false);
+    }
+    
+    // Actualizar validación
+    this.formularioEvento.get('numeroParticipantes')?.updateValueAndValidity();
   }
 
   private cargarDepartamentosPersonalizados() {
