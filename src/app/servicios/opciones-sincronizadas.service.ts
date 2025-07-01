@@ -12,7 +12,7 @@ export class OpcionesSincronizadasService {
   // Departamentos base
   private departamentosBase = [
     'Biblioteca',
-    'UCI', 
+    'UCCI', 
     'GIT',
     'Facultad',
     'Formación Permanente',

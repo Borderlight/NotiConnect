@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Evento } from '../interfaces/evento.interface';
 
 @Injectable({
@@ -12,21 +13,28 @@ export class EventoService {
   constructor(private http: HttpClient) {}
 
   private getApiUrl(): string {
-    // Si estamos en producción (Render)
-    if (window.location.hostname === 'noticonnect.onrender.com') {
-      // Intentar primero con el mismo dominio del frontend
-      return 'https://noticonnect.onrender.com/api/eventos';
+    let url;
+    // Si estamos en producción (cualquier dominio que no sea localhost)
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      // Usar URL relativa ya que el backend está en el mismo servidor
+      url = '/api/eventos';
+    } else {
+      // Para desarrollo local
+      url = 'http://localhost:3000/api/eventos';
     }
-    // Si estamos en un entorno de desarrollo túnel, usar la URL del túnel del backend
-    if (window.location.hostname.includes('devtunnels.ms')) {
-      return 'https://zd51xrvm-3000.uks1.devtunnels.ms/api/eventos';
-    }
-    // Para desarrollo local
-    return 'http://localhost:3000/api/eventos';
+    console.log('🔍 EventoService - URL API:', url, 'Hostname:', window.location.hostname);
+    return url;
   }
 
   getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.apiUrl);
+    console.log('🔍 EventoService - Obteniendo todos los eventos desde:', this.apiUrl);
+    return this.http.get<Evento[]>(this.apiUrl).pipe(
+      tap(eventos => console.log('✅ EventoService - Eventos recibidos:', eventos.length)),
+      catchError(error => {
+        console.error('❌ EventoService - Error al obtener eventos:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getEventoPorId(id: string): Observable<Evento> {
@@ -55,6 +63,13 @@ export class EventoService {
         params = params.set(key, filtros[key]);
       }
     });
-    return this.http.get<Evento[]>(this.apiUrl, { params });
+    console.log('🔍 EventoService - Obteniendo eventos filtrados desde:', this.apiUrl, 'Filtros:', filtros);
+    return this.http.get<Evento[]>(this.apiUrl, { params }).pipe(
+      tap(eventos => console.log('✅ EventoService - Eventos filtrados recibidos:', eventos.length)),
+      catchError(error => {
+        console.error('❌ EventoService - Error al filtrar eventos:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }

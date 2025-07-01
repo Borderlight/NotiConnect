@@ -873,7 +873,7 @@ export class FormularioComponent {
   // --- DEPARTAMENTO ORGANIZADOR PERSONALIZADO ---
   opcionesDepartamento: string[] = [
     'Biblioteca',
-    'UCI',
+    'UCCI',
     'GIT',
     'Facultad',
     'Formación Permanente',

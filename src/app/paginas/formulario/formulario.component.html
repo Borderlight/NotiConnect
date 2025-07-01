@@ -351,7 +351,7 @@
                        accept=".jpg,.jpeg,.png,.gif,.bmp,.webp,.pdf,.doc,.docx,.odt,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
                        (change)="onAdjuntosSelected($event)"
                        [attr.aria-invalid]="formularioEvento.get('adjuntos')?.invalid && formularioEvento.get('adjuntos')?.touched"
-                       aria-describedby="adjuntos-desc adjuntos-formato adjuntos-help" />
+                       aria-describedby="adjuntos-desc adjuntos-formato" />
                 @if (nombresAdjuntos.length) {
                     <span class="nombres-archivos-seleccionados" style="margin-left: 0.5rem; font-size: 0.95em; color: #333;">
                         ({{ nombresAdjuntos.join(', ') }})

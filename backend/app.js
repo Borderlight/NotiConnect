@@ -50,6 +50,15 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
+// Debug endpoint para verificar conexión
+app.get('/api/debug', (req, res) => {
+    res.status(200).json({ 
+        message: 'Backend funcionando correctamente',
+        mongodb: mongoose.connection.readyState === 1 ? 'conectado' : 'desconectado',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Usar rutas de API
 app.use('/api/eventos', eventoRoutes);
 
